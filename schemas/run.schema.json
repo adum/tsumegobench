@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/tsumego-bench/run.schema.json",
+  "title": "Tsumego Bench model run",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runId",
+    "model",
+    "generatedAt",
+    "condition",
+    "prompt",
+    "referenceManifest",
+    "problems"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "runId": { "type": "string", "minLength": 3 },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "name", "surface"],
+      "properties": {
+        "provider": { "type": "string" },
+        "name": { "type": "string" },
+        "surface": { "type": "string" }
+      }
+    },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attempt", "toolsEnabled", "webEnabled"],
+      "properties": {
+        "attempt": { "type": "integer", "minimum": 1 },
+        "toolsEnabled": { "type": "boolean" },
+        "webEnabled": { "type": "boolean" },
+        "temperature": { "type": ["number", "null"] },
+        "notes": { "type": "string" }
+      }
+    },
+    "prompt": { "type": "string" },
+    "referenceManifest": { "type": "string" },
+    "problems": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "\\.sgf$" }
+    }
+  }
+}
+

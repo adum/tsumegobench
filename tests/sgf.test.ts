@@ -1,0 +1,42 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import {
+  boardAtNode,
+  canonicalProblemFingerprint,
+  collectRightNodes,
+  parseSgf,
+  walkSgf,
+} from "../lib/sgf";
+import { validateSgf } from "../lib/validate-sgf";
+
+const simple =
+  "(;FF[4]GM[1]SZ[9]AB[aa][ba][ca]AW[ab][bb](;B[cb];W[cc];B[bc]C[RIGHT])(;B[bc];W[cb]))";
+
+test("parses variations and locates RIGHT nodes", () => {
+  const root = parseSgf(simple);
+  assert.equal(root.children.length, 2);
+  assert.equal(walkSgf(root).length, 6);
+  assert.equal(collectRightNodes(root).length, 1);
+});
+
+test("replays captures along a selected path", () => {
+  const root = parseSgf("(;SZ[9]AB[ba][ab][cb]AW[bb];B[bc]C[RIGHT])");
+  const leaf = root.children[0];
+  const position = boardAtNode(root, leaf);
+  assert.equal(position.board.has("bb"), false);
+  assert.equal(position.captures, 1);
+});
+
+test("canonical fingerprint ignores translation and color reversal", () => {
+  const first = parseSgf("(;SZ[19]AB[aa][ba]AW[ab];B[bb]C[RIGHT])");
+  const second = parseSgf("(;SZ[19]AW[dd][ed]AB[de];W[ee]C[RIGHT])");
+  assert.equal(canonicalProblemFingerprint(first), canonicalProblemFingerprint(second));
+});
+
+test("validator catches a pass and missing RIGHT", () => {
+  const report = validateSgf("(;SZ[9]AB[aa]AW[bb];B[])");
+  assert.equal(report.valid, false);
+  assert.ok(report.issues.some((issue) => issue.code === "pass-move"));
+  assert.ok(report.issues.some((issue) => issue.code === "missing-right"));
+});
+

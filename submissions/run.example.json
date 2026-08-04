@@ -1,0 +1,27 @@
+{
+  "$schema": "../schemas/run.schema.json",
+  "runId": "2026-08-04-model-name-zero-shot-01",
+  "model": {
+    "provider": "Example provider",
+    "name": "Exact model name and version",
+    "surface": "Web chat, API, or local runtime"
+  },
+  "generatedAt": "2026-08-04T12:00:00-07:00",
+  "condition": {
+    "attempt": 1,
+    "toolsEnabled": false,
+    "webEnabled": false,
+    "temperature": null,
+    "notes": "Zero-shot first response; no repair conversation."
+  },
+  "prompt": "docs/model-prompt.md",
+  "referenceManifest": "examples/manifest.json",
+  "problems": [
+    "problem-01.sgf",
+    "problem-02.sgf",
+    "problem-03.sgf",
+    "problem-04.sgf",
+    "problem-05.sgf"
+  ]
+}
+

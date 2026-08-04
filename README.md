@@ -1,0 +1,74 @@
+# Tsumego Bench
+
+Tsumego Bench is a small, reproducible benchmark for a narrow question:
+
+> Can an AI create **original, simple, standard life-and-death Go problems** with legal positions and complete SGF solution trees?
+
+The repository combines a curated reference corpus, a strict SGF validator, local and GoProblems-powered duplicate detection, a controlled model prompt, a scoring rubric, and an interactive board/solution-tree reviewer.
+
+## What is in the project
+
+- `examples/canonical-life-and-death/` — 20 SGF reference problems. Every item was verified through the GoProblems API as canonical, standard, and life-and-death when synchronized.
+- `examples/manifest.json` — provenance, rank, author, source, rating, and original URL for every reference.
+- `docs/authoring-guide.md` — the benchmark's concise definition of a good problem.
+- `docs/model-prompt.md` — the controlled prompt to give each model.
+- `docs/benchmark-spec.md` — run structure, acceptance gates, and comparison protocol.
+- `docs/evaluation-rubric.md` — the human review scorecard.
+- `scripts/` — corpus synchronization, validation, and duplicate checks.
+- The web reviewer — browse each problem, replay any variation, and inspect the graphical solution tree.
+
+## Quick start
+
+```bash
+npm install
+npm run dev
+```
+
+Open the local address printed by the development server.
+
+Validate the reference set or a submission:
+
+```bash
+npm run validate
+npm run validate -- submissions/my-run
+```
+
+Check one candidate for duplicates locally and against GoProblems:
+
+```bash
+npm run duplicates -- submissions/my-run/problem-01.sgf
+```
+
+The remote duplicate gate fails on any radius-2 solution-signature match or a percentage match at or above 90%. Use `--local-only`, `--threshold=95`, or `--exclude-id=18843` when appropriate.
+
+Refresh the public reference data deliberately—not as part of a normal build:
+
+```bash
+npm run sync:examples
+```
+
+The synchronizer spaces its requests and verifies the corpus contract before writing files. Please follow the GoProblems request not to call its API excessively.
+
+## Benchmark in one pass
+
+1. Copy `docs/model-prompt.md` into a fresh model conversation and attach the reference SGFs.
+2. Save the model's raw SGF outputs under `submissions/<run-name>/` with a completed `run.json`.
+3. Run structural validation.
+4. Run duplicate detection for each candidate.
+5. Have a competent Go player review life/death correctness and tree completeness with the web viewer.
+6. Score accepted candidates with `docs/evaluation-rubric.md`; report both the mean score and acceptance rate.
+
+Structural validity and originality are hard gates. A beautiful but duplicated problem, or a novel position with a broken solution tree, is not an accepted result.
+
+## Source guidance
+
+The contract is derived from GoProblems' public guidance:
+
+- [Types of Problems](https://www.goproblems.com/article/problemtypes)
+- [Problem Construction Basics](https://www.goproblems.com/article/constructionbasics)
+- [Problem Construction Best Practices](https://www.goproblems.com/article/bestpractices)
+- [API access](https://www.goproblems.com/article/api)
+- [Solution Signatures](https://www.goproblems.com/article/solutionsignatures)
+
+The reference SGFs remain attributed to their listed GoProblems authors and sources. They are included as benchmark examples and provenance is retained in `examples/manifest.json`.
+
