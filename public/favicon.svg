@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Tsumego Bench</title>
+  <defs>
+    <linearGradient id="board" x1="8" y1="6" x2="57" y2="59" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#efc26f" />
+      <stop offset="1" stop-color="#d59a43" />
+    </linearGradient>
+    <radialGradient id="stone" cx="0" cy="0" r="1" gradientTransform="translate(25 23) rotate(48) scale(26)">
+      <stop stop-color="#717674" />
+      <stop offset="0.36" stop-color="#26302e" />
+      <stop offset="1" stop-color="#07100e" />
+    </radialGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#06100e" flood-opacity="0.35" />
+    </filter>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#board)" stroke="#17302c" stroke-width="3" />
+  <g fill="none" stroke="#614b2d" stroke-width="2" opacity="0.72">
+    <path d="M13 22h38M13 42h38M22 13v38M42 13v38" />
+  </g>
+  <circle cx="32" cy="32" r="18" fill="url(#stone)" stroke="#050a09" stroke-width="2" filter="url(#shadow)" />
+  <circle cx="26" cy="25" r="4" fill="#fff" opacity="0.2" />
+  <path d="M49 9a12 12 0 0 1 6 6" fill="none" stroke="#bd4433" stroke-linecap="round" stroke-width="4" />
+</svg>

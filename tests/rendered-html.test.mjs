@@ -29,6 +29,7 @@ test("server-renders a compact overview with route navigation", async () => {
   assert.match(html, /href="\/runs"/);
   assert.match(html, /href="\/evaluation"/);
   assert.match(html, /href="\/sources"/);
+  assert.match(html, /<link[^>]+rel="icon"[^>]+href="\/favicon\.svg"/);
   assert.match(html, /19×19 boards/);
   assert.doesNotMatch(html, /class="workbench-shell/);
   assert.doesNotMatch(html, /class="protocol-grid/);
