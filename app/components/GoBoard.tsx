@@ -20,6 +20,7 @@ import {
   type SgfNode,
   type StoneColor,
 } from "@/lib/sgf";
+import { getGridExtents } from "@/lib/board-geometry";
 
 interface GoBoardProps {
   root: SgfNode;
@@ -86,6 +87,7 @@ export function GoBoard({
       const gridHeight = cell * Math.max(rows - 1, 1);
       const originX = (width - gridWidth) / 2;
       const originY = (height - gridHeight) / 2;
+      const gridExtents = getGridExtents(crop, size, originX, originY, cell);
       const toCanvas = (x: number, y: number) => ({
         x: originX + (x - crop.minX) * cell,
         y: originY + (y - crop.minY) * cell,
@@ -116,21 +118,19 @@ export function GoBoard({
 
       context.lineCap = "square";
       for (let x = crop.minX; x <= crop.maxX; x += 1) {
-        const start = toCanvas(x, crop.minY);
-        const end = toCanvas(x, crop.maxY);
+        const lineX = toCanvas(x, crop.minY).x;
         context.beginPath();
-        context.moveTo(start.x, start.y);
-        context.lineTo(end.x, end.y);
+        context.moveTo(lineX, gridExtents.top);
+        context.lineTo(lineX, gridExtents.bottom);
         context.strokeStyle = "rgba(48, 35, 22, 0.78)";
         context.lineWidth = x === 0 || x === size - 1 ? 1.8 : 0.85;
         context.stroke();
       }
       for (let y = crop.minY; y <= crop.maxY; y += 1) {
-        const start = toCanvas(crop.minX, y);
-        const end = toCanvas(crop.maxX, y);
+        const lineY = toCanvas(crop.minX, y).y;
         context.beginPath();
-        context.moveTo(start.x, start.y);
-        context.lineTo(end.x, end.y);
+        context.moveTo(gridExtents.left, lineY);
+        context.lineTo(gridExtents.right, lineY);
         context.strokeStyle = "rgba(48, 35, 22, 0.78)";
         context.lineWidth = y === 0 || y === size - 1 ? 1.8 : 0.85;
         context.stroke();
