@@ -40,14 +40,6 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="principle-strip" role="note">
-        <span>SGF VALIDATION</span>
-        <span aria-hidden="true">◆</span>
-        <span>DUPLICATE CHECKS</span>
-        <span aria-hidden="true">◆</span>
-        <span>HUMAN GO REVIEW</span>
-      </div>
-
       <ProblemWorkbench />
 
       <section className="protocol-section" id="protocol" aria-labelledby="protocol-title">

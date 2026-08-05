@@ -40,13 +40,19 @@ interface ProblemRecord {
   sgf: string;
 }
 
-const problems = problemData as ProblemRecord[];
+function difficultyOrder(problem: ProblemRecord) {
+  if (problem.rankUnit === "kyu") return 30 - problem.rankValue;
+  if (problem.rankUnit === "dan") return 30 + problem.rankValue;
+  return Number.POSITIVE_INFINITY;
+}
+
+const problems = [...(problemData as ProblemRecord[])].sort(
+  (left, right) => difficultyOrder(left) - difficultyOrder(right),
+);
 
 export function ProblemWorkbench() {
   const [selectedProblemId, setSelectedProblemId] = useState(problems[0].id);
   const [selectedNodeId, setSelectedNodeId] = useState("n0");
-  const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState("all");
   const [copied, setCopied] = useState(false);
 
   const problem = problems.find((record) => record.id === selectedProblemId) ?? problems[0];
@@ -57,36 +63,6 @@ export function ProblemWorkbench() {
   const boardSize = getBoardSize(root);
   const rightNodes = useMemo(() => collectRightNodes(root), [root]);
   const playerName = problem.playerColor === "black" ? "Black" : "White";
-
-  const filteredProblems = useMemo(() => {
-    const needle = query.trim().toLowerCase();
-    return problems.filter((record) => {
-      const matchesQuery =
-        !needle ||
-        [record.id, record.rank, record.playerColor, record.author, record.source]
-          .join(" ")
-          .toLowerCase()
-          .includes(needle);
-      const matchesFilter =
-        filter === "all" ||
-        (filter === "20-30k" && record.rankUnit === "kyu" && record.rankValue >= 20) ||
-        (filter === "10-19k" &&
-          record.rankUnit === "kyu" &&
-          record.rankValue >= 10 &&
-          record.rankValue <= 19) ||
-        (filter === "5-9k" &&
-          record.rankUnit === "kyu" &&
-          record.rankValue >= 5 &&
-          record.rankValue <= 9) ||
-        (filter === "1-4k" &&
-          record.rankUnit === "kyu" &&
-          record.rankValue >= 1 &&
-          record.rankValue <= 4) ||
-        (filter === "1d" && record.rankUnit === "dan" && record.rankValue === 1) ||
-        filter === record.playerColor;
-      return matchesQuery && matchesFilter;
-    });
-  }, [filter, query]);
 
   const path = getPath(selected);
   const selectedMove = getMove(selected);
@@ -152,38 +128,8 @@ export function ProblemWorkbench() {
             </div>
             <span className="live-dot">30K–1D · API CHECKED</span>
           </div>
-          <label className="search-field">
-            <span className="sr-only">Search reference problems</span>
-            <span aria-hidden="true">⌕</span>
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search ID, rank, source…"
-            />
-          </label>
-          <div className="filter-row" aria-label="Filter problems">
-            {[
-              ["all", "All"],
-              ["20-30k", "20–30k"],
-              ["10-19k", "10–19k"],
-              ["5-9k", "5–9k"],
-              ["1-4k", "1–4k"],
-              ["1d", "1d"],
-              ["black", "Black"],
-              ["white", "White"],
-            ].map(([value, label]) => (
-              <button
-                type="button"
-                key={value}
-                className={filter === value ? "active" : ""}
-                onClick={() => setFilter(value)}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
           <div className="problem-list">
-            {filteredProblems.map((record) => (
+            {problems.map((record) => (
               <button
                 type="button"
                 key={record.id}
@@ -206,9 +152,6 @@ export function ProblemWorkbench() {
                 </span>
               </button>
             ))}
-            {!filteredProblems.length && (
-              <div className="empty-list">No references match that filter.</div>
-            )}
           </div>
         </aside>
 

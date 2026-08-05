@@ -27,9 +27,20 @@ test("server-renders the Tsumego Bench reviewer", async () => {
   assert.match(html, /Evaluation protocol/);
   assert.match(html, /Black to play|White to play/);
   assert.match(html, /aria-label="Problem 18843, Black to play/);
-  assert.match(html, />20–30k</);
-  assert.match(html, />1d</);
   assert.match(html, /1 dan/);
+  assert.doesNotMatch(html, /class="principle-strip"/);
+  assert.doesNotMatch(html, /aria-label="Filter problems"|Search ID, rank, source/);
+  const thirtyKyuIndex = html.indexOf('aria-label="Problem 53750, White to play, 30 kyu');
+  const oneKyuIndex = html.indexOf('aria-label="Problem 721, Black to play, 1 kyu');
+  const oneDanIndex = html.indexOf('aria-label="Problem 17778, Black to play, 1 dan');
+  assert.ok(
+    thirtyKyuIndex >= 0 && oneKyuIndex >= 0 && thirtyKyuIndex < oneKyuIndex,
+    "easier kyu problems should render before harder kyu problems",
+  );
+  assert.ok(
+    oneDanIndex >= 0 && oneKyuIndex < oneDanIndex,
+    "1 dan problems should render after the kyu problems",
+  );
   assert.doesNotMatch(html, /Find the best (?:local )?result/i);
   assert.match(html, /Leads to RIGHT/);
   assert.match(html, /aria-label="Board variation legend"/);
