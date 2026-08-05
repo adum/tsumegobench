@@ -6,9 +6,11 @@ import {
   expandPointValues,
   getBoardSize,
   getCrop,
+  getMove,
   getPath,
   parsePoint,
   pointToHuman,
+  subtreeHasRight,
   type SgfNode,
   type StoneColor,
 } from "@/lib/sgf";
@@ -22,6 +24,13 @@ export function GoBoard({ root, selected }: GoBoardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const crop = useMemo(() => getCrop(root, 1), [root]);
   const boardPosition = useMemo(() => boardAtNode(root, selected), [root, selected]);
+  const variationSummary = useMemo(() => {
+    const variations = selected.children.filter((child) => Boolean(getMove(child)?.point));
+    return {
+      total: variations.length,
+      withResult: variations.filter(subtreeHasRight).length,
+    };
+  }, [selected]);
   const columns = crop.maxX - crop.minX + 1;
   const rows = crop.maxY - crop.minY + 1;
 
@@ -219,6 +228,39 @@ export function GoBoard({ root, selected }: GoBoardProps) {
         }
       }
 
+      for (const child of selected.children) {
+        const move = getMove(child);
+        const point = move?.point ? parsePoint(move.point) : undefined;
+        if (
+          !move?.point ||
+          !point ||
+          position.board.has(move.point) ||
+          point.x < crop.minX ||
+          point.x > crop.maxX ||
+          point.y < crop.minY ||
+          point.y > crop.maxY
+        ) {
+          continue;
+        }
+
+        const center = toCanvas(point.x, point.y);
+        const hasResult = subtreeHasRight(child);
+        const markerColor = hasResult ? "#4f8218" : "#c62622";
+        context.save();
+        context.beginPath();
+        context.arc(center.x, center.y, cell * 0.23, 0, Math.PI * 2);
+        context.strokeStyle = markerColor;
+        context.lineWidth = Math.max(2.5, cell * 0.055);
+        context.stroke();
+        if (hasResult) {
+          context.beginPath();
+          context.arc(center.x, center.y, cell * 0.085, 0, Math.PI * 2);
+          context.fillStyle = markerColor;
+          context.fill();
+        }
+        context.restore();
+      }
+
       if (position.lastMove?.point) {
         const point = parsePoint(position.lastMove.point);
         if (point) {
@@ -243,12 +285,16 @@ export function GoBoard({ root, selected }: GoBoardProps) {
       className="go-board-canvas"
       style={{ aspectRatio: `${Math.max(columns, 5)} / ${Math.max(rows, 5)}` }}
       aria-label={
-        boardPosition.lastMove
+        `${boardPosition.lastMove
           ? `Go board showing ${pointToHuman(
               boardPosition.lastMove.point,
               getBoardSize(root),
             )} as the latest move`
-          : "Go board setup position"
+          : "Go board setup position"}${
+          variationSummary.total
+            ? `; ${variationSummary.total} next variations, ${variationSummary.withResult} leading to RIGHT`
+            : ""
+        }`
       }
     />
   );

@@ -738,10 +738,36 @@ input:focus-visible,
   letter-spacing: 0.08em;
 }
 
-.board-toolbar > span:last-child {
+.board-variation-legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   color: #77552d;
   font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
+}
+
+.board-variation-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.board-variation-legend i {
+  width: 9px;
+  height: 9px;
+  display: inline-block;
+  border: 2px solid;
+  border-radius: 50%;
+}
+
+.board-variation-legend .board-marker-right {
+  border-color: #4f8218;
+  background: radial-gradient(circle, #4f8218 0 2px, transparent 2.5px);
+}
+
+.board-variation-legend .board-marker-wrong {
+  border-color: #c62622;
 }
 
 .go-board-canvas {

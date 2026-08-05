@@ -7,6 +7,7 @@ import {
   getPath,
   hasControlTag,
   pointToHuman,
+  subtreeHasRight,
   visibleComment,
   type SgfNode,
 } from "@/lib/sgf";
@@ -37,16 +38,8 @@ const TREE_PADDING = 18;
 
 function createTreeLayout(root: SgfNode) {
   const positions = new Map<string, PositionedNode>();
-  const resultByNode = new Map<string, boolean>();
   let nextLeaf = 0;
   let maxDepth = 0;
-
-  const markResults = (node: SgfNode): boolean => {
-    const childResults = node.children.map((child) => markResults(child));
-    const hasResult = hasControlTag(node, "RIGHT") || childResults.some(Boolean);
-    resultByNode.set(node.id, hasResult);
-    return hasResult;
-  };
 
   const placeNode = (node: SgfNode, depth: number, priorMoveNumber: number): number => {
     const moveNumber = priorMoveNumber + (getMove(node) ? 1 : 0);
@@ -65,7 +58,6 @@ function createTreeLayout(root: SgfNode) {
     return row;
   };
 
-  markResults(root);
   placeNode(root, 0, 0);
 
   const nodes = Array.from(positions.values());
@@ -77,7 +69,7 @@ function createTreeLayout(root: SgfNode) {
         edges.push({
           from,
           to,
-          leadsToRight: resultByNode.get(child.id) ?? false,
+          leadsToRight: subtreeHasRight(child),
         });
       }
     }

@@ -246,6 +246,10 @@ export function hasControlTag(node: SgfNode, tag: (typeof CONTROL_TAGS)[number])
   return getNodeComment(node).toUpperCase().includes(tag);
 }
 
+export function subtreeHasRight(node: SgfNode): boolean {
+  return hasControlTag(node, "RIGHT") || node.children.some(subtreeHasRight);
+}
+
 export function visibleComment(node: SgfNode): string {
   let comment = getNodeComment(node);
   for (const tag of CONTROL_TAGS) {

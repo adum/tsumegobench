@@ -6,6 +6,7 @@ import {
   collectRightNodes,
   parseSgf,
   stripRootComment,
+  subtreeHasRight,
   visibleComment,
   walkSgf,
 } from "../lib/sgf";
@@ -19,6 +20,8 @@ test("parses variations and locates RIGHT nodes", () => {
   assert.equal(root.children.length, 2);
   assert.equal(walkSgf(root).length, 6);
   assert.equal(collectRightNodes(root).length, 1);
+  assert.equal(subtreeHasRight(root.children[0]), true);
+  assert.equal(subtreeHasRight(root.children[1]), false);
 });
 
 test("replays captures along a selected path", () => {
