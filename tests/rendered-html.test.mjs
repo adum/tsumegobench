@@ -33,6 +33,12 @@ test("server-renders the Tsumego Bench reviewer", async () => {
   assert.doesNotMatch(html, /Find the best (?:local )?result/i);
   assert.match(html, /Leads to RIGHT/);
   assert.match(html, /aria-label="Board variation legend"/);
+  assert.match(html, /aria-label="Board navigation controls"/);
+  assert.match(
+    html,
+    /aria-label="Board navigation controls"[\s\S]*class="go-board-canvas"/,
+  );
+  assert.doesNotMatch(html, /class="move-controls"/);
   assert.match(html, /next variations, \d+ leading to RIGHT/);
   assert.match(html, /Click a colored marker to select that variation/);
   assert.match(html, /Available board variations/);

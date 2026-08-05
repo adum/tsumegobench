@@ -237,7 +237,44 @@ export function ProblemWorkbench() {
             <div className="board-column">
               <div className="board-frame">
                 <div className="board-toolbar">
-                  <span>POSITION</span>
+                  <span className="board-toolbar-label">POSITION</span>
+                  <div className="board-controls" aria-label="Board navigation controls">
+                    <button
+                      type="button"
+                      onClick={() => chooseNode(root)}
+                      disabled={selected === root}
+                      aria-label="Reset to setup"
+                      title="Reset to setup"
+                    >
+                      ↺
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => previousNode && chooseNode(previousNode)}
+                      disabled={!previousNode}
+                      aria-label="Previous move"
+                      title="Previous move"
+                    >
+                      ←
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => nextNode && chooseNode(nextNode)}
+                      disabled={!nextNode}
+                      aria-label="Next default move"
+                      title="Next move"
+                    >
+                      →
+                    </button>
+                    <button
+                      type="button"
+                      className="reveal-button"
+                      onClick={() => rightNodes[0] && chooseNode(rightNodes[0])}
+                      aria-label="Reveal accepted line"
+                    >
+                      Reveal
+                    </button>
+                  </div>
                   <div
                     className="board-variation-legend"
                     id="board-variation-legend"
@@ -272,39 +309,6 @@ export function ProblemWorkbench() {
                             ? "Continue through the selected variation."
                             : `${playerName} to play.`)}
                   </p>
-                </div>
-                <div className="move-controls">
-                  <button
-                    type="button"
-                    onClick={() => chooseNode(root)}
-                    disabled={selected === root}
-                    aria-label="Reset to setup"
-                  >
-                    ↺
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => previousNode && chooseNode(previousNode)}
-                    disabled={!previousNode}
-                    aria-label="Previous move"
-                  >
-                    ←
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => nextNode && chooseNode(nextNode)}
-                    disabled={!nextNode}
-                    aria-label="Next default move"
-                  >
-                    →
-                  </button>
-                  <button
-                    type="button"
-                    className="reveal-button"
-                    onClick={() => rightNodes[0] && chooseNode(rightNodes[0])}
-                  >
-                    Reveal line
-                  </button>
                 </div>
               </div>
             </div>
