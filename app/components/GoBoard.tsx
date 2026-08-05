@@ -46,8 +46,8 @@ export function GoBoard({ root, selected, showCoordinates }: GoBoardProps) {
       const position = boardAtNode(root, selected);
       const coordinateRoom = showCoordinates ? 24 : 15;
       const cell = Math.min(
-        (width - coordinateRoom * 2) / Math.max(columns - 1, 1),
-        (height - coordinateRoom * 2) / Math.max(rows - 1, 1),
+        (width - coordinateRoom * 2) / Math.max(columns, 1),
+        (height - coordinateRoom * 2) / Math.max(rows, 1),
       );
       const gridWidth = cell * Math.max(columns - 1, 1);
       const gridHeight = cell * Math.max(rows - 1, 1);
@@ -124,15 +124,24 @@ export function GoBoard({ root, selected, showCoordinates }: GoBoardProps) {
         context.font = `600 ${Math.min(11, Math.max(8, cell * 0.25))}px Geist, sans-serif`;
         context.textAlign = "center";
         context.textBaseline = "middle";
+        const coordinateOffset = cell * 0.5 + coordinateRoom * 0.5;
         const alphabet = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
         for (let x = crop.minX; x <= crop.maxX; x += 1) {
           const point = toCanvas(x, crop.maxY);
-          context.fillText(alphabet[x] ?? "?", point.x, Math.min(height - 7, point.y + 15));
+          context.fillText(
+            alphabet[x] ?? "?",
+            point.x,
+            Math.min(height - 7, point.y + coordinateOffset),
+          );
         }
         context.textAlign = "right";
         for (let y = crop.minY; y <= crop.maxY; y += 1) {
           const point = toCanvas(crop.minX, y);
-          context.fillText(String(size - y), Math.max(12, point.x - 9), point.y);
+          context.fillText(
+            String(size - y),
+            Math.max(12, point.x - coordinateOffset),
+            point.y,
+          );
         }
       }
 
@@ -148,7 +157,8 @@ export function GoBoard({ root, selected, showCoordinates }: GoBoardProps) {
           return;
         }
         const center = toCanvas(point.x, point.y);
-        const radius = Math.min(22, cell * 0.46);
+        // Go stones should almost fill the distance between intersections.
+        const radius = cell * 0.46;
         context.save();
         context.shadowColor = "rgba(36, 24, 15, 0.35)";
         context.shadowBlur = Math.max(2, radius * 0.24);
