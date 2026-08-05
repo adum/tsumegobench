@@ -31,6 +31,9 @@ test("server-renders the Tsumego Bench reviewer", async () => {
   assert.match(html, /Leads to RIGHT/);
   assert.match(html, /aria-label="Board variation legend"/);
   assert.match(html, /next variations, \d+ leading to RIGHT/);
+  assert.match(html, /Click a colored marker to select that variation/);
+  assert.match(html, /Available board variations/);
+  assert.doesNotMatch(html, />COORDINATES</i);
   assert.match(html, /tree-edge has-result/);
   assert.match(html, /tree-edge no-result/);
   assert.doesNotMatch(html, /tree-coordinate/);

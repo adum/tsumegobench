@@ -223,12 +223,16 @@ export function ProblemWorkbench() {
               <div className="board-frame">
                 <div className="board-toolbar">
                   <span>POSITION</span>
-                  <div className="board-variation-legend" aria-label="Board variation legend">
+                  <div
+                    className="board-variation-legend"
+                    id="board-variation-legend"
+                    aria-label="Board variation legend"
+                  >
                     <span><i className="board-marker-right" aria-hidden="true" /> RIGHT</span>
                     <span><i className="board-marker-wrong" aria-hidden="true" /> NO RIGHT</span>
                   </div>
                 </div>
-                <GoBoard root={root} selected={selected} />
+                <GoBoard root={root} selected={selected} onSelect={chooseNode} />
               </div>
 
               <div className="move-inspector" aria-live="polite">

@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  type MouseEvent as ReactMouseEvent,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import {
   boardAtNode,
   expandPointValues,
@@ -18,19 +24,31 @@ import {
 interface GoBoardProps {
   root: SgfNode;
   selected: SgfNode;
+  onSelect: (node: SgfNode) => void;
 }
 
-export function GoBoard({ root, selected }: GoBoardProps) {
+interface VariationTarget {
+  node: SgfNode;
+  x: number;
+  y: number;
+  radius: number;
+}
+
+export function GoBoard({ root, selected, onSelect }: GoBoardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const variationTargetsRef = useRef<VariationTarget[]>([]);
   const crop = useMemo(() => getCrop(root, 1), [root]);
   const boardPosition = useMemo(() => boardAtNode(root, selected), [root, selected]);
+  const variationNodes = useMemo(
+    () => selected.children.filter((child) => Boolean(getMove(child)?.point)),
+    [selected],
+  );
   const variationSummary = useMemo(() => {
-    const variations = selected.children.filter((child) => Boolean(getMove(child)?.point));
     return {
-      total: variations.length,
-      withResult: variations.filter(subtreeHasRight).length,
+      total: variationNodes.length,
+      withResult: variationNodes.filter(subtreeHasRight).length,
     };
-  }, [selected]);
+  }, [variationNodes]);
   const columns = crop.maxX - crop.minX + 1;
   const rows = crop.maxY - crop.minY + 1;
 
@@ -39,6 +57,7 @@ export function GoBoard({ root, selected }: GoBoardProps) {
     if (!canvas) return;
 
     const draw = () => {
+      variationTargetsRef.current = [];
       const width = canvas.clientWidth;
       const height = canvas.clientHeight;
       if (!width || !height) return;
@@ -259,6 +278,12 @@ export function GoBoard({ root, selected }: GoBoardProps) {
           context.fill();
         }
         context.restore();
+        variationTargetsRef.current.push({
+          node: child,
+          x: center.x,
+          y: center.y,
+          radius: cell * 0.32,
+        });
       }
 
       if (position.lastMove?.point) {
@@ -279,23 +304,69 @@ export function GoBoard({ root, selected }: GoBoardProps) {
     return () => observer.disconnect();
   }, [columns, crop, root, rows, selected]);
 
+  const findVariationTarget = (
+    canvas: HTMLCanvasElement,
+    clientX: number,
+    clientY: number,
+  ) => {
+    const bounds = canvas.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return undefined;
+    const x = (clientX - bounds.left) * (canvas.clientWidth / bounds.width);
+    const y = (clientY - bounds.top) * (canvas.clientHeight / bounds.height);
+    return variationTargetsRef.current.find(
+      (target) => Math.hypot(x - target.x, y - target.y) <= target.radius,
+    );
+  };
+
+  const handleClick = (event: ReactMouseEvent<HTMLCanvasElement>) => {
+    const target = findVariationTarget(event.currentTarget, event.clientX, event.clientY);
+    if (target) onSelect(target.node);
+  };
+
+  const handlePointerMove = (event: ReactPointerEvent<HTMLCanvasElement>) => {
+    const target = findVariationTarget(event.currentTarget, event.clientX, event.clientY);
+    event.currentTarget.style.cursor = target ? "pointer" : "default";
+  };
+
   return (
-    <canvas
-      ref={canvasRef}
-      className="go-board-canvas"
-      style={{ aspectRatio: `${Math.max(columns, 5)} / ${Math.max(rows, 5)}` }}
-      aria-label={
-        `${boardPosition.lastMove
-          ? `Go board showing ${pointToHuman(
-              boardPosition.lastMove.point,
-              getBoardSize(root),
-            )} as the latest move`
-          : "Go board setup position"}${
-          variationSummary.total
-            ? `; ${variationSummary.total} next variations, ${variationSummary.withResult} leading to RIGHT`
-            : ""
-        }`
-      }
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        className="go-board-canvas"
+        style={{ aspectRatio: `${Math.max(columns, 5)} / ${Math.max(rows, 5)}` }}
+        onClick={handleClick}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={(event) => {
+          event.currentTarget.style.cursor = "default";
+        }}
+        title={variationSummary.total ? "Click a colored marker to select that variation." : undefined}
+        aria-describedby={variationSummary.total ? "board-variation-legend" : undefined}
+        aria-label={
+          `${boardPosition.lastMove
+            ? `Go board showing ${pointToHuman(
+                boardPosition.lastMove.point,
+                getBoardSize(root),
+              )} as the latest move`
+            : "Go board setup position"}${
+            variationSummary.total
+              ? `; ${variationSummary.total} next variations, ${variationSummary.withResult} leading to RIGHT`
+              : ""
+          }`
+        }
+      />
+      {variationNodes.length > 0 && (
+        <div className="sr-only" aria-label="Available board variations">
+          {variationNodes.map((node) => {
+            const move = getMove(node)!;
+            return (
+              <button type="button" key={node.id} onClick={() => onSelect(node)}>
+                {move.color === "B" ? "Black" : "White"} {pointToHuman(move.point, getBoardSize(root))}
+                {subtreeHasRight(node) ? ", leads to RIGHT" : ", no RIGHT"}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 }
