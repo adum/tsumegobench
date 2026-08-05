@@ -85,6 +85,7 @@ interface BenchmarkRun {
     remoteDuplicateEvaluation?: boolean;
   };
   summary: {
+    expectedProblems?: number;
     structuralPassed: number;
     originalityPassed: number;
     automatedGatePassed: number;
@@ -262,7 +263,10 @@ export function RunBrowser() {
                 <span className="problem-list-copy">
                   <span className="problem-list-topline">
                     <strong>{record.model.name}</strong>
-                    <span>{record.summary.automatedGatePassed}/5</span>
+                    <span>
+                      {record.summary.automatedGatePassed}/
+                      {record.summary.expectedProblems ?? record.problems.length}
+                    </span>
                   </span>
                   <small>{humanDate(record.createdAt)}</small>
                 </span>

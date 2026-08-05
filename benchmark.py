@@ -19,9 +19,31 @@ from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 RUNS_ROOT = PROJECT_ROOT / "runs"
-EXPECTED_OUTPUTS = [f"problem-{index:02d}.sgf" for index in range(1, 6)]
+DEFAULT_PROBLEM_COUNT = 10
+MINIMUM_PROBLEM_COUNT = 5
+MAXIMUM_PROBLEM_COUNT = 50
+DIFFICULTY_BANDS = (
+    "20-30 kyu",
+    "10-19 kyu",
+    "5-9 kyu",
+    "1-4 kyu",
+    "about 1 dan",
+)
 MINIMUM_NODE_MAJOR = 22
 _TYPESCRIPT_NODE: str | None = None
+
+
+def expected_output_names(count: int) -> list[str]:
+    return [f"problem-{index:02d}.sgf" for index in range(1, count + 1)]
+
+
+def difficulty_targets(count: int) -> list[str]:
+    return [
+        DIFFICULTY_BANDS[
+            min(len(DIFFICULTY_BANDS) - 1, index * len(DIFFICULTY_BANDS) // count)
+        ]
+        for index in range(count)
+    ]
 
 
 def utc_now() -> str:
@@ -304,7 +326,7 @@ def unique_run_id(model: str, requested: str | None) -> str:
     return candidate
 
 
-def copy_inputs(run_dir: Path) -> list[dict[str, str]]:
+def copy_inputs(run_dir: Path, problem_count: int) -> list[dict[str, str]]:
     inputs = run_dir / "inputs"
     examples = inputs / "examples"
     examples.mkdir(parents=True)
@@ -320,17 +342,23 @@ def copy_inputs(run_dir: Path) -> list[dict[str, str]]:
     for source in sorted((PROJECT_ROOT / "examples" / "canonical-life-and-death").glob("*.sgf")):
         shutil.copy2(source, examples / source.name)
 
-    task = """# Tsumego Bench execution task
+    output_names = expected_output_names(problem_count)
+    target_lines = "\n".join(
+        f"   - `outputs/{name}` - target difficulty: {target}"
+        for name, target in zip(output_names, difficulty_targets(problem_count), strict=True)
+    )
+    task = f"""# Tsumego Bench execution task
 
 This is a controlled benchmark run. Work only inside the current run directory.
 
 1. Read `inputs/model-prompt.md` in full and follow it exactly.
 2. Use `inputs/authoring-guide.md`, `inputs/reference-manifest.json`, and all SGFs in `inputs/examples/` as the supplied reference material.
-3. Write the five final candidate files to `outputs/problem-01.sgf` through `outputs/problem-05.sgf`.
+3. Create exactly {problem_count} final candidate SGF files using these names and target difficulties:
+{target_lines}
 4. Each output file must contain only one complete SGF collection—no Markdown fences or explanatory prose.
 5. Do not modify anything under `inputs/`, `logs/`, or `evaluation/`, and do not modify `run.json`.
 6. Do not access the web or any network service. Duplicate checks are performed by the benchmark after you exit.
-7. Do not run the benchmark evaluator yourself. Finish all five files, verify them locally as far as you can, then exit.
+7. Do not run the benchmark evaluator yourself. Finish all {problem_count} files, verify them locally as far as you can, then exit.
 
 Do not ask the operator questions and do not wait for repair feedback.
 """
@@ -462,7 +490,8 @@ def build_run_index() -> subprocess.CompletedProcess[str]:
 
 
 def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> dict[str, Any]:
-    input_files = copy_inputs(run_dir)
+    input_files = copy_inputs(run_dir, args.count)
+    output_names = expected_output_names(args.count)
     model_prompt = run_dir / "inputs" / "model-prompt.md"
     reference_manifest = run_dir / "inputs" / "reference-manifest.json"
     return {
@@ -498,6 +527,7 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
         },
         "condition": {
             "attempt": args.attempt,
+            "problemCount": args.count,
             "toolsEnabled": True,
             "webEnabled": False,
             "networkEnabled": False,
@@ -510,7 +540,7 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
             "stdout": "logs/codex-events.jsonl",
             "stderr": "logs/codex-stderr.txt",
             "finalMessage": "logs/final-message.txt",
-            "outputs": [f"outputs/{name}" for name in EXPECTED_OUTPUTS],
+            "outputs": [f"outputs/{name}" for name in output_names],
             "automatedEvaluation": "evaluation/automated.json",
             "humanEvaluation": "evaluation/human.json",
             "results": "evaluation/results.json",
@@ -659,9 +689,10 @@ def run_command(args: argparse.Namespace) -> int:
 
     evaluation = read_json(run_dir / "evaluation" / "automated.json")
     summary = evaluation.get("summary", {})
+    expected_count = summary.get("expectedProblems", args.count)
     print(
-        f"Run complete: {summary.get('structuralPassed', 0)}/5 structurally valid, "
-        f"{summary.get('automatedGatePassed', 0)}/5 through automated gates."
+        f"Run complete: {summary.get('structuralPassed', 0)}/{expected_count} structurally valid, "
+        f"{summary.get('automatedGatePassed', 0)}/{expected_count} through automated gates."
     )
     print(f"Review it under runs/{run_id} or in the web UI.")
     return 0
@@ -710,6 +741,15 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--reasoning-effort", help="Optional Codex model reasoning effort.")
     run.add_argument("--run-id", help="Optional stable run directory name.")
     run.add_argument("--attempt", type=int, default=1, help="Independent attempt number.")
+    run.add_argument(
+        "--count",
+        type=int,
+        default=DEFAULT_PROBLEM_COUNT,
+        help=(
+            f"Number of problems to generate (default: {DEFAULT_PROBLEM_COUNT}; "
+            f"{MINIMUM_PROBLEM_COUNT}-{MAXIMUM_PROBLEM_COUNT})."
+        ),
+    )
     run.add_argument("--notes", help="Condition or invocation notes stored with the run.")
     run.add_argument(
         "--codex",
@@ -745,6 +785,11 @@ def main() -> int:
         parser.error("--attempt must be at least 1")
     if getattr(args, "timeout", 1) < 1:
         parser.error("--timeout must be at least 1 second")
+    count = getattr(args, "count", DEFAULT_PROBLEM_COUNT)
+    if not MINIMUM_PROBLEM_COUNT <= count <= MAXIMUM_PROBLEM_COUNT:
+        parser.error(
+            f"--count must be between {MINIMUM_PROBLEM_COUNT} and {MAXIMUM_PROBLEM_COUNT}"
+        )
     return args.handler(args)
 
 

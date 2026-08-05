@@ -43,7 +43,7 @@ If Codex rejects an unknown, inaccessible, or unsupported model ID, the runner
 prints the rejection and exits immediately. It does not retain a run directory,
 evaluate empty outputs, or add the attempt to the web index.
 
-Add `--reasoning-effort high` when you want to pin an exposed Codex reasoning setting, or `--local-only` to skip the post-run GoProblems API checks. The runner disables model web and network access, captures the CLI event log automatically, and writes the five candidate SGFs under `runs/<run-id>/outputs/`.
+Add `--reasoning-effort high` when you want to pin an exposed Codex reasoning setting, or `--local-only` to skip the post-run GoProblems API checks. The runner disables model web and network access, captures the CLI event log automatically, and writes ten candidate SGFs under `runs/<run-id>/outputs/` by default. Use `--count <5-50>` only when you want an explicitly different benchmark condition.
 
 Validate the reference set or a submission:
 
@@ -71,7 +71,7 @@ The synchronizer spaces its requests and verifies the corpus contract before wri
 ## Benchmark in one pass
 
 1. Invoke `python benchmark.py run --model <openai-model-id>` from an authenticated Codex CLI environment.
-2. The runner snapshots the controlled inputs and asks Codex to write five SGFs directly into the run directory.
+2. The runner snapshots the controlled inputs and asks Codex to write ten SGFs directly into the run directory.
 3. It preserves the Codex event log and runs structural and duplicate checks automatically.
 4. Browse the checked-in run and its generated problems in the web viewer.
 5. Have a competent Go player review life/death correctness and tree completeness.

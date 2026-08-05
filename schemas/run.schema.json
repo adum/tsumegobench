@@ -111,6 +111,7 @@
       ],
       "properties": {
         "attempt": { "type": "integer", "minimum": 1 },
+        "problemCount": { "type": "integer", "minimum": 5, "maximum": 50 },
         "toolsEnabled": { "type": "boolean" },
         "webEnabled": { "type": "boolean" },
         "networkEnabled": { "type": "boolean" },
@@ -140,7 +141,8 @@
         "outputs": {
           "type": "array",
           "minItems": 5,
-          "maxItems": 5,
+          "maxItems": 50,
+          "uniqueItems": true,
           "items": { "type": "string", "pattern": "\\.sgf$" }
         },
         "automatedEvaluation": { "type": "string" },

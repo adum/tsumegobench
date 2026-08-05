@@ -1,10 +1,48 @@
 import json
+import tempfile
 import unittest
+from pathlib import Path
 
 import benchmark
 
 
 class BenchmarkRunnerTests(unittest.TestCase):
+    def test_run_defaults_to_ten_problems(self):
+        args = benchmark.build_parser().parse_args(["run", "--model", "gpt-test"])
+
+        self.assertEqual(args.count, 10)
+        self.assertEqual(
+            benchmark.expected_output_names(args.count),
+            [f"problem-{index:02d}.sgf" for index in range(1, 11)],
+        )
+        self.assertEqual(
+            benchmark.difficulty_targets(args.count),
+            [
+                "20-30 kyu",
+                "20-30 kyu",
+                "10-19 kyu",
+                "10-19 kyu",
+                "5-9 kyu",
+                "5-9 kyu",
+                "1-4 kyu",
+                "1-4 kyu",
+                "about 1 dan",
+                "about 1 dan",
+            ],
+        )
+
+    def test_generated_task_lists_all_ten_default_outputs(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            run_dir = Path(temporary)
+            benchmark.copy_inputs(run_dir, benchmark.DEFAULT_PROBLEM_COUNT)
+            task = (run_dir / "inputs" / "task.md").read_text(encoding="utf-8")
+
+        self.assertIn("Create exactly 10 final candidate SGF files", task)
+        self.assertIn("`outputs/problem-01.sgf`", task)
+        self.assertIn("`outputs/problem-10.sgf`", task)
+        self.assertNotIn("problem-11.sgf", task)
+        self.assertEqual(task.count("target difficulty:"), 10)
+
     def test_extracts_nested_codex_failure(self):
         upstream = {
             "type": "error",

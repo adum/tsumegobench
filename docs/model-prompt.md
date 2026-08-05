@@ -6,7 +6,7 @@ The benchmark runner supplies everything below the line together with the same 2
 
 You are being evaluated on your ability to create original Go (baduk/weiqi) problems.
 
-Create exactly five simple, local life-and-death problems in SGF. The supplied SGFs are style references only. Do not copy, translate, rotate, reflect, recolor, lightly edit, or combine their positions or solution paths.
+Create the exact number of simple, local life-and-death problems specified in `inputs/task.md`. The supplied SGFs are style references only. Do not copy, translate, rotate, reflect, recolor, lightly edit, or combine their positions or solution paths.
 
 The solution tree is a central part of the task, not an annotation added after finding the key move. Study the reference SGFs for how they cover materially distinct correct continuations, meaningful defenses, and plausible mistakes, and especially for where each path naturally ends. Match that standard of coverage and endpoint judgment without copying their content.
 
@@ -35,8 +35,8 @@ SGF requirements:
 10. Use plain UTF-8 text with no HTML or JavaScript.
 11. Check captures, liberties, occupied points, and the final life/death result on every branch.
 
-Across the five problems, demonstrate a deliberate range of difficulty rather than clustering at one level. Target `problem-01.sgf` at 20–30 kyu, `problem-02.sgf` at 10–19 kyu, `problem-03.sgf` at 5–9 kyu, `problem-04.sgf` at 1–4 kyu, and `problem-05.sgf` at about 1 dan. Difficulty should come from relevant reading depth, plausible choices, defenses, and endpoint judgment—not from irrelevant stones, obscure rules, or trick wording.
+Across the requested problems, demonstrate a deliberate range of difficulty rather than clustering at one level. Follow the per-file target difficulties listed in `inputs/task.md`; the default ten-problem run assigns two problems to each band from 20–30 kyu through about 1 dan. Difficulty should come from relevant reading depth, plausible choices, defenses, and endpoint judgment—not from irrelevant stones, obscure rules, or trick wording.
 
 Across the set, include at least two Black-to-play and at least two White-to-play problems. Establish the player color only through the first move in the tree, not through written instructions. Vary the board edge/corner shape and tactical idea. Do not explain your reasoning and do not claim that you searched for duplicates unless you actually used a search tool.
 
-Write exactly five files in the `outputs` directory, named `problem-01.sgf` through `problem-05.sgf`. Each file must contain only one complete SGF collection beginning with `(;` and ending with `)`—no Markdown fences or explanatory prose. Do not create any other output files. Your final command-line response may only confirm that the five files were written; the files themselves are the benchmark output.
+Write exactly the files listed in `inputs/task.md` and no others. Each file must contain only one complete SGF collection beginning with `(;` and ending with `)`—no Markdown fences or explanatory prose. Your final command-line response may only confirm that the requested files were written; the files themselves are the benchmark output.

@@ -29,6 +29,12 @@ interface RunManifest {
   benchmark?: {
     inputFiles?: Array<{ path: string; sha256: string }>;
   };
+  condition?: {
+    problemCount?: number;
+  };
+  artifacts?: {
+    outputs?: string[];
+  };
 }
 
 interface ProblemEvaluation {
@@ -54,13 +60,43 @@ interface ProblemEvaluation {
   _rightShapes?: string[];
 }
 
-const EXPECTED_PROBLEMS = [
+const LEGACY_EXPECTED_PROBLEMS = [
   ["problem-01.sgf", "20–30 kyu"],
   ["problem-02.sgf", "10–19 kyu"],
   ["problem-03.sgf", "5–9 kyu"],
   ["problem-04.sgf", "1–4 kyu"],
   ["problem-05.sgf", "about 1 dan"],
 ] as const;
+
+const DIFFICULTY_BANDS = LEGACY_EXPECTED_PROBLEMS.map(([, difficulty]) => difficulty);
+
+function problemFileNames(count: number) {
+  return Array.from(
+    { length: count },
+    (_, index) => `problem-${String(index + 1).padStart(2, "0")}.sgf`,
+  );
+}
+
+function targetDifficulty(index: number, count: number) {
+  const bandIndex = Math.min(
+    DIFFICULTY_BANDS.length - 1,
+    Math.floor((index * DIFFICULTY_BANDS.length) / count),
+  );
+  return DIFFICULTY_BANDS[bandIndex];
+}
+
+function expectedProblemNames(manifest: RunManifest) {
+  const declared = manifest.artifacts?.outputs;
+  if (declared?.length) return declared.map((file) => path.basename(file));
+  const configuredCount = manifest.condition?.problemCount;
+  const count =
+    typeof configuredCount === "number" &&
+    Number.isInteger(configuredCount) &&
+    configuredCount > 0
+      ? configuredCount
+      : LEGACY_EXPECTED_PROBLEMS.length;
+  return problemFileNames(count);
+}
 
 function getArgument(name: string) {
   const inline = process.argv.find((argument) => argument.startsWith(`${name}=`));
@@ -126,7 +162,10 @@ const runId = runManifest.runId ?? path.basename(runDir);
 const runChecks: CheckResult[] = [];
 const outputEntries = await readdir(outputsDir, { withFileTypes: true });
 const outputFiles = outputEntries.filter((entry) => entry.isFile()).map((entry) => entry.name).sort();
-const expectedNames = EXPECTED_PROBLEMS.map(([file]) => file);
+const expectedNames = expectedProblemNames(runManifest);
+const expectedProblems = expectedNames.map(
+  (file, index) => [file, targetDifficulty(index, expectedNames.length)] as const,
+);
 const missingNames = expectedNames.filter((file) => !outputFiles.includes(file));
 const unexpectedNames = outputEntries
   .filter(
@@ -140,14 +179,14 @@ runChecks.push({
   status: missingNames.length ? "fail" : "pass",
   message: missingNames.length
     ? `Missing ${missingNames.join(", ")}.`
-    : "All five expected SGF files are present.",
+    : `All ${expectedNames.length} expected SGF files are present.`,
 });
 runChecks.push({
   id: "unexpected-files",
   status: unexpectedNames.length ? "fail" : "pass",
   message: unexpectedNames.length
     ? `Unexpected output files: ${unexpectedNames.join(", ")}.`
-    : "The output directory contains only the five expected files.",
+    : `The output directory contains only the ${expectedNames.length} expected files.`,
 });
 
 const changedInputs: string[] = [];
@@ -173,8 +212,8 @@ runChecks.push({
 const corpus = await loadDuplicateCorpus();
 const problems: ProblemEvaluation[] = [];
 
-for (let index = 0; index < EXPECTED_PROBLEMS.length; index += 1) {
-  const [file, targetDifficulty] = EXPECTED_PROBLEMS[index];
+for (let index = 0; index < expectedProblems.length; index += 1) {
+  const [file, targetDifficulty] = expectedProblems[index];
   const absolute = path.join(outputsDir, file);
   let sgf: string | null = null;
   try {
@@ -252,7 +291,7 @@ for (let index = 0; index < EXPECTED_PROBLEMS.length; index += 1) {
     _rightShapes: root ? canonicalRightShapes(root) : undefined,
   });
 
-  if (!localOnly && index < EXPECTED_PROBLEMS.length - 1) {
+  if (!localOnly && index < expectedProblems.length - 1) {
     await new Promise((resolve) => setTimeout(resolve, 750));
   }
 }
@@ -315,7 +354,7 @@ runChecks.push({
   id: "difficulty-range",
   status: "needs_human_review",
   message:
-    "The five target difficulty bands are encoded by filename; a human reviewer must verify the actual difficulty range.",
+    `The ${expectedProblems.length} per-file difficulty targets span the benchmark range; a human reviewer must verify the actual difficulty.`,
 });
 
 const serializableProblems = problems.map((problem) => {
@@ -351,7 +390,7 @@ const automated = {
         : "needs_human_review",
   runChecks,
   summary: {
-    expectedProblems: EXPECTED_PROBLEMS.length,
+    expectedProblems: expectedProblems.length,
     filesFound: expectedNames.filter((file) => outputFiles.includes(file)).length,
     structuralPassed: serializableProblems.filter((problem) => problem.validation.valid).length,
     originalityPassed: serializableProblems.filter(
@@ -385,7 +424,7 @@ if (!(await pathExists(humanPath))) {
     updatedAt: null,
     reviewer: null,
     reviewerRank: null,
-    problems: EXPECTED_PROBLEMS.map(([file, targetDifficulty]) => ({
+    problems: expectedProblems.map(([file, targetDifficulty]) => ({
       file,
       status: "pending",
       targetDifficulty,

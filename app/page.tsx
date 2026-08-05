@@ -49,7 +49,7 @@ export default function Home() {
         <div className="hero-aside" aria-label="Benchmark facts">
           <dl className="hero-metrics">
             <div><dt>REFERENCE PROBLEMS</dt><dd>20 <small>SGF files</small></dd></div>
-            <div><dt>PROBLEMS PER RUN</dt><dd>05 <small>model outputs</small></dd></div>
+            <div><dt>PROBLEMS PER RUN</dt><dd>10 <small>model outputs</small></dd></div>
             <div><dt>DUPLICATE CHECKS</dt><dd>R2 <small>+ percentage</small></dd></div>
             <div><dt>SCORING RUBRIC</dt><dd>100 <small>points</small></dd></div>
           </dl>

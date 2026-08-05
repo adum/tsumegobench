@@ -4,7 +4,7 @@
 
 Measure whether a model can synthesize useful, original, simple life-and-death problems—not merely emit parseable SGF or remix a known position.
 
-The default task is **five problems per run**. Five is large enough to expose consistency failures while keeping expert review practical.
+The default task is **ten problems per run**. Ten provides two targets in each of the five difficulty bands, exposing consistency failures while keeping expert review practical. The runner accepts `--count` values from 5 through 50 for explicitly labeled alternate conditions.
 
 ## Controlled inputs
 
@@ -38,6 +38,11 @@ runs/
       problem-03.sgf
       problem-04.sgf
       problem-05.sgf
+      problem-06.sgf
+      problem-07.sgf
+      problem-08.sgf
+      problem-09.sgf
+      problem-10.sgf
     logs/
       codex-events.jsonl
       codex-stderr.txt
@@ -90,8 +95,8 @@ A top percentage match of 80–89%, a local solution-shape overlap of 80% or mor
 
 For each run, report:
 
-- Accepted problems / 5 (primary reliability metric)
-- Mean score across all five, counting rejected candidates as 0 (primary quality metric)
+- Accepted problems / requested problem count (primary reliability metric)
+- Mean score across the full requested set, counting rejected candidates as 0 (primary quality metric)
 - Mean score among accepted candidates (conditional quality)
 - Structural pass rate
 - Originality pass rate
@@ -101,7 +106,7 @@ Do not rank models only by their best problem. The benchmark is intended to meas
 
 ## Repeated trials
 
-For a serious comparison, run at least three independent five-problem trials per model. Keep prompts and tool access fixed within a condition. Report mean and range; do not pool repaired and unrepaired runs.
+For a serious comparison, run at least three independent ten-problem trials per model. Keep the problem count, prompts, and tool access fixed within a condition. Report mean and range; do not pool repaired and unrepaired runs.
 
 ## Current limitation
 

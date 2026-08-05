@@ -6,7 +6,7 @@ Create a complete run with an OpenAI model through the authenticated Codex CLI:
 python benchmark.py run --model <openai-model-id>
 ```
 
-The runner creates one auditable directory here, gives Codex only the snapshotted benchmark packet, captures the CLI event stream, evaluates the five named SGF outputs, and refreshes the data used by the web UI. The input snapshot and generated outputs are immutable; the human evaluation record can be completed later. Web search and subprocess network access are disabled for the model. Remote GoProblems duplicate checks run afterward by default.
+The runner creates one auditable directory here, gives Codex only the snapshotted benchmark packet, captures the CLI event stream, evaluates the ten named SGF outputs by default, and refreshes the data used by the web UI. The input snapshot and generated outputs are immutable; the human evaluation record can be completed later. Web search and subprocess network access are disabled for the model. Remote GoProblems duplicate checks run afterward by default.
 
 Useful maintenance commands:
 
