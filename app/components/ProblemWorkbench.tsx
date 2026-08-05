@@ -235,6 +235,31 @@ export function ProblemWorkbench() {
 
           <div className="stage-grid">
             <div className="board-column">
+              <div className="move-inspector" aria-live="polite">
+                <div className="move-inspector-main">
+                  <span className="move-label">
+                    {selectedMove
+                      ? `MOVE ${selectedMoveNumber} · ${selectedMove.color === "B" ? "BLACK" : "WHITE"}`
+                      : "ROOT · SETUP"}
+                  </span>
+                  <strong>
+                    {selectedMove
+                      ? pointToHuman(selectedMove.point, boardSize)
+                      : "Starting position"}
+                  </strong>
+                  <p>
+                    {comment ||
+                      (hasControlTag(selected, "RIGHT")
+                        ? "Accepted solution endpoint."
+                        : hasControlTag(selected, "CHOICE")
+                          ? "A marked defensive choice."
+                          : selectedMove
+                            ? "Continue through the selected variation."
+                            : `${playerName} to play.`)}
+                  </p>
+                </div>
+              </div>
+
               <div className="board-frame">
                 <div className="board-toolbar">
                   <span className="board-toolbar-label">POSITION</span>
@@ -286,31 +311,6 @@ export function ProblemWorkbench() {
                 </div>
                 <GoBoard root={root} selected={selected} onSelect={chooseNode} />
               </div>
-
-              <div className="move-inspector" aria-live="polite">
-                <div className="move-inspector-main">
-                  <span className="move-label">
-                    {selectedMove
-                      ? `MOVE ${selectedMoveNumber} · ${selectedMove.color === "B" ? "BLACK" : "WHITE"}`
-                      : "ROOT · SETUP"}
-                  </span>
-                  <strong>
-                    {selectedMove
-                      ? pointToHuman(selectedMove.point, boardSize)
-                      : "Starting position"}
-                  </strong>
-                  <p>
-                    {comment ||
-                      (hasControlTag(selected, "RIGHT")
-                        ? "Accepted solution endpoint."
-                        : hasControlTag(selected, "CHOICE")
-                          ? "A marked defensive choice."
-                          : selectedMove
-                            ? "Continue through the selected variation."
-                            : `${playerName} to play.`)}
-                  </p>
-                </div>
-              </div>
             </div>
 
             <div className="tree-column">
@@ -324,13 +324,13 @@ export function ProblemWorkbench() {
                   <span><i className="legend-wrong" /> No RIGHT</span>
                 </div>
               </div>
-              <SolutionTree root={root} selected={selected} onSelect={chooseNode} />
               <div className="tree-summary">
                 <div><span>SETUP</span><strong>{stats.setupStoneCount}</strong><small>stones</small></div>
                 <div><span>DEPTH</span><strong>{stats.maxDepth}</strong><small>moves max</small></div>
                 <div><span>RIGHT</span><strong>{stats.rightCount}</strong><small>accepted lines</small></div>
                 <div><span>AVG</span><strong>{problem.avgSolveTimeSeconds}s</strong><small>solve time</small></div>
               </div>
+              <SolutionTree root={root} selected={selected} onSelect={chooseNode} />
             </div>
           </div>
         </div>

@@ -766,7 +766,7 @@ input:focus-visible,
 .move-inspector {
   min-height: 86px;
   display: block;
-  margin-top: 14px;
+  margin: 0 0 14px;
   padding: 13px 15px;
   border: 1px solid #cec7ba;
   background: #faf8f2;
@@ -812,7 +812,7 @@ input:focus-visible,
 .tree-column {
   min-width: 0;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto minmax(0, 1fr);
   background:
     linear-gradient(#f9f7f1dd, #f9f7f1dd),
     repeating-linear-gradient(0deg, transparent 0 23px, #d9d4c9 24px),
@@ -986,7 +986,7 @@ input:focus-visible,
 .tree-summary {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
   background: #f4f1e9;
 }
 

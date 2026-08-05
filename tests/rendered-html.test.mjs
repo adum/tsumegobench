@@ -39,6 +39,16 @@ test("server-renders the Tsumego Bench reviewer", async () => {
     /aria-label="Board navigation controls"[\s\S]*class="go-board-canvas"/,
   );
   assert.doesNotMatch(html, /class="move-controls"/);
+  assert.ok(
+    html.indexOf('class="move-inspector"') >= 0 &&
+      html.indexOf('class="move-inspector"') < html.indexOf('class="go-board-canvas"'),
+    "move status should render above the board",
+  );
+  assert.ok(
+    html.indexOf('class="tree-summary"') >= 0 &&
+      html.indexOf('class="tree-summary"') < html.indexOf('class="solution-tree-scroll"'),
+    "problem statistics should render above the solution tree",
+  );
   assert.match(html, /next variations, \d+ leading to RIGHT/);
   assert.match(html, /Click a colored marker to select that variation/);
   assert.match(html, /Available board variations/);
