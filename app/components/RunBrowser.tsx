@@ -305,7 +305,11 @@ export function RunBrowser() {
               >
                 <span>{record.file.replace(".sgf", "")}</span>
                 <small>{record.targetDifficulty}</small>
-                <i className={record.status} aria-label={statusLabel(record.status)} />
+                <i
+                  className={record.status}
+                  role="img"
+                  aria-label={statusLabel(record.status)}
+                />
               </button>
             ))}
           </div>
