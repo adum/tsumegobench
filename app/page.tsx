@@ -31,12 +31,6 @@ export default function Home() {
           </div>
         </div>
         <div className="hero-aside" aria-label="Benchmark facts">
-          <div className="hero-mark" aria-hidden="true">
-            <span className="hero-black-stone" />
-            <span className="hero-white-stone" />
-            <span className="hero-line horizontal" />
-            <span className="hero-line vertical" />
-          </div>
           <dl className="hero-metrics">
             <div><dt>REFERENCE PROBLEMS</dt><dd>20 <small>SGF files</small></dd></div>
             <div><dt>PROBLEMS PER RUN</dt><dd>05 <small>model outputs</small></dd></div>
