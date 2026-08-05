@@ -32,7 +32,7 @@ export interface BoardPosition {
   captures: number;
 }
 
-const CONTROL_TAGS = ["RIGHT", "CHOICE", "NOTTHIS", "FORCE"] as const;
+const CONTROL_TAGS = ["RIGHT"] as const;
 
 class SgfParser {
   private index = 0;

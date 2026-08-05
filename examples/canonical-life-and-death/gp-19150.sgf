@@ -2,10 +2,10 @@
 (;B[oo]
 (;W[po]
 (;B[qo]
-(;W[op]C[CHOICE];B[pp]C[RIGHT])
-(;W[pp]C[CHOICE];B[pq];W[op];B[oq]C[RIGHT]))
+(;W[op];B[pp]C[RIGHT])
+(;W[pp];B[pq];W[op];B[oq]C[RIGHT]))
 (;B[pp];W[qo];B[ro];W[op];B[sn];W[sl]C[ko]))
-(;W[qo]C[CHOICE];B[po]C[RIGHT]))
+(;W[qo];B[po]C[RIGHT]))
 (;B[po];W[oo]
 (;B[op];W[qo]
 (;B[ro];W[pp])

@@ -44,6 +44,7 @@ test("server-renders the Tsumego Bench reviewer", async () => {
     "1 dan problems should render after the kyu problems",
   );
   assert.doesNotMatch(html, /Find the best (?:local )?result/i);
+  assert.doesNotMatch(html, /CHOICE|FORCE|NOTTHIS/);
   assert.match(html, /Leads to RIGHT/);
   assert.match(html, /aria-label="Board variation legend"/);
   assert.match(html, /aria-label="Board navigation controls"/);

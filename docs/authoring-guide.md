@@ -37,14 +37,9 @@ Supported problem properties are `B`, `W`, `AB`, `AW`, `AE`, `C`, `LB`, `TR`, `M
 
 Source: [Problem Construction Basics](https://www.goproblems.com/article/constructionbasics).
 
-### Control markers
+### Result marker
 
-- `RIGHT` marks a correct result. Any variation without a `RIGHT` is wrong by default.
-- `CHOICE` lets the replying side choose among marked responses. Use it when the solver must handle multiple meaningful defenses.
-- `FORCE` restricts the solver to enumerated moves.
-- `NOTTHIS` outlaws a move.
-
-`FORCE` and `NOTTHIS` are supported but discouraged. Prefer a naturally complete tree with explicit refutations. Markers may share a comment, such as `C[RIGHT CHOICE]`.
+`RIGHT` is the only control marker in the benchmark. It marks a correct result; any variation without `RIGHT` is wrong by default. Express solution coverage, defenses, and refutations directly through the SGF tree rather than website-specific playback controls.
 
 ## 3. Correctness semantics
 
@@ -74,7 +69,7 @@ Tree construction is part of the problem, not bookkeeping after the key move is 
 - Include every materially distinct solver choice that achieves an equally valid best result, both at the first move and later in the tree.
 - Do not reject a correct move merely because it differs from the author's intended sequence or reaches the same result through another meaningful order.
 - For every accepted choice, include the strongest defense and each materially distinct resistance needed to establish the result under best play.
-- When multiple opponent replies matter, use `CHOICE` or explicit branches rather than silently assuming one response.
+- When multiple opponent replies matter, include explicit branches rather than silently assuming one response.
 
 ### Refutation coverage
 

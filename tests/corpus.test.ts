@@ -55,6 +55,7 @@ test("every reference explicitly uses a 19 by 19 board", async () => {
 
     const fileSgf = await readFile(problem.sgfFile, "utf8");
     assert.equal(problem.sgf, fileSgf.trim(), `embedded SGF for problem ${problem.id}`);
+    assert.doesNotMatch(fileSgf, /(?:CHOICE|FORCE|NOTTHIS)/, problem.sgfFile);
     const fileRoot = parseSgf(fileSgf);
     assert.equal(getBoardSize(fileRoot), 19, problem.sgfFile);
     assert.deepEqual(fileRoot.properties.SZ, ["19"], problem.sgfFile);

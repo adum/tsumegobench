@@ -34,6 +34,23 @@ function normalizeBoardSize(sgf: string, id: number) {
   return normalized;
 }
 
+function removeWebsiteControls(sgf: string, id: number) {
+  let normalized = sgf.replaceAll("C[CHOICE]", "").replaceAll("C[FORCE]", "");
+
+  if (id === 32711) {
+    const controlledVariation = "(;B[nb]C[NOTTHISRIGHT])";
+    if (!normalized.includes(controlledVariation)) {
+      throw new Error(`Problem ${id} changed its controlled variation; review it manually.`);
+    }
+    normalized = normalized.replace(controlledVariation, "");
+  }
+
+  if (/(?:CHOICE|FORCE|NOTTHIS)/.test(normalized)) {
+    throw new Error(`Problem ${id} still contains website-specific playback controls.`);
+  }
+  return normalized;
+}
+
 const API_BASE = "https://www.goproblems.com/api/v2/problems";
 const workspace = process.cwd();
 const examplesDirectory = path.join(workspace, "examples", "canonical-life-and-death");
@@ -83,7 +100,8 @@ for (const [index, id] of PROBLEM_IDS.entries()) {
 
   const normalizedSgf = problem.sgf.replace(/\r\n/g, "\n").trim();
   const withoutRootInstruction = stripRootComment(normalizedSgf).trim();
-  const sgf = `${normalizeBoardSize(withoutRootInstruction, id).trim()}\n`;
+  const withoutWebsiteControls = removeWebsiteControls(withoutRootInstruction, id);
+  const sgf = `${normalizeBoardSize(withoutWebsiteControls, id).trim()}\n`;
   const fileName = `gp-${id}.sgf`;
   await writeFile(path.join(examplesDirectory, fileName), sgf, "utf8");
   const root = parseSgf(sgf);

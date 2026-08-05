@@ -77,3 +77,13 @@ test("validator requires an explicit 19 by 19 board", () => {
   const report = validateSgf("(;SZ[19]AB[aa]AW[bb](;B[ab]C[RIGHT]))");
   assert.ok(!report.issues.some((issue) => issue.code === "board-size"));
 });
+
+test("validator rejects website-specific playback controls", () => {
+  for (const marker of ["CHOICE", "FORCE", "NOTTHIS"]) {
+    const report = validateSgf(
+      `(;SZ[19]AB[aa]AW[bb](;B[ab]C[RIGHT ${marker}]))`,
+    );
+    assert.equal(report.valid, false);
+    assert.ok(report.issues.some((issue) => issue.code === "website-control"));
+  }
+});

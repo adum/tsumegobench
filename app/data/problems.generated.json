@@ -59,7 +59,7 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/18843",
     "sgfFile": "examples/canonical-life-and-death/gp-18843.sgf",
-    "sgf": "(;SZ[19]AP[goproblems]AB[ab]AB[bc]AB[db]AB[da]AW[ea]AW[eb]AW[ec]AW[dd]AW[cd]AW[bd]AW[ad](;B[ba];W[cb](;B[cc];W[dc](;B[ca]C[RIGHT])(;B[bb];W[ca])(;B[ac];W[ca]))(;B[ca];W[cc])(;B[bb];W[cc])(;B[dc];W[cc])(;B[ac];W[cc]))(;B[cb];W[ba]C[CHOICE])(;B[cc];W[ba]C[CHOICE](;B[bb];W[ca])(;B[ca];W[bb]))(;B[ca];W[cc]C[CHOICE])(;B[bb];W[cc](;B[cb];W[ba]C[CHOICE])(;B[ba];W[cb])))"
+    "sgf": "(;SZ[19]AP[goproblems]AB[ab]AB[bc]AB[db]AB[da]AW[ea]AW[eb]AW[ec]AW[dd]AW[cd]AW[bd]AW[ad](;B[ba];W[cb](;B[cc];W[dc](;B[ca]C[RIGHT])(;B[bb];W[ca])(;B[ac];W[ca]))(;B[ca];W[cc])(;B[bb];W[cc])(;B[dc];W[cc])(;B[ac];W[cc]))(;B[cb];W[ba])(;B[cc];W[ba](;B[bb];W[ca])(;B[ca];W[bb]))(;B[ca];W[cc])(;B[bb];W[cc](;B[cb];W[ba])(;B[ba];W[cb])))"
   },
   {
     "id": 5849,
@@ -276,7 +276,7 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/10330",
     "sgfFile": "examples/canonical-life-and-death/gp-10330.sgf",
-    "sgf": "(;SZ[19]AW[sr]AW[rq]AW[qq]AW[pr]AW[ps]AW[oq]AW[op]AW[oo]AW[po]AW[qo]AW[qp]AB[sq]AB[sp]AB[rp]AB[ro]AB[rn]AB[qn]AB[pn]AB[on]AB[no]AB[or]AB[nr]AB[os]AB[lr]AB[lq]AB[lp]AB[qr]AW[nq]AP[goproblems]\n(;B[pq];W[pp];B[qs];W[pq]\n(;B[rs]\n(;W[mr]C[CHOICE];B[rr];W[ns];B[or];W[ss];B[rr]C[Yeye.RIGHT])\n(;W[rr];B[mr]C[RIGHT]))\n(;B[rr];W[rs])\n(;B[mr];W[rs]))\n(;B[qs];W[pq];B[mr]C[Oh my god, white doesn't have to answer now.])\n(;B[rr];W[mr])\n(;B[mr];W[rr]))"
+    "sgf": "(;SZ[19]AW[sr]AW[rq]AW[qq]AW[pr]AW[ps]AW[oq]AW[op]AW[oo]AW[po]AW[qo]AW[qp]AB[sq]AB[sp]AB[rp]AB[ro]AB[rn]AB[qn]AB[pn]AB[on]AB[no]AB[or]AB[nr]AB[os]AB[lr]AB[lq]AB[lp]AB[qr]AW[nq]AP[goproblems]\n(;B[pq];W[pp];B[qs];W[pq]\n(;B[rs]\n(;W[mr];B[rr];W[ns];B[or];W[ss];B[rr]C[Yeye.RIGHT])\n(;W[rr];B[mr]C[RIGHT]))\n(;B[rr];W[rs])\n(;B[mr];W[rs]))\n(;B[qs];W[pq];B[mr]C[Oh my god, white doesn't have to answer now.])\n(;B[rr];W[mr])\n(;B[mr];W[rr]))"
   },
   {
     "id": 16482,
@@ -369,7 +369,7 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/19150",
     "sgfFile": "examples/canonical-life-and-death/gp-19150.sgf",
-    "sgf": "(;SZ[19]AB[qp]AB[np]AB[mp]AB[mn]AB[nn]AB[om]AB[nm]AB[mm]AB[nl]AB[pl]AB[ql]AB[rl]AB[qn]AB[rm]AW[qm]AW[pm]AW[pn]AW[on]AW[rn]AW[no]AW[ol]AW[ok]AW[pk]AW[qk]AW[rk]AP[goproblems]\n(;B[oo]\n(;W[po]\n(;B[qo]\n(;W[op]C[CHOICE];B[pp]C[RIGHT])\n(;W[pp]C[CHOICE];B[pq];W[op];B[oq]C[RIGHT]))\n(;B[pp];W[qo];B[ro];W[op];B[sn];W[sl]C[ko]))\n(;W[qo]C[CHOICE];B[po]C[RIGHT]))\n(;B[po];W[oo]\n(;B[op];W[qo]\n(;B[ro];W[pp])\n(;B[pp];W[sm])\n(;B[mo];W[pp]))\n(;B[mo];W[qo]\n(;B[pp];W[sm])\n(;B[op];W[pp]))\n(;B[ro];W[qo]))\n(;B[qo];W[sm])\n(;B[ro];W[qo]\n(;B[po];W[sm])\n(;B[oo];W[sm])\n(;B[sn];W[sl]C[ko])))"
+    "sgf": "(;SZ[19]AB[qp]AB[np]AB[mp]AB[mn]AB[nn]AB[om]AB[nm]AB[mm]AB[nl]AB[pl]AB[ql]AB[rl]AB[qn]AB[rm]AW[qm]AW[pm]AW[pn]AW[on]AW[rn]AW[no]AW[ol]AW[ok]AW[pk]AW[qk]AW[rk]AP[goproblems]\n(;B[oo]\n(;W[po]\n(;B[qo]\n(;W[op];B[pp]C[RIGHT])\n(;W[pp];B[pq];W[op];B[oq]C[RIGHT]))\n(;B[pp];W[qo];B[ro];W[op];B[sn];W[sl]C[ko]))\n(;W[qo];B[po]C[RIGHT]))\n(;B[po];W[oo]\n(;B[op];W[qo]\n(;B[ro];W[pp])\n(;B[pp];W[sm])\n(;B[mo];W[pp]))\n(;B[mo];W[qo]\n(;B[pp];W[sm])\n(;B[op];W[pp]))\n(;B[ro];W[qo]))\n(;B[qo];W[sm])\n(;B[ro];W[qo]\n(;B[po];W[sm])\n(;B[oo];W[sm])\n(;B[sn];W[sl]C[ko])))"
   },
   {
     "id": 36582,
@@ -400,7 +400,7 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/36582",
     "sgfFile": "examples/canonical-life-and-death/gp-36582.sgf",
-    "sgf": "(;SZ[19]FF[4]GM[1]AB[nb][ob][pc][qa][qc][rd][sd]AW[mb][mc][nc][oc][pd][qd][qe][re][se](;W[rc]C[CHOICE];B[rb];W[sb];B[pb];W[ra];B[sa]C[RIGHT])(;W[na];B[rc];W[sb];B[oa])(;W[pb];B[rc];W[na];B[qb];W[oa];B[sb])(;W[rb];B[rc];W[qb];B[pb];W[sb];B[ra]))"
+    "sgf": "(;SZ[19]FF[4]GM[1]AB[nb][ob][pc][qa][qc][rd][sd]AW[mb][mc][nc][oc][pd][qd][qe][re][se](;W[rc];B[rb];W[sb];B[pb];W[ra];B[sa]C[RIGHT])(;W[na];B[rc];W[sb];B[oa])(;W[pb];B[rc];W[na];B[qb];W[oa];B[sb])(;W[rb];B[rc];W[qb];B[pb];W[sb];B[ra]))"
   },
   {
     "id": 32711,
@@ -431,7 +431,7 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/32711",
     "sgfFile": "examples/canonical-life-and-death/gp-32711.sgf",
-    "sgf": "(;SZ[19]FF[4]GM[1]AB[oc][pc][qb][qc][qd][re]AW[nc][nd][ob][od][pb][pd][qe][qf][rf](;B[pa];W[nb](;B[sd](;W[qa]C[CHOICE](;B[sb](;W[ra]C[CHOICE];B[rc]C[RIGHT])(;W[rc];B[ra];W[rd];B[se];W[sf];B[sc]C[RIGHT]))(;B[rc]C[RIGHT])(;B[rb](;W[sf]C[CHOICE];B[sc]C[RIGHT])(;W[sc];B[sb]C[RIGHT]))(;B[ra];W[sb](;B[sf];W[sg])(;B[sc];W[sf])))(;W[sb];B[rb](;W[qa];B[sc]C[RIGHT])(;W[sf];B[sc];W[rd];B[sa];W[se];B[qa]C[RIGHT])))(;B[se];W[sc];B[sb];W[rb](;B[rc];W[sa];B[sd](;W[sf];B[sb])(;W[oa];B[sb]))(;B[ra];W[sa])))(;B[sd];W[qa];B[ra];W[sb](;B[pa];W[nb];B[rc];W[sf])(;B[sc];W[sf]))(;B[se];W[qa];B[ra];W[sb];B[sc];W[rc];B[rd];W[sd])(;B[rd];W[se])(;B[nb]C[NOTTHISRIGHT]))"
+    "sgf": "(;SZ[19]FF[4]GM[1]AB[oc][pc][qb][qc][qd][re]AW[nc][nd][ob][od][pb][pd][qe][qf][rf](;B[pa];W[nb](;B[sd](;W[qa](;B[sb](;W[ra];B[rc]C[RIGHT])(;W[rc];B[ra];W[rd];B[se];W[sf];B[sc]C[RIGHT]))(;B[rc]C[RIGHT])(;B[rb](;W[sf];B[sc]C[RIGHT])(;W[sc];B[sb]C[RIGHT]))(;B[ra];W[sb](;B[sf];W[sg])(;B[sc];W[sf])))(;W[sb];B[rb](;W[qa];B[sc]C[RIGHT])(;W[sf];B[sc];W[rd];B[sa];W[se];B[qa]C[RIGHT])))(;B[se];W[sc];B[sb];W[rb](;B[rc];W[sa];B[sd](;W[sf];B[sb])(;W[oa];B[sb]))(;B[ra];W[sa])))(;B[sd];W[qa];B[ra];W[sb](;B[pa];W[nb];B[rc];W[sf])(;B[sc];W[sf]))(;B[se];W[qa];B[ra];W[sb];B[sc];W[rc];B[rd];W[sd])(;B[rd];W[se]))"
   },
   {
     "id": 28281,
@@ -462,7 +462,7 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/28281",
     "sgfFile": "examples/canonical-life-and-death/gp-28281.sgf",
-    "sgf": "(;SZ[19]FF[4]GM[1]AB[lb][lc][nc][oc][pa][pc][qb][qc][ra]AW[kb][kc][kd][md][me][ob][oe][pd][qd][rb][rc](;B[la](;W[mc]C[CHOICE];B[mb](;W[na]C[CHOICE](;B[nb];W[oa]C[RIGHT])(;B[oa];W[nb]))(;W[nb]C[CHOICE];B[na]C[RIGHT]))(;W[nb]C[CHOICE];B[na](;W[mb]C[CHOICE];B[mc]C[RIGHT])(;W[oa]C[CHOICE];B[mb];W[ma];B[pb]C[RIGHT]))(;W[mb]C[CHOICE];B[mc];W[nb];B[na]C[RIGHT]))(;B[mc];W[nb](;B[na];W[oa];B[mb];W[ma];B[pb])(;B[oa];W[la];B[ma];W[ka]))(;B[nb];W[mc];B[mb];W[la])(;B[oa];W[nb])(;B[na];W[mc];B[mb];W[la]))"
+    "sgf": "(;SZ[19]FF[4]GM[1]AB[lb][lc][nc][oc][pa][pc][qb][qc][ra]AW[kb][kc][kd][md][me][ob][oe][pd][qd][rb][rc](;B[la](;W[mc];B[mb](;W[na](;B[nb];W[oa]C[RIGHT])(;B[oa];W[nb]))(;W[nb];B[na]C[RIGHT]))(;W[nb];B[na](;W[mb];B[mc]C[RIGHT])(;W[oa];B[mb];W[ma];B[pb]C[RIGHT]))(;W[mb];B[mc];W[nb];B[na]C[RIGHT]))(;B[mc];W[nb](;B[na];W[oa];B[mb];W[ma];B[pb])(;B[oa];W[la];B[ma];W[ka]))(;B[nb];W[mc];B[mb];W[la])(;B[oa];W[nb])(;B[na];W[mc];B[mb];W[la]))"
   },
   {
     "id": 721,
@@ -586,7 +586,7 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/38368",
     "sgfFile": "examples/canonical-life-and-death/gp-38368.sgf",
-    "sgf": "(;SZ[19]FF[4]GM[1]AB[mg][nd][ne][nf][nh][oh][pd][pg][qe][qf]AW[lf][lg][lh][li][md][me][nc][ng][ni][ob][of][oi][pb][pi][qc][qd][qh][re][rf][rg](;W[oe]C[CHOICE];B[od](;W[mh];B[mf];W[og];B[ph];W[qg]C[RIGHT])(;W[og];B[mh])(;W[mf];B[mh]))(;W[og];B[oe])(;W[mf];B[oe](;W[od];B[oc](;W[pc];B[mh])(;W[mh];B[pf];W[pc]))(;W[mh];B[pf];W[od];B[oc];W[pc]))(;W[mh];B[oe](;W[od];B[oc](;W[pc];B[mf])(;W[mf];B[pf];W[pc]))(;W[mf];B[pf];W[od];B[oc];W[pc])))"
+    "sgf": "(;SZ[19]FF[4]GM[1]AB[mg][nd][ne][nf][nh][oh][pd][pg][qe][qf]AW[lf][lg][lh][li][md][me][nc][ng][ni][ob][of][oi][pb][pi][qc][qd][qh][re][rf][rg](;W[oe];B[od](;W[mh];B[mf];W[og];B[ph];W[qg]C[RIGHT])(;W[og];B[mh])(;W[mf];B[mh]))(;W[og];B[oe])(;W[mf];B[oe](;W[od];B[oc](;W[pc];B[mh])(;W[mh];B[pf];W[pc]))(;W[mh];B[pf];W[od];B[oc];W[pc]))(;W[mh];B[oe](;W[od];B[oc](;W[pc];B[mf])(;W[mf];B[pf];W[pc]))(;W[mf];B[pf];W[od];B[oc];W[pc])))"
   },
   {
     "id": 1311,

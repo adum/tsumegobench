@@ -194,11 +194,9 @@ export function ProblemWorkbench() {
                     {comment ||
                       (hasControlTag(selected, "RIGHT")
                         ? "Accepted solution endpoint."
-                        : hasControlTag(selected, "CHOICE")
-                          ? "A marked defensive choice."
-                          : selectedMove
-                            ? "Continue through the selected variation."
-                            : `${playerName} to play.`)}
+                        : selectedMove
+                          ? "Continue through the selected variation."
+                          : `${playerName} to play.`)}
                   </p>
                 </div>
               </div>

@@ -882,18 +882,6 @@ input:focus-visible,
   box-shadow: 0 0 0 2px #f9f7f1, 0 0 0 4px var(--green);
 }
 
-.tree-node.is-choice::before {
-  content: "";
-  position: absolute;
-  top: -3px;
-  right: -3px;
-  width: 6px;
-  height: 6px;
-  border: 2px solid #f9f7f1;
-  border-radius: 50%;
-  background: var(--amber);
-}
-
 .tree-node.selected {
   transform: scale(1.1);
   box-shadow: 0 0 0 2px #fffdf7, 0 0 0 4px #32728e, 0 6px 13px #263e492e;

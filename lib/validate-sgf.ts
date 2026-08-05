@@ -256,22 +256,22 @@ export function validateSgf(input: string): ValidationReport {
     }
 
     const comment = getNodeComment(node);
+    if (/(?:CHOICE|FORCE|NOTTHIS)/.test(comment)) {
+      issues.push(
+        issue(
+          "error",
+          "website-control",
+          "Only RIGHT is supported as a control marker; express all other behavior with explicit SGF branches.",
+          node,
+        ),
+      );
+    }
     if (/<\/?(?:script|iframe|object|embed|style|[a-z][^>]*)>/i.test(comment)) {
       issues.push(
         issue(
           "error",
           "html-comment",
           "Comments must be plain text and may not contain HTML or JavaScript.",
-          node,
-        ),
-      );
-    }
-    if (hasControlTag(node, "NOTTHIS") || hasControlTag(node, "FORCE")) {
-      issues.push(
-        issue(
-          "warning",
-          "advanced-control",
-          "FORCE and NOTTHIS are discouraged; model the important refutations explicitly when possible.",
           node,
         ),
       );

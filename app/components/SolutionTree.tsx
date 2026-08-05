@@ -125,15 +125,14 @@ export function SolutionTree({ root, selected, onSelect }: SolutionTreeProps) {
         {layout.nodes.map(({ node, x, y, moveNumber }) => {
           const move = getMove(node);
           const isRight = hasControlTag(node, "RIGHT");
-          const isChoice = hasControlTag(node, "CHOICE");
           const comment = visibleComment(node);
           const label = move
             ? `${move.color === "B" ? "Black" : "White"} ${pointToHuman(
                 move.point,
                 boardSize,
               )}, move ${moveNumber}${isRight ? ", correct result" : ""}${
-                isChoice ? ", choice" : ""
-              }${comment ? `, ${comment}` : ""}`
+                comment ? `, ${comment}` : ""
+              }`
             : "Starting position";
 
           return (
@@ -142,9 +141,7 @@ export function SolutionTree({ root, selected, onSelect }: SolutionTreeProps) {
               key={node.id}
               className={`tree-node ${
                 move ? `tree-stone ${move.color === "B" ? "black" : "white"}` : "tree-root"
-              }${selected.id === node.id ? " selected" : ""}${isRight ? " is-right" : ""}${
-                isChoice ? " is-choice" : ""
-              }`}
+              }${selected.id === node.id ? " selected" : ""}${isRight ? " is-right" : ""}`}
               style={{ left: x - NODE_SIZE / 2, top: y - NODE_SIZE / 2 }}
               onClick={() => onSelect(node)}
               aria-label={label}
