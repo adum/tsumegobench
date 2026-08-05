@@ -26,6 +26,12 @@ test("server-renders the Tsumego Bench reviewer", async () => {
   assert.match(html, /Reference problem lab|Reference laboratory/);
   assert.match(html, /Black to play|White to play/);
   assert.doesNotMatch(html, /Find the best (?:local )?result/i);
+  assert.match(html, /Leads to RIGHT/);
+  assert.match(html, /COORDINATES/);
+  assert.match(html, /tree-edge has-result/);
+  assert.match(html, /tree-edge no-result/);
+  assert.doesNotMatch(html, /tree-coordinate/);
+  assert.doesNotMatch(html, /type="checkbox"/i);
   assert.match(html, /One prompt\. Four gates\./);
   assert.match(html, /goproblems/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);

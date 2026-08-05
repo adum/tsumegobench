@@ -47,7 +47,6 @@ export function ProblemWorkbench() {
   const [selectedNodeId, setSelectedNodeId] = useState("n0");
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
-  const [showCoordinates, setShowCoordinates] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const problem = problems.find((record) => record.id === selectedProblemId) ?? problems[0];
@@ -222,16 +221,9 @@ export function ProblemWorkbench() {
               <div className="board-frame">
                 <div className="board-toolbar">
                   <span>POSITION</span>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={showCoordinates}
-                      onChange={(event) => setShowCoordinates(event.target.checked)}
-                    />
-                    Coordinates
-                  </label>
+                  <span>COORDINATES</span>
                 </div>
-                <GoBoard root={root} selected={selected} showCoordinates={showCoordinates} />
+                <GoBoard root={root} selected={selected} />
               </div>
 
               <div className="move-inspector" aria-live="polite">
@@ -300,9 +292,8 @@ export function ProblemWorkbench() {
                   <strong>{stats.nodeCount} nodes across {stats.variationPoints} forks</strong>
                 </div>
                 <div className="tree-legend" aria-label="Solution tree legend">
-                  <span><i className="legend-path" /> Selected path</span>
-                  <span><i className="legend-right" /> RIGHT</span>
-                  <span><i className="legend-choice" /> CHOICE</span>
+                  <span><i className="legend-right" /> Leads to RIGHT</span>
+                  <span><i className="legend-wrong" /> No RIGHT</span>
                 </div>
               </div>
               <SolutionTree root={root} selected={selected} onSelect={chooseNode} />

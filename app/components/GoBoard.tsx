@@ -16,10 +16,9 @@ import {
 interface GoBoardProps {
   root: SgfNode;
   selected: SgfNode;
-  showCoordinates: boolean;
 }
 
-export function GoBoard({ root, selected, showCoordinates }: GoBoardProps) {
+export function GoBoard({ root, selected }: GoBoardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const crop = useMemo(() => getCrop(root, 1), [root]);
   const boardPosition = useMemo(() => boardAtNode(root, selected), [root, selected]);
@@ -44,7 +43,7 @@ export function GoBoard({ root, selected, showCoordinates }: GoBoardProps) {
 
       const size = getBoardSize(root);
       const position = boardAtNode(root, selected);
-      const coordinateRoom = showCoordinates ? 24 : 15;
+      const coordinateRoom = 24;
       const cell = Math.min(
         (width - coordinateRoom * 2) / Math.max(columns, 1),
         (height - coordinateRoom * 2) / Math.max(rows, 1),
@@ -119,30 +118,28 @@ export function GoBoard({ root, selected, showCoordinates }: GoBoardProps) {
         }
       }
 
-      if (showCoordinates) {
-        context.fillStyle = "rgba(57, 38, 22, 0.68)";
-        context.font = `600 ${Math.min(11, Math.max(8, cell * 0.25))}px Geist, sans-serif`;
-        context.textAlign = "center";
-        context.textBaseline = "middle";
-        const coordinateOffset = cell * 0.5 + coordinateRoom * 0.5;
-        const alphabet = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
-        for (let x = crop.minX; x <= crop.maxX; x += 1) {
-          const point = toCanvas(x, crop.maxY);
-          context.fillText(
-            alphabet[x] ?? "?",
-            point.x,
-            Math.min(height - 7, point.y + coordinateOffset),
-          );
-        }
-        context.textAlign = "right";
-        for (let y = crop.minY; y <= crop.maxY; y += 1) {
-          const point = toCanvas(crop.minX, y);
-          context.fillText(
-            String(size - y),
-            Math.max(12, point.x - coordinateOffset),
-            point.y,
-          );
-        }
+      context.fillStyle = "rgba(57, 38, 22, 0.68)";
+      context.font = `600 ${Math.min(11, Math.max(8, cell * 0.25))}px Geist, sans-serif`;
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+      const coordinateOffset = cell * 0.5 + coordinateRoom * 0.5;
+      const alphabet = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
+      for (let x = crop.minX; x <= crop.maxX; x += 1) {
+        const point = toCanvas(x, crop.maxY);
+        context.fillText(
+          alphabet[x] ?? "?",
+          point.x,
+          Math.min(height - 7, point.y + coordinateOffset),
+        );
+      }
+      context.textAlign = "right";
+      for (let y = crop.minY; y <= crop.maxY; y += 1) {
+        const point = toCanvas(crop.minX, y);
+        context.fillText(
+          String(size - y),
+          Math.max(12, point.x - coordinateOffset),
+          point.y,
+        );
       }
 
       const drawStone = (coordinate: string, color: StoneColor) => {
@@ -238,7 +235,7 @@ export function GoBoard({ root, selected, showCoordinates }: GoBoardProps) {
     const observer = new ResizeObserver(draw);
     observer.observe(canvas);
     return () => observer.disconnect();
-  }, [columns, crop, root, rows, selected, showCoordinates]);
+  }, [columns, crop, root, rows, selected]);
 
   return (
     <canvas
