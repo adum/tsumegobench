@@ -44,7 +44,7 @@ export function GoBoard({
 }: GoBoardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const variationTargetsRef = useRef<VariationTarget[]>([]);
-  const crop = useMemo(() => getCrop(root, 1), [root]);
+  const crop = useMemo(() => getCrop(root, 2), [root]);
   const boardPosition = useMemo(() => boardAtNode(root, selected), [root, selected]);
   const variationNodes = useMemo(
     () => selected.children.filter((child) => Boolean(getMove(child)?.point)),

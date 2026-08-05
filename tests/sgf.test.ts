@@ -4,6 +4,7 @@ import {
   boardAtNode,
   canonicalProblemFingerprint,
   collectRightNodes,
+  getCrop,
   parseSgf,
   stripRootComment,
   subtreeHasRight,
@@ -36,6 +37,19 @@ test("canonical fingerprint ignores translation and color reversal", () => {
   const first = parseSgf("(;SZ[19]AB[aa][ba]AW[ab];B[bb]C[RIGHT])");
   const second = parseSgf("(;SZ[19]AW[dd][ed]AB[de];W[ee]C[RIGHT])");
   assert.equal(canonicalProblemFingerprint(first), canonicalProblemFingerprint(second));
+});
+
+test("partial-board crops leave two grid intervals around local content", () => {
+  const root = parseSgf(
+    "(;SZ[19]AB[gg][kg]AW[gk][kk](;B[ii]C[RIGHT]))",
+  );
+
+  assert.deepEqual(getCrop(root, 2), {
+    minX: 4,
+    maxX: 12,
+    minY: 4,
+    maxY: 12,
+  });
 });
 
 test("strips only the written instruction from the root", () => {
