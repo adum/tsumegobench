@@ -1,53 +1,157 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/tsumego-bench/run.schema.json",
-  "title": "Tsumego Bench model run",
+  "title": "Tsumego Bench Codex run",
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "schemaVersion",
     "runId",
+    "status",
+    "createdAt",
+    "benchmark",
     "model",
-    "generatedAt",
+    "harness",
     "condition",
-    "prompt",
-    "referenceManifest",
-    "problems"
+    "artifacts"
   ],
   "properties": {
     "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
     "runId": { "type": "string", "minLength": 3 },
+    "status": {
+      "enum": [
+        "prepared",
+        "running",
+        "evaluating",
+        "completed",
+        "harness_failed",
+        "evaluation_failed"
+      ]
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "completedAt": { "type": ["string", "null"], "format": "date-time" },
+    "benchmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commitSha",
+        "promptSha256",
+        "referenceManifestSha256",
+        "inputFiles"
+      ],
+      "properties": {
+        "commitSha": { "type": ["string", "null"] },
+        "promptSha256": { "$ref": "#/$defs/sha256" },
+        "referenceManifestSha256": { "$ref": "#/$defs/sha256" },
+        "inputFiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256"],
+            "properties": {
+              "path": { "type": "string" },
+              "sha256": { "$ref": "#/$defs/sha256" }
+            }
+          }
+        }
+      }
+    },
     "model": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["provider", "name", "surface"],
+      "required": ["provider", "name", "reasoningEffort"],
       "properties": {
-        "provider": { "type": "string" },
-        "name": { "type": "string" },
-        "surface": { "type": "string" }
+        "provider": { "const": "openai" },
+        "name": { "type": "string", "minLength": 1 },
+        "reasoningEffort": { "type": ["string", "null"] }
       }
     },
-    "generatedAt": { "type": "string", "format": "date-time" },
+    "harness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "mode",
+        "command",
+        "exitCode",
+        "durationSeconds",
+        "threadId",
+        "usage",
+        "eventCount",
+        "unparsedLineCount"
+      ],
+      "properties": {
+        "name": { "const": "codex-cli" },
+        "version": { "type": ["string", "null"] },
+        "mode": { "const": "non-interactive" },
+        "command": { "type": "array", "items": { "type": "string" } },
+        "exitCode": { "type": ["integer", "null"] },
+        "durationSeconds": { "type": ["number", "null"], "minimum": 0 },
+        "threadId": { "type": ["string", "null"] },
+        "usage": { "type": ["object", "null"] },
+        "eventCount": { "type": "integer", "minimum": 0 },
+        "unparsedLineCount": { "type": "integer", "minimum": 0 }
+      }
+    },
     "condition": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["attempt", "toolsEnabled", "webEnabled"],
+      "required": [
+        "attempt",
+        "toolsEnabled",
+        "webEnabled",
+        "networkEnabled",
+        "duplicateToolEnabled",
+        "remoteDuplicateEvaluation",
+        "notes"
+      ],
       "properties": {
         "attempt": { "type": "integer", "minimum": 1 },
         "toolsEnabled": { "type": "boolean" },
         "webEnabled": { "type": "boolean" },
-        "temperature": { "type": ["number", "null"] },
+        "networkEnabled": { "type": "boolean" },
+        "duplicateToolEnabled": { "type": "boolean" },
+        "remoteDuplicateEvaluation": { "type": "boolean" },
         "notes": { "type": "string" }
       }
     },
-    "prompt": { "type": "string" },
-    "referenceManifest": { "type": "string" },
-    "problems": {
-      "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
-      "uniqueItems": true,
-      "items": { "type": "string", "pattern": "\\.sgf$" }
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task",
+        "stdout",
+        "stderr",
+        "finalMessage",
+        "outputs",
+        "automatedEvaluation",
+        "humanEvaluation",
+        "results"
+      ],
+      "properties": {
+        "task": { "type": "string" },
+        "stdout": { "type": "string" },
+        "stderr": { "type": "string" },
+        "finalMessage": { "type": "string" },
+        "outputs": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": { "type": "string", "pattern": "\\.sgf$" }
+        },
+        "automatedEvaluation": { "type": "string" },
+        "humanEvaluation": { "type": "string" },
+        "results": { "type": "string" }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
     }
   }
 }
-

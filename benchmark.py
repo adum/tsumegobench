@@ -1,0 +1,502 @@
+#!/usr/bin/env python3
+"""Run Tsumego Bench with the non-interactive Codex CLI."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+RUNS_ROOT = PROJECT_ROOT / "runs"
+EXPECTED_OUTPUTS = [f"problem-{index:02d}.sgf" for index in range(1, 6)]
+
+
+def utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def sha256_file(file: Path) -> str:
+    digest = hashlib.sha256()
+    with file.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def slugify(value: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
+    return slug[:48] or "model"
+
+
+def git_commit() -> str | None:
+    try:
+        return subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=PROJECT_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return None
+
+
+def write_json(file: Path, value: Any) -> None:
+    file.parent.mkdir(parents=True, exist_ok=True)
+    temporary = file.with_suffix(f"{file.suffix}.tmp")
+    temporary.write_text(f"{json.dumps(value, indent=2, ensure_ascii=False)}\n", encoding="utf-8")
+    temporary.replace(file)
+
+
+def read_json(file: Path) -> dict[str, Any]:
+    return json.loads(file.read_text(encoding="utf-8"))
+
+
+def command_name(name: str) -> str:
+    found = shutil.which(name)
+    if found:
+        return found
+    if os.name == "nt" and not name.lower().endswith((".exe", ".cmd", ".bat")):
+        found = shutil.which(f"{name}.cmd")
+        if found:
+            return found
+    return name
+
+
+def portable_command(command: list[str], run_dir: Path) -> list[str]:
+    recorded: list[str] = []
+    for index, argument in enumerate(command):
+        value = argument.replace(str(run_dir), "<run-dir>").replace(
+            str(PROJECT_ROOT), "<project-root>"
+        )
+        if index == 0 and Path(value).is_absolute():
+            value = Path(value).name
+        recorded.append(value)
+    return recorded
+
+
+def unique_run_id(model: str, requested: str | None) -> str:
+    if requested:
+        if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9._-]{2,100}", requested):
+            raise ValueError(
+                "--run-id must be 3–101 characters using letters, numbers, dots, underscores, or hyphens."
+            )
+        if (RUNS_ROOT / requested).exists():
+            raise ValueError(f"Run directory already exists: runs/{requested}")
+        return requested
+
+    prefix = f"{datetime.now(timezone.utc):%Y-%m-%dT%H%M%SZ}-openai-{slugify(model)}-codex"
+    candidate = prefix
+    suffix = 2
+    while (RUNS_ROOT / candidate).exists():
+        candidate = f"{prefix}-{suffix:02d}"
+        suffix += 1
+    return candidate
+
+
+def copy_inputs(run_dir: Path) -> list[dict[str, str]]:
+    inputs = run_dir / "inputs"
+    examples = inputs / "examples"
+    examples.mkdir(parents=True)
+
+    copies = {
+        PROJECT_ROOT / "docs" / "model-prompt.md": inputs / "model-prompt.md",
+        PROJECT_ROOT / "docs" / "authoring-guide.md": inputs / "authoring-guide.md",
+        PROJECT_ROOT / "docs" / "benchmark-spec.md": inputs / "benchmark-spec.md",
+        PROJECT_ROOT / "examples" / "manifest.json": inputs / "reference-manifest.json",
+    }
+    for source, destination in copies.items():
+        shutil.copy2(source, destination)
+    for source in sorted((PROJECT_ROOT / "examples" / "canonical-life-and-death").glob("*.sgf")):
+        shutil.copy2(source, examples / source.name)
+
+    task = """# Tsumego Bench execution task
+
+This is a controlled benchmark run. Work only inside the current run directory.
+
+1. Read `inputs/model-prompt.md` in full and follow it exactly.
+2. Use `inputs/authoring-guide.md`, `inputs/reference-manifest.json`, and all SGFs in `inputs/examples/` as the supplied reference material.
+3. Write the five final candidate files to `outputs/problem-01.sgf` through `outputs/problem-05.sgf`.
+4. Each output file must contain only one complete SGF collection—no Markdown fences or explanatory prose.
+5. Do not modify anything under `inputs/`, `logs/`, or `evaluation/`, and do not modify `run.json`.
+6. Do not access the web or any network service. Duplicate checks are performed by the benchmark after you exit.
+7. Do not run the benchmark evaluator yourself. Finish all five files, verify them locally as far as you can, then exit.
+
+Do not ask the operator questions and do not wait for repair feedback.
+"""
+    (inputs / "task.md").write_text(task, encoding="utf-8")
+
+    records: list[dict[str, str]] = []
+    for file in sorted(path for path in inputs.rglob("*") if path.is_file()):
+        records.append(
+            {
+                "path": file.relative_to(run_dir).as_posix(),
+                "sha256": sha256_file(file),
+            }
+        )
+    return records
+
+
+def codex_version(executable: str) -> str | None:
+    try:
+        result = subprocess.run(
+            [executable, "--version"],
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=15,
+        )
+        value = (result.stdout or result.stderr).strip()
+        return value or None
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+
+
+def parse_codex_events(stdout: str) -> dict[str, Any]:
+    thread_id: str | None = None
+    usage: dict[str, Any] | None = None
+    parse_errors = 0
+    event_count = 0
+    for line in stdout.splitlines():
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            parse_errors += 1
+            continue
+        event_count += 1
+        if event.get("type") == "thread.started":
+            thread_id = event.get("thread_id") or event.get("threadId")
+        if event.get("type") == "turn.completed":
+            usage = event.get("usage")
+    return {
+        "threadId": thread_id,
+        "usage": usage,
+        "eventCount": event_count,
+        "unparsedLineCount": parse_errors,
+    }
+
+
+def npm_command() -> str:
+    return command_name("npm")
+
+
+def run_evaluator(run_dir: Path, local_only: bool) -> subprocess.CompletedProcess[str]:
+    command = [
+        npm_command(),
+        "run",
+        "evaluate:run",
+        "--",
+        "--run-dir",
+        str(run_dir),
+    ]
+    if local_only:
+        command.append("--local-only")
+    result = subprocess.run(
+        command,
+        cwd=PROJECT_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    logs = run_dir / "logs"
+    (logs / "evaluator-stdout.txt").write_text(result.stdout, encoding="utf-8")
+    (logs / "evaluator-stderr.txt").write_text(result.stderr, encoding="utf-8")
+    return result
+
+
+def build_run_index() -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        [npm_command(), "run", "runs:index"],
+        cwd=PROJECT_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+
+
+def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> dict[str, Any]:
+    input_files = copy_inputs(run_dir)
+    model_prompt = run_dir / "inputs" / "model-prompt.md"
+    reference_manifest = run_dir / "inputs" / "reference-manifest.json"
+    return {
+        "$schema": "../../schemas/run.schema.json",
+        "schemaVersion": 1,
+        "runId": run_id,
+        "status": "prepared",
+        "createdAt": utc_now(),
+        "completedAt": None,
+        "benchmark": {
+            "commitSha": git_commit(),
+            "promptSha256": sha256_file(model_prompt),
+            "referenceManifestSha256": sha256_file(reference_manifest),
+            "inputFiles": input_files,
+        },
+        "model": {
+            "provider": "openai",
+            "name": args.model,
+            "reasoningEffort": args.reasoning_effort,
+        },
+        "harness": {
+            "name": "codex-cli",
+            "version": None,
+            "mode": "non-interactive",
+            "command": [],
+            "exitCode": None,
+            "durationSeconds": None,
+            "threadId": None,
+            "usage": None,
+            "eventCount": 0,
+            "unparsedLineCount": 0,
+        },
+        "condition": {
+            "attempt": args.attempt,
+            "toolsEnabled": True,
+            "webEnabled": False,
+            "networkEnabled": False,
+            "duplicateToolEnabled": False,
+            "remoteDuplicateEvaluation": not args.local_only,
+            "notes": args.notes or "",
+        },
+        "artifacts": {
+            "task": "inputs/task.md",
+            "stdout": "logs/codex-events.jsonl",
+            "stderr": "logs/codex-stderr.txt",
+            "finalMessage": "logs/final-message.txt",
+            "outputs": [f"outputs/{name}" for name in EXPECTED_OUTPUTS],
+            "automatedEvaluation": "evaluation/automated.json",
+            "humanEvaluation": "evaluation/human.json",
+            "results": "evaluation/results.json",
+        },
+    }
+
+
+def run_command(args: argparse.Namespace) -> int:
+    RUNS_ROOT.mkdir(exist_ok=True)
+    try:
+        run_id = unique_run_id(args.model, args.run_id)
+    except ValueError as error:
+        print(f"error: {error}", file=sys.stderr)
+        return 2
+
+    run_dir = RUNS_ROOT / run_id
+    (run_dir / "outputs").mkdir(parents=True)
+    (run_dir / "logs").mkdir()
+    (run_dir / "evaluation").mkdir()
+    manifest = prepare_manifest(args, run_id, run_dir)
+    manifest_path = run_dir / "run.json"
+    write_json(manifest_path, manifest)
+
+    executable = args.codex or os.environ.get("CODEX_CLI") or command_name("codex")
+    manifest["harness"]["version"] = codex_version(executable)
+    command = [
+        executable,
+        "exec",
+        "--json",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--skip-git-repo-check",
+        "--model",
+        args.model,
+        "--cd",
+        str(run_dir),
+        "--output-last-message",
+        "logs/final-message.txt",
+        "--config",
+        'web_search="disabled"',
+        "--config",
+        "sandbox_workspace_write.network_access=false",
+    ]
+    if args.reasoning_effort:
+        command.extend(
+            ["--config", f"model_reasoning_effort={json.dumps(args.reasoning_effort)}"]
+        )
+    command.append("-")
+    manifest["harness"]["command"] = portable_command(command, run_dir)
+    manifest["status"] = "running"
+    write_json(manifest_path, manifest)
+
+    print(f"Created runs/{run_id}")
+    print(f"Running {args.model} with Codex CLI…")
+    task = (run_dir / "inputs" / "task.md").read_text(encoding="utf-8")
+    started = time.monotonic()
+    stdout = ""
+    stderr = ""
+    exit_code: int | None = None
+    timed_out = False
+    try:
+        completed = subprocess.run(
+            command,
+            cwd=run_dir,
+            input=task,
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=args.timeout,
+        )
+        stdout = completed.stdout
+        stderr = completed.stderr
+        exit_code = completed.returncode
+    except subprocess.TimeoutExpired as error:
+        timed_out = True
+        stdout = error.stdout or ""
+        stderr = error.stderr or ""
+        exit_code = 124
+    except OSError as error:
+        stderr = f"Could not launch Codex CLI: {error}\n"
+        exit_code = 127
+
+    duration = round(time.monotonic() - started, 3)
+    (run_dir / "logs" / "codex-events.jsonl").write_text(stdout, encoding="utf-8")
+    (run_dir / "logs" / "codex-stderr.txt").write_text(stderr, encoding="utf-8")
+    events = parse_codex_events(stdout)
+    manifest["harness"].update(
+        {
+            "exitCode": exit_code,
+            "durationSeconds": duration,
+            **events,
+        }
+    )
+    manifest["status"] = "harness_failed" if exit_code else "evaluating"
+    if timed_out:
+        manifest["condition"]["notes"] = (
+            f"{manifest['condition']['notes']} Harness timed out after {args.timeout} seconds."
+        ).strip()
+    write_json(manifest_path, manifest)
+
+    print("Evaluating generated SGFs…")
+    evaluator = run_evaluator(run_dir, args.local_only)
+    manifest = read_json(manifest_path)
+    if evaluator.returncode:
+        manifest["status"] = "evaluation_failed"
+    elif exit_code:
+        manifest["status"] = "harness_failed"
+    else:
+        manifest["status"] = "completed"
+    manifest["completedAt"] = utc_now()
+    write_json(manifest_path, manifest)
+
+    indexed = build_run_index()
+    if indexed.returncode:
+        (run_dir / "logs" / "indexer-stderr.txt").write_text(indexed.stderr, encoding="utf-8")
+        print("Run completed, but the web index could not be rebuilt.", file=sys.stderr)
+        return 1
+
+    if evaluator.returncode:
+        print(evaluator.stderr.strip() or "The evaluator failed.", file=sys.stderr)
+        return 1
+    if exit_code:
+        print(f"Codex CLI exited with status {exit_code}; the partial run was preserved.", file=sys.stderr)
+        return 1
+
+    evaluation = read_json(run_dir / "evaluation" / "automated.json")
+    summary = evaluation.get("summary", {})
+    print(
+        f"Run complete: {summary.get('structuralPassed', 0)}/5 structurally valid, "
+        f"{summary.get('automatedGatePassed', 0)}/5 through automated gates."
+    )
+    print(f"Review it under runs/{run_id} or in the web UI.")
+    return 0
+
+
+def evaluate_command(args: argparse.Namespace) -> int:
+    run_dir = Path(args.run_dir)
+    if not run_dir.is_absolute():
+        run_dir = (PROJECT_ROOT / run_dir).resolve()
+    if not (run_dir / "run.json").exists():
+        print(f"error: no run.json found under {run_dir}", file=sys.stderr)
+        return 2
+    result = run_evaluator(run_dir, args.local_only)
+    if result.returncode:
+        print(result.stderr.strip() or "The evaluator failed.", file=sys.stderr)
+        return result.returncode
+    indexed = build_run_index()
+    if indexed.returncode:
+        print(indexed.stderr.strip() or "The web index could not be rebuilt.", file=sys.stderr)
+        return indexed.returncode
+    print(result.stdout.strip())
+    return 0
+
+
+def index_command(_: argparse.Namespace) -> int:
+    result = build_run_index()
+    stream = sys.stdout if result.returncode == 0 else sys.stderr
+    print((result.stdout or result.stderr).strip(), file=stream)
+    return result.returncode
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Create, execute, evaluate, and index Tsumego Bench runs."
+    )
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    run = subparsers.add_parser("run", help="Run an OpenAI model through Codex CLI.")
+    run.add_argument("--model", required=True, help="Exact OpenAI model identifier for Codex.")
+    run.add_argument("--reasoning-effort", help="Optional Codex model reasoning effort.")
+    run.add_argument("--run-id", help="Optional stable run directory name.")
+    run.add_argument("--attempt", type=int, default=1, help="Independent attempt number.")
+    run.add_argument("--notes", help="Condition or invocation notes stored with the run.")
+    run.add_argument(
+        "--codex",
+        help="Codex CLI executable path. Defaults to CODEX_CLI or codex on PATH.",
+    )
+    run.add_argument(
+        "--timeout",
+        type=int,
+        default=3600,
+        help="Maximum Codex execution time in seconds (default: 3600).",
+    )
+    run.add_argument(
+        "--local-only",
+        action="store_true",
+        help="Skip GoProblems API checks during post-run evaluation.",
+    )
+    run.set_defaults(handler=run_command)
+
+    evaluate = subparsers.add_parser("evaluate", help="Re-evaluate an existing run.")
+    evaluate.add_argument("run_dir", help="Run directory, such as runs/<run-id>.")
+    evaluate.add_argument("--local-only", action="store_true")
+    evaluate.set_defaults(handler=evaluate_command)
+
+    index = subparsers.add_parser("index", help="Rebuild the web UI run index.")
+    index.set_defaults(handler=index_command)
+    return parser
+
+
+def main() -> int:
+    parser = build_parser()
+    args = parser.parse_args()
+    if getattr(args, "attempt", 1) < 1:
+        parser.error("--attempt must be at least 1")
+    if getattr(args, "timeout", 1) < 1:
+        parser.error("--timeout must be at least 1 second")
+    return args.handler(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

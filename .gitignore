@@ -36,6 +36,12 @@ yarn-error.log*
 
 # typescript
 next-env.d.ts
+*.tsbuildinfo
+
+# python
+__pycache__/
+*.py[cod]
+
 /dist/
 /.wrangler/
 /outputs/

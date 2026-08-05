@@ -1,4 +1,5 @@
 import { ProblemWorkbench } from "./components/ProblemWorkbench";
+import { RunBrowser } from "./components/RunBrowser";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
         </a>
         <nav aria-label="Primary navigation">
           <a href="#workbench">Problems</a>
+          <a href="#runs">Runs</a>
           <a href="#protocol">Evaluation</a>
           <a href="#sources">Sources</a>
         </nav>
@@ -23,7 +25,7 @@ export default function Home() {
           <p className="hero-lede">
             This project tests whether AI models can create original, legal, simple life-and-death
             Go problems on 19×19 boards in SGF. It includes reference problems, structural
-            validation, duplicate checks, and human review.
+            validation, duplicate checks, reproducible command-line runs, and human review.
           </p>
           <div className="hero-actions">
             <a className="primary-action" href="#workbench">View reference problems <span>↓</span></a>
@@ -42,13 +44,15 @@ export default function Home() {
 
       <ProblemWorkbench />
 
+      <RunBrowser />
+
       <section className="protocol-section" id="protocol" aria-labelledby="protocol-title">
         <div className="protocol-intro">
           <p className="eyebrow"><span>02</span> EVALUATION</p>
           <h2 id="protocol-title">Evaluation protocol</h2>
           <p>
-            Each model receives the same prompt and 20 reference SGFs. The first output is
-            preserved; repaired output is recorded as a separate run.
+            The runner gives each OpenAI model the same snapshotted packet through Codex CLI. The
+            first files and CLI log are preserved; repaired output is recorded as a separate run.
           </p>
         </div>
         <ol className="protocol-grid">
@@ -56,8 +60,8 @@ export default function Home() {
             <span className="protocol-number">01</span>
             <div className="protocol-icon generate" aria-hidden="true"><i /><i /><i /></div>
             <h3>Generate</h3>
-            <p>Request five simple local life-and-death problems with explicit 19×19 SGF boards.</p>
-            <small>RAW OUTPUT SAVED</small>
+            <p>Invoke a selected OpenAI model through Codex CLI and write five SGFs into an isolated run.</p>
+            <small>FILES + EVENT LOG SAVED</small>
           </li>
           <li>
             <span className="protocol-number">02</span>

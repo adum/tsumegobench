@@ -25,6 +25,7 @@ interface GoBoardProps {
   root: SgfNode;
   selected: SgfNode;
   onSelect: (node: SgfNode) => void;
+  variationLegendId?: string;
 }
 
 interface VariationTarget {
@@ -34,7 +35,12 @@ interface VariationTarget {
   radius: number;
 }
 
-export function GoBoard({ root, selected, onSelect }: GoBoardProps) {
+export function GoBoard({
+  root,
+  selected,
+  onSelect,
+  variationLegendId = "board-variation-legend",
+}: GoBoardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const variationTargetsRef = useRef<VariationTarget[]>([]);
   const crop = useMemo(() => getCrop(root, 1), [root]);
@@ -340,7 +346,7 @@ export function GoBoard({ root, selected, onSelect }: GoBoardProps) {
           event.currentTarget.style.cursor = "default";
         }}
         title={variationSummary.total ? "Click a colored marker to select that variation." : undefined}
-        aria-describedby={variationSummary.total ? "board-variation-legend" : undefined}
+        aria-describedby={variationSummary.total ? variationLegendId : undefined}
         aria-label={
           `${boardPosition.lastMove
             ? `Go board showing ${pointToHuman(

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/tsumego-bench/human-evaluation.schema.json",
+  "title": "Tsumego Bench human evaluation",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "runId",
+    "updatedAt",
+    "reviewer",
+    "reviewerRank",
+    "problems"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "runId": { "type": "string" },
+    "updatedAt": { "type": ["string", "null"], "format": "date-time" },
+    "reviewer": { "type": ["string", "null"] },
+    "reviewerRank": { "type": ["string", "null"] },
+    "problems": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "file",
+          "status",
+          "targetDifficulty",
+          "estimatedDifficulty",
+          "scores",
+          "notes"
+        ],
+        "properties": {
+          "file": { "type": "string", "pattern": "\\.sgf$" },
+          "status": { "enum": ["pending", "accepted", "rejected"] },
+          "targetDifficulty": { "type": "string" },
+          "estimatedDifficulty": { "type": ["string", "null"] },
+          "scores": { "type": "object" },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}

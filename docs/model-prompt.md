@@ -1,12 +1,12 @@
 # Controlled model prompt
 
-Copy everything below the line into a fresh model conversation. Attach all 20 SGFs from `examples/canonical-life-and-death/` in the same message when the interface allows it.
+The benchmark runner supplies everything below the line together with the same 20 reference SGFs for every model run.
 
 ---
 
 You are being evaluated on your ability to create original Go (baduk/weiqi) problems.
 
-Create exactly five simple, local life-and-death problems in SGF. The attached SGFs are style references only. Do not copy, translate, rotate, reflect, recolor, lightly edit, or combine their positions or solution paths.
+Create exactly five simple, local life-and-death problems in SGF. The supplied SGFs are style references only. Do not copy, translate, rotate, reflect, recolor, lightly edit, or combine their positions or solution paths.
 
 The solution tree is a central part of the task, not an annotation added after finding the key move. Study the reference SGFs for how they cover materially distinct correct continuations, meaningful defenses, and plausible mistakes, and especially for where each path naturally ends. Match that standard of coverage and endpoint judgment without copying their content.
 
@@ -39,12 +39,4 @@ Across the five problems, demonstrate a deliberate range of difficulty rather th
 
 Across the set, include at least two Black-to-play and at least two White-to-play problems. Establish the player color only through the first move in the tree, not through written instructions. Vary the board edge/corner shape and tactical idea. Do not explain your reasoning and do not claim that you searched for duplicates unless you actually used a search tool.
 
-Output only these five sections in order:
-
-`problem-01.sgf`
-
-```sgf
-(;...)
-```
-
-Repeat that exact filename-plus-code-block format through `problem-05.sgf`. Do not add prose before, between, or after the five sections.
+Write exactly five files in the `outputs` directory, named `problem-01.sgf` through `problem-05.sgf`. Each file must contain only one complete SGF collection beginning with `(;` and ending with `)`—no Markdown fences or explanatory prose. Do not create any other output files. Your final command-line response may only confirm that the five files were written; the files themselves are the benchmark output.

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/tsumego-bench/automated-evaluation.schema.json",
+  "title": "Tsumego Bench automated evaluation",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "runId",
+    "evaluatedAt",
+    "status",
+    "runChecks",
+    "summary",
+    "problems"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "runId": { "type": "string" },
+    "evaluatedAt": { "type": "string", "format": "date-time" },
+    "evaluator": { "type": "object" },
+    "configuration": { "type": "object" },
+    "status": { "enum": ["failed", "incomplete", "needs_human_review"] },
+    "runChecks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/check" }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "expectedProblems",
+        "filesFound",
+        "structuralPassed",
+        "originalityPassed",
+        "automatedGatePassed",
+        "failedProblems",
+        "incompleteProblems",
+        "humanReviewPending",
+        "failedRunChecks"
+      ]
+    },
+    "problems": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "file",
+          "targetDifficulty",
+          "status",
+          "automatedGate",
+          "validation",
+          "originality",
+          "humanReviewRequired"
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "message"],
+      "properties": {
+        "id": { "type": "string" },
+        "status": {
+          "enum": ["pass", "fail", "warning", "not_run", "needs_human_review"]
+        },
+        "message": { "type": "string" }
+      }
+    }
+  }
+}

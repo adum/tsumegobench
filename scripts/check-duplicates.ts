@@ -1,29 +1,13 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import {
-  canonicalProblemFingerprint,
-  canonicalRightShapes,
-  parseSgf,
-  shapeSimilarity,
-} from "../lib/sgf";
-import { findSimilarProblems } from "../lib/goproblems";
+import { checkProblemDuplicates, loadDuplicateCorpus } from "../lib/duplicate-check";
 import { validateSgf } from "../lib/validate-sgf";
-
-interface ManifestRecord {
-  id: number;
-  sgfFile: string;
-  sourceUrl: string;
-}
-
-interface Manifest {
-  problems: ManifestRecord[];
-}
 
 const argumentsList = process.argv.slice(2);
 const fileArgument = argumentsList.find((argument) => !argument.startsWith("--"));
 if (!fileArgument) {
   process.stderr.write(
-    "Usage: npm run duplicates -- submissions/run-name/problem.sgf [--local-only] [--threshold=90] [--exclude-id=123]\n",
+    "Usage: npm run duplicates -- runs/run-name/outputs/problem.sgf [--local-only] [--threshold=90] [--exclude-id=123]\n",
   );
   process.exit(2);
 }
@@ -47,64 +31,55 @@ if (!validation.valid || !validation.root) {
   process.exit(2);
 }
 
-const candidateFingerprint = canonicalProblemFingerprint(validation.root);
-const candidateShapes = canonicalRightShapes(validation.root);
-const manifest = JSON.parse(
-  await readFile(path.join(process.cwd(), "examples", "manifest.json"), "utf8"),
-) as Manifest;
-
-let exactLocal: ManifestRecord | undefined;
-let closestLocal: { record: ManifestRecord; score: number } | undefined;
-
-for (const record of manifest.problems) {
-  if (record.id === excludedId) continue;
-  const referenceSgf = await readFile(path.join(process.cwd(), record.sgfFile), "utf8");
-  const referenceRoot = parseSgf(referenceSgf);
-  if (canonicalProblemFingerprint(referenceRoot) === candidateFingerprint) exactLocal = record;
-
-  const referenceShapes = canonicalRightShapes(referenceRoot);
-  const score = Math.max(
-    0,
-    ...candidateShapes.flatMap((candidate) =>
-      referenceShapes.map((reference) => shapeSimilarity(candidate, reference)),
-    ),
-  );
-  if (!closestLocal || score > closestLocal.score) closestLocal = { record, score };
-}
+const report = await checkProblemDuplicates(
+  sgf,
+  validation.root,
+  await loadDuplicateCorpus(),
+  {
+    remote: !localOnly,
+    failThreshold: threshold,
+    excludedIds: excludedId ? [excludedId] : [],
+  },
+);
 
 process.stdout.write(`Candidate: ${path.relative(process.cwd(), file)}\n`);
 process.stdout.write(
-  `Local exact match: ${exactLocal ? `GoProblems #${exactLocal.id}` : "none"}\n`,
+  `Local exact match: ${report.exactLocalMatch ? `GoProblems #${report.exactLocalMatch.id}` : "none"}\n`,
 );
 process.stdout.write(
-  `Closest local solution shape: ${closestLocal ? `#${closestLocal.record.id} (${Math.round(closestLocal.score * 100)}%)` : "none"}\n`,
+  `Closest local solution shape: ${
+    report.closestLocalShape
+      ? `#${report.closestLocalShape.id} (${Math.round(report.closestLocalShape.percentage)}%)`
+      : "none"
+  }\n`,
 );
 
-let duplicate = Boolean(exactLocal);
 if (!localOnly) {
-  process.stdout.write("Checking GoProblems solution signatures…\n");
-  const remote = await findSimilarProblems(sgf, {
-    excludedIds: excludedId ? [excludedId] : [],
-    limit: 20,
-  });
-  const radiusIds = remote.radiusTwo.entries.map((entry) => entry.id);
   process.stdout.write(
-    `Radius-2 signature matches: ${radiusIds.length ? radiusIds.map((id) => `#${id}`).join(", ") : "none"}\n`,
+    report.remote.error
+      ? `Remote duplicate check unavailable: ${report.remote.error}\n`
+      : `Radius-2 signature matches: ${
+          report.remote.radiusTwoMatches.length
+            ? report.remote.radiusTwoMatches.map(({ id }) => `#${id}`).join(", ")
+            : "none"
+        }\nTop percentage match: ${report.remote.topPercentage ?? 0}%${
+          report.remote.topMatchId ? ` (#${report.remote.topMatchId})` : ""
+        }\n`,
   );
-  process.stdout.write(
-    `Top percentage match: ${remote.percentage.topPercentage ?? 0}%${
-      remote.percentage.entries[0] ? ` (#${remote.percentage.entries[0].id})` : ""
-    }\n`,
-  );
-  duplicate ||= radiusIds.length > 0 || remote.percentage.topPercentage >= threshold;
 }
 
-if (duplicate) {
+if (report.status === "fail") {
   process.stderr.write(
-    `DUPLICATE GATE: failed. Resolve or replace this problem before scoring the model run.\n`,
+    "DUPLICATE GATE: failed. Resolve or replace this problem before scoring the model run.\n",
   );
   process.exitCode = 1;
+} else if (report.status === "manual_review") {
+  process.stdout.write("DUPLICATE GATE: manual comparison required.\n");
+} else if (!localOnly && report.remote.status === "error") {
+  process.stderr.write("DUPLICATE GATE: incomplete because the remote check failed.\n");
+  process.exitCode = 2;
+} else if (report.status === "not_run") {
+  process.stdout.write("DUPLICATE GATE: local checks passed; remote result not available.\n");
 } else {
   process.stdout.write("DUPLICATE GATE: passed.\n");
 }
-

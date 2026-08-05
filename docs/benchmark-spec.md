@@ -10,28 +10,45 @@ The default task is **five problems per run**. Five is large enough to expose co
 
 Every compared model receives:
 
-1. The exact text of `docs/model-prompt.md`.
-2. The same 20 files from `examples/canonical-life-and-death/`.
-3. No conversation history or repair feedback on the first attempt.
+1. The generated command-line task in `inputs/task.md`.
+2. The exact snapshot of `docs/model-prompt.md`.
+3. The same authoring guide, reference manifest, and 20 reference SGFs.
+4. No conversation history or repair feedback on the first attempt.
 
 Every candidate must explicitly declare a 19×19 board with `SZ[19]`. Other board sizes and omitted `SZ` properties fail structural validation.
 
-Record the exact model name/version, access surface, date, sampling settings where exposed, and whether tools or web access were enabled. If the model is allowed to call the duplicate API itself, report that as a separate tool-enabled condition.
+The initial harness is non-interactive `codex exec` using an explicitly selected OpenAI model. It receives workspace-write access only inside the run directory; web search and subprocess network access are disabled. Record the exact model identifier, Codex CLI version, date, reasoning effort, command, duration, token usage when reported, and exit status. If a future condition allows the model to call the duplicate API itself, report that as a separate tool-enabled condition.
 
 ## Run layout
 
 ```text
-submissions/
-  2026-08-04-chatgpt-example/
+runs/
+  2026-08-05T120000Z-openai-model-codex/
     run.json
-    problem-01.sgf
-    problem-02.sgf
-    problem-03.sgf
-    problem-04.sgf
-    problem-05.sgf
+    inputs/
+      task.md
+      model-prompt.md
+      authoring-guide.md
+      benchmark-spec.md
+      reference-manifest.json
+      examples/*.sgf
+    outputs/
+      problem-01.sgf
+      problem-02.sgf
+      problem-03.sgf
+      problem-04.sgf
+      problem-05.sgf
+    logs/
+      codex-events.jsonl
+      codex-stderr.txt
+      final-message.txt
+    evaluation/
+      automated.json
+      human.json
+      results.json
 ```
 
-Copy `submissions/run.example.json` to `run.json` and preserve the model's first SGF output exactly. If you repair a problem, save it as a new, explicitly labeled run; do not silently replace the first attempt.
+The Python runner creates this structure, snapshots and hashes every input, invokes Codex, captures its logs, evaluates whatever files exist at process exit, and rebuilds the web index. Preserve the model's first files exactly. If you repair a problem, save it as a new, explicitly labeled run; do not silently replace the first attempt.
 
 ## Acceptance pipeline
 
