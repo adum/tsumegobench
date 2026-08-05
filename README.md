@@ -8,7 +8,7 @@ The repository combines a curated reference corpus, a strict SGF validator, loca
 
 ## What is in the project
 
-- `examples/canonical-life-and-death/` — 20 SGF reference problems. Every item was verified through the GoProblems API as canonical, standard, and life-and-death when synchronized. Source root instructions are removed so each position is presented only by its board shape and first-move color.
+- `examples/canonical-life-and-death/` — 20 SGF reference problems, with four examples in each of five bands from 20–30 kyu through 1 dan. Every item was verified through the GoProblems API as canonical, standard, and life-and-death when synchronized. Source root instructions are removed so each position is presented only by its board shape and first-move color.
 - `examples/manifest.json` — provenance, rank, author, source, rating, and original URL for every reference.
 - `docs/authoring-guide.md` — the benchmark's concise definition of a good problem.
 - `docs/model-prompt.md` — the controlled prompt to give each model.

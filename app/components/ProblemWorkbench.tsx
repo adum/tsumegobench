@@ -69,8 +69,20 @@ export function ProblemWorkbench() {
           .includes(needle);
       const matchesFilter =
         filter === "all" ||
-        (filter === "very-easy" && record.rankUnit === "kyu" && record.rankValue >= 20) ||
-        (filter === "easy" && record.rankUnit === "kyu" && record.rankValue < 20) ||
+        (filter === "20-30k" && record.rankUnit === "kyu" && record.rankValue >= 20) ||
+        (filter === "10-19k" &&
+          record.rankUnit === "kyu" &&
+          record.rankValue >= 10 &&
+          record.rankValue <= 19) ||
+        (filter === "5-9k" &&
+          record.rankUnit === "kyu" &&
+          record.rankValue >= 5 &&
+          record.rankValue <= 9) ||
+        (filter === "1-4k" &&
+          record.rankUnit === "kyu" &&
+          record.rankValue >= 1 &&
+          record.rankValue <= 4) ||
+        (filter === "1d" && record.rankUnit === "dan" && record.rankValue === 1) ||
         filter === record.playerColor;
       return matchesQuery && matchesFilter;
     });
@@ -135,10 +147,10 @@ export function ProblemWorkbench() {
         <aside className="problem-library" aria-label="Reference problem library">
           <div className="library-header">
             <div>
-              <span className="library-count">20</span>
+              <span className="library-count">{problems.length}</span>
               <span>reference problems</span>
             </div>
-            <span className="live-dot">API CHECKED</span>
+            <span className="live-dot">30K–1D · API CHECKED</span>
           </div>
           <label className="search-field">
             <span className="sr-only">Search reference problems</span>
@@ -152,8 +164,11 @@ export function ProblemWorkbench() {
           <div className="filter-row" aria-label="Filter problems">
             {[
               ["all", "All"],
-              ["very-easy", "20k+"],
-              ["easy", "10–19k"],
+              ["20-30k", "20–30k"],
+              ["10-19k", "10–19k"],
+              ["5-9k", "5–9k"],
+              ["1-4k", "1–4k"],
+              ["1d", "1d"],
               ["black", "Black"],
               ["white", "White"],
             ].map(([value, label]) => (

@@ -11,7 +11,7 @@ Create exactly five simple, local life-and-death problems in SGF. The attached S
 Each problem must be:
 
 - a realistic standard life-and-death problem with a clear local outcome;
-- approximately 30–10 kyu in difficulty;
+- approximately 30 kyu–1 dan in difficulty;
 - legal under ordinary Go rules;
 - on a 9×9, 13×13, or 19×19 board;
 - expressed as a root setup with both `AB` and `AW`, followed by a complete alternating solution tree;

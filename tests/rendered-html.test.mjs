@@ -27,6 +27,9 @@ test("server-renders the Tsumego Bench reviewer", async () => {
   assert.match(html, /Evaluation protocol/);
   assert.match(html, /Black to play|White to play/);
   assert.match(html, /aria-label="Problem 18843, Black to play/);
+  assert.match(html, />20–30k</);
+  assert.match(html, />1d</);
+  assert.match(html, /1 dan/);
   assert.doesNotMatch(html, /Find the best (?:local )?result/i);
   assert.match(html, /Leads to RIGHT/);
   assert.match(html, /aria-label="Board variation legend"/);

@@ -24,7 +24,7 @@ Apply this 100-point rubric only after a candidate passes every hard gate in `do
 
 ## 4. Pedagogical value and difficulty fit — 15 points
 
-- **13–15:** Has a recognizable lesson, an instructive wrong idea, and a fair 30–10 kyu difficulty.
+- **13–15:** Has a recognizable lesson, an instructive wrong idea, and a fair difficulty within the 30 kyu–1 dan target range.
 - **9–12:** Useful practice but obvious, unevenly graded, or weakly differentiated.
 - **1–8:** Little beyond a one-move spot-the-point exercise or an opaque reading contest.
 

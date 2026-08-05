@@ -1,10 +1,18 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { getMove, parseSgf, stripRootComment } from "../lib/sgf";
 
 const PROBLEM_IDS = [
-  18843, 10507, 39693, 53787, 53750, 52370, 52244, 52243, 51056, 49335,
-  48940, 47734, 47732, 6208, 5844, 5973, 5943, 5922, 5920, 5849,
+  // 20–30 kyu
+  53750, 18843, 5849, 5973,
+  // 10–19 kyu
+  39693, 5844, 5922, 10507,
+  // 5–9 kyu
+  10330, 16482, 8142, 19150,
+  // 1–4 kyu
+  36582, 32711, 28281, 721,
+  // 1 dan
+  17778, 20284, 38368, 1311,
 ] as const;
 
 const API_BASE = "https://www.goproblems.com/api/v2/problems";
@@ -104,7 +112,15 @@ for (const [index, id] of PROBLEM_IDS.entries()) {
 const manifest = {
   name: "Canonical life-and-death reference corpus",
   description:
-    "Public GoProblems examples verified as canonical, standard, and life-and-death when synchronized. Root instructions are removed so the position and side to move stand on their own.",
+    "Twenty public GoProblems examples distributed evenly from 30 kyu through 1 dan and verified as canonical, standard, and life-and-death when synchronized. Root instructions are removed so the position and side to move stand on their own.",
+  difficultyRange: "30 kyu to 1 dan",
+  difficultyBands: {
+    "20-30 kyu": 4,
+    "10-19 kyu": 4,
+    "5-9 kyu": 4,
+    "1-4 kyu": 4,
+    "1 dan": 4,
+  },
   source: "https://www.goproblems.com",
   sourceGuidance: [
     "https://www.goproblems.com/article/problemtypes",
@@ -128,5 +144,16 @@ await writeFile(
   `${JSON.stringify(records, null, 2)}\n`,
   "utf8",
 );
+
+const selectedFiles = new Set(PROBLEM_IDS.map((id) => `gp-${id}.sgf`));
+for (const entry of await readdir(examplesDirectory, { withFileTypes: true })) {
+  if (
+    entry.isFile() &&
+    /^gp-\d+\.sgf$/i.test(entry.name) &&
+    !selectedFiles.has(entry.name)
+  ) {
+    await rm(path.join(examplesDirectory, entry.name));
+  }
+}
 
 process.stdout.write(`Wrote ${records.length} verified reference problems.\n`);

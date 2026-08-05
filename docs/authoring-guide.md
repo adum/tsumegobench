@@ -9,7 +9,7 @@ An accepted candidate is all of the following:
 - **Life and death:** an entire local group must live or die.
 - **Standard:** local, tactical, realistic, understandable without unusual rules, and with a clear outcome.
 - **Candidate-canonical:** correct, complete, well-formed, useful to solve, and free of known flags. “Canonical” is earned through review; a model cannot establish it merely by writing the word.
-- **Simple:** aimed roughly at 30–10 kyu, with a compact local position and a short, legible tree.
+- **Bounded difficulty:** aimed between 30 kyu and 1 dan, while retaining a compact local position and a short, legible tree.
 - **Original:** not an exact, transformed, translated, color-reversed, or near duplicate of an existing problem.
 
 Do not submit whole-board best-move, joseki, fuseki, endgame, contrived-rule, trick-question, or “find a particular coordinate” problems.
