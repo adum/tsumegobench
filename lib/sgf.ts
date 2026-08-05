@@ -164,6 +164,57 @@ export function parseSgf(input: string): SgfNode {
   return new SgfParser(input).parse();
 }
 
+/**
+ * Remove C properties from the root node while preserving the original SGF
+ * formatting and every comment in the solution tree.
+ */
+export function stripRootComment(input: string): string {
+  let index = input.charCodeAt(0) === 0xfeff ? 1 : 0;
+  while (/\s/.test(input[index] ?? "")) index += 1;
+  if (input[index] !== "(") return input;
+
+  index += 1;
+  while (/\s/.test(input[index] ?? "")) index += 1;
+  if (input[index] !== ";") return input;
+  index += 1;
+
+  const commentSpans: Array<[number, number]> = [];
+  while (index < input.length) {
+    while (/\s/.test(input[index] ?? "")) index += 1;
+    if ([";", "(", ")"].includes(input[index] ?? "")) break;
+
+    const propertyStart = index;
+    while (/[A-Za-z]/.test(input[index] ?? "")) index += 1;
+    const identifier = input.slice(propertyStart, index).toUpperCase();
+    if (!identifier) break;
+
+    while (/\s/.test(input[index] ?? "")) index += 1;
+    let hasValue = false;
+    while (input[index] === "[") {
+      hasValue = true;
+      index += 1;
+      while (index < input.length) {
+        const character = input[index++];
+        if (character === "\\") {
+          if (index < input.length) index += 1;
+        } else if (character === "]") {
+          break;
+        }
+      }
+      while (/\s/.test(input[index] ?? "")) index += 1;
+    }
+
+    if (identifier === "C" && hasValue) commentSpans.push([propertyStart, index]);
+  }
+
+  return commentSpans
+    .reverse()
+    .reduce(
+      (sgf, [start, end]) => `${sgf.slice(0, start)}${sgf.slice(end)}`,
+      input,
+    );
+}
+
 export function walkSgf(root: SgfNode): SgfNode[] {
   const nodes: SgfNode[] = [];
   const visit = (node: SgfNode) => {

@@ -28,6 +28,7 @@ Required:
 - Exactly one `B` or `W` move at every later node.
 - Alternating black and white moves.
 - One consistent first-move color across all first branches.
+- No root `C[...]` property or written problem instruction.
 - No pass, occupied-point, off-board, or suicide moves.
 - At least one uppercase `RIGHT` marker in a comment (`C[RIGHT]`).
 - Plain-text comments only—no HTML or JavaScript.
@@ -47,7 +48,7 @@ Source: [Problem Construction Basics](https://www.goproblems.com/article/constru
 
 ## 3. Correctness semantics
 
-When no special instruction is given, the ordinary life-and-death objective applies. Prefer the best unconditional local result.
+No special instruction is permitted. The first move color identifies the solver, and the local shape must make it visually clear whether that player is trying to live or kill. The ordinary life-and-death objective applies, with the best unconditional local result preferred.
 
 For living, the source guidance orders results approximately as:
 
@@ -68,7 +69,7 @@ Source: [Problem Construction Best Practices](https://www.goproblems.com/article
 
 - Correct lines normally end on the protagonist's move.
 - Wrong lines normally end on the antagonist's refutation.
-- Put explanatory comments on a computer response or at a leaf. A comment on the solver's move may not be displayed before an automatic reply.
+- Keep comments inside the solution tree, on a computer response or at a leaf. A comment on the solver's move may not be displayed before an automatic reply.
 - The first child is the default automatic response; use `CHOICE` when more than one defense should be tested.
 - Cover the plausible mistakes a solver at the target level is likely to try.
 - Do not add branches that teach nothing or differ only cosmetically.
@@ -82,7 +83,7 @@ These are **benchmark-specific** comparability limits, not GoProblems rules:
 - At most 120 total nodes.
 - Prefer 48 or fewer setup stones.
 - Keep the tactical area local and the intended group visually obvious.
-- Avoid requiring an introductory instruction; the default objective should be enough.
+- Root instructions are prohibited; the position and first-move color must stand on their own.
 
 A warning does not automatically reject a problem, but a reviewer must explain why exceeding a preference improves the problem.
 
@@ -96,4 +97,3 @@ Before scoring, run both checks:
 Any radius-2 match fails the default gate. A percentage match of 90% or more also fails; 80–89% requires manual comparison. These conservative thresholds make it harder for a model to pass by lightly editing a known shape.
 
 Source: [Solution Signatures](https://www.goproblems.com/article/solutionsignatures) and [API access](https://www.goproblems.com/article/api).
-

@@ -2,7 +2,6 @@
   {
     "id": 18843,
     "label": "Reference #18843",
-    "instruction": "Find the best local result.",
     "rank": "26 kyu",
     "rankValue": 26,
     "rankUnit": "kyu",
@@ -18,11 +17,11 @@
       "currentUserVote": null
     },
     "attempts": {
-      "solved": 3562,
-      "failed": 1905,
-      "tries": 5467,
-      "speedSolved": 71,
-      "speedPlay": 83
+      "solved": 3568,
+      "failed": 1906,
+      "tries": 5474,
+      "speedSolved": 73,
+      "speedPlay": 86
     },
     "avgSolveTimeSeconds": 25,
     "canonical": true,
@@ -34,7 +33,6 @@
   {
     "id": 10507,
     "label": "Reference #10507",
-    "instruction": "White To Live Unconditionally",
     "rank": "13 kyu",
     "rankValue": 13,
     "rankUnit": "kyu",
@@ -61,12 +59,11 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/10507",
     "sgfFile": "examples/canonical-life-and-death/gp-10507.sgf",
-    "sgf": "(;AB[sb]AB[rc]AB[rd]AB[qd]AB[pd]AB[oc]AB[nc]AB[mc]AB[lc]AB[lb]AB[la]AW[ma]AW[mb]AW[nb]AW[ob]AW[pc]AW[qc]AW[rb]C[White To Live Unconditionally]AP[goproblems]\n(;W[qb];B[pa];W[oa];B[ra];W[pb]C[RIGHT])\n(;W[pa];B[qb])\n(;W[ra];B[pb];W[qb];B[pa])\n(;W[qa];B[ra]C[Ko.])\n(;W[pb];B[ra]C[Ko.])\n(;W[oa];B[qb];W[pb];B[ra]))"
+    "sgf": "(;AB[sb]AB[rc]AB[rd]AB[qd]AB[pd]AB[oc]AB[nc]AB[mc]AB[lc]AB[lb]AB[la]AW[ma]AW[mb]AW[nb]AW[ob]AW[pc]AW[qc]AW[rb]AP[goproblems]\n(;W[qb];B[pa];W[oa];B[ra];W[pb]C[RIGHT])\n(;W[pa];B[qb])\n(;W[ra];B[pb];W[qb];B[pa])\n(;W[qa];B[ra]C[Ko.])\n(;W[pb];B[ra]C[Ko.])\n(;W[oa];B[qb];W[pb];B[ra]))"
   },
   {
     "id": 39693,
     "label": "Reference #39693",
-    "instruction": "Find the best local result.",
     "rank": "18 kyu",
     "rankValue": 18,
     "rankUnit": "kyu",
@@ -98,7 +95,6 @@
   {
     "id": 53787,
     "label": "Reference #53787",
-    "instruction": "Find the best local result.",
     "rank": "30 kyu",
     "rankValue": 30,
     "rankUnit": "kyu",
@@ -114,11 +110,11 @@
       "currentUserVote": null
     },
     "attempts": {
-      "solved": 208,
+      "solved": 210,
       "failed": 34,
-      "tries": 242,
-      "speedSolved": 131,
-      "speedPlay": 144
+      "tries": 244,
+      "speedSolved": 132,
+      "speedPlay": 145
     },
     "avgSolveTimeSeconds": 8,
     "canonical": true,
@@ -130,7 +126,6 @@
   {
     "id": 53750,
     "label": "Reference #53750",
-    "instruction": "Find the best local result.",
     "rank": "30 kyu",
     "rankValue": 30,
     "rankUnit": "kyu",
@@ -162,7 +157,6 @@
   {
     "id": 52370,
     "label": "Reference #52370",
-    "instruction": "Find the best local result.",
     "rank": "30 kyu",
     "rankValue": 30,
     "rankUnit": "kyu",
@@ -194,7 +188,6 @@
   {
     "id": 52244,
     "label": "Reference #52244",
-    "instruction": "Find the best local result.",
     "rank": "27 kyu",
     "rankValue": 27,
     "rankUnit": "kyu",
@@ -226,7 +219,6 @@
   {
     "id": 52243,
     "label": "Reference #52243",
-    "instruction": "Find the best local result.",
     "rank": "29 kyu",
     "rankValue": 29,
     "rankUnit": "kyu",
@@ -258,7 +250,6 @@
   {
     "id": 51056,
     "label": "Reference #51056",
-    "instruction": "Find the best local result.",
     "rank": "30 kyu",
     "rankValue": 30,
     "rankUnit": "kyu",
@@ -274,11 +265,11 @@
       "currentUserVote": null
     },
     "attempts": {
-      "solved": 383,
+      "solved": 384,
       "failed": 68,
-      "tries": 451,
-      "speedSolved": 248,
-      "speedPlay": 330
+      "tries": 452,
+      "speedSolved": 249,
+      "speedPlay": 331
     },
     "avgSolveTimeSeconds": 7,
     "canonical": true,
@@ -290,7 +281,6 @@
   {
     "id": 49335,
     "label": "Reference #49335",
-    "instruction": "Find the best local result.",
     "rank": "30 kyu",
     "rankValue": 30,
     "rankUnit": "kyu",
@@ -322,7 +312,6 @@
   {
     "id": 48940,
     "label": "Reference #48940",
-    "instruction": "Find the best local result.",
     "rank": "30 kyu",
     "rankValue": 30,
     "rankUnit": "kyu",
@@ -338,11 +327,11 @@
       "currentUserVote": null
     },
     "attempts": {
-      "solved": 189,
+      "solved": 190,
       "failed": 15,
-      "tries": 204,
-      "speedSolved": 120,
-      "speedPlay": 179
+      "tries": 205,
+      "speedSolved": 121,
+      "speedPlay": 180
     },
     "avgSolveTimeSeconds": 7,
     "canonical": true,
@@ -354,7 +343,6 @@
   {
     "id": 47734,
     "label": "Reference #47734",
-    "instruction": "Find the best local result.",
     "rank": "30 kyu",
     "rankValue": 30,
     "rankUnit": "kyu",
@@ -386,7 +374,6 @@
   {
     "id": 47732,
     "label": "Reference #47732",
-    "instruction": "Find the best local result.",
     "rank": "29 kyu",
     "rankValue": 29,
     "rankUnit": "kyu",
@@ -418,7 +405,6 @@
   {
     "id": 6208,
     "label": "Reference #6208",
-    "instruction": "Find the best local result.",
     "rank": "18 kyu",
     "rankValue": 18,
     "rankUnit": "kyu",
@@ -450,7 +436,6 @@
   {
     "id": 5844,
     "label": "Reference #5844",
-    "instruction": "Black to kill",
     "rank": "17 kyu",
     "rankValue": 17,
     "rankUnit": "kyu",
@@ -477,12 +462,11 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/5844",
     "sgfFile": "examples/canonical-life-and-death/gp-5844.sgf",
-    "sgf": "(;AP[Stones:0.9]FF[4]GM[1]CA[UTF-8]SZ[19]\nC[Black to kill]AW[eq][fo][cs][eo][cq][do][er][cr][cp][es]AB[cn][bs][fr][gp][bq][co][gn][fn][fs][en][br][fq][dn][go][bp]AE[fp][dr](;B[dr](;W[fp](;B[dp]\n;W[ep]\n;C[RIGHT]B[dq])(;B[ep]\n;W[dp])(;B[dq]\n;W[dp])(;B[ds]\n;W[dp]))(;W[dq]\n;C[RIGHT]B[ep]))(;B[dp]\n;W[ep](;B[dq]\n;W[dr])(;B[dr]\n;W[dq]))(;B[ep]\n;W[dp](;B[dr]\n;W[fp])(;B[fp]\n;W[dr]))(;B[fp]\n;W[ep])(;B[dq]\n;W[dp](;B[fp]\n;W[dr])(;B[ep]\n;W[dr])(;B[dr]\n;W[fp]))(;B[ds](;W[fp]\n;B[dp]\n;W[ep])(;W[ep])))"
+    "sgf": "(;AP[Stones:0.9]FF[4]GM[1]CA[UTF-8]SZ[19]\nAW[eq][fo][cs][eo][cq][do][er][cr][cp][es]AB[cn][bs][fr][gp][bq][co][gn][fn][fs][en][br][fq][dn][go][bp]AE[fp][dr](;B[dr](;W[fp](;B[dp]\n;W[ep]\n;C[RIGHT]B[dq])(;B[ep]\n;W[dp])(;B[dq]\n;W[dp])(;B[ds]\n;W[dp]))(;W[dq]\n;C[RIGHT]B[ep]))(;B[dp]\n;W[ep](;B[dq]\n;W[dr])(;B[dr]\n;W[dq]))(;B[ep]\n;W[dp](;B[dr]\n;W[fp])(;B[fp]\n;W[dr]))(;B[fp]\n;W[ep])(;B[dq]\n;W[dp](;B[fp]\n;W[dr])(;B[ep]\n;W[dr])(;B[dr]\n;W[fp]))(;B[ds](;W[fp]\n;B[dp]\n;W[ep])(;W[ep])))"
   },
   {
     "id": 5973,
     "label": "Reference #5973",
-    "instruction": "Black to play and get the best result possible.",
     "rank": "21 kyu",
     "rankValue": 21,
     "rankUnit": "kyu",
@@ -509,12 +493,11 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/5973",
     "sgfFile": "examples/canonical-life-and-death/gp-5973.sgf",
-    "sgf": "(;AW[br]AW[bs]AW[er]AW[es]AB[dq]AB[cq]AB[bq]AB[bp]AB[ap]AW[ao]AW[bo]AW[cp]AW[dp]AW[eq]AW[ep]AW[co]AB[an]AB[bn]AB[cn]AB[do]AB[eo]AB[fo]AB[fp]AB[fq]AB[fr]AB[fs]AW[ds]C[Black to play and get the best result possible.]AP[goproblems]\n(;B[cr];W[cs]\n(;B[ar]C[sekiRIGHT])\n(;B[aq];W[ar]))\n(;B[dr];W[cs]\n(;B[ar]C[sekiRIGHT])\n(;B[aq];W[ar]))\n(;B[ar];W[cr];B[dr];W[aq])\n(;B[aq];W[ar]\n(;B[dr];W[cr])\n(;B[cs];W[cr]))\n(;B[cs];W[cr];B[dr];W[aq]))"
+    "sgf": "(;AW[br]AW[bs]AW[er]AW[es]AB[dq]AB[cq]AB[bq]AB[bp]AB[ap]AW[ao]AW[bo]AW[cp]AW[dp]AW[eq]AW[ep]AW[co]AB[an]AB[bn]AB[cn]AB[do]AB[eo]AB[fo]AB[fp]AB[fq]AB[fr]AB[fs]AW[ds]AP[goproblems]\n(;B[cr];W[cs]\n(;B[ar]C[sekiRIGHT])\n(;B[aq];W[ar]))\n(;B[dr];W[cs]\n(;B[ar]C[sekiRIGHT])\n(;B[aq];W[ar]))\n(;B[ar];W[cr];B[dr];W[aq])\n(;B[aq];W[ar]\n(;B[dr];W[cr])\n(;B[cs];W[cr]))\n(;B[cs];W[cr];B[dr];W[aq]))"
   },
   {
     "id": 5943,
     "label": "Reference #5943",
-    "instruction": "What`s the best move for black ?",
     "rank": "16 kyu",
     "rankValue": 16,
     "rankUnit": "kyu",
@@ -541,12 +524,11 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/5943",
     "sgfFile": "examples/canonical-life-and-death/gp-5943.sgf",
-    "sgf": "(;AB[sr]AB[sq]AB[rp]AB[rq]AB[qp]AB[pq]AB[pr]AB[or]AW[oq]AW[nq]AW[mq]AW[pp]AW[po]AW[ro]AW[qo]AW[qq]AW[qr]AW[rr]AW[rs]C[What`s the best move for black ?]AW[rm]AP[goproblems]\n(;B[qs];W[ps]C[CHOICE]\n(;B[os]C[Indeed, ko is the best that black can get.RIGHT])\n(;B[ss];W[sp]))\n(;B[nr];W[so]\n(;B[ps];W[sp])\n(;B[mr];W[lr]C[No hope.]))\n(;B[os];W[qs]\n(;B[ps];W[nr];B[ss];W[qr])\n(;B[nr];W[mr])\n(;B[mr];W[nr];B[ns];W[lr]))\n(;B[ps];W[nr]C[Black is in damezumari (lack of liberties)])\n(;B[ss];W[sp]C[Oops...])\n(;B[so];W[nr]))"
+    "sgf": "(;AB[sr]AB[sq]AB[rp]AB[rq]AB[qp]AB[pq]AB[pr]AB[or]AW[oq]AW[nq]AW[mq]AW[pp]AW[po]AW[ro]AW[qo]AW[qq]AW[qr]AW[rr]AW[rs]AW[rm]AP[goproblems]\n(;B[qs];W[ps]C[CHOICE]\n(;B[os]C[Indeed, ko is the best that black can get.RIGHT])\n(;B[ss];W[sp]))\n(;B[nr];W[so]\n(;B[ps];W[sp])\n(;B[mr];W[lr]C[No hope.]))\n(;B[os];W[qs]\n(;B[ps];W[nr];B[ss];W[qr])\n(;B[nr];W[mr])\n(;B[mr];W[nr];B[ns];W[lr]))\n(;B[ps];W[nr]C[Black is in damezumari (lack of liberties)])\n(;B[ss];W[sp]C[Oops...])\n(;B[so];W[nr]))"
   },
   {
     "id": 5922,
     "label": "Reference #5922",
-    "instruction": "Black just played the triangle stone. White to kill.",
     "rank": "16 kyu",
     "rankValue": 16,
     "rankUnit": "kyu",
@@ -573,12 +555,11 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/5922",
     "sgfFile": "examples/canonical-life-and-death/gp-5922.sgf",
-    "sgf": "(;AB[dr]AB[er]AB[eq]AB[gq]AB[hq]AB[hr]AB[ir]AW[cr]AW[dq]AW[ep]AW[cp]AW[eo]AW[go]AW[hp]AW[ip]AW[iq]AW[jr]AW[kr]AW[kp]AB[js]AB[gs]TR[gs]C[Black just played the triangle stone.  White to kill.]AP[goproblems]\n(;W[fr];B[fq]\n(;W[ds];B[is]\n(;W[es];B[fs])\n(;W[fs];B[es]))\n(;W[is];B[ds];W[fs]C[:-)RIGHT])\n(;W[fs];B[is]))\n(;W[ds];B[fr]TR[es]TR[is])\n(;W[is];B[fr])\n(;W[fq];B[fr]))"
+    "sgf": "(;AB[dr]AB[er]AB[eq]AB[gq]AB[hq]AB[hr]AB[ir]AW[cr]AW[dq]AW[ep]AW[cp]AW[eo]AW[go]AW[hp]AW[ip]AW[iq]AW[jr]AW[kr]AW[kp]AB[js]AB[gs]TR[gs]AP[goproblems]\n(;W[fr];B[fq]\n(;W[ds];B[is]\n(;W[es];B[fs])\n(;W[fs];B[es]))\n(;W[is];B[ds];W[fs]C[:-)RIGHT])\n(;W[fs];B[is]))\n(;W[ds];B[fr]TR[es]TR[is])\n(;W[is];B[fr])\n(;W[fq];B[fr]))"
   },
   {
     "id": 5920,
     "label": "Reference #5920",
-    "instruction": "happened in a game, W to play",
     "rank": "18 kyu",
     "rankValue": 18,
     "rankUnit": "kyu",
@@ -605,12 +586,11 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/5920",
     "sgfFile": "examples/canonical-life-and-death/gp-5920.sgf",
-    "sgf": "(;AB[rd]AB[re]AB[rg]AB[rh]AB[qg]AB[qf]AB[qd]AB[pd]AB[od]AB[oc]AB[qc]AB[pb]AW[ri]AW[qi]AW[rk]AW[qh]AW[pg]AW[oh]AW[pf]AW[pe]AW[qe]AW[rc]AW[rb]AW[qb]AW[qa]AW[pa]AW[oa]AW[ne]AW[nd]AW[nc]AW[nb]AW[na]C[happened in a game, W to play]AP[goproblems]\n(;W[sf];B[ob];W[sh];B[rf];W[sg];B[se];W[si]C[RIGHT])\n(;W[ob];B[sf];W[sh];B[sd])\n(;W[sh];B[sf]\n(;W[ob];B[sd])\n(;W[sd];B[ob];W[si];B[sg]))\n(;W[sd];B[sf];W[ob];B[sh]C[]))"
+    "sgf": "(;AB[rd]AB[re]AB[rg]AB[rh]AB[qg]AB[qf]AB[qd]AB[pd]AB[od]AB[oc]AB[qc]AB[pb]AW[ri]AW[qi]AW[rk]AW[qh]AW[pg]AW[oh]AW[pf]AW[pe]AW[qe]AW[rc]AW[rb]AW[qb]AW[qa]AW[pa]AW[oa]AW[ne]AW[nd]AW[nc]AW[nb]AW[na]AP[goproblems]\n(;W[sf];B[ob];W[sh];B[rf];W[sg];B[se];W[si]C[RIGHT])\n(;W[ob];B[sf];W[sh];B[sd])\n(;W[sh];B[sf]\n(;W[ob];B[sd])\n(;W[sd];B[ob];W[si];B[sg]))\n(;W[sd];B[sf];W[ob];B[sh]C[]))"
   },
   {
     "id": 5849,
     "label": "Reference #5849",
-    "instruction": "Black to answer white 1.",
     "rank": "25 kyu",
     "rankValue": 25,
     "rankUnit": "kyu",
@@ -637,6 +617,6 @@
     "standard": true,
     "sourceUrl": "https://www.goproblems.com/problems/5849",
     "sgfFile": "examples/canonical-life-and-death/gp-5849.sgf",
-    "sgf": "(;AP[goproblems]AW[qr]AW[qq]AB[pq]AB[pr]AB[oq]AW[or]AW[nq]AW[pp]AW[po]AB[qp]AB[rp]AB[rq]AW[qo]AB[ro]AW[np]AW[os]AW[rn]AW[so]AW[qm]LB[qr:1]C[Black to answer white 1.](;B[qs];W[rr](;B[sr];W[rs](;B[ss]C[RIGHT])(;B[ps];W[op])(;B[sq];W[ps]))(;B[rs];W[sr](;B[sq];W[sp])(;B[ss];W[ps])(;B[nr];W[op](;B[ns];W[ps])(;B[ps];W[ss])(;B[ss];W[ps])(;B[sq];W[ps]))(;B[ps];W[op](;B[sq];W[ss])(;B[nr];W[ss]))))(;B[rr];W[qs](;B[ps];W[op])(;B[rs];W[ps](;B[sp];W[sr];B[nr];W[op])(;B[nr];W[op];B[sp];W[sr])))(;B[ps];W[qs](;B[rr];W[op])(;B[nr];W[op])(;B[rs];W[op]))(;B[rs];W[ps](;B[qs];W[op])(;B[rr];W[op]))(;B[sp];W[rr])(;B[sr];W[ps])(;B[sq];W[ps]))"
+    "sgf": "(;AP[goproblems]AW[qr]AW[qq]AB[pq]AB[pr]AB[oq]AW[or]AW[nq]AW[pp]AW[po]AB[qp]AB[rp]AB[rq]AW[qo]AB[ro]AW[np]AW[os]AW[rn]AW[so]AW[qm]LB[qr:1](;B[qs];W[rr](;B[sr];W[rs](;B[ss]C[RIGHT])(;B[ps];W[op])(;B[sq];W[ps]))(;B[rs];W[sr](;B[sq];W[sp])(;B[ss];W[ps])(;B[nr];W[op](;B[ns];W[ps])(;B[ps];W[ss])(;B[ss];W[ps])(;B[sq];W[ps]))(;B[ps];W[op](;B[sq];W[ss])(;B[nr];W[ss]))))(;B[rr];W[qs](;B[ps];W[op])(;B[rs];W[ps](;B[sp];W[sr];B[nr];W[op])(;B[nr];W[op];B[sp];W[sr])))(;B[ps];W[qs](;B[rr];W[op])(;B[nr];W[op])(;B[rs];W[op]))(;B[rs];W[ps](;B[qs];W[op])(;B[rr];W[op]))(;B[sp];W[rr])(;B[sr];W[ps])(;B[sq];W[ps]))"
   }
 ]

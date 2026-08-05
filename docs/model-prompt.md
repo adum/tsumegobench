@@ -15,13 +15,13 @@ Each problem must be:
 - legal under ordinary Go rules;
 - on a 9×9, 13×13, or 19×19 board;
 - expressed as a root setup with both `AB` and `AW`, followed by a complete alternating solution tree;
-- solvable without special instructions whenever possible;
+- self-explanatory from the local position and the color of the first move;
 - short: no more than 14 moves on any line and no more than 120 total nodes;
 - original rather than a disguised known problem.
 
 SGF requirements:
 
-1. Put no move at the root.
+1. Put no move and no `C[...]` comment at the root. Do not write a problem instruction; the board position and first-move color must make the ordinary life-and-death objective clear.
 2. Every node after the root must contain exactly one `B` or `W` move.
 3. Alternate colors, use one consistent first-player color, and include no pass moves.
 4. Mark every accepted solution endpoint with uppercase `RIGHT` inside `C[...]`.
@@ -32,7 +32,7 @@ SGF requirements:
 9. Use plain UTF-8 text with no HTML or JavaScript.
 10. Check captures, liberties, occupied points, and the final life/death result on every branch.
 
-Across the set, include at least two Black-to-play and at least two White-to-play problems. Vary the board edge/corner shape and tactical idea. Do not explain your reasoning and do not claim that you searched for duplicates unless you actually used a search tool.
+Across the set, include at least two Black-to-play and at least two White-to-play problems. Establish the player color only through the first move in the tree, not through written instructions. Vary the board edge/corner shape and tactical idea. Do not explain your reasoning and do not claim that you searched for duplicates unless you actually used a search tool.
 
 Output only these five sections in order:
 
@@ -43,4 +43,3 @@ Output only these five sections in order:
 ```
 
 Repeat that exact filename-plus-code-block format through `problem-05.sgf`. Do not add prose before, between, or after the five sections.
-

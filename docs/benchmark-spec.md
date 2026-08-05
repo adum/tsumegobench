@@ -48,6 +48,7 @@ A candidate is rejected before scoring if any of these is true:
 
 - It is not parseable SGF.
 - A structural validator error remains.
+- It contains a root comment or written problem instruction.
 - The position or any required line is illegal.
 - The claimed `RIGHT` outcome is false.
 - A materially correct alternative is missing or marked wrong.
@@ -81,4 +82,3 @@ For a serious comparison, run at least three independent five-problem trials per
 ## Current limitation
 
 The first version automates SGF structure, board legality checks, local transformed fingerprints, and GoProblems similarity queries. It does **not** prove life/death truth. Semantic correctness and completeness still require a competent Go reviewer (or a separately documented engine-assisted protocol). That distinction is intentional: parseability is not the same as a sound tsumego.
-

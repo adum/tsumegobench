@@ -21,7 +21,6 @@ import {
 interface ProblemRecord {
   id: number;
   label: string;
-  instruction: string;
   rank: string;
   rankValue: number;
   rankUnit: string;
@@ -58,13 +57,14 @@ export function ProblemWorkbench() {
   const stats = useMemo(() => getProblemStats(root), [root]);
   const boardSize = getBoardSize(root);
   const rightNodes = useMemo(() => collectRightNodes(root), [root]);
+  const playerName = problem.playerColor === "black" ? "Black" : "White";
 
   const filteredProblems = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return problems.filter((record) => {
       const matchesQuery =
         !needle ||
-        [record.id, record.rank, record.author, record.source, record.instruction]
+        [record.id, record.rank, record.playerColor, record.author, record.source]
           .join(" ")
           .toLowerCase()
           .includes(needle);
@@ -183,7 +183,7 @@ export function ProblemWorkbench() {
                     <strong>#{record.id}</strong>
                     <span>{record.rank}</span>
                   </span>
-                  <span>{record.instruction}</span>
+                  <span>{record.playerColor === "black" ? "Black" : "White"} to play</span>
                   <small>
                     {record.author} · {record.attempts.tries.toLocaleString()} tries
                   </small>
@@ -203,10 +203,10 @@ export function ProblemWorkbench() {
                 <span>GO PROBLEMS / {problem.id}</span>
                 <span className="standard-badge">CANON · STANDARD</span>
               </div>
-              <h3>{problem.instruction}</h3>
+              <h3>{playerName} to play</h3>
               <p>
                 <span className={`inline-stone ${problem.playerColor}`} aria-hidden="true" />
-                {problem.playerColor === "black" ? "Black" : "White"} to play · {problem.rank}
+                {problem.rank}
                 {problem.source !== "Not listed" ? ` · ${problem.source}` : ""}
               </p>
             </div>
@@ -254,7 +254,7 @@ export function ProblemWorkbench() {
                           ? "A marked defensive choice."
                           : selectedMove
                             ? "Continue through the selected variation."
-                            : problem.instruction)}
+                            : `${playerName} to play.`)}
                   </p>
                 </div>
                 <div className="move-controls">

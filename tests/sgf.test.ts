@@ -5,6 +5,8 @@ import {
   canonicalProblemFingerprint,
   collectRightNodes,
   parseSgf,
+  stripRootComment,
+  visibleComment,
   walkSgf,
 } from "../lib/sgf";
 import { validateSgf } from "../lib/validate-sgf";
@@ -33,6 +35,16 @@ test("canonical fingerprint ignores translation and color reversal", () => {
   assert.equal(canonicalProblemFingerprint(first), canonicalProblemFingerprint(second));
 });
 
+test("strips only the written instruction from the root", () => {
+  const cleaned = stripRootComment(
+    "(;SZ[9]C[White to live \\] unconditionally]AB[aa]AW[bb](;W[cc]C[RIGHT]))",
+  );
+  const root = parseSgf(cleaned);
+  assert.equal(visibleComment(root), "");
+  assert.equal(visibleComment(root.children[0]), "");
+  assert.equal(collectRightNodes(root).length, 1);
+});
+
 test("validator catches a pass and missing RIGHT", () => {
   const report = validateSgf("(;SZ[9]AB[aa]AW[bb];B[])");
   assert.equal(report.valid, false);
@@ -40,3 +52,10 @@ test("validator catches a pass and missing RIGHT", () => {
   assert.ok(report.issues.some((issue) => issue.code === "missing-right"));
 });
 
+test("validator rejects written instructions at the root", () => {
+  const report = validateSgf(
+    "(;SZ[9]AB[aa]AW[bb]C[Find the best result](;B[ab]C[RIGHT]))",
+  );
+  assert.equal(report.valid, false);
+  assert.ok(report.issues.some((issue) => issue.code === "root-comment"));
+});

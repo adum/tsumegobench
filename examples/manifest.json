@@ -1,6 +1,6 @@
 {
   "name": "Canonical life-and-death reference corpus",
-  "description": "Public GoProblems examples verified as canonical, standard, and life-and-death when synchronized.",
+  "description": "Public GoProblems examples verified as canonical, standard, and life-and-death when synchronized. Root instructions are removed so the position and side to move stand on their own.",
   "source": "https://www.goproblems.com",
   "sourceGuidance": [
     "https://www.goproblems.com/article/problemtypes",
@@ -12,7 +12,6 @@
     {
       "id": 18843,
       "label": "Reference #18843",
-      "instruction": "Find the best local result.",
       "rank": "26 kyu",
       "rankValue": 26,
       "rankUnit": "kyu",
@@ -28,11 +27,11 @@
         "currentUserVote": null
       },
       "attempts": {
-        "solved": 3562,
-        "failed": 1905,
-        "tries": 5467,
-        "speedSolved": 71,
-        "speedPlay": 83
+        "solved": 3568,
+        "failed": 1906,
+        "tries": 5474,
+        "speedSolved": 73,
+        "speedPlay": 86
       },
       "avgSolveTimeSeconds": 25,
       "canonical": true,
@@ -43,7 +42,6 @@
     {
       "id": 10507,
       "label": "Reference #10507",
-      "instruction": "White To Live Unconditionally",
       "rank": "13 kyu",
       "rankValue": 13,
       "rankUnit": "kyu",
@@ -74,7 +72,6 @@
     {
       "id": 39693,
       "label": "Reference #39693",
-      "instruction": "Find the best local result.",
       "rank": "18 kyu",
       "rankValue": 18,
       "rankUnit": "kyu",
@@ -105,7 +102,6 @@
     {
       "id": 53787,
       "label": "Reference #53787",
-      "instruction": "Find the best local result.",
       "rank": "30 kyu",
       "rankValue": 30,
       "rankUnit": "kyu",
@@ -121,11 +117,11 @@
         "currentUserVote": null
       },
       "attempts": {
-        "solved": 208,
+        "solved": 210,
         "failed": 34,
-        "tries": 242,
-        "speedSolved": 131,
-        "speedPlay": 144
+        "tries": 244,
+        "speedSolved": 132,
+        "speedPlay": 145
       },
       "avgSolveTimeSeconds": 8,
       "canonical": true,
@@ -136,7 +132,6 @@
     {
       "id": 53750,
       "label": "Reference #53750",
-      "instruction": "Find the best local result.",
       "rank": "30 kyu",
       "rankValue": 30,
       "rankUnit": "kyu",
@@ -167,7 +162,6 @@
     {
       "id": 52370,
       "label": "Reference #52370",
-      "instruction": "Find the best local result.",
       "rank": "30 kyu",
       "rankValue": 30,
       "rankUnit": "kyu",
@@ -198,7 +192,6 @@
     {
       "id": 52244,
       "label": "Reference #52244",
-      "instruction": "Find the best local result.",
       "rank": "27 kyu",
       "rankValue": 27,
       "rankUnit": "kyu",
@@ -229,7 +222,6 @@
     {
       "id": 52243,
       "label": "Reference #52243",
-      "instruction": "Find the best local result.",
       "rank": "29 kyu",
       "rankValue": 29,
       "rankUnit": "kyu",
@@ -260,7 +252,6 @@
     {
       "id": 51056,
       "label": "Reference #51056",
-      "instruction": "Find the best local result.",
       "rank": "30 kyu",
       "rankValue": 30,
       "rankUnit": "kyu",
@@ -276,11 +267,11 @@
         "currentUserVote": null
       },
       "attempts": {
-        "solved": 383,
+        "solved": 384,
         "failed": 68,
-        "tries": 451,
-        "speedSolved": 248,
-        "speedPlay": 330
+        "tries": 452,
+        "speedSolved": 249,
+        "speedPlay": 331
       },
       "avgSolveTimeSeconds": 7,
       "canonical": true,
@@ -291,7 +282,6 @@
     {
       "id": 49335,
       "label": "Reference #49335",
-      "instruction": "Find the best local result.",
       "rank": "30 kyu",
       "rankValue": 30,
       "rankUnit": "kyu",
@@ -322,7 +312,6 @@
     {
       "id": 48940,
       "label": "Reference #48940",
-      "instruction": "Find the best local result.",
       "rank": "30 kyu",
       "rankValue": 30,
       "rankUnit": "kyu",
@@ -338,11 +327,11 @@
         "currentUserVote": null
       },
       "attempts": {
-        "solved": 189,
+        "solved": 190,
         "failed": 15,
-        "tries": 204,
-        "speedSolved": 120,
-        "speedPlay": 179
+        "tries": 205,
+        "speedSolved": 121,
+        "speedPlay": 180
       },
       "avgSolveTimeSeconds": 7,
       "canonical": true,
@@ -353,7 +342,6 @@
     {
       "id": 47734,
       "label": "Reference #47734",
-      "instruction": "Find the best local result.",
       "rank": "30 kyu",
       "rankValue": 30,
       "rankUnit": "kyu",
@@ -384,7 +372,6 @@
     {
       "id": 47732,
       "label": "Reference #47732",
-      "instruction": "Find the best local result.",
       "rank": "29 kyu",
       "rankValue": 29,
       "rankUnit": "kyu",
@@ -415,7 +402,6 @@
     {
       "id": 6208,
       "label": "Reference #6208",
-      "instruction": "Find the best local result.",
       "rank": "18 kyu",
       "rankValue": 18,
       "rankUnit": "kyu",
@@ -446,7 +432,6 @@
     {
       "id": 5844,
       "label": "Reference #5844",
-      "instruction": "Black to kill",
       "rank": "17 kyu",
       "rankValue": 17,
       "rankUnit": "kyu",
@@ -477,7 +462,6 @@
     {
       "id": 5973,
       "label": "Reference #5973",
-      "instruction": "Black to play and get the best result possible.",
       "rank": "21 kyu",
       "rankValue": 21,
       "rankUnit": "kyu",
@@ -508,7 +492,6 @@
     {
       "id": 5943,
       "label": "Reference #5943",
-      "instruction": "What`s the best move for black ?",
       "rank": "16 kyu",
       "rankValue": 16,
       "rankUnit": "kyu",
@@ -539,7 +522,6 @@
     {
       "id": 5922,
       "label": "Reference #5922",
-      "instruction": "Black just played the triangle stone. White to kill.",
       "rank": "16 kyu",
       "rankValue": 16,
       "rankUnit": "kyu",
@@ -570,7 +552,6 @@
     {
       "id": 5920,
       "label": "Reference #5920",
-      "instruction": "happened in a game, W to play",
       "rank": "18 kyu",
       "rankValue": 18,
       "rankUnit": "kyu",
@@ -601,7 +582,6 @@
     {
       "id": 5849,
       "label": "Reference #5849",
-      "instruction": "Black to answer white 1.",
       "rank": "25 kyu",
       "rankValue": 25,
       "rankUnit": "kyu",

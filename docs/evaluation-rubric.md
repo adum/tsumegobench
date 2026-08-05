@@ -19,7 +19,7 @@ Apply this 100-point rubric only after a candidate passes every hard gate in `do
 ## 3. Construction and canonical style — 20 points
 
 - **18–20:** Local, realistic, visually economical, clear without special instructions, and shaped like a useful classical problem.
-- **13–17:** Solid but has a few excess stones, awkward presentation, or avoidable instruction.
+- **13–17:** Solid but has a few excess stones, awkward presentation, or an unclear target group.
 - **1–12:** Contrived, noisy, ambiguous, or dependent on artificial controls.
 
 ## 4. Pedagogical value and difficulty fit — 15 points
@@ -51,4 +51,3 @@ Originality (10):
 Total (100):
 Evidence / notes:
 ```
-

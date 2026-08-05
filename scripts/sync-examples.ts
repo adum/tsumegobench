@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { parseSgf, visibleComment } from "../lib/sgf";
+import { getMove, parseSgf, stripRootComment } from "../lib/sgf";
 
 const PROBLEM_IDS = [
   18843, 10507, 39693, 53787, 53750, 52370, 52244, 52243, 51056, 49335,
@@ -54,21 +54,35 @@ for (const [index, id] of PROBLEM_IDS.entries()) {
     );
   }
 
-  const sgf = `${problem.sgf.replace(/\r\n/g, "\n").trim()}\n`;
+  const normalizedSgf = problem.sgf.replace(/\r\n/g, "\n").trim();
+  const sgf = `${stripRootComment(normalizedSgf).trim()}\n`;
   const fileName = `gp-${id}.sgf`;
   await writeFile(path.join(examplesDirectory, fileName), sgf, "utf8");
   const root = parseSgf(sgf);
-  const instruction = visibleComment(root);
+  const firstMoveColors = new Set(
+    root.children
+      .map(getMove)
+      .filter((move): move is NonNullable<ReturnType<typeof getMove>> => Boolean(move))
+      .map((move) => move.color),
+  );
+  if (firstMoveColors.size !== 1) {
+    throw new Error(`Problem ${id} does not have one consistent first-player color.`);
+  }
+  const playerColor = firstMoveColors.has("B") ? "black" : "white";
+  if (playerColor !== problem.playerColor) {
+    throw new Error(
+      `Problem ${id} reports ${problem.playerColor} to play but its SGF starts with ${playerColor}.`,
+    );
+  }
 
   records.push({
     id: problem.id,
     label: `Reference #${problem.id}`,
-    instruction: instruction || "Find the best local result.",
     rank: `${problem.rank.value} ${problem.rank.unit}`,
     rankValue: problem.rank.value,
     rankUnit: problem.rank.unit,
     elo: Math.round(problem.elo),
-    playerColor: problem.playerColor,
+    playerColor,
     genre: problem.specificGenre || problem.genre,
     author: problem.author.name,
     source: problem.source || "Not listed",
@@ -90,7 +104,7 @@ for (const [index, id] of PROBLEM_IDS.entries()) {
 const manifest = {
   name: "Canonical life-and-death reference corpus",
   description:
-    "Public GoProblems examples verified as canonical, standard, and life-and-death when synchronized.",
+    "Public GoProblems examples verified as canonical, standard, and life-and-death when synchronized. Root instructions are removed so the position and side to move stand on their own.",
   source: "https://www.goproblems.com",
   sourceGuidance: [
     "https://www.goproblems.com/article/problemtypes",

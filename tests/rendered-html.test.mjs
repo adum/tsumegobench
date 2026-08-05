@@ -24,6 +24,8 @@ test("server-renders the Tsumego Bench reviewer", async () => {
   assert.match(html, /<title>Tsumego Bench — AI Go Problem Creation<\/title>/i);
   assert.match(html, /Can a model invent a Go problem/);
   assert.match(html, /Reference problem lab|Reference laboratory/);
+  assert.match(html, /Black to play|White to play/);
+  assert.doesNotMatch(html, /Find the best (?:local )?result/i);
   assert.match(html, /One prompt\. Four gates\./);
   assert.match(html, /goproblems/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);

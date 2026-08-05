@@ -128,6 +128,17 @@ export function validateSgf(input: string): ValidationReport {
     );
   }
 
+  if (root.properties.C?.length) {
+    issues.push(
+      issue(
+        "error",
+        "root-comment",
+        "Root comments and written problem instructions are not allowed; the position and first-move color must make the objective clear.",
+        root,
+      ),
+    );
+  }
+
   if (!setupBlack.length || !setupWhite.length) {
     issues.push(
       issue(
