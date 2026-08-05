@@ -125,12 +125,16 @@ function safeParseSgf(sgf: string | null | undefined, valid: boolean | undefined
   }
 }
 
+function defaultProblem(run: BenchmarkRun | undefined) {
+  return run?.problems.find((problem) => problem.validation.valid && problem.sgf) ?? run?.problems[0];
+}
+
 export function RunBrowser() {
   const [selectedRunId, setSelectedRunId] = useState(runs[0]?.runId ?? "");
   const run = runs.find((record) => record.runId === selectedRunId) ?? runs[0];
-  const [selectedProblemFile, setSelectedProblemFile] = useState(run?.problems[0]?.file ?? "");
+  const [selectedProblemFile, setSelectedProblemFile] = useState(defaultProblem(run)?.file ?? "");
   const problem =
-    run?.problems.find((record) => record.file === selectedProblemFile) ?? run?.problems[0];
+    run?.problems.find((record) => record.file === selectedProblemFile) ?? defaultProblem(run);
   const root = safeParseSgf(problem?.sgf, problem?.validation.valid);
   const [selectedNodeId, setSelectedNodeId] = useState("n0");
   const nodes = root ? walkSgf(root) : [];
@@ -142,7 +146,7 @@ export function RunBrowser() {
   const chooseRun = (runId: string) => {
     const nextRun = runs.find((record) => record.runId === runId);
     setSelectedRunId(runId);
-    setSelectedProblemFile(nextRun?.problems[0]?.file ?? "");
+    setSelectedProblemFile(defaultProblem(nextRun)?.file ?? "");
     setSelectedNodeId("n0");
   };
   const chooseProblem = (file: string) => {
@@ -156,6 +160,11 @@ export function RunBrowser() {
   const selectedMoveNumber = path.filter(getMove).length;
   const comment = selected ? visibleComment(selected) : "";
   const boardSize = root ? getBoardSize(root) : 19;
+  const firstMove = root?.children.map(getMove).find(Boolean);
+  const playerColor =
+    problem?.playerColor ??
+    (firstMove?.color === "B" ? "black" : firstMove?.color === "W" ? "white" : null);
+  const playerName = playerColor === "black" ? "Black" : playerColor === "white" ? "White" : null;
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -323,11 +332,21 @@ export function RunBrowser() {
                 <div className="board-frame">
                   <div className="board-toolbar">
                     <span className="board-toolbar-label">GENERATED POSITION</span>
-                    <div className="board-controls" aria-label="Generated board navigation controls">
-                      <button type="button" onClick={() => chooseNode(root)} disabled={selected === root} aria-label="Reset to setup">↺</button>
-                      <button type="button" onClick={() => previousNode && chooseNode(previousNode)} disabled={!previousNode} aria-label="Previous move">←</button>
-                      <button type="button" onClick={() => nextNode && chooseNode(nextNode)} disabled={!nextNode} aria-label="Next default move">→</button>
-                      <button type="button" className="reveal-button" onClick={() => rightNodes[0] && chooseNode(rightNodes[0])}>Reveal</button>
+                    <div className="board-primary-controls">
+                      {playerColor && playerName && (
+                        <span
+                          className={`to-move-stone ${playerColor}`}
+                          role="img"
+                          aria-label={`${playerName} to play`}
+                          title={`${playerName} to play`}
+                        />
+                      )}
+                      <div className="board-controls" aria-label="Generated board navigation controls">
+                        <button type="button" onClick={() => chooseNode(root)} disabled={selected === root} aria-label="Reset to setup">↺</button>
+                        <button type="button" onClick={() => previousNode && chooseNode(previousNode)} disabled={!previousNode} aria-label="Previous move">←</button>
+                        <button type="button" onClick={() => nextNode && chooseNode(nextNode)} disabled={!nextNode} aria-label="Next default move">→</button>
+                        <button type="button" className="reveal-button" onClick={() => rightNodes[0] && chooseNode(rightNodes[0])}>Reveal</button>
+                      </div>
                     </div>
                     <div className="board-variation-legend" id="run-board-variation-legend">
                       <span><i className="board-marker-right" aria-hidden="true" /> RIGHT</span>

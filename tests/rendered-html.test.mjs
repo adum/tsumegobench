@@ -1,13 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-async function render() {
+async function render(path = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
+  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${path}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", { headers: { accept: "text/html" } }),
+    new Request(`http://localhost${path}`, { headers: { accept: "text/html" } }),
     {
       ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) },
     },
@@ -15,23 +15,32 @@ async function render() {
   );
 }
 
-test("server-renders the Tsumego Bench reviewer", async () => {
-  const response = await render();
+async function htmlFor(path) {
+  const response = await render(path);
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
+  return response.text();
+}
 
-  const html = await response.text();
-  assert.match(html, /<title>Tsumego Bench — AI Go Problem Creation<\/title>/i);
+test("server-renders a compact overview with route navigation", async () => {
+  const html = await htmlFor("/");
   assert.match(html, /AI Go Problem Creation Benchmark/);
-  assert.match(html, /Problem viewer/);
-  assert.match(html, /Benchmark runs/);
-  assert.match(html, /Evaluation protocol/);
+  assert.match(html, /href="\/problems"/);
+  assert.match(html, /href="\/runs"/);
+  assert.match(html, /href="\/evaluation"/);
+  assert.match(html, /href="\/sources"/);
   assert.match(html, /19×19 boards/);
-  assert.match(html, /solution and refutation coverage, endpoint judgment/);
-  assert.match(html, /Black to play|White to play/);
+  assert.doesNotMatch(html, /class="workbench-shell/);
+  assert.doesNotMatch(html, /class="protocol-grid/);
+});
+
+test("server-renders reference problems on their own page", async () => {
+  const html = await htmlFor("/problems");
+  assert.match(html, /Problem viewer/);
+  assert.doesNotMatch(html, /class="runs-section/);
+  assert.doesNotMatch(html, /class="protocol-section/);
   assert.match(html, /aria-label="Problem 18843, Black to play/);
   assert.match(html, /1 dan/);
-  assert.doesNotMatch(html, /class="principle-strip"/);
   assert.doesNotMatch(html, /aria-label="Filter problems"|Search ID, rank, source/);
   const thirtyKyuIndex = html.indexOf('aria-label="Problem 53750, White to play, 30 kyu');
   const oneKyuIndex = html.indexOf('aria-label="Problem 721, Black to play, 1 kyu');
@@ -48,12 +57,12 @@ test("server-renders the Tsumego Bench reviewer", async () => {
   assert.doesNotMatch(html, /CHOICE|FORCE|NOTTHIS/);
   assert.match(html, /Leads to RIGHT/);
   assert.match(html, /aria-label="Board variation legend"/);
-  assert.match(html, /aria-label="Board navigation controls"/);
+  assert.match(html, /class="to-move-stone white"[^>]*aria-label="White to play"/);
   assert.match(
     html,
-    /aria-label="Board navigation controls"[\s\S]*class="go-board-canvas"/,
+    /aria-label="White to play"[\s\S]*aria-label="Board navigation controls"[\s\S]*class="go-board-canvas"/,
   );
-  assert.doesNotMatch(html, /class="move-controls"/);
+  assert.doesNotMatch(html, /<h3>White to play<\/h3>|<h3>Black to play<\/h3>/);
   assert.ok(
     html.indexOf('class="move-inspector"') >= 0 &&
       html.indexOf('class="move-inspector"') < html.indexOf('class="go-board-canvas"'),
@@ -66,17 +75,47 @@ test("server-renders the Tsumego Bench reviewer", async () => {
   );
   assert.match(html, /next variations, \d+ leading to RIGHT/);
   assert.match(html, /Click a colored marker to select that variation/);
-  assert.match(html, /Available board variations/);
   assert.doesNotMatch(html, />COORDINATES</i);
   assert.match(html, /tree-edge has-result/);
   assert.match(html, /tree-edge no-result/);
   assert.doesNotMatch(html, /tree-coordinate/);
   assert.doesNotMatch(html, /type="checkbox"/i);
-  assert.match(html, /goproblems/i);
-  assert.doesNotMatch(html, /property="og:image"/i);
+});
+
+test("server-renders generated runs on their own page with a to-move stone", async () => {
+  const html = await htmlFor("/runs");
+  assert.match(html, /Benchmark runs/);
+  assert.match(html, /gpt-5\.6-luna/);
+  assert.doesNotMatch(html, /Problem viewer/);
+  assert.match(html, /class="to-move-stone white"[^>]*aria-label="White to play"/);
+  assert.match(
+    html,
+    /aria-label="White to play"[\s\S]*aria-label="Generated board navigation controls"[\s\S]*class="go-board-canvas"/,
+  );
+});
+
+test("server-renders evaluation and sources as dedicated pages", async () => {
+  const evaluation = await htmlFor("/evaluation");
+  assert.match(evaluation, /Evaluation protocol/);
+  assert.match(evaluation, /solution and refutation coverage, endpoint judgment/);
+  assert.doesNotMatch(evaluation, /Problem viewer|Benchmark runs/);
+
+  const sources = await htmlFor("/sources");
+  assert.match(sources, /Guidance and APIs/);
+  assert.match(sources, /Problem types/);
+  assert.match(sources, /Solution signatures/);
+  assert.match(sources, /github\.com\/adum\/tsumegobench/);
+});
+
+test("rendered pages omit retired controls and marketing copy", async () => {
+  const pages = await Promise.all(["/", "/problems", "/runs", "/evaluation", "/sources"].map(htmlFor));
+  const html = pages.join("\n");
+  assert.doesNotMatch(html, /class="principle-strip"/);
+  assert.doesNotMatch(html, /class="move-controls"/);
   assert.doesNotMatch(
     html,
     /Can a model invent|worth solving|evidence-first|Reference laboratory|Read the position|One prompt\. Four gates|No quiet repairs|difficult creative claim|does not pretend/i,
   );
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
+  assert.doesNotMatch(html, /property="og:image"/i);
 });

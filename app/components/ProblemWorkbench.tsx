@@ -162,9 +162,8 @@ export function ProblemWorkbench() {
                 <span>GO PROBLEMS / {problem.id}</span>
                 <span className="standard-badge">CANON · STANDARD</span>
               </div>
-              <h3>{playerName} to play</h3>
+              <h3>Problem #{problem.id}</h3>
               <p>
-                <span className={`inline-stone ${problem.playerColor}`} aria-hidden="true" />
                 {problem.rank}
                 {problem.source !== "Not listed" ? ` · ${problem.source}` : ""}
               </p>
@@ -196,7 +195,7 @@ export function ProblemWorkbench() {
                         ? "Accepted solution endpoint."
                         : selectedMove
                           ? "Continue through the selected variation."
-                          : `${playerName} to play.`)}
+                          : "Select a variation to replay it.")}
                   </p>
                 </div>
               </div>
@@ -204,42 +203,50 @@ export function ProblemWorkbench() {
               <div className="board-frame">
                 <div className="board-toolbar">
                   <span className="board-toolbar-label">POSITION</span>
-                  <div className="board-controls" aria-label="Board navigation controls">
-                    <button
-                      type="button"
-                      onClick={() => chooseNode(root)}
-                      disabled={selected === root}
-                      aria-label="Reset to setup"
-                      title="Reset to setup"
-                    >
-                      ↺
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => previousNode && chooseNode(previousNode)}
-                      disabled={!previousNode}
-                      aria-label="Previous move"
-                      title="Previous move"
-                    >
-                      ←
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => nextNode && chooseNode(nextNode)}
-                      disabled={!nextNode}
-                      aria-label="Next default move"
-                      title="Next move"
-                    >
-                      →
-                    </button>
-                    <button
-                      type="button"
-                      className="reveal-button"
-                      onClick={() => rightNodes[0] && chooseNode(rightNodes[0])}
-                      aria-label="Reveal accepted line"
-                    >
-                      Reveal
-                    </button>
+                  <div className="board-primary-controls">
+                    <span
+                      className={`to-move-stone ${problem.playerColor}`}
+                      role="img"
+                      aria-label={`${playerName} to play`}
+                      title={`${playerName} to play`}
+                    />
+                    <div className="board-controls" aria-label="Board navigation controls">
+                      <button
+                        type="button"
+                        onClick={() => chooseNode(root)}
+                        disabled={selected === root}
+                        aria-label="Reset to setup"
+                        title="Reset to setup"
+                      >
+                        ↺
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => previousNode && chooseNode(previousNode)}
+                        disabled={!previousNode}
+                        aria-label="Previous move"
+                        title="Previous move"
+                      >
+                        ←
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => nextNode && chooseNode(nextNode)}
+                        disabled={!nextNode}
+                        aria-label="Next default move"
+                        title="Next move"
+                      >
+                        →
+                      </button>
+                      <button
+                        type="button"
+                        className="reveal-button"
+                        onClick={() => rightNodes[0] && chooseNode(rightNodes[0])}
+                        aria-label="Reveal accepted line"
+                      >
+                        Reveal
+                      </button>
+                    </div>
                   </div>
                   <div
                     className="board-variation-legend"

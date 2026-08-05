@@ -1,0 +1,378 @@
+{
+  "$schema": "../../../schemas/automated-evaluation.schema.json",
+  "schemaVersion": 1,
+  "runId": "2026-08-05T225707Z-openai-gpt-5-6-luna-codex",
+  "evaluatedAt": "2026-08-05T23:00:22.511Z",
+  "evaluator": {
+    "commitSha": "c609bbe65e32c77f27a4b34acdc0b935f75661f7"
+  },
+  "configuration": {
+    "remoteDuplicateChecks": true,
+    "duplicateFailThreshold": 90,
+    "manualReviewThreshold": 80
+  },
+  "status": "failed",
+  "runChecks": [
+    {
+      "id": "expected-files",
+      "status": "pass",
+      "message": "All five expected SGF files are present."
+    },
+    {
+      "id": "unexpected-files",
+      "status": "pass",
+      "message": "The output directory contains only the five expected files."
+    },
+    {
+      "id": "input-integrity",
+      "status": "pass",
+      "message": "The model-visible input snapshot is unchanged."
+    },
+    {
+      "id": "player-color-range",
+      "status": "pass",
+      "message": "The set includes 3 Black-to-play and 2 White-to-play problems."
+    },
+    {
+      "id": "difficulty-range",
+      "status": "needs_human_review",
+      "message": "The five target difficulty bands are encoded by filename; a human reviewer must verify the actual difficulty range."
+    }
+  ],
+  "summary": {
+    "expectedProblems": 5,
+    "filesFound": 5,
+    "structuralPassed": 3,
+    "originalityPassed": 2,
+    "automatedGatePassed": 3,
+    "failedProblems": 2,
+    "incompleteProblems": 0,
+    "humanReviewPending": 3,
+    "failedRunChecks": 0
+  },
+  "problems": [
+    {
+      "file": "problem-01.sgf",
+      "targetDifficulty": "20–30 kyu",
+      "sha256": "f9ddce5d6f14c1687be934c77fb923f8782568c5449c4a5faf028e5f5d3a450e",
+      "playerColor": "black",
+      "status": "failed",
+      "automatedGate": "fail",
+      "validation": {
+        "status": "fail",
+        "valid": false,
+        "issues": [
+          {
+            "severity": "error",
+            "code": "suicide-move",
+            "message": "W[ac] is suicide under ordinary Go rules.",
+            "nodeId": "n3"
+          }
+        ],
+        "stats": {
+          "nodeCount": 4,
+          "moveCount": 3,
+          "maxDepth": 2,
+          "variationPoints": 1,
+          "rightCount": 1,
+          "setupStoneCount": 9
+        }
+      },
+      "originality": {
+        "status": "not_run",
+        "exactLocalMatch": null,
+        "closestLocalShape": null,
+        "remote": {
+          "status": "not_run",
+          "radiusTwoMatches": [],
+          "topPercentage": null,
+          "topMatchId": null,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 20–30 kyu"
+      ]
+    },
+    {
+      "file": "problem-02.sgf",
+      "targetDifficulty": "10–19 kyu",
+      "sha256": "f787695a8ad062e18324f5a752e7538dbaa6904055b8848bdb9812165a7b9d7e",
+      "playerColor": "white",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n8"
+          },
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n11"
+          }
+        ],
+        "stats": {
+          "nodeCount": 12,
+          "moveCount": 11,
+          "maxDepth": 3,
+          "variationPoints": 2,
+          "rightCount": 2,
+          "setupStoneCount": 12
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 5973,
+          "sourceUrl": "https://www.goproblems.com/problems/5973",
+          "percentage": 28.57
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 54,
+          "topMatchId": 24050,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 10–19 kyu"
+      ]
+    },
+    {
+      "file": "problem-03.sgf",
+      "targetDifficulty": "5–9 kyu",
+      "sha256": "7a63c138bbf9866c068e5aea5190ef629a6719aad0b92002d51c53e72354d376",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [
+          {
+            "severity": "warning",
+            "code": "right-ending-color",
+            "message": "A correct line should normally end with the protagonist's move.",
+            "nodeId": "n4"
+          },
+          {
+            "severity": "warning",
+            "code": "right-ending-color",
+            "message": "A correct line should normally end with the protagonist's move.",
+            "nodeId": "n7"
+          }
+        ],
+        "stats": {
+          "nodeCount": 16,
+          "moveCount": 15,
+          "maxDepth": 4,
+          "variationPoints": 2,
+          "rightCount": 2,
+          "setupStoneCount": 15
+        }
+      },
+      "originality": {
+        "status": "manual_review",
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 32711,
+          "sourceUrl": "https://www.goproblems.com/problems/32711",
+          "percentage": 25.81
+        },
+        "remote": {
+          "status": "manual_review",
+          "radiusTwoMatches": [],
+          "topPercentage": 83,
+          "topMatchId": 41677,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 5–9 kyu"
+      ]
+    },
+    {
+      "file": "problem-04.sgf",
+      "targetDifficulty": "1–4 kyu",
+      "sha256": "9fa295c2aaf8b8cfbb17ef1d62c8739d3600c4e66c6e4a9d96107ea654e74fef",
+      "playerColor": "white",
+      "status": "failed",
+      "automatedGate": "fail",
+      "validation": {
+        "status": "fail",
+        "valid": false,
+        "issues": [
+          {
+            "severity": "error",
+            "code": "off-board",
+            "message": "AB[nt] is outside the 19×19 board.",
+            "nodeId": "n0"
+          },
+          {
+            "severity": "error",
+            "code": "off-board",
+            "message": "AB[ot] is outside the 19×19 board.",
+            "nodeId": "n0"
+          },
+          {
+            "severity": "error",
+            "code": "off-board",
+            "message": "AB[pt] is outside the 19×19 board.",
+            "nodeId": "n0"
+          },
+          {
+            "severity": "error",
+            "code": "off-board",
+            "message": "AB[nu] is outside the 19×19 board.",
+            "nodeId": "n0"
+          },
+          {
+            "severity": "error",
+            "code": "off-board",
+            "message": "AB[qu] is outside the 19×19 board.",
+            "nodeId": "n0"
+          },
+          {
+            "severity": "warning",
+            "code": "right-ending-color",
+            "message": "A correct line should normally end with the protagonist's move.",
+            "nodeId": "n4"
+          },
+          {
+            "severity": "warning",
+            "code": "right-ending-color",
+            "message": "A correct line should normally end with the protagonist's move.",
+            "nodeId": "n7"
+          }
+        ],
+        "stats": {
+          "nodeCount": 16,
+          "moveCount": 15,
+          "maxDepth": 4,
+          "variationPoints": 2,
+          "rightCount": 2,
+          "setupStoneCount": 22
+        }
+      },
+      "originality": {
+        "status": "not_run",
+        "exactLocalMatch": null,
+        "closestLocalShape": null,
+        "remote": {
+          "status": "not_run",
+          "radiusTwoMatches": [],
+          "topPercentage": null,
+          "topMatchId": null,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 1–4 kyu"
+      ]
+    },
+    {
+      "file": "problem-05.sgf",
+      "targetDifficulty": "about 1 dan",
+      "sha256": "f40e6de21961d39b7dfb8f896d8c49da983b126bbbace8f583618472c0f69ecd",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [
+          {
+            "severity": "warning",
+            "code": "right-ending-color",
+            "message": "A correct line should normally end with the protagonist's move.",
+            "nodeId": "n6"
+          },
+          {
+            "severity": "warning",
+            "code": "right-ending-color",
+            "message": "A correct line should normally end with the protagonist's move.",
+            "nodeId": "n11"
+          },
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n16"
+          },
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n21"
+          }
+        ],
+        "stats": {
+          "nodeCount": 22,
+          "moveCount": 21,
+          "maxDepth": 6,
+          "variationPoints": 2,
+          "rightCount": 2,
+          "setupStoneCount": 24
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 39693,
+          "sourceUrl": "https://www.goproblems.com/problems/39693",
+          "percentage": 20
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 55,
+          "topMatchId": 21158,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for about 1 dan"
+      ]
+    }
+  ]
+}

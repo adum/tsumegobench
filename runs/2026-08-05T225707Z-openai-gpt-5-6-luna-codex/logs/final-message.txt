@@ -1,0 +1,1 @@
+Wrote `outputs/problem-01.sgf` through `outputs/problem-05.sgf`.

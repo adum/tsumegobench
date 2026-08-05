@@ -1,24 +1,36 @@
-import { ProblemWorkbench } from "./components/ProblemWorkbench";
-import { RunBrowser } from "./components/RunBrowser";
+import Link from "next/link";
+
+const destinations = [
+  {
+    href: "/problems",
+    number: "01",
+    title: "Reference problems",
+    detail: "Browse the 20 canonical SGF examples from 30 kyu through 1 dan.",
+  },
+  {
+    href: "/runs",
+    number: "02",
+    title: "Benchmark runs",
+    detail: "Review generated positions, solution trees, and automated results.",
+  },
+  {
+    href: "/evaluation",
+    number: "03",
+    title: "Evaluation protocol",
+    detail: "See the generation, validation, duplicate, and human-review gates.",
+  },
+  {
+    href: "/sources",
+    number: "04",
+    title: "Sources",
+    detail: "Open the Go problem construction guidance and originality APIs.",
+  },
+];
 
 export default function Home() {
   return (
     <main>
-      <header className="site-header">
-        <a className="wordmark" href="#top" aria-label="Tsumego Bench home">
-          <span className="wordmark-stone" aria-hidden="true" />
-          <span>TSUMEGO / BENCH</span>
-        </a>
-        <nav aria-label="Primary navigation">
-          <a href="#workbench">Problems</a>
-          <a href="#runs">Runs</a>
-          <a href="#protocol">Evaluation</a>
-          <a href="#sources">Sources</a>
-        </nav>
-        <span className="header-status">v0.1 · LOCAL + API</span>
-      </header>
-
-      <section className="hero" id="top">
+      <section className="hero">
         <div className="hero-copy">
           <p className="eyebrow"><span>01</span> PROJECT OVERVIEW</p>
           <h1>AI Go Problem Creation Benchmark</h1>
@@ -28,8 +40,10 @@ export default function Home() {
             validation, duplicate checks, reproducible command-line runs, and human review.
           </p>
           <div className="hero-actions">
-            <a className="primary-action" href="#workbench">View reference problems <span>↓</span></a>
-            <a className="text-action" href="#protocol">View evaluation protocol</a>
+            <Link className="primary-action" href="/problems">
+              View reference problems <span>→</span>
+            </Link>
+            <Link className="text-action" href="/runs">Browse benchmark runs</Link>
           </div>
         </div>
         <div className="hero-aside" aria-label="Benchmark facts">
@@ -42,73 +56,16 @@ export default function Home() {
         </div>
       </section>
 
-      <ProblemWorkbench />
-
-      <RunBrowser />
-
-      <section className="protocol-section" id="protocol" aria-labelledby="protocol-title">
-        <div className="protocol-intro">
-          <p className="eyebrow"><span>02</span> EVALUATION</p>
-          <h2 id="protocol-title">Evaluation protocol</h2>
-          <p>
-            The runner gives each OpenAI model the same snapshotted packet through Codex CLI. The
-            first files and CLI log are preserved; repaired output is recorded as a separate run.
-          </p>
-        </div>
-        <ol className="protocol-grid">
-          <li>
-            <span className="protocol-number">01</span>
-            <div className="protocol-icon generate" aria-hidden="true"><i /><i /><i /></div>
-            <h3>Generate</h3>
-            <p>Invoke a selected OpenAI model through Codex CLI and write five SGFs into an isolated run.</p>
-            <small>FILES + EVENT LOG SAVED</small>
-          </li>
-          <li>
-            <span className="protocol-number">02</span>
-            <div className="protocol-icon validate" aria-hidden="true">✓</div>
-            <h3>Validate</h3>
-            <p>Parse structure, alternate moves, simulate captures, and enforce the simplicity envelope.</p>
-            <small>HARD GATE</small>
-          </li>
-          <li>
-            <span className="protocol-number">03</span>
-            <div className="protocol-icon compare" aria-hidden="true"><i /><i /></div>
-            <h3>Deduplicate</h3>
-            <p>Canonical local fingerprints plus live radius-2 and percentage searches.</p>
-            <small>HARD GATE · ≥90% FAILS</small>
-          </li>
-          <li>
-            <span className="protocol-number">04</span>
-            <div className="protocol-icon judge" aria-hidden="true"><i /></div>
-            <h3>Judge</h3>
-            <p>A competent player checks solution and refutation coverage, endpoint judgment, clarity, and teaching value.</p>
-            <small>100-POINT RUBRIC</small>
-          </li>
-        </ol>
-        <div className="protocol-footer">
-          <p><strong>Report:</strong> acceptance rate and mean score, with rejected problems scored as zero.</p>
-          <p><strong>Limitation:</strong> structural validation does not establish life-and-death correctness; human review is required.</p>
-        </div>
+      <section className="home-destinations" aria-label="Benchmark sections">
+        {destinations.map((destination) => (
+          <Link href={destination.href} key={destination.href}>
+            <span>{destination.number}</span>
+            <h2>{destination.title}</h2>
+            <p>{destination.detail}</p>
+            <i aria-hidden="true">→</i>
+          </Link>
+        ))}
       </section>
-
-      <footer className="site-footer" id="sources">
-        <div>
-          <span className="wordmark-stone" aria-hidden="true" />
-          <p><strong>Tsumego Bench</strong><br />Benchmark for AI-generated life-and-death Go problems.</p>
-        </div>
-        <div className="footer-links">
-          <span>SOURCE GUIDANCE</span>
-          <a href="https://www.goproblems.com/article/problemtypes">Problem types ↗</a>
-          <a href="https://www.goproblems.com/article/constructionbasics">Construction basics ↗</a>
-          <a href="https://www.goproblems.com/article/bestpractices">Best practices ↗</a>
-        </div>
-        <div className="footer-links">
-          <span>ORIGINALITY</span>
-          <a href="https://www.goproblems.com/article/api">API access ↗</a>
-          <a href="https://www.goproblems.com/article/solutionsignatures">Solution signatures ↗</a>
-        </div>
-        <p className="footer-note">Reference authors and sources are retained in the corpus manifest.</p>
-      </footer>
     </main>
   );
 }
