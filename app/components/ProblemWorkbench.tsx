@@ -122,12 +122,12 @@ export function ProblemWorkbench() {
     <section className="workbench-section" id="workbench" aria-labelledby="workbench-title">
       <div className="section-heading">
         <div>
-          <p className="eyebrow">Reference laboratory</p>
-          <h2 id="workbench-title">Read the position. Audit the tree.</h2>
+          <p className="eyebrow">Reference problems</p>
+          <h2 id="workbench-title">Problem viewer</h2>
         </div>
         <p>
-          Every move node is live. Select a branch to replay captures on the board and inspect
-          why that line was included.
+          Select a problem, then select any node in its solution tree to replay the position on
+          the board.
         </p>
       </div>
 
@@ -136,9 +136,9 @@ export function ProblemWorkbench() {
           <div className="library-header">
             <div>
               <span className="library-count">20</span>
-              <span>verified references</span>
+              <span>reference problems</span>
             </div>
-            <span className="live-dot">API VERIFIED</span>
+            <span className="live-dot">API CHECKED</span>
           </div>
           <label className="search-field">
             <span className="sr-only">Search reference problems</span>
@@ -288,7 +288,7 @@ export function ProblemWorkbench() {
             <div className="tree-column">
               <div className="tree-panel-header">
                 <div>
-                  <span className="panel-label">SOLUTION MAP</span>
+                  <span className="panel-label">SOLUTION TREE</span>
                   <strong>{stats.nodeCount} nodes across {stats.variationPoints} forks</strong>
                 </div>
                 <div className="tree-legend" aria-label="Solution tree legend">

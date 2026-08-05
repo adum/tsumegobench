@@ -22,8 +22,9 @@ test("server-renders the Tsumego Bench reviewer", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>Tsumego Bench — AI Go Problem Creation<\/title>/i);
-  assert.match(html, /Can a model invent a Go problem/);
-  assert.match(html, /Reference problem lab|Reference laboratory/);
+  assert.match(html, /AI Go Problem Creation Benchmark/);
+  assert.match(html, /Problem viewer/);
+  assert.match(html, /Evaluation protocol/);
   assert.match(html, /Black to play|White to play/);
   assert.doesNotMatch(html, /Find the best (?:local )?result/i);
   assert.match(html, /Leads to RIGHT/);
@@ -32,7 +33,11 @@ test("server-renders the Tsumego Bench reviewer", async () => {
   assert.match(html, /tree-edge no-result/);
   assert.doesNotMatch(html, /tree-coordinate/);
   assert.doesNotMatch(html, /type="checkbox"/i);
-  assert.match(html, /One prompt\. Four gates\./);
   assert.match(html, /goproblems/i);
+  assert.doesNotMatch(html, /property="og:image"/i);
+  assert.doesNotMatch(
+    html,
+    /Can a model invent|worth solving|evidence-first|Reference laboratory|Read the position|One prompt\. Four gates|No quiet repairs|difficult creative claim|does not pretend/i,
+  );
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
