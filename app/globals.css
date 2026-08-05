@@ -540,6 +540,32 @@ input:focus-visible,
   white-space: nowrap;
 }
 
+.run-library .problem-list-item {
+  padding-top: 17px;
+  padding-bottom: 16px;
+}
+
+.run-library .problem-list-topline {
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.run-library .problem-list-topline strong {
+  font-size: 12px;
+  letter-spacing: 0.01em;
+}
+
+.run-library .problem-list-topline > span {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.run-library .problem-list-copy small {
+  color: #69716d;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
 .problem-stage {
   min-width: 0;
   display: flex;
