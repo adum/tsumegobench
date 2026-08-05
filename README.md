@@ -34,6 +34,15 @@ Run a benchmark with an OpenAI model available to your authenticated Codex CLI:
 python benchmark.py run --model <openai-model-id>
 ```
 
+The evaluator requires Node.js 22 or newer. When the checkout is shared between
+Windows and WSL, the runner automatically uses a compatible Windows Node runtime
+for Windows-installed dependencies. Set `TSUMEGO_NODE` only if you need to
+override that selection.
+
+If Codex rejects an unknown, inaccessible, or unsupported model ID, the runner
+prints the rejection and exits immediately. It does not retain a run directory,
+evaluate empty outputs, or add the attempt to the web index.
+
 Add `--reasoning-effort high` when you want to pin an exposed Codex reasoning setting, or `--local-only` to skip the post-run GoProblems API checks. The runner disables model web and network access, captures the CLI event log automatically, and writes the five candidate SGFs under `runs/<run-id>/outputs/`.
 
 Validate the reference set or a submission:

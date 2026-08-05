@@ -93,7 +93,8 @@
         "threadId": { "type": ["string", "null"] },
         "usage": { "type": ["object", "null"] },
         "eventCount": { "type": "integer", "minimum": 0 },
-        "unparsedLineCount": { "type": "integer", "minimum": 0 }
+        "unparsedLineCount": { "type": "integer", "minimum": 0 },
+        "failureMessage": { "type": ["string", "null"] }
       }
     },
     "condition": {

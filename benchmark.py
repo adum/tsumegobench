@@ -20,6 +20,8 @@ from typing import Any
 PROJECT_ROOT = Path(__file__).resolve().parent
 RUNS_ROOT = PROJECT_ROOT / "runs"
 EXPECTED_OUTPUTS = [f"problem-{index:02d}.sgf" for index in range(1, 6)]
+MINIMUM_NODE_MAJOR = 22
+_TYPESCRIPT_NODE: str | None = None
 
 
 def utc_now() -> str:
@@ -73,6 +75,202 @@ def command_name(name: str) -> str:
         if found:
             return found
     return name
+
+
+def is_wsl() -> bool:
+    return sys.platform.startswith("linux") and bool(
+        os.environ.get("WSL_INTEROP") or os.environ.get("WSL_DISTRO_NAME")
+    )
+
+
+def node_major(executable: str) -> int | None:
+    try:
+        result = subprocess.run(
+            [executable, "--version"],
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=15,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    match = re.search(r"v?(\d+)", result.stdout or result.stderr)
+    return int(match.group(1)) if match else None
+
+
+def wsl_path(value: str, flag: str) -> str | None:
+    try:
+        result = subprocess.run(
+            ["wslpath", flag, value],
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=15,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    converted = result.stdout.strip()
+    return converted if result.returncode == 0 and converted else None
+
+
+def windows_home_from_wsl() -> Path | None:
+    try:
+        result = subprocess.run(
+            ["cmd.exe", "/d", "/c", "echo", "%USERPROFILE%"],
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=15,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    windows_home = result.stdout.strip()
+    converted = wsl_path(windows_home, "-u") if windows_home else None
+    return Path(converted) if converted else None
+
+
+def dependency_platform() -> str:
+    packages = PROJECT_ROOT / "node_modules" / "@esbuild"
+    native = "windows" if os.name == "nt" else "linux" if sys.platform.startswith("linux") else "darwin"
+    prefixes = {
+        "windows": "win32-",
+        "linux": "linux-",
+        "darwin": "darwin-",
+    }
+    if packages.exists() and any(packages.glob(f"{prefixes[native]}*")):
+        return native
+    if is_wsl() and packages.exists() and any(packages.glob("win32-*")):
+        return "windows"
+    return native
+
+
+def windows_node_candidates() -> list[str]:
+    candidates: list[str] = []
+    if os.name == "nt":
+        home = Path.home()
+        candidates.extend(
+            [
+                str(
+                    home
+                    / ".cache"
+                    / "codex-runtimes"
+                    / "codex-primary-runtime"
+                    / "dependencies"
+                    / "node"
+                    / "bin"
+                    / "node.exe"
+                ),
+                command_name("node"),
+            ]
+        )
+        return candidates
+
+    if not is_wsl():
+        return candidates
+    home = windows_home_from_wsl()
+    if home:
+        candidates.append(
+            str(
+                home
+                / ".cache"
+                / "codex-runtimes"
+                / "codex-primary-runtime"
+                / "dependencies"
+                / "node"
+                / "bin"
+                / "node.exe"
+            )
+        )
+    found = shutil.which("node.exe")
+    if found:
+        candidates.append(found)
+    try:
+        result = subprocess.run(
+            ["where.exe", "node.exe"],
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=15,
+        )
+        for line in result.stdout.splitlines():
+            converted = wsl_path(line.strip(), "-u")
+            if converted:
+                candidates.append(converted)
+    except (OSError, subprocess.TimeoutExpired):
+        pass
+    return candidates
+
+
+def typescript_node() -> str:
+    global _TYPESCRIPT_NODE
+    if _TYPESCRIPT_NODE:
+        return _TYPESCRIPT_NODE
+
+    target = dependency_platform()
+    requested = os.environ.get("TSUMEGO_NODE")
+    candidates = [requested] if requested else []
+    if target == "windows":
+        candidates.extend(windows_node_candidates())
+    else:
+        found = shutil.which("node")
+        if found:
+            candidates.append(found)
+
+    checked: set[str] = set()
+    for candidate in candidates:
+        if not candidate or candidate in checked:
+            continue
+        checked.add(candidate)
+        if target == "windows" and not candidate.lower().endswith(".exe"):
+            continue
+        if target != "windows" and candidate.lower().endswith(".exe"):
+            continue
+        major = node_major(candidate)
+        if major is not None and major >= MINIMUM_NODE_MAJOR:
+            _TYPESCRIPT_NODE = candidate
+            return candidate
+
+    raise RuntimeError(
+        f"Could not find Node.js {MINIMUM_NODE_MAJOR}+ for the {target} dependencies in node_modules. "
+        "Run npm ci in this environment or set TSUMEGO_NODE to a compatible Node executable."
+    )
+
+
+def runtime_path(path: Path, executable: str) -> str:
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        pass
+    if is_wsl() and executable.lower().endswith(".exe"):
+        converted = wsl_path(str(resolved), "-w")
+        if converted:
+            return converted
+    return str(resolved)
+
+
+def run_typescript(script: str, arguments: list[str]) -> subprocess.CompletedProcess[str]:
+    try:
+        executable = typescript_node()
+    except RuntimeError as error:
+        return subprocess.CompletedProcess(["node", script], 127, "", f"{error}\n")
+    return subprocess.run(
+        [executable, "--import", "tsx", script, *arguments],
+        cwd=PROJECT_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
 
 
 def portable_command(command: list[str], run_dir: Path) -> list[str]:
@@ -171,6 +369,26 @@ def parse_codex_events(stdout: str) -> dict[str, Any]:
     usage: dict[str, Any] | None = None
     parse_errors = 0
     event_count = 0
+    failure_message: str | None = None
+
+    def message_from(value: Any) -> str | None:
+        if isinstance(value, str):
+            try:
+                decoded = json.loads(value)
+            except json.JSONDecodeError:
+                return value.strip() or None
+            return message_from(decoded)
+        if isinstance(value, dict):
+            error = value.get("error")
+            if error is not None:
+                nested = message_from(error)
+                if nested:
+                    return nested
+            message = value.get("message")
+            if message is not None:
+                return message_from(message)
+        return None
+
     for line in stdout.splitlines():
         if not line.strip():
             continue
@@ -184,38 +402,55 @@ def parse_codex_events(stdout: str) -> dict[str, Any]:
             thread_id = event.get("thread_id") or event.get("threadId")
         if event.get("type") == "turn.completed":
             usage = event.get("usage")
+        if event.get("type") in {"error", "turn.failed"}:
+            failure_message = message_from(event) or failure_message
     return {
         "threadId": thread_id,
         "usage": usage,
         "eventCount": event_count,
         "unparsedLineCount": parse_errors,
+        "failureMessage": failure_message,
     }
 
 
-def npm_command() -> str:
-    return command_name("npm")
+def is_model_selection_failure(message: str | None, raw_output: str = "") -> bool:
+    evidence = f"{message or ''}\n{raw_output}".lower()
+    patterns = (
+        "model is not supported",
+        "not supported when using codex",
+        "model_not_found",
+        "invalid model",
+        "model does not exist",
+        "model not found",
+        "model is unavailable",
+        "unsupported model",
+        "does not exist or you do not have access to it",
+        "you do not have access to this model",
+    )
+    return any(pattern in evidence for pattern in patterns)
+
+
+def discard_new_run(run_dir: Path) -> None:
+    target = run_dir.resolve()
+    runs_root = RUNS_ROOT.resolve()
+    if target.parent != runs_root or not target.is_dir():
+        raise RuntimeError(f"Refusing to discard unexpected run path: {target}")
+    shutil.rmtree(target)
 
 
 def run_evaluator(run_dir: Path, local_only: bool) -> subprocess.CompletedProcess[str]:
-    command = [
-        npm_command(),
-        "run",
-        "evaluate:run",
-        "--",
-        "--run-dir",
-        str(run_dir),
-    ]
+    try:
+        executable = typescript_node()
+    except RuntimeError as error:
+        result = subprocess.CompletedProcess(["node", "scripts/evaluate-run.ts"], 127, "", f"{error}\n")
+        logs = run_dir / "logs"
+        (logs / "evaluator-stdout.txt").write_text(result.stdout, encoding="utf-8")
+        (logs / "evaluator-stderr.txt").write_text(result.stderr, encoding="utf-8")
+        return result
+    command = ["--run-dir", runtime_path(run_dir, executable)]
     if local_only:
         command.append("--local-only")
-    result = subprocess.run(
-        command,
-        cwd=PROJECT_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-    )
+    result = run_typescript("scripts/evaluate-run.ts", command)
     logs = run_dir / "logs"
     (logs / "evaluator-stdout.txt").write_text(result.stdout, encoding="utf-8")
     (logs / "evaluator-stderr.txt").write_text(result.stderr, encoding="utf-8")
@@ -223,15 +458,7 @@ def run_evaluator(run_dir: Path, local_only: bool) -> subprocess.CompletedProces
 
 
 def build_run_index() -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        [npm_command(), "run", "runs:index"],
-        cwd=PROJECT_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-    )
+    return run_typescript("scripts/index-runs.ts", [])
 
 
 def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> dict[str, Any]:
@@ -267,6 +494,7 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
             "usage": None,
             "eventCount": 0,
             "unparsedLineCount": 0,
+            "failureMessage": None,
         },
         "condition": {
             "attempt": args.attempt,
@@ -338,7 +566,7 @@ def run_command(args: argparse.Namespace) -> int:
     manifest["status"] = "running"
     write_json(manifest_path, manifest)
 
-    print(f"Created runs/{run_id}")
+    print(f"Starting benchmark run {run_id}")
     print(f"Running {args.model} with Codex CLI…")
     task = (run_dir / "inputs" / "task.md").read_text(encoding="utf-8")
     started = time.monotonic()
@@ -388,6 +616,17 @@ def run_command(args: argparse.Namespace) -> int:
         ).strip()
     write_json(manifest_path, manifest)
 
+    failure_message = manifest.get("harness", {}).get("failureMessage")
+    if exit_code and is_model_selection_failure(failure_message, f"{stdout}\n{stderr}"):
+        discard_new_run(run_dir)
+        detail = failure_message or f"Codex CLI exited with status {exit_code}."
+        print(f"Model {args.model!r} was rejected by Codex: {detail}", file=sys.stderr)
+        print(
+            "No run was saved, and evaluation was not started. Check the model ID and try again.",
+            file=sys.stderr,
+        )
+        return 2
+
     print("Evaluating generated SGFs…")
     evaluator = run_evaluator(run_dir, args.local_only)
     manifest = read_json(manifest_path)
@@ -410,7 +649,12 @@ def run_command(args: argparse.Namespace) -> int:
         print(evaluator.stderr.strip() or "The evaluator failed.", file=sys.stderr)
         return 1
     if exit_code:
-        print(f"Codex CLI exited with status {exit_code}; the partial run was preserved.", file=sys.stderr)
+        detail = manifest.get("harness", {}).get("failureMessage")
+        suffix = f": {detail}" if detail else "."
+        print(
+            f"Codex CLI exited with status {exit_code}; the partial run was preserved{suffix}",
+            file=sys.stderr,
+        )
         return 1
 
     evaluation = read_json(run_dir / "evaluation" / "automated.json")
@@ -434,6 +678,12 @@ def evaluate_command(args: argparse.Namespace) -> int:
     if result.returncode:
         print(result.stderr.strip() or "The evaluator failed.", file=sys.stderr)
         return result.returncode
+    manifest = read_json(run_dir / "run.json")
+    manifest["status"] = (
+        "harness_failed" if manifest.get("harness", {}).get("exitCode") else "completed"
+    )
+    manifest["completedAt"] = manifest.get("completedAt") or utc_now()
+    write_json(run_dir / "run.json", manifest)
     indexed = build_run_index()
     if indexed.returncode:
         print(indexed.stderr.strip() or "The web index could not be rebuilt.", file=sys.stderr)

@@ -16,4 +16,8 @@ python benchmark.py evaluate runs/<run-id> --local-only
 python benchmark.py index
 ```
 
+Windows/WSL shared checkouts are supported. The Python runner selects a Node.js
+22+ executable that matches the platform-specific packages in `node_modules`;
+`TSUMEGO_NODE` can override the detected executable.
+
 Do not repair generated files in place. A repair or retry is a separate run with its own attempt metadata.
