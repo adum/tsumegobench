@@ -67,13 +67,31 @@ Source: [Problem Construction Best Practices](https://www.goproblems.com/article
 
 ## 4. Tree quality
 
-- Correct lines normally end on the protagonist's move.
-- Wrong lines normally end on the antagonist's refutation.
-- Keep comments inside the solution tree, on a computer response or at a leaf. A comment on the solver's move may not be displayed before an automatic reply.
-- The first child is the default automatic response; use `CHOICE` when more than one defense should be tested.
-- Cover the plausible mistakes a solver at the target level is likely to try.
-- Do not add branches that teach nothing or differ only cosmetically.
-- Confirm every branch against the actual board state, including captures and liberties.
+Tree construction is part of the problem, not bookkeeping after the key move is known. The reference SGFs are provided partly to calibrate the judgment involved: how much meaningful reading to include, which alternatives deserve branches, and where a line has proved enough to stop.
+
+### Accepted-solution coverage
+
+- Include every materially distinct solver choice that achieves an equally valid best result, both at the first move and later in the tree.
+- Do not reject a correct move merely because it differs from the author's intended sequence or reaches the same result through another meaningful order.
+- For every accepted choice, include the strongest defense and each materially distinct resistance needed to establish the result under best play.
+- When multiple opponent replies matter, use `CHOICE` or explicit branches rather than silently assuming one response.
+
+### Refutation coverage
+
+- Cover the plausible mistakes a solver at the target level is likely to try, not every legal move on the board.
+- Show the meaningful opponent reply that refutes each included mistake. A wrong branch is incomplete if it stops on the mistake without demonstrating why the move fails.
+- Include materially distinct refutations and defensive ideas; omit branches that teach nothing or differ only cosmetically.
+- A supposedly wrong path that still reaches an acceptable result is a correctness failure, not merely a missing comment.
+
+### Choosing endpoints
+
+- A correct line normally ends on the protagonist's move, at the first natural position where life, death, seki, or ko status is forced and clear to the target solver.
+- A wrong line normally ends on the antagonist's refuting move, at the first position where the solver's failure is forced and clear.
+- Do not end a branch before the relevant result has actually been established. The reader should not have to assume an unshown tactical sequence that could still change the outcome.
+- Do not continue through routine captures, filling liberties, or cleanup after the result is settled. A line need not reach an empty board or a final capture when the status is already unambiguous.
+- Endpoint judgment is contextual rather than a fixed move count. Compare against the reference trees and ask whether the final node proves the claim cleanly, neither one move too early nor several moves too late.
+
+Keep comments inside the solution tree, on a computer response or at a leaf. A comment on the solver's move may not be displayed before an automatic reply. Confirm every branch against the actual board state, including captures and liberties.
 
 ## 5. Simplicity envelope
 

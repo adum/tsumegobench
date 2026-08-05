@@ -77,7 +77,7 @@ export default function Home() {
             <span className="protocol-number">04</span>
             <div className="protocol-icon judge" aria-hidden="true"><i /></div>
             <h3>Judge</h3>
-            <p>A competent player checks best resistance, missing moves, clarity, and teaching value.</p>
+            <p>A competent player checks solution and refutation coverage, endpoint judgment, clarity, and teaching value.</p>
             <small>100-POINT RUBRIC</small>
           </li>
         </ol>

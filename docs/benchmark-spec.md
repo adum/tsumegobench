@@ -55,11 +55,15 @@ A candidate is rejected before scoring if any of these is true:
 - The position or any required line is illegal.
 - The claimed `RIGHT` outcome is false.
 - A materially correct alternative is missing or marked wrong.
+- A strongest or materially distinct defense is missing, so an accepted solution is not established under best resistance.
+- A correct or refutation path ends before its claimed result is forced and clear.
 - It matches the local exact/transformed fingerprint of a reference.
 - GoProblems returns any radius-2 solution-signature match.
 - The top GoProblems percentage match is at least 90% under the default policy.
 
 Rejected candidates receive 0 points but remain part of the run's acceptance-rate denominator.
+
+During human tree review, inspect both directions at every meaningful branch: all materially correct solver choices must be accepted, and all accepted choices must survive the strongest relevant defenses. Plausible wrong choices should include the opponent reply that actually establishes the refutation. Review endpoints separately from move correctness; penalize both premature stopping and unnecessary cleanup, using the reference SGFs as the calibration set.
 
 ### Manual-review band
 

@@ -2,7 +2,7 @@
 
 Tsumego Bench is a small, reproducible benchmark for a narrow question:
 
-> Can an AI create **original, simple, standard life-and-death Go problems** with legal positions and complete SGF solution trees?
+> Can an AI create **original, simple, standard life-and-death Go problems** with legal positions and complete, well-terminated SGF solution and refutation trees?
 
 The repository combines a curated reference corpus, a strict SGF validator, local and GoProblems-powered duplicate detection, a controlled model prompt, a scoring rubric, and an interactive board/solution-tree reviewer.
 

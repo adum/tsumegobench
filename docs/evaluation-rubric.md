@@ -11,10 +11,10 @@ Apply this 100-point rubric only after a candidate passes every hard gate in `do
 
 ## 2. Solution-tree completeness — 25 points
 
-- **22–25:** Covers all materially correct first moves, best defenses, and plausible level-appropriate mistakes without redundant noise.
-- **16–21:** One low-value branch or minor response is thin, but the teaching result remains sound.
-- **1–15:** Important defensive ideas are underexplored.
-- **0 / reject:** A materially correct alternative is omitted or marked wrong.
+- **22–25:** Covers all materially correct solver choices and continuations, strongest materially distinct defenses, and plausible level-appropriate mistakes. Correct and refutation paths stop at natural, unambiguous endpoints without premature endings or routine cleanup.
+- **16–21:** Core coverage is sound, but one low-value response is thin or an endpoint is slightly early or late without making the result uncertain.
+- **1–15:** Important defensive or refutation ideas are underexplored, or several paths stop before demonstrating their result or continue well beyond it.
+- **0 / reject:** A materially correct alternative is omitted or marked wrong; a necessary best defense is missing; or a path ends before its claimed correct or refuted result is established.
 
 ## 3. Construction and canonical style — 20 points
 
