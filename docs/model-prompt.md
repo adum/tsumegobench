@@ -35,6 +35,8 @@ SGF requirements:
 10. Use plain UTF-8 text with no HTML or JavaScript.
 11. Check captures, liberties, occupied points, and the final life/death result on every branch.
 
+Across the five problems, demonstrate a deliberate range of difficulty rather than clustering at one level. Target `problem-01.sgf` at 20–30 kyu, `problem-02.sgf` at 10–19 kyu, `problem-03.sgf` at 5–9 kyu, `problem-04.sgf` at 1–4 kyu, and `problem-05.sgf` at about 1 dan. Difficulty should come from relevant reading depth, plausible choices, defenses, and endpoint judgment—not from irrelevant stones, obscure rules, or trick wording.
+
 Across the set, include at least two Black-to-play and at least two White-to-play problems. Establish the player color only through the first move in the tree, not through written instructions. Vary the board edge/corner shape and tactical idea. Do not explain your reasoning and do not claim that you searched for duplicates unless you actually used a search tool.
 
 Output only these five sections in order:
