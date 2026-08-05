@@ -8,7 +8,7 @@ export function SiteHeader() {
         <span>TSUMEGO / BENCH</span>
       </Link>
       <nav aria-label="Primary navigation">
-        <Link href="/problems">Problems</Link>
+        <Link href="/problems">Reference</Link>
         <Link href="/runs">Runs</Link>
         <Link href="/evaluation">Evaluation</Link>
         <Link href="/sources">Sources</Link>

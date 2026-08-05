@@ -26,6 +26,7 @@ test("server-renders a compact overview with route navigation", async () => {
   const html = await htmlFor("/");
   assert.match(html, /AI Go Problem Creation Benchmark/);
   assert.match(html, /href="\/problems"/);
+  assert.match(html, /href="\/problems">Reference<\/a>/);
   assert.match(html, /href="\/runs"/);
   assert.match(html, /href="\/evaluation"/);
   assert.match(html, /href="\/sources"/);
