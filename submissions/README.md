@@ -14,3 +14,4 @@ submissions/<date>-<model>-<condition>/
 
 Start from `submissions/run.example.json`. Validate the directory with `npm run validate -- submissions/<run>` and run `npm run duplicates -- <file>` for each accepted structural candidate.
 
+Every submitted SGF must explicitly declare a 19×19 board with `SZ[19]` at the root.

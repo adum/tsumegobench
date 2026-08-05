@@ -13,7 +13,7 @@ Each problem must be:
 - a realistic standard life-and-death problem with a clear local outcome;
 - approximately 30 kyu–1 dan in difficulty;
 - legal under ordinary Go rules;
-- on a 9×9, 13×13, or 19×19 board;
+- on a 19×19 board, explicitly declared with `SZ[19]`;
 - expressed as a root setup with both `AB` and `AW`, followed by a complete alternating solution tree;
 - self-explanatory from the local position and the color of the first move;
 - short: no more than 14 moves on any line and no more than 120 total nodes;

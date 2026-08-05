@@ -13,7 +13,7 @@ import {
 import { validateSgf } from "../lib/validate-sgf";
 
 const simple =
-  "(;FF[4]GM[1]SZ[9]AB[aa][ba][ca]AW[ab][bb](;B[cb];W[cc];B[bc]C[RIGHT])(;B[bc];W[cb]))";
+  "(;FF[4]GM[1]SZ[19]AB[aa][ba][ca]AW[ab][bb](;B[cb];W[cc];B[bc]C[RIGHT])(;B[bc];W[cb]))";
 
 test("parses variations and locates RIGHT nodes", () => {
   const root = parseSgf(simple);
@@ -25,7 +25,7 @@ test("parses variations and locates RIGHT nodes", () => {
 });
 
 test("replays captures along a selected path", () => {
-  const root = parseSgf("(;SZ[9]AB[ba][ab][cb]AW[bb];B[bc]C[RIGHT])");
+  const root = parseSgf("(;SZ[19]AB[ba][ab][cb]AW[bb];B[bc]C[RIGHT])");
   const leaf = root.children[0];
   const position = boardAtNode(root, leaf);
   assert.equal(position.board.has("bb"), false);
@@ -40,7 +40,7 @@ test("canonical fingerprint ignores translation and color reversal", () => {
 
 test("strips only the written instruction from the root", () => {
   const cleaned = stripRootComment(
-    "(;SZ[9]C[White to live \\] unconditionally]AB[aa]AW[bb](;W[cc]C[RIGHT]))",
+    "(;SZ[19]C[White to live \\] unconditionally]AB[aa]AW[bb](;W[cc]C[RIGHT]))",
   );
   const root = parseSgf(cleaned);
   assert.equal(visibleComment(root), "");
@@ -49,7 +49,7 @@ test("strips only the written instruction from the root", () => {
 });
 
 test("validator catches a pass and missing RIGHT", () => {
-  const report = validateSgf("(;SZ[9]AB[aa]AW[bb];B[])");
+  const report = validateSgf("(;SZ[19]AB[aa]AW[bb];B[])");
   assert.equal(report.valid, false);
   assert.ok(report.issues.some((issue) => issue.code === "pass-move"));
   assert.ok(report.issues.some((issue) => issue.code === "missing-right"));
@@ -57,8 +57,23 @@ test("validator catches a pass and missing RIGHT", () => {
 
 test("validator rejects written instructions at the root", () => {
   const report = validateSgf(
-    "(;SZ[9]AB[aa]AW[bb]C[Find the best result](;B[ab]C[RIGHT]))",
+    "(;SZ[19]AB[aa]AW[bb]C[Find the best result](;B[ab]C[RIGHT]))",
   );
   assert.equal(report.valid, false);
   assert.ok(report.issues.some((issue) => issue.code === "root-comment"));
+});
+
+test("validator requires an explicit 19 by 19 board", () => {
+  for (const sgf of [
+    "(;AB[aa]AW[bb](;B[ab]C[RIGHT]))",
+    "(;SZ[9]AB[aa]AW[bb](;B[ab]C[RIGHT]))",
+    "(;SZ[13]AB[aa]AW[bb](;B[ab]C[RIGHT]))",
+  ]) {
+    const report = validateSgf(sgf);
+    assert.equal(report.valid, false);
+    assert.ok(report.issues.some((issue) => issue.code === "board-size"));
+  }
+
+  const report = validateSgf("(;SZ[19]AB[aa]AW[bb](;B[ab]C[RIGHT]))");
+  assert.ok(!report.issues.some((issue) => issue.code === "board-size"));
 });

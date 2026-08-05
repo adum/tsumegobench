@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import problemData from "../app/data/problems.generated.json";
+import { getBoardSize, parseSgf } from "../lib/sgf";
 
 interface ProblemRecord {
   id: number;
@@ -8,6 +10,8 @@ interface ProblemRecord {
   rankUnit: string;
   canonical: boolean;
   standard: boolean;
+  sgfFile: string;
+  sgf: string;
 }
 
 const problems = problemData as ProblemRecord[];
@@ -41,4 +45,18 @@ test("reference corpus is evenly distributed from 30 kyu through 1 dan", () => {
     "1-4 kyu": 4,
     "1 dan": 4,
   });
+});
+
+test("every reference explicitly uses a 19 by 19 board", async () => {
+  for (const problem of problems) {
+    const embeddedRoot = parseSgf(problem.sgf);
+    assert.equal(getBoardSize(embeddedRoot), 19, `embedded problem ${problem.id}`);
+    assert.deepEqual(embeddedRoot.properties.SZ, ["19"], `embedded problem ${problem.id}`);
+
+    const fileSgf = await readFile(problem.sgfFile, "utf8");
+    assert.equal(problem.sgf, fileSgf.trim(), `embedded SGF for problem ${problem.id}`);
+    const fileRoot = parseSgf(fileSgf);
+    assert.equal(getBoardSize(fileRoot), 19, problem.sgfFile);
+    assert.deepEqual(fileRoot.properties.SZ, ["19"], problem.sgfFile);
+  }
 });

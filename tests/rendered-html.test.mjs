@@ -25,6 +25,7 @@ test("server-renders the Tsumego Bench reviewer", async () => {
   assert.match(html, /AI Go Problem Creation Benchmark/);
   assert.match(html, /Problem viewer/);
   assert.match(html, /Evaluation protocol/);
+  assert.match(html, /19×19 boards/);
   assert.match(html, /Black to play|White to play/);
   assert.match(html, /aria-label="Problem 18843, Black to play/);
   assert.match(html, /1 dan/);

@@ -1,6 +1,6 @@
 import { mkdir, readdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { getMove, parseSgf, stripRootComment } from "../lib/sgf";
+import { getBoardSize, getMove, parseSgf, stripRootComment } from "../lib/sgf";
 
 const PROBLEM_IDS = [
   // 20–30 kyu
@@ -14,6 +14,25 @@ const PROBLEM_IDS = [
   // 1 dan
   17778, 20284, 38368, 1311,
 ] as const;
+
+function normalizeBoardSize(sgf: string, id: number) {
+  const root = parseSgf(sgf);
+  if (getBoardSize(root) !== 19) {
+    throw new Error(`Problem ${id} is not a 19×19 problem.`);
+  }
+  if (root.properties.SZ?.length) {
+    if (root.properties.SZ.length !== 1 || root.properties.SZ[0] !== "19") {
+      throw new Error(`Problem ${id} does not explicitly declare SZ[19].`);
+    }
+    return sgf;
+  }
+
+  const normalized = sgf.replace(/^(\uFEFF?\s*\(\s*;)/, "$1SZ[19]");
+  if (normalized === sgf) {
+    throw new Error(`Problem ${id} could not be normalized to an explicit SZ[19] root.`);
+  }
+  return normalized;
+}
 
 const API_BASE = "https://www.goproblems.com/api/v2/problems";
 const workspace = process.cwd();
@@ -63,7 +82,8 @@ for (const [index, id] of PROBLEM_IDS.entries()) {
   }
 
   const normalizedSgf = problem.sgf.replace(/\r\n/g, "\n").trim();
-  const sgf = `${stripRootComment(normalizedSgf).trim()}\n`;
+  const withoutRootInstruction = stripRootComment(normalizedSgf).trim();
+  const sgf = `${normalizeBoardSize(withoutRootInstruction, id).trim()}\n`;
   const fileName = `gp-${id}.sgf`;
   await writeFile(path.join(examplesDirectory, fileName), sgf, "utf8");
   const root = parseSgf(sgf);
@@ -112,7 +132,8 @@ for (const [index, id] of PROBLEM_IDS.entries()) {
 const manifest = {
   name: "Canonical life-and-death reference corpus",
   description:
-    "Twenty public GoProblems examples distributed evenly from 30 kyu through 1 dan and verified as canonical, standard, and life-and-death when synchronized. Root instructions are removed so the position and side to move stand on their own.",
+    "Twenty public GoProblems examples on explicit 19×19 boards, distributed evenly from 30 kyu through 1 dan and verified as canonical, standard, and life-and-death when synchronized. Root instructions are removed so the position and side to move stand on their own.",
+  boardSize: 19,
   difficultyRange: "30 kyu to 1 dan",
   difficultyBands: {
     "20-30 kyu": 4,

@@ -22,8 +22,8 @@ export default function Home() {
           <h1>AI Go Problem Creation Benchmark</h1>
           <p className="hero-lede">
             This project tests whether AI models can create original, legal, simple life-and-death
-            Go problems in SGF. It includes reference problems, structural validation, duplicate
-            checks, and human review.
+            Go problems on 19×19 boards in SGF. It includes reference problems, structural
+            validation, duplicate checks, and human review.
           </p>
           <div className="hero-actions">
             <a className="primary-action" href="#workbench">View reference problems <span>↓</span></a>
@@ -56,7 +56,7 @@ export default function Home() {
             <span className="protocol-number">01</span>
             <div className="protocol-icon generate" aria-hidden="true"><i /><i /><i /></div>
             <h3>Generate</h3>
-            <p>Request five simple local life-and-death problems in SGF.</p>
+            <p>Request five simple local life-and-death problems with explicit 19×19 SGF boards.</p>
             <small>RAW OUTPUT SAVED</small>
           </li>
           <li>

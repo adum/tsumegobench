@@ -106,12 +106,13 @@ export function validateSgf(input: string): ValidationReport {
   const setupBlack = expandPointValues(root.properties.AB);
   const setupWhite = expandPointValues(root.properties.AW);
 
-  if (![9, 13, 19].includes(size)) {
+  const declaredBoardSizes = root.properties.SZ ?? [];
+  if (declaredBoardSizes.length !== 1 || declaredBoardSizes[0] !== "19") {
     issues.push(
       issue(
         "error",
         "board-size",
-        `The benchmark accepts standard 9×9, 13×13, or 19×19 boards; this SGF declares ${size}×${size}.`,
+        "Every benchmark problem must explicitly declare a 19×19 board with SZ[19].",
         root,
       ),
     );

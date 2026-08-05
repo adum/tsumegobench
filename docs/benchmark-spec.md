@@ -14,6 +14,8 @@ Every compared model receives:
 2. The same 20 files from `examples/canonical-life-and-death/`.
 3. No conversation history or repair feedback on the first attempt.
 
+Every candidate must explicitly declare a 19×19 board with `SZ[19]`. Other board sizes and omitted `SZ` properties fail structural validation.
+
 Record the exact model name/version, access surface, date, sampling settings where exposed, and whether tools or web access were enabled. If the model is allowed to call the duplicate API itself, report that as a separate tool-enabled condition.
 
 ## Run layout
@@ -49,6 +51,7 @@ A candidate is rejected before scoring if any of these is true:
 - It is not parseable SGF.
 - A structural validator error remains.
 - It contains a root comment or written problem instruction.
+- It does not explicitly declare `SZ[19]` at the root.
 - The position or any required line is illegal.
 - The claimed `RIGHT` outcome is false.
 - A materially correct alternative is missing or marked wrong.

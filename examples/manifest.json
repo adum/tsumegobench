@@ -1,6 +1,7 @@
 {
   "name": "Canonical life-and-death reference corpus",
-  "description": "Twenty public GoProblems examples distributed evenly from 30 kyu through 1 dan and verified as canonical, standard, and life-and-death when synchronized. Root instructions are removed so the position and side to move stand on their own.",
+  "description": "Twenty public GoProblems examples on explicit 19×19 boards, distributed evenly from 30 kyu through 1 dan and verified as canonical, standard, and life-and-death when synchronized. Root instructions are removed so the position and side to move stand on their own.",
+  "boardSize": 19,
   "difficultyRange": "30 kyu to 1 dan",
   "difficultyBands": {
     "20-30 kyu": 4,

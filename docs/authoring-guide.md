@@ -22,7 +22,7 @@ Use UTF-8 SGF. A problem begins with a root setup position and then branches int
 
 Required:
 
-- A square `SZ` of 9, 13, or 19; omitted `SZ` means 19.
+- An explicit `SZ[19]` root property. Every benchmark problem uses a 19×19 board; omitted or alternate sizes are rejected.
 - Both `AB` and `AW` setup stones at the root.
 - No move at the root.
 - Exactly one `B` or `W` move at every later node.
