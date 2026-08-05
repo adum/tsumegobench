@@ -175,6 +175,9 @@ export function ProblemWorkbench() {
                 className={`problem-list-item${record.id === problem.id ? " active" : ""}`}
                 onClick={() => chooseProblem(record.id)}
                 aria-pressed={record.id === problem.id}
+                aria-label={`Problem ${record.id}, ${
+                  record.playerColor === "black" ? "Black" : "White"
+                } to play, ${record.rank}, by ${record.author}`}
               >
                 <span className={`mini-stone ${record.playerColor}`} aria-hidden="true" />
                 <span className="problem-list-copy">
@@ -182,7 +185,6 @@ export function ProblemWorkbench() {
                     <strong>#{record.id}</strong>
                     <span>{record.rank}</span>
                   </span>
-                  <span>{record.playerColor === "black" ? "Black" : "White"} to play</span>
                   <small>
                     {record.author} · {record.attempts.tries.toLocaleString()} tries
                   </small>

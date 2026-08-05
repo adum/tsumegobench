@@ -583,7 +583,7 @@ input:focus-visible,
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .problem-list-topline strong {
@@ -599,20 +599,10 @@ input:focus-visible,
   text-transform: uppercase;
 }
 
-.problem-list-copy > span:nth-child(2) {
-  display: block;
-  overflow: hidden;
-  color: #4f5b57;
-  font-size: 11px;
-  line-height: 1.35;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .problem-list-copy small {
   display: block;
   overflow: hidden;
-  margin-top: 6px;
+  margin-top: 0;
   color: #8b8d87;
   font-size: 9px;
   text-overflow: ellipsis;
