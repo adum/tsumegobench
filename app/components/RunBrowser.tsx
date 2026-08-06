@@ -73,6 +73,7 @@ interface GeneratedProblem {
     reviewerName: string;
     valid: boolean;
     realistic: boolean;
+    duplicate?: boolean | null;
     estimatedDifficulty: string | null;
     quality: number;
     reviewedAt: string;
@@ -185,6 +186,7 @@ export function RunBrowser() {
     (firstMove?.color === "B" ? "black" : firstMove?.color === "W" ? "white" : null);
   const playerName = playerColor === "black" ? "Black" : playerColor === "white" ? "White" : null;
   const completedReviews = problem?.reviews ?? [];
+  const duplicateReviewCount = completedReviews.filter((review) => review.duplicate).length;
   const averageQuality = completedReviews.length
     ? completedReviews.reduce((total, review) => total + review.quality, 0) / completedReviews.length
     : null;
@@ -474,12 +476,35 @@ export function RunBrowser() {
                   <dt>Human review</dt>
                   <dd>
                     {completedReviews.length
-                      ? `${completedReviews.length} review${completedReviews.length === 1 ? "" : "s"} · ${averageQuality?.toFixed(1)}★`
+                      ? `${completedReviews.length} review${completedReviews.length === 1 ? "" : "s"} · ${averageQuality?.toFixed(1)}★${duplicateReviewCount ? ` · ${duplicateReviewCount} duplicate flag${duplicateReviewCount === 1 ? "" : "s"}` : ""}`
                       : problem.human?.status ?? "pending"}
                   </dd>
                 </div>
                 <div><dt>Closest reference</dt><dd>{problem.originality.closestLocalShape ? `#${problem.originality.closestLocalShape.id} · ${Math.round(problem.originality.closestLocalShape.percentage)}%` : "not available"}</dd></div>
-                <div><dt>Remote top match</dt><dd>{problem.originality.remote.topPercentage === null ? "not available" : `${problem.originality.remote.topPercentage}%${problem.originality.remote.topMatchId ? ` · #${problem.originality.remote.topMatchId}` : ""}`}</dd></div>
+                <div>
+                  <dt>Remote top match</dt>
+                  <dd>
+                    {problem.originality.remote.topPercentage === null
+                      ? "not available"
+                      : (
+                          <>
+                            {problem.originality.remote.topPercentage}%
+                            {problem.originality.remote.topMatchId && (
+                              <>
+                                {" · "}
+                                <a
+                                  href={`https://www.goproblems.com/problems/${problem.originality.remote.topMatchId}`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  #{problem.originality.remote.topMatchId} ↗
+                                </a>
+                              </>
+                            )}
+                          </>
+                        )}
+                  </dd>
+                </div>
               </dl>
               {problem.validation.issues.length > 0 && (
                 <ul className="issue-list">

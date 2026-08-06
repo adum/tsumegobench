@@ -98,6 +98,10 @@ test("server-renders generated runs on their own page with a to-move stone", asy
     html,
     /aria-label="(?:Black|White) to play"[\s\S]*aria-label="Generated board navigation controls"[\s\S]*class="go-board-canvas"/,
   );
+  assert.match(
+    html,
+    /href="https:\/\/www\.goproblems\.com\/problems\/\d+"[^>]*target="_blank"/,
+  );
 });
 
 test("server-renders process and sources as dedicated pages", async () => {

@@ -196,6 +196,7 @@ def normalize_review(review: Any, expected_files: list[str], now: str | None = N
         seen.add(file)
         valid = problem.get("valid")
         realistic = problem.get("realistic")
+        duplicate = problem.get("duplicate")
         difficulty = problem.get("estimatedDifficulty")
         quality = problem.get("quality")
         reviewed_at = problem.get("reviewedAt")
@@ -203,6 +204,8 @@ def normalize_review(review: Any, expected_files: list[str], now: str | None = N
             raise ValueError(f"Invalid validity value for {file}.")
         if realistic is not None and not isinstance(realistic, bool):
             raise ValueError(f"Invalid realism value for {file}.")
+        if duplicate is not None and not isinstance(duplicate, bool):
+            raise ValueError(f"Invalid duplicate value for {file}.")
         if quality is not None and (
             isinstance(quality, bool) or not isinstance(quality, int) or not 1 <= quality <= 5
         ):
@@ -230,6 +233,7 @@ def normalize_review(review: Any, expected_files: list[str], now: str | None = N
                 "status": status,
                 "valid": valid,
                 "realistic": realistic,
+                "duplicate": duplicate,
                 "estimatedDifficulty": difficulty,
                 "quality": quality,
                 "reviewedAt": reviewed_at,

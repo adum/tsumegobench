@@ -7,6 +7,7 @@ interface ReviewProblem {
   status: "pending" | "completed";
   valid: boolean | null;
   realistic: boolean | null;
+  duplicate: boolean | null;
   estimatedDifficulty: string | null;
   quality: number | null;
   reviewedAt: string | null;
@@ -35,6 +36,7 @@ interface ReviewLaunch {
 interface ReviewDraft {
   valid: boolean;
   realistic: boolean;
+  duplicate: boolean;
   estimatedDifficulty: string;
   quality: number | null;
 }
@@ -79,6 +81,7 @@ function blankReviewProblem(file: string): ReviewProblem {
     status: "pending",
     valid: null,
     realistic: null,
+    duplicate: null,
     estimatedDifficulty: null,
     quality: null,
     reviewedAt: null,
@@ -90,6 +93,7 @@ function problemProgress(problem: ReviewProblem): ReviewProblemProgress {
   if (
     problem.valid !== null ||
     problem.realistic !== null ||
+    typeof problem.duplicate === "boolean" ||
     problem.estimatedDifficulty !== null ||
     problem.quality !== null
   ) {
@@ -119,6 +123,7 @@ export function HumanReviewPanel({
   const [reviewerName, setReviewerName] = useState("");
   const [valid, setValid] = useState(false);
   const [realistic, setRealistic] = useState(false);
+  const [duplicate, setDuplicate] = useState(false);
   const [estimatedDifficulty, setEstimatedDifficulty] = useState("");
   const [quality, setQuality] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
@@ -162,6 +167,7 @@ export function HumanReviewPanel({
     const draftTimer = window.setTimeout(() => {
       setValid(record?.valid ?? false);
       setRealistic(record?.realistic ?? false);
+      setDuplicate(record?.duplicate ?? false);
       setEstimatedDifficulty(record?.estimatedDifficulty ?? "");
       setQuality(record?.quality ?? null);
     }, 0);
@@ -236,6 +242,7 @@ export function HumanReviewPanel({
                 status: isComplete ? "completed" : "pending",
                 valid: draft.valid,
                 realistic: draft.realistic,
+                duplicate: draft.duplicate,
                 estimatedDifficulty: draft.valid ? draft.estimatedDifficulty || null : null,
                 quality: draft.quality,
                 reviewedAt: isComplete ? now : null,
@@ -336,6 +343,7 @@ export function HumanReviewPanel({
                   void autoSaveProblemReview({
                     valid: nextValid,
                     realistic,
+                    duplicate,
                     estimatedDifficulty: nextDifficulty,
                     quality,
                   });
@@ -354,6 +362,7 @@ export function HumanReviewPanel({
                   void autoSaveProblemReview({
                     valid,
                     realistic: nextRealistic,
+                    duplicate,
                     estimatedDifficulty,
                     quality,
                   });
@@ -361,6 +370,25 @@ export function HumanReviewPanel({
               />
               <span>Realistic position</span>
             </label>
+            <button
+              type="button"
+              className="review-duplicate"
+              aria-pressed={duplicate}
+              disabled={saving}
+              onClick={() => {
+                const nextDuplicate = !duplicate;
+                setDuplicate(nextDuplicate);
+                void autoSaveProblemReview({
+                  valid,
+                  realistic,
+                  duplicate: nextDuplicate,
+                  estimatedDifficulty,
+                  quality,
+                });
+              }}
+            >
+              {duplicate ? "Duplicate marked" : "Mark duplicate"}
+            </button>
           </div>
 
           <label className="review-difficulty">
@@ -373,6 +401,7 @@ export function HumanReviewPanel({
                 void autoSaveProblemReview({
                   valid,
                   realistic,
+                  duplicate,
                   estimatedDifficulty: nextDifficulty,
                   quality,
                 });
@@ -397,6 +426,7 @@ export function HumanReviewPanel({
                     void autoSaveProblemReview({
                       valid,
                       realistic,
+                      duplicate,
                       estimatedDifficulty,
                       quality: rating,
                     });

@@ -1408,6 +1408,31 @@ input:focus-visible,
   accent-color: var(--green);
 }
 
+.review-duplicate {
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 1px solid var(--line-dark);
+  background: #fffdf8;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.review-duplicate[aria-pressed="true"] {
+  border-color: var(--red-dark);
+  background: #f2dcd7;
+  color: var(--red-dark);
+}
+
+.review-duplicate:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
 .quality-rating {
   min-width: 142px;
   margin: 0;
@@ -1587,6 +1612,16 @@ input:focus-visible,
   font-size: 11px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.evaluation-details a {
+  color: var(--red-dark);
+  text-decoration-color: rgba(176, 57, 42, 0.45);
+  text-underline-offset: 2px;
+}
+
+.evaluation-details a:hover {
+  text-decoration-color: currentColor;
 }
 
 .issue-list {

@@ -50,6 +50,7 @@ interface ReviewerProblem {
   status: "pending" | "completed";
   valid: boolean | null;
   realistic: boolean | null;
+  duplicate?: boolean | null;
   estimatedDifficulty: string | null;
   quality: number | null;
   reviewedAt: string | null;

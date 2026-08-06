@@ -59,6 +59,7 @@
         "status": { "enum": ["pending", "completed"] },
         "valid": { "type": ["boolean", "null"] },
         "realistic": { "type": ["boolean", "null"] },
+        "duplicate": { "type": ["boolean", "null"] },
         "estimatedDifficulty": {
           "enum": [
             null,
