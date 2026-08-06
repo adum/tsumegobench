@@ -11,6 +11,7 @@ import { SolutionTree } from "./SolutionTree";
 import {
   aggregateReviewProgress,
   isReviewMarkedBad,
+  problemPassesHumanReview,
   type ReviewProblemProgress,
 } from "@/lib/review-progress";
 import {
@@ -347,27 +348,38 @@ export function RunBrowser() {
             <span>CODEX CLI</span>
           </div>
           <div className="problem-list">
-            {runs.map((record) => (
-              <button
-                type="button"
-                key={record.runId}
-                className={`problem-list-item${record.runId === run.runId ? " active" : ""}`}
-                onClick={() => chooseRun(record.runId)}
-                aria-pressed={record.runId === run.runId}
-              >
-                <span className={`run-status-dot ${record.status}`} aria-hidden="true" />
-                <span className="problem-list-copy">
-                  <span className="problem-list-topline">
-                    <strong>{record.model.name}</strong>
-                    <span>
-                      {record.summary.automatedGatePassed}/
-                      {record.summary.expectedProblems ?? record.problems.length}
+            {runs.map((record) => {
+              const humanPassed = record.problems.filter((generatedProblem) =>
+                problemPassesHumanReview(generatedProblem.reviews ?? []),
+              ).length;
+              const automatedPassed = record.summary.automatedGatePassed;
+              const totalProblems = record.summary.expectedProblems ?? record.problems.length;
+
+              return (
+                <button
+                  type="button"
+                  key={record.runId}
+                  className={`problem-list-item${record.runId === run.runId ? " active" : ""}`}
+                  onClick={() => chooseRun(record.runId)}
+                  aria-pressed={record.runId === run.runId}
+                >
+                  <span className={`run-status-dot ${record.status}`} aria-hidden="true" />
+                  <span className="problem-list-copy">
+                    <span className="problem-list-topline">
+                      <strong>{record.model.name}</strong>
+                      <span
+                        className="run-pass-counts"
+                        aria-label={`${humanPassed} human passed, ${automatedPassed} automated passed, ${totalProblems} total problems`}
+                        title="Human passed / automated passed / total problems"
+                      >
+                        {humanPassed}/{automatedPassed}/{totalProblems}
+                      </span>
                     </span>
+                    <small>{humanDate(record.createdAt)}</small>
                   </span>
-                  <small>{humanDate(record.createdAt)}</small>
-                </span>
-              </button>
-            ))}
+                </button>
+              );
+            })}
           </div>
         </aside>
 

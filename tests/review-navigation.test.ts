@@ -8,6 +8,7 @@ import {
 import {
   aggregateReviewProgress,
   isReviewMarkedBad,
+  problemPassesHumanReview,
   reviewProblemProgress,
 } from "../lib/review-progress";
 
@@ -90,4 +91,21 @@ test("saved partial reviews remain visibly in progress", () => {
   assert.equal(reviewProblemProgress(completed), "completed");
   assert.equal(aggregateReviewProgress([untouched, started]), "started");
   assert.equal(aggregateReviewProgress([started, completed]), "completed");
+});
+
+test("human pass requires completed valid, well-pathed, non-duplicate reviews", () => {
+  const passing = reviewProblem("problem-01.sgf", {
+    status: "completed",
+    valid: true,
+    realistic: false,
+    duplicate: false,
+    wellPathed: true,
+  });
+
+  assert.equal(problemPassesHumanReview([]), false);
+  assert.equal(problemPassesHumanReview([{ ...passing, status: "pending" }]), false);
+  assert.equal(problemPassesHumanReview([passing]), true);
+  assert.equal(problemPassesHumanReview([passing, { ...passing, valid: false }]), false);
+  assert.equal(problemPassesHumanReview([passing, { ...passing, wellPathed: false }]), false);
+  assert.equal(problemPassesHumanReview([passing, { ...passing, duplicate: true }]), false);
 });

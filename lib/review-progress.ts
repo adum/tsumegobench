@@ -44,3 +44,21 @@ export function isReviewMarkedBad(problem: ReviewProgressFields): boolean {
     problem.wellPathed === false
   );
 }
+
+export function problemPassesHumanReview(
+  reviews: readonly ReviewProgressFields[],
+): boolean {
+  const completedReviews = reviews.filter(
+    (review) => review.status === "completed",
+  );
+
+  return (
+    completedReviews.length > 0 &&
+    completedReviews.every(
+      (review) =>
+        review.valid === true &&
+        review.wellPathed === true &&
+        review.duplicate === false,
+    )
+  );
+}

@@ -551,11 +551,16 @@ input:focus-visible,
 }
 
 .run-library .problem-list-topline strong {
+  min-width: 0;
+  overflow: hidden;
   font-size: 12px;
   letter-spacing: 0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .run-library .problem-list-topline > span {
+  flex: none;
   font-size: 22px;
   font-weight: 700;
 }

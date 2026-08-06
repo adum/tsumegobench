@@ -87,7 +87,7 @@ test("server-renders reference problems on their own page", async () => {
 test("server-renders generated runs on their own page with a to-move stone", async () => {
   const html = await htmlFor("/runs");
   assert.match(html, /Benchmark runs/);
-  assert.match(html, /gpt-5\.6-luna/);
+  assert.match(html, /gpt-5\.6-(?:luna|sol)/);
   assert.doesNotMatch(html, /Problem viewer/);
   const toMove = html.match(
     /class="to-move-stone (black|white)"[^>]*aria-label="(Black|White) to play"/,
@@ -108,6 +108,10 @@ test("server-renders generated runs on their own page with a to-move stone", asy
   assert.match(html, /Duplicate/);
   assert.match(html, /Well pathed/);
   assert.match(html, /adam/);
+  assert.match(
+    html,
+    /class="run-pass-counts" aria-label="\d+ human passed, \d+ automated passed, \d+ total problems" title="Human passed \/ automated passed \/ total problems"/,
+  );
 });
 
 test("server-renders process and sources as dedicated pages", async () => {
