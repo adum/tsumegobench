@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   findNextUnreviewedProblemFile,
+  isProblemMarkedBad,
   type ReviewProblem,
 } from "../app/components/HumanReviewPanel";
 
@@ -53,4 +54,21 @@ test("next pending wraps around without selecting the current problem", () => {
     findNextUnreviewedProblemFile([reviewProblem("problem-01.sgf")], "problem-01.sgf", []),
     null,
   );
+});
+
+test("all four human review checkboxes can mark a problem bad", () => {
+  const untouched = reviewProblem("problem-01.sgf");
+  const approved = reviewProblem("problem-01.sgf", {
+    valid: true,
+    realistic: true,
+    duplicate: false,
+    wellPathed: true,
+  });
+
+  assert.equal(isProblemMarkedBad(untouched), false);
+  assert.equal(isProblemMarkedBad(approved), false);
+  assert.equal(isProblemMarkedBad({ ...approved, valid: false }), true);
+  assert.equal(isProblemMarkedBad({ ...approved, realistic: false }), true);
+  assert.equal(isProblemMarkedBad({ ...approved, duplicate: true }), true);
+  assert.equal(isProblemMarkedBad({ ...approved, wellPathed: false }), true);
 });

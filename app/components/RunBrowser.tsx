@@ -363,6 +363,16 @@ export function RunBrowser() {
                     ? "completed"
                     : "untouched";
               const progressClass = reviewProgress === "untouched" ? "" : ` review-${reviewProgress}`;
+              const humanMarkedBad =
+                liveReviewProgress?.runId === run.runId
+                  ? liveReviewProgress.badProblems.includes(record.file)
+                  : record.reviews?.some((review) =>
+                      review.valid === false ||
+                      review.realistic === false ||
+                      review.duplicate === true ||
+                      review.wellPathed === false
+                    ) ?? false;
+              const humanBadClass = humanMarkedBad ? " human-rejected" : "";
               const reviewLabel =
                 reviewProgress === "completed"
                   ? "human review completed"
@@ -380,9 +390,9 @@ export function RunBrowser() {
                   <span>{record.file.replace(".sgf", "")}</span>
                   <small>{record.targetDifficulty}</small>
                   <i
-                    className={`${record.status}${progressClass}`}
+                    className={`${record.status}${progressClass}${humanBadClass}`}
                     role="img"
-                    aria-label={`${statusLabel(record.status)}; ${reviewLabel}`}
+                    aria-label={`${statusLabel(record.status)}; ${reviewLabel}${humanMarkedBad ? "; human review found a problem" : ""}`}
                   />
                 </button>
               );

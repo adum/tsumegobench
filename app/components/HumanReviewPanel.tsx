@@ -48,6 +48,7 @@ export type ReviewProblemProgress = "untouched" | "started" | "completed";
 export interface ReviewProgressSnapshot {
   runId: string;
   problems: Record<string, ReviewProblemProgress>;
+  badProblems: string[];
 }
 
 interface HumanReviewPanelProps {
@@ -107,6 +108,15 @@ function problemProgress(problem: ReviewProblem): ReviewProblemProgress {
   return "untouched";
 }
 
+export function isProblemMarkedBad(problem: ReviewProblem): boolean {
+  return (
+    problem.valid === false ||
+    problem.realistic === false ||
+    problem.duplicate === true ||
+    problem.wellPathed === false
+  );
+}
+
 export function findNextUnreviewedProblemFile(
   problems: ReviewProblem[],
   currentFile: string,
@@ -131,6 +141,9 @@ function reviewProgressSnapshot(runId: string, review: ReviewerRecord): ReviewPr
     problems: Object.fromEntries(
       review.problems.map((problem) => [problem.file, problemProgress(problem)]),
     ),
+    badProblems: review.problems
+      .filter(isProblemMarkedBad)
+      .map((problem) => problem.file),
   };
 }
 
@@ -145,10 +158,10 @@ export function HumanReviewPanel({
   const [session, setSession] = useState<ReviewSession | null>(null);
   const [activeReviewId, setActiveReviewId] = useState<string | null>(null);
   const [reviewerName, setReviewerName] = useState("");
-  const [valid, setValid] = useState(false);
-  const [realistic, setRealistic] = useState(false);
+  const [valid, setValid] = useState(true);
+  const [realistic, setRealistic] = useState(true);
   const [duplicate, setDuplicate] = useState(false);
-  const [wellPathed, setWellPathed] = useState(false);
+  const [wellPathed, setWellPathed] = useState(true);
   const [estimatedDifficulty, setEstimatedDifficulty] = useState("");
   const [quality, setQuality] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
@@ -197,10 +210,10 @@ export function HumanReviewPanel({
   useEffect(() => {
     const record = activeReview?.problems.find((problem) => problem.file === problemFile);
     const draftTimer = window.setTimeout(() => {
-      setValid(record?.valid ?? false);
-      setRealistic(record?.realistic ?? false);
+      setValid(record?.valid ?? true);
+      setRealistic(record?.realistic ?? true);
       setDuplicate(record?.duplicate ?? false);
-      setWellPathed(record?.wellPathed ?? false);
+      setWellPathed(record?.wellPathed ?? true);
       setEstimatedDifficulty(record?.estimatedDifficulty ?? "");
       setQuality(record?.quality ?? null);
     }, 0);
