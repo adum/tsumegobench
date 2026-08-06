@@ -186,6 +186,9 @@ export function RunBrowser() {
     (firstMove?.color === "B" ? "black" : firstMove?.color === "W" ? "white" : null);
   const playerName = playerColor === "black" ? "Black" : playerColor === "white" ? "White" : null;
   const completedReviews = problem?.reviews ?? [];
+  const automaticallyRejectedFiles = run?.problems
+    .filter((record) => record.automatedGate === "fail")
+    .map((record) => record.file) ?? [];
   const duplicateReviewCount = completedReviews.filter((review) => review.duplicate).length;
   const averageQuality = completedReviews.length
     ? completedReviews.reduce((total, review) => total + review.quality, 0) / completedReviews.length
@@ -368,6 +371,7 @@ export function RunBrowser() {
           <HumanReviewPanel
             runId={run.runId}
             problemFile={problem.file}
+            automaticallyRejectedFiles={automaticallyRejectedFiles}
             onChooseProblem={chooseProblem}
             onReviewProgressChange={updateReviewProgress}
           />

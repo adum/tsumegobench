@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 
-interface ReviewProblem {
+export interface ReviewProblem {
   file: string;
   status: "pending" | "completed";
   valid: boolean | null;
@@ -51,6 +51,7 @@ export interface ReviewProgressSnapshot {
 interface HumanReviewPanelProps {
   runId: string;
   problemFile: string;
+  automaticallyRejectedFiles: string[];
   onChooseProblem: (file: string) => void;
   onReviewProgressChange: (snapshot: ReviewProgressSnapshot | null) => void;
 }
@@ -102,6 +103,24 @@ function problemProgress(problem: ReviewProblem): ReviewProblemProgress {
   return "untouched";
 }
 
+export function findNextUnreviewedProblemFile(
+  problems: ReviewProblem[],
+  currentFile: string,
+  automaticallyRejectedFiles: readonly string[],
+): string | null {
+  const rejected = new Set(automaticallyRejectedFiles);
+  const currentIndex = problems.findIndex((problem) => problem.file === currentFile);
+  const orderedProblems = currentIndex < 0
+    ? problems
+    : [
+        ...problems.slice(currentIndex + 1),
+        ...problems.slice(0, currentIndex),
+      ];
+  return orderedProblems.find(
+    (problem) => problemProgress(problem) === "untouched" && !rejected.has(problem.file),
+  )?.file ?? null;
+}
+
 function reviewProgressSnapshot(runId: string, review: ReviewerRecord): ReviewProgressSnapshot {
   return {
     runId,
@@ -114,6 +133,7 @@ function reviewProgressSnapshot(runId: string, review: ReviewerRecord): ReviewPr
 export function HumanReviewPanel({
   runId,
   problemFile,
+  automaticallyRejectedFiles,
   onChooseProblem,
   onReviewProgressChange,
 }: HumanReviewPanelProps) {
@@ -135,6 +155,13 @@ export function HumanReviewPanel({
     [activeReviewId, session],
   );
   const completed = activeReview?.problems.filter((problem) => problem.status === "completed").length ?? 0;
+  const nextUnreviewedProblemFile = activeReview
+    ? findNextUnreviewedProblemFile(
+        activeReview.problems,
+        problemFile,
+        automaticallyRejectedFiles,
+      )
+    : null;
 
   useEffect(() => {
     const parsed = launchFromLocation();
@@ -268,8 +295,7 @@ export function HumanReviewPanel({
   }
 
   function nextPendingProblem() {
-    const pending = activeReview?.problems.find((problem) => problem.status === "pending");
-    if (pending) onChooseProblem(pending.file);
+    if (nextUnreviewedProblemFile) onChooseProblem(nextUnreviewedProblemFile);
   }
 
   if (!launch) return null;
@@ -449,7 +475,7 @@ export function HumanReviewPanel({
             <button
               type="button"
               onClick={nextPendingProblem}
-              disabled={saving || completed >= activeReview.problems.length}
+              disabled={saving || !nextUnreviewedProblemFile}
             >
               Next pending
             </button>
