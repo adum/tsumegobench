@@ -370,25 +370,25 @@ export function HumanReviewPanel({
               />
               <span>Realistic position</span>
             </label>
-            <button
-              type="button"
-              className="review-duplicate"
-              aria-pressed={duplicate}
-              disabled={saving}
-              onClick={() => {
-                const nextDuplicate = !duplicate;
-                setDuplicate(nextDuplicate);
-                void autoSaveProblemReview({
-                  valid,
-                  realistic,
-                  duplicate: nextDuplicate,
-                  estimatedDifficulty,
-                  quality,
-                });
-              }}
-            >
-              {duplicate ? "Duplicate marked" : "Mark duplicate"}
-            </button>
+            <label>
+              <input
+                type="checkbox"
+                checked={duplicate}
+                disabled={saving}
+                onChange={(event) => {
+                  const nextDuplicate = event.target.checked;
+                  setDuplicate(nextDuplicate);
+                  void autoSaveProblemReview({
+                    valid,
+                    realistic,
+                    duplicate: nextDuplicate,
+                    estimatedDifficulty,
+                    quality,
+                  });
+                }}
+              />
+              <span>Duplicate</span>
+            </label>
           </div>
 
           <label className="review-difficulty">
