@@ -121,6 +121,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
                 "valid": None,
                 "realistic": None,
                 "duplicate": None,
+                "wellPathed": None,
                 "estimatedDifficulty": None,
                 "quality": None,
                 "reviewedAt": None,
@@ -133,6 +134,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
                 "valid": False,
                 "realistic": False,
                 "duplicate": True,
+                "wellPathed": True,
                 "estimatedDifficulty": "20-30 kyu",
                 "quality": 1,
             }
@@ -149,6 +151,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
 
         self.assertIsNone(normalized["problems"][0]["estimatedDifficulty"])
         self.assertTrue(normalized["problems"][0]["duplicate"])
+        self.assertTrue(normalized["problems"][0]["wellPathed"])
         problems[0].update({"valid": True, "realistic": True, "estimatedDifficulty": None})
         partial = benchmark.normalize_review(
             {
@@ -188,6 +191,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
                             "valid": True,
                             "realistic": True,
                             "duplicate": False,
+                            "wellPathed": True,
                             "estimatedDifficulty": "10-19 kyu",
                             "quality": 4,
                             "reviewedAt": None,

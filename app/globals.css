@@ -1379,7 +1379,7 @@ input:focus-visible,
 
 .review-form {
   display: grid;
-  grid-template-columns: auto minmax(155px, 0.7fr) auto minmax(300px, 1.25fr);
+  grid-template-columns: minmax(260px, 1.15fr) minmax(155px, 0.7fr) auto minmax(260px, 1.1fr);
   align-items: end;
   gap: 18px;
   margin-top: 12px;
@@ -1389,6 +1389,7 @@ input:focus-visible,
   min-height: 36px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 14px;
 }
 

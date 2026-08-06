@@ -74,6 +74,7 @@ interface GeneratedProblem {
     valid: boolean;
     realistic: boolean;
     duplicate?: boolean | null;
+    wellPathed?: boolean | null;
     estimatedDifficulty: string | null;
     quality: number;
     reviewedAt: string;

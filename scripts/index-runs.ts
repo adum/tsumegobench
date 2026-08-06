@@ -51,6 +51,7 @@ interface ReviewerProblem {
   valid: boolean | null;
   realistic: boolean | null;
   duplicate?: boolean | null;
+  wellPathed?: boolean | null;
   estimatedDifficulty: string | null;
   quality: number | null;
   reviewedAt: string | null;

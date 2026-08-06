@@ -8,6 +8,7 @@ export interface ReviewProblem {
   valid: boolean | null;
   realistic: boolean | null;
   duplicate: boolean | null;
+  wellPathed: boolean | null;
   estimatedDifficulty: string | null;
   quality: number | null;
   reviewedAt: string | null;
@@ -37,6 +38,7 @@ interface ReviewDraft {
   valid: boolean;
   realistic: boolean;
   duplicate: boolean;
+  wellPathed: boolean;
   estimatedDifficulty: string;
   quality: number | null;
 }
@@ -83,6 +85,7 @@ function blankReviewProblem(file: string): ReviewProblem {
     valid: null,
     realistic: null,
     duplicate: null,
+    wellPathed: null,
     estimatedDifficulty: null,
     quality: null,
     reviewedAt: null,
@@ -95,6 +98,7 @@ function problemProgress(problem: ReviewProblem): ReviewProblemProgress {
     problem.valid !== null ||
     problem.realistic !== null ||
     typeof problem.duplicate === "boolean" ||
+    typeof problem.wellPathed === "boolean" ||
     problem.estimatedDifficulty !== null ||
     problem.quality !== null
   ) {
@@ -144,6 +148,7 @@ export function HumanReviewPanel({
   const [valid, setValid] = useState(false);
   const [realistic, setRealistic] = useState(false);
   const [duplicate, setDuplicate] = useState(false);
+  const [wellPathed, setWellPathed] = useState(false);
   const [estimatedDifficulty, setEstimatedDifficulty] = useState("");
   const [quality, setQuality] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
@@ -195,6 +200,7 @@ export function HumanReviewPanel({
       setValid(record?.valid ?? false);
       setRealistic(record?.realistic ?? false);
       setDuplicate(record?.duplicate ?? false);
+      setWellPathed(record?.wellPathed ?? false);
       setEstimatedDifficulty(record?.estimatedDifficulty ?? "");
       setQuality(record?.quality ?? null);
     }, 0);
@@ -270,6 +276,7 @@ export function HumanReviewPanel({
                 valid: draft.valid,
                 realistic: draft.realistic,
                 duplicate: draft.duplicate,
+                wellPathed: draft.wellPathed,
                 estimatedDifficulty: draft.valid ? draft.estimatedDifficulty || null : null,
                 quality: draft.quality,
                 reviewedAt: isComplete ? now : null,
@@ -370,6 +377,7 @@ export function HumanReviewPanel({
                     valid: nextValid,
                     realistic,
                     duplicate,
+                    wellPathed,
                     estimatedDifficulty: nextDifficulty,
                     quality,
                   });
@@ -389,6 +397,7 @@ export function HumanReviewPanel({
                     valid,
                     realistic: nextRealistic,
                     duplicate,
+                    wellPathed,
                     estimatedDifficulty,
                     quality,
                   });
@@ -408,12 +417,33 @@ export function HumanReviewPanel({
                     valid,
                     realistic,
                     duplicate: nextDuplicate,
+                    wellPathed,
                     estimatedDifficulty,
                     quality,
                   });
                 }}
               />
               <span>Duplicate</span>
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={wellPathed}
+                disabled={saving}
+                onChange={(event) => {
+                  const nextWellPathed = event.target.checked;
+                  setWellPathed(nextWellPathed);
+                  void autoSaveProblemReview({
+                    valid,
+                    realistic,
+                    duplicate,
+                    wellPathed: nextWellPathed,
+                    estimatedDifficulty,
+                    quality,
+                  });
+                }}
+              />
+              <span>Well pathed</span>
             </label>
           </div>
 
@@ -428,6 +458,7 @@ export function HumanReviewPanel({
                   valid,
                   realistic,
                   duplicate,
+                  wellPathed,
                   estimatedDifficulty: nextDifficulty,
                   quality,
                 });
@@ -453,6 +484,7 @@ export function HumanReviewPanel({
                       valid,
                       realistic,
                       duplicate,
+                      wellPathed,
                       estimatedDifficulty,
                       quality: rating,
                     });

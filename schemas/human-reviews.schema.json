@@ -60,6 +60,7 @@
         "valid": { "type": ["boolean", "null"] },
         "realistic": { "type": ["boolean", "null"] },
         "duplicate": { "type": ["boolean", "null"] },
+        "wellPathed": { "type": ["boolean", "null"] },
         "estimatedDifficulty": {
           "enum": [
             null,

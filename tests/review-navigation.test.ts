@@ -16,6 +16,7 @@ function reviewProblem(
     valid: null,
     realistic: null,
     duplicate: null,
+    wellPathed: null,
     estimatedDifficulty: null,
     quality: null,
     reviewedAt: null,

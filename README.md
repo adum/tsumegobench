@@ -82,7 +82,7 @@ The command selects the most recently completed evaluated run, opens a local bro
 python3 benchmark.py review 2026-08-05T225707Z-openai-gpt-5-6-luna-codex
 ```
 
-For each problem, the initial review records whether it is valid, whether the position is realistic, whether the reviewer considers it a duplicate, an estimated difficulty band for valid problems, and a 1–5 quality rating. Reviewer records are independent, so a second reviewer can assess the same run without overwriting the first review. The structured records live in `evaluation/reviews.json`; the hosted site remains read-only.
+For each problem, the initial review records whether it is valid, whether the position is realistic, whether the reviewer considers it a duplicate, whether its solution and refutation paths are well formed, an estimated difficulty band for valid problems, and a 1–5 quality rating. Reviewer records are independent, so a second reviewer can assess the same run without overwriting the first review. The structured records live in `evaluation/reviews.json`; the hosted site remains read-only.
 
 ## Benchmark in one pass
 
@@ -90,7 +90,7 @@ For each problem, the initial review records whether it is valid, whether the po
 2. The runner snapshots the controlled inputs and asks Codex to write ten SGFs directly into the run directory.
 3. It preserves the Codex event log and runs structural and duplicate checks automatically.
 4. Run `python3 benchmark.py review`; it defaults to the run that just completed.
-5. Have one or more competent Go players submit the basic validity, realism, duplicate, difficulty, and quality review in the browser.
+5. Have one or more competent Go players submit the basic validity, realism, duplicate, path quality, difficulty, and overall quality review in the browser.
 6. Check in the resulting `evaluation/reviews.json` with the rest of the run. Use `docs/evaluation-rubric.md` when a deeper 100-point review is needed.
 
 Structural validity and originality are hard gates. A beautiful but duplicated problem, or a novel position with a broken solution tree, is not an accepted result.
