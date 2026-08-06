@@ -32,6 +32,13 @@ interface ReviewLaunch {
   token: string;
 }
 
+interface ReviewDraft {
+  valid: boolean;
+  realistic: boolean;
+  estimatedDifficulty: string;
+  quality: number | null;
+}
+
 interface HumanReviewPanelProps {
   runId: string;
   problemFile: string;
@@ -92,7 +99,6 @@ export function HumanReviewPanel({
     [activeReviewId, session],
   );
   const completed = activeReview?.problems.filter((problem) => problem.status === "completed").length ?? 0;
-  const selectedRecord = activeReview?.problems.find((problem) => problem.file === problemFile);
 
   useEffect(() => {
     const parsed = launchFromLocation();
@@ -173,13 +179,16 @@ export function HumanReviewPanel({
     }
   }
 
-  async function saveProblemReview() {
-    if (!activeReview || !session || quality === null || (valid && !estimatedDifficulty)) return;
+  async function autoSaveProblemReview(draft: ReviewDraft) {
+    if (!activeReview || !session) return;
     setSaving(true);
     setError("");
     setMessage("");
     try {
       const now = new Date().toISOString();
+      const isComplete =
+        draft.quality !== null &&
+        (!draft.valid || Boolean(draft.estimatedDifficulty));
       const nextReview: ReviewerRecord = {
         ...activeReview,
         updatedAt: now,
@@ -187,21 +196,21 @@ export function HumanReviewPanel({
           problem.file === problemFile
             ? {
                 file: problem.file,
-                status: "completed",
-                valid,
-                realistic,
-                estimatedDifficulty: valid ? estimatedDifficulty : null,
-                quality,
-                reviewedAt: now,
+                status: isComplete ? "completed" : "pending",
+                valid: draft.valid,
+                realistic: draft.realistic,
+                estimatedDifficulty: draft.valid ? draft.estimatedDifficulty || null : null,
+                quality: draft.quality,
+                reviewedAt: isComplete ? now : null,
               }
             : problem,
         ),
       };
       const saved = await persist(nextReview);
       setActiveReviewId(saved.reviewId);
-      setMessage("Review saved.");
+      setMessage("Saved automatically.");
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "The problem review could not be saved.");
+      setError(reason instanceof Error ? reason.message : "The review change could not be saved.");
     } finally {
       setSaving(false);
     }
@@ -276,14 +285,41 @@ export function HumanReviewPanel({
         <div className="review-form">
           <div className="review-checkboxes">
             <label>
-              <input type="checkbox" checked={valid} onChange={(event) => {
-                setValid(event.target.checked);
-                if (!event.target.checked) setEstimatedDifficulty("");
-              }} />
+              <input
+                type="checkbox"
+                checked={valid}
+                disabled={saving}
+                onChange={(event) => {
+                  const nextValid = event.target.checked;
+                  const nextDifficulty = nextValid ? estimatedDifficulty : "";
+                  setValid(nextValid);
+                  setEstimatedDifficulty(nextDifficulty);
+                  void autoSaveProblemReview({
+                    valid: nextValid,
+                    realistic,
+                    estimatedDifficulty: nextDifficulty,
+                    quality,
+                  });
+                }}
+              />
               <span>Valid problem</span>
             </label>
             <label>
-              <input type="checkbox" checked={realistic} onChange={(event) => setRealistic(event.target.checked)} />
+              <input
+                type="checkbox"
+                checked={realistic}
+                disabled={saving}
+                onChange={(event) => {
+                  const nextRealistic = event.target.checked;
+                  setRealistic(nextRealistic);
+                  void autoSaveProblemReview({
+                    valid,
+                    realistic: nextRealistic,
+                    estimatedDifficulty,
+                    quality,
+                  });
+                }}
+              />
               <span>Realistic position</span>
             </label>
           </div>
@@ -292,8 +328,17 @@ export function HumanReviewPanel({
             <span>Estimated difficulty</span>
             <select
               value={estimatedDifficulty}
-              onChange={(event) => setEstimatedDifficulty(event.target.value)}
-              disabled={!valid}
+              onChange={(event) => {
+                const nextDifficulty = event.target.value;
+                setEstimatedDifficulty(nextDifficulty);
+                void autoSaveProblemReview({
+                  valid,
+                  realistic,
+                  estimatedDifficulty: nextDifficulty,
+                  quality,
+                });
+              }}
+              disabled={!valid || saving}
             >
               <option value="">Select difficulty</option>
               {session.difficultyOptions.map((option) => <option key={option}>{option}</option>)}
@@ -308,7 +353,16 @@ export function HumanReviewPanel({
                   type="button"
                   key={rating}
                   className={quality !== null && rating <= quality ? "selected" : ""}
-                  onClick={() => setQuality(rating)}
+                  onClick={() => {
+                    setQuality(rating);
+                    void autoSaveProblemReview({
+                      valid,
+                      realistic,
+                      estimatedDifficulty,
+                      quality: rating,
+                    });
+                  }}
+                  disabled={saving}
                   role="radio"
                   aria-checked={quality === rating}
                   aria-label={`${rating} star${rating === 1 ? "" : "s"}`}
@@ -320,21 +374,24 @@ export function HumanReviewPanel({
           </fieldset>
 
           <div className="review-actions">
+            <span className="review-autosave-status" role="status">
+              {saving ? "Saving…" : message || "Changes save automatically"}
+            </span>
             <button
               type="button"
-              className="review-save"
-              onClick={saveProblemReview}
-              disabled={saving || quality === null || (valid && !estimatedDifficulty)}
+              onClick={nextPendingProblem}
+              disabled={saving || completed >= activeReview.problems.length}
             >
-              {saving ? "Saving…" : selectedRecord?.status === "completed" ? "Update review" : "Save review"}
-            </button>
-            <button type="button" onClick={nextPendingProblem} disabled={completed >= activeReview.problems.length}>
               Next pending
             </button>
-            <button type="button" className="review-switch" onClick={() => setActiveReviewId(null)}>
+            <button
+              type="button"
+              className="review-switch"
+              onClick={() => setActiveReviewId(null)}
+              disabled={saving}
+            >
               Switch reviewer
             </button>
-            {message && <span className="review-message" role="status">{message}</span>}
             {error && <span className="review-error" role="alert">{error}</span>}
           </div>
         </div>

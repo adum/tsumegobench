@@ -194,28 +194,35 @@ def normalize_review(review: Any, expected_files: list[str], now: str | None = N
         if file in seen:
             raise ValueError(f"The review contains {file} more than once.")
         seen.add(file)
-        status = problem.get("status", "pending")
-        if status not in {"pending", "completed"}:
-            raise ValueError(f"Invalid review status for {file}.")
-
         valid = problem.get("valid")
         realistic = problem.get("realistic")
         difficulty = problem.get("estimatedDifficulty")
         quality = problem.get("quality")
         reviewed_at = problem.get("reviewedAt")
-        if status == "pending":
-            valid = realistic = difficulty = quality = reviewed_at = None
-        else:
-            if not isinstance(valid, bool) or not isinstance(realistic, bool):
-                raise ValueError(f"Completed review for {file} needs both checkbox decisions.")
-            if isinstance(quality, bool) or not isinstance(quality, int) or not 1 <= quality <= 5:
-                raise ValueError(f"Completed review for {file} needs a 1-5 quality rating.")
-            if valid:
-                if difficulty not in DIFFICULTY_BANDS:
-                    raise ValueError(f"A valid problem needs an estimated difficulty for {file}.")
-            else:
-                difficulty = None
+        if valid is not None and not isinstance(valid, bool):
+            raise ValueError(f"Invalid validity value for {file}.")
+        if realistic is not None and not isinstance(realistic, bool):
+            raise ValueError(f"Invalid realism value for {file}.")
+        if quality is not None and (
+            isinstance(quality, bool) or not isinstance(quality, int) or not 1 <= quality <= 5
+        ):
+            raise ValueError(f"Quality for {file} must be between 1 and 5.")
+        if difficulty is not None and difficulty not in DIFFICULTY_BANDS:
+            raise ValueError(f"Invalid estimated difficulty for {file}.")
+        if valid is not True:
+            difficulty = None
+
+        complete = (
+            isinstance(valid, bool)
+            and isinstance(realistic, bool)
+            and quality is not None
+            and (not valid or difficulty in DIFFICULTY_BANDS)
+        )
+        status = "completed" if complete else "pending"
+        if complete:
             reviewed_at = reviewed_at if isinstance(reviewed_at, str) and reviewed_at else timestamp
+        else:
+            reviewed_at = None
 
         normalized_problems.append(
             {
@@ -1146,7 +1153,7 @@ def review_command(args: argparse.Namespace) -> int:
         review_url = f"{site_root}/runs?{query}"
         print(f"Reviewing {run_id}")
         print(f"Review UI: {review_url}")
-        print("Review changes are saved into the run as you submit each problem.")
+        print("Review changes are saved into the run automatically.")
         print("Press Ctrl+C when the review session is finished.")
         if not args.no_open and not open_review_url(review_url):
             print("The browser could not be opened automatically; use the Review UI URL above.")

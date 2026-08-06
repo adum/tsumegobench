@@ -1415,17 +1415,17 @@ input:focus-visible,
   flex-wrap: wrap;
 }
 
-.review-actions .review-save {
-  border-color: var(--green-dark);
-  background: var(--green-dark);
-  color: #fff;
-}
-
-.review-actions .review-save:disabled {
-  border-color: #8f918b;
-  background: #e1ded5;
-  color: #464b48;
-  opacity: 1;
+.review-autosave-status {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  color: var(--green-dark);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .review-actions .review-switch {
@@ -1434,14 +1434,9 @@ input:focus-visible,
   color: var(--ink-soft);
 }
 
-.review-message,
 .review-error {
   flex-basis: 100%;
   font-size: 10px;
-}
-
-.review-message {
-  color: var(--green-dark);
 }
 
 .review-error,

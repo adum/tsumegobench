@@ -89,10 +89,14 @@ test("server-renders generated runs on their own page with a to-move stone", asy
   assert.match(html, /Benchmark runs/);
   assert.match(html, /gpt-5\.6-luna/);
   assert.doesNotMatch(html, /Problem viewer/);
-  assert.match(html, /class="to-move-stone white"[^>]*aria-label="White to play"/);
+  const toMove = html.match(
+    /class="to-move-stone (black|white)"[^>]*aria-label="(Black|White) to play"/,
+  );
+  assert.ok(toMove, "the selected generated problem should show its player-to-move stone");
+  assert.equal(toMove[2].toLowerCase(), toMove[1]);
   assert.match(
     html,
-    /aria-label="White to play"[\s\S]*aria-label="Generated board navigation controls"[\s\S]*class="go-board-canvas"/,
+    /aria-label="(?:Black|White) to play"[\s\S]*aria-label="Generated board navigation controls"[\s\S]*class="go-board-canvas"/,
   );
 });
 

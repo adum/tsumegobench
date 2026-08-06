@@ -112,7 +112,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertIsNone(args.run_id)
         self.assertTrue(args.no_open)
 
-    def test_completed_review_requires_difficulty_only_for_valid_problems(self):
+    def test_review_keeps_partial_auto_saved_values_until_complete(self):
         files = [f"problem-{index:02d}.sgf" for index in range(1, 6)]
         problems = [
             {
@@ -147,15 +147,19 @@ class BenchmarkRunnerTests(unittest.TestCase):
 
         self.assertIsNone(normalized["problems"][0]["estimatedDifficulty"])
         problems[0].update({"valid": True, "realistic": True, "estimatedDifficulty": None})
-        with self.assertRaisesRegex(ValueError, "estimated difficulty"):
-            benchmark.normalize_review(
-                {
-                    "reviewId": "reviewer-two",
-                    "reviewerName": "Second Reviewer",
-                    "problems": problems,
-                },
-                files,
-            )
+        partial = benchmark.normalize_review(
+            {
+                "reviewId": "reviewer-two",
+                "reviewerName": "Second Reviewer",
+                "problems": problems,
+            },
+            files,
+        )
+
+        self.assertEqual(partial["problems"][0]["status"], "pending")
+        self.assertTrue(partial["problems"][0]["valid"])
+        self.assertTrue(partial["problems"][0]["realistic"])
+        self.assertEqual(partial["problems"][0]["quality"], 1)
 
     def test_review_store_keeps_independent_reviewer_records(self):
         with tempfile.TemporaryDirectory() as temporary:

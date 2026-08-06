@@ -76,7 +76,7 @@ Launch the local review UI with:
 python3 benchmark.py review
 ```
 
-The command selects the most recently completed evaluated run, opens a local browser session, and saves each submitted problem review immediately. Pass a run ID only when reviewing an older run:
+The command selects the most recently completed evaluated run, opens a local browser session, and saves every checkbox, difficulty, and star change automatically. Pass a run ID only when reviewing an older run:
 
 ```bash
 python3 benchmark.py review 2026-08-05T225707Z-openai-gpt-5-6-luna-codex
