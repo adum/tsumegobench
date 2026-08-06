@@ -2,8 +2,8 @@ export function EvaluationProtocol() {
   return (
     <section className="protocol-section" aria-labelledby="protocol-title">
       <div className="protocol-intro">
-        <p className="eyebrow"><span>03</span> EVALUATION</p>
-        <h1 id="protocol-title">Evaluation protocol</h1>
+        <p className="eyebrow"><span>03</span> PROCESS</p>
+        <h1 id="protocol-title">Benchmark process</h1>
         <p>
           The runner gives each OpenAI model the same snapshotted packet through Codex CLI. The
           first files and CLI log are preserved; repaired output is recorded as a separate run.

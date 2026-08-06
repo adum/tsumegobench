@@ -11,7 +11,7 @@ export function SiteFooter() {
         <span>BENCHMARK</span>
         <Link href="/problems">Reference problems</Link>
         <Link href="/runs">Generated runs</Link>
-        <Link href="/evaluation">Evaluation protocol</Link>
+        <Link href="/evaluation">Benchmark process</Link>
       </div>
       <div className="footer-links">
         <span>DOCUMENTATION</span>

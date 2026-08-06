@@ -16,7 +16,7 @@ const destinations = [
   {
     href: "/evaluation",
     number: "03",
-    title: "Evaluation protocol",
+    title: "Benchmark process",
     detail: "See the generation, validation, duplicate, and human-review gates.",
   },
   {

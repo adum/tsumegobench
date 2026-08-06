@@ -10,7 +10,7 @@ export function SiteHeader() {
       <nav aria-label="Primary navigation">
         <Link href="/problems">Reference</Link>
         <Link href="/runs">Runs</Link>
-        <Link href="/evaluation">Evaluation</Link>
+        <Link href="/evaluation">Process</Link>
         <Link href="/sources">Sources</Link>
       </nav>
       <span className="header-status">v0.1 · LOCAL + API</span>

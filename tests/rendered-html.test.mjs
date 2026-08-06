@@ -28,7 +28,7 @@ test("server-renders a compact overview with route navigation", async () => {
   assert.match(html, /href="\/problems"/);
   assert.match(html, /href="\/problems">Reference<\/a>/);
   assert.match(html, /href="\/runs"/);
-  assert.match(html, /href="\/evaluation"/);
+  assert.match(html, /href="\/evaluation">Process<\/a>/);
   assert.match(html, /href="\/sources"/);
   assert.match(html, /<link[^>]+rel="icon"[^>]+href="\/favicon\.svg"/);
   assert.match(html, /19×19 boards/);
@@ -100,9 +100,9 @@ test("server-renders generated runs on their own page with a to-move stone", asy
   );
 });
 
-test("server-renders evaluation and sources as dedicated pages", async () => {
+test("server-renders process and sources as dedicated pages", async () => {
   const evaluation = await htmlFor("/evaluation");
-  assert.match(evaluation, /Evaluation protocol/);
+  assert.match(evaluation, /Benchmark process/);
   assert.match(evaluation, /solution and refutation coverage, endpoint judgment/);
   assert.doesNotMatch(evaluation, /Problem viewer|Benchmark runs/);
 
