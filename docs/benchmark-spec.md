@@ -17,7 +17,7 @@ Every compared model receives:
 
 Every candidate must explicitly declare a 19×19 board with `SZ[19]`. Other board sizes and omitted `SZ` properties fail structural validation.
 
-The initial harness is non-interactive `codex exec` using an explicitly selected OpenAI model. It receives workspace-write access only inside the run directory; web search and subprocess network access are disabled. Record the exact model identifier, Codex CLI version, date, reasoning effort, command, duration, token usage when reported, and exit status. If a future condition allows the model to call the duplicate API itself, report that as a separate tool-enabled condition.
+The supported harnesses are non-interactive `codex exec` for OpenAI models and Claude CLI print mode for Anthropic models. Codex receives workspace-write access only inside the run directory, with web search and subprocess network access disabled. Claude Code 2.1.169 or newer runs in safe mode, which disables ordinary user and project instructions, skills, plugins, hooks, and MCP configuration; session persistence and Chrome are also disabled. Its built-in tools are restricted to `Read`, `Write`, `Edit`, `Glob`, and `Grep`, while shell, web, and MCP tools are explicitly denied. Record the provider, exact model identifier, harness and version, date, effort setting, command, duration, token usage when reported, and exit status. If a future condition allows the model to call the duplicate API itself, report that as a separate tool-enabled condition.
 
 ## Run layout
 
@@ -44,8 +44,8 @@ runs/
       problem-09.sgf
       problem-10.sgf
     logs/
-      codex-events.jsonl
-      codex-stderr.txt
+      <harness>-events.jsonl
+      <harness>-stderr.txt
       final-message.txt
     evaluation/
       automated.json
@@ -53,7 +53,7 @@ runs/
       results.json
 ```
 
-The Python runner creates this structure, snapshots and hashes every input, invokes Codex, captures its logs, evaluates whatever files exist at process exit, and rebuilds the web index. Preserve the model's first files exactly. If you repair a problem, save it as a new, explicitly labeled run; do not silently replace the first attempt.
+The Python runner creates this structure, snapshots and hashes every input, invokes the selected CLI harness, captures its logs, evaluates whatever files exist at process exit, and rebuilds the web index. Claude run IDs use the parallel `...-anthropic-<model>-claude` form. Preserve the model's first files exactly. If you repair a problem, save it as a new, explicitly labeled run; do not silently replace the first attempt.
 
 ## Acceptance pipeline
 

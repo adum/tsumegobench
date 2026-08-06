@@ -15,7 +15,7 @@ The repository combines a curated reference corpus, a strict SGF validator, loca
 - `docs/benchmark-spec.md` — run structure, acceptance gates, and comparison protocol.
 - `docs/evaluation-rubric.md` — the human review scorecard.
 - `scripts/` — corpus synchronization, validation, and duplicate checks.
-- `benchmark.py` — creates a reproducible run, invokes an OpenAI model through Codex CLI, evaluates its files, and rebuilds the web index.
+- `benchmark.py` — creates a reproducible run, invokes a model through Codex CLI or Claude CLI, evaluates its files, and rebuilds the web index.
 - `runs/` — checked-in model runs with input snapshots, generated SGFs, logs, and structured evaluation records.
 - The web reviewer — browse each problem, replay any variation, and inspect the graphical solution tree.
 
@@ -28,22 +28,39 @@ npm run dev
 
 Open the local address printed by the development server.
 
-Run a benchmark with an OpenAI model available to your authenticated Codex CLI:
+Run a benchmark with an OpenAI model available to your authenticated Codex CLI (the default harness):
 
 ```bash
 python benchmark.py run --model <openai-model-id>
 ```
+
+Or run an Anthropic model through an authenticated Claude CLI:
+
+```bash
+python benchmark.py run --harness claude --model <claude-model-id-or-alias>
+```
+
+Install and authenticate the selected CLI before running the benchmark. The runner finds `codex`
+or `claude` on `PATH`; use `--codex` / `CODEX_CLI` or `--claude` / `CLAUDE_CLI` to provide an
+explicit executable. Prefer a full, versioned model ID over a moving alias when reproducibility
+matters. Claude Code 2.1.169 or newer is required because that release added the safe-mode isolation
+used by the benchmark. The runner checks the version before creating a run; an obsolete or broken
+Claude CLI exits without saving or evaluating anything. See Anthropic's
+[Claude Code installation guide](https://code.claude.com/docs/en/installation) for install and
+upgrade options.
 
 The evaluator requires Node.js 22 or newer. When the checkout is shared between
 Windows and WSL, the runner automatically uses a compatible Windows Node runtime
 for Windows-installed dependencies. Set `TSUMEGO_NODE` only if you need to
 override that selection.
 
-If Codex rejects an unknown, inaccessible, or unsupported model ID, the runner
+If the selected CLI rejects an unknown, inaccessible, or unsupported model ID, the runner
 prints the rejection and exits immediately. It does not retain a run directory,
 evaluate empty outputs, or add the attempt to the web index.
 
-Add `--reasoning-effort high` when you want to pin an exposed Codex reasoning setting, or `--local-only` to skip the post-run GoProblems API checks. The runner disables model web and network access, captures the CLI event log automatically, and writes ten candidate SGFs under `runs/<run-id>/outputs/` by default. Use `--count <5-50>` only when you want an explicitly different benchmark condition.
+Add `--reasoning-effort high` (or `--effort high`) when you want to pin an effort setting exposed by the selected CLI, or `--local-only` to skip the post-run GoProblems API checks. The runner disables model web and network tools, captures the selected CLI's event log automatically, and writes ten candidate SGFs under `runs/<run-id>/outputs/` by default. Use `--count <5-50>` only when you want an explicitly different benchmark condition.
+
+When a run starts, the runner prints the selected reasoning effort. If the flag is omitted, it prints `CLI/model default`; the manifest records `null` because the benchmark did not request a specific level.
 
 Validate the reference set or a submission:
 
@@ -86,9 +103,9 @@ For each problem, the initial review can record whether it is valid, whether the
 
 ## Benchmark in one pass
 
-1. Invoke `python benchmark.py run --model <openai-model-id>` from an authenticated Codex CLI environment.
-2. The runner snapshots the controlled inputs and asks Codex to write ten SGFs directly into the run directory.
-3. It preserves the Codex event log and runs structural and duplicate checks automatically.
+1. Invoke `python benchmark.py run --model <openai-model-id>` for Codex, or add `--harness claude` for Claude CLI.
+2. The runner snapshots the controlled inputs and asks the selected model to write ten SGFs directly into the run directory.
+3. It preserves the selected CLI's event log and runs structural and duplicate checks automatically.
 4. Run `python3 benchmark.py review`; it defaults to the run that just completed.
 5. Have one or more competent Go players submit the basic validity, realism, duplicate, path quality, difficulty, and overall quality review in the browser.
 6. Check in the resulting `evaluation/reviews.json` with the rest of the run. Use `docs/evaluation-rubric.md` when a deeper 100-point review is needed.

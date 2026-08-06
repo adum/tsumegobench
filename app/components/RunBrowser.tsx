@@ -139,6 +139,18 @@ function statusLabel(status: string) {
   return status.replaceAll("_", " ");
 }
 
+function providerLabel(provider: string) {
+  if (provider === "openai") return "OpenAI";
+  if (provider === "anthropic") return "Anthropic";
+  return provider;
+}
+
+function harnessLabel(harness: string) {
+  if (harness === "codex-cli") return "Codex CLI";
+  if (harness === "claude-cli") return "Claude CLI";
+  return harness;
+}
+
 function reviewChoice(value: boolean | null | undefined, badWhenTrue = false) {
   if (typeof value !== "boolean") {
     return { valueLabel: "Not set", tone: "unset" };
@@ -294,7 +306,7 @@ export function RunBrowser() {
         </div>
         <div className="run-empty">
           <span>No runs checked in yet</span>
-          <code>python benchmark.py run --model &lt;openai-model-id&gt;</code>
+          <code>python benchmark.py run --harness &lt;codex|claude&gt; --model &lt;model-id&gt;</code>
         </div>
       </section>
     );
@@ -351,7 +363,7 @@ export function RunBrowser() {
         <aside className="problem-library run-library" aria-label="Benchmark run library">
           <div className="library-header">
             <div><span className="library-count">{runs.length}</span><span>runs</span></div>
-            <span>CODEX CLI</span>
+            <span>CLI RUNS</span>
           </div>
           <div className="problem-list">
             {runs.map((record) => {
@@ -391,7 +403,7 @@ export function RunBrowser() {
           <header className="problem-stage-header">
             <div>
               <div className="record-kicker">
-                <span>OPENAI / CODEX CLI</span>
+                <span>{providerLabel(run.model.provider)} / {harnessLabel(run.harness.name)}</span>
                 <span className={`run-badge ${run.status}`}>{statusLabel(run.status)}</span>
               </div>
               <h3>{run.model.name}</h3>

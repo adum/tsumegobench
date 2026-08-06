@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/tsumego-bench/run.schema.json",
-  "title": "Tsumego Bench Codex run",
+  "title": "Tsumego Bench model run",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -63,7 +63,7 @@
       "additionalProperties": false,
       "required": ["provider", "name", "reasoningEffort"],
       "properties": {
-        "provider": { "const": "openai" },
+        "provider": { "enum": ["openai", "anthropic"] },
         "name": { "type": "string", "minLength": 1 },
         "reasoningEffort": { "type": ["string", "null"] }
       }
@@ -84,7 +84,7 @@
         "unparsedLineCount"
       ],
       "properties": {
-        "name": { "const": "codex-cli" },
+        "name": { "enum": ["codex-cli", "claude-cli"] },
         "version": { "type": ["string", "null"] },
         "mode": { "const": "non-interactive" },
         "command": { "type": "array", "items": { "type": "string" } },

@@ -5,8 +5,9 @@ export function EvaluationProtocol() {
         <p className="eyebrow"><span>03</span> PROCESS</p>
         <h1 id="protocol-title">Benchmark process</h1>
         <p>
-          The runner gives each OpenAI model the same snapshotted packet through Codex CLI. The
-          first files and CLI log are preserved; repaired output is recorded as a separate run.
+          The runner gives each model the same snapshotted packet through a non-interactive CLI
+          harness. The first files and CLI log are preserved; repaired output is recorded as a
+          separate run.
         </p>
       </div>
       <ol className="protocol-grid">
@@ -14,7 +15,7 @@ export function EvaluationProtocol() {
           <span className="protocol-number">01</span>
           <div className="protocol-icon generate" aria-hidden="true"><i /><i /><i /></div>
           <h2>Generate</h2>
-          <p>Invoke a selected OpenAI model through Codex CLI and write ten SGFs into an isolated run.</p>
+          <p>Invoke a selected model through Codex CLI or Claude CLI and write ten SGFs into an isolated run.</p>
           <small>FILES + EVENT LOG SAVED</small>
         </li>
         <li>

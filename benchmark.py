@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run Tsumego Bench with the non-interactive Codex CLI."""
+"""Run Tsumego Bench with a supported non-interactive model CLI."""
 
 from __future__ import annotations
 
@@ -30,6 +30,7 @@ RUNS_ROOT = PROJECT_ROOT / "runs"
 DEFAULT_PROBLEM_COUNT = 10
 MINIMUM_PROBLEM_COUNT = 5
 MAXIMUM_PROBLEM_COUNT = 50
+MINIMUM_CLAUDE_VERSION = (2, 1, 169)
 DIFFICULTY_BANDS = (
     "20-30 kyu",
     "10-19 kyu",
@@ -540,7 +541,19 @@ def portable_command(command: list[str], run_dir: Path) -> list[str]:
     return recorded
 
 
-def unique_run_id(model: str, requested: str | None) -> str:
+def harness_provider(harness: str) -> str:
+    return "anthropic" if harness == "claude" else "openai"
+
+
+def harness_manifest_name(harness: str) -> str:
+    return "claude-cli" if harness == "claude" else "codex-cli"
+
+
+def harness_label(harness: str) -> str:
+    return "Claude CLI" if harness == "claude" else "Codex CLI"
+
+
+def unique_run_id(model: str, requested: str | None, harness: str = "codex") -> str:
     if requested:
         if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9._-]{2,100}", requested):
             raise ValueError(
@@ -550,7 +563,10 @@ def unique_run_id(model: str, requested: str | None) -> str:
             raise ValueError(f"Run directory already exists: runs/{requested}")
         return requested
 
-    prefix = f"{datetime.now(timezone.utc):%Y-%m-%dT%H%M%SZ}-openai-{slugify(model)}-codex"
+    prefix = (
+        f"{datetime.now(timezone.utc):%Y-%m-%dT%H%M%SZ}-"
+        f"{harness_provider(harness)}-{slugify(model)}-{harness}"
+    )
     candidate = prefix
     suffix = 2
     while (RUNS_ROOT / candidate).exists():
@@ -608,7 +624,7 @@ Do not ask the operator questions and do not wait for repair feedback.
     return records
 
 
-def codex_version(executable: str) -> str | None:
+def cli_version(executable: str) -> str | None:
     try:
         result = subprocess.run(
             [executable, "--version"],
@@ -619,10 +635,45 @@ def codex_version(executable: str) -> str | None:
             errors="replace",
             timeout=15,
         )
+        if result.returncode:
+            return None
         value = (result.stdout or result.stderr).strip()
         return value or None
     except (OSError, subprocess.TimeoutExpired):
         return None
+
+
+def claude_version_error(version: str) -> str | None:
+    match = re.search(r"(?:^|\D)(\d+)\.(\d+)\.(\d+)(?:\D|$)", version)
+    if not match:
+        return f"Could not determine the Claude CLI version from {version!r}."
+    installed = tuple(int(part) for part in match.groups())
+    if installed < MINIMUM_CLAUDE_VERSION:
+        required = ".".join(str(part) for part in MINIMUM_CLAUDE_VERSION)
+        return (
+            f"Claude CLI {required} or newer is required for the benchmark's isolated mode; "
+            f"found {'.'.join(str(part) for part in installed)}."
+        )
+    return None
+
+
+def event_message(value: Any) -> str | None:
+    if isinstance(value, str):
+        try:
+            decoded = json.loads(value)
+        except json.JSONDecodeError:
+            return value.strip() or None
+        return event_message(decoded)
+    if isinstance(value, dict):
+        error = value.get("error")
+        if error is not None:
+            nested = event_message(error)
+            if nested:
+                return nested
+        message = value.get("message")
+        if message is not None:
+            return event_message(message)
+    return None
 
 
 def parse_codex_events(stdout: str) -> dict[str, Any]:
@@ -631,24 +682,6 @@ def parse_codex_events(stdout: str) -> dict[str, Any]:
     parse_errors = 0
     event_count = 0
     failure_message: str | None = None
-
-    def message_from(value: Any) -> str | None:
-        if isinstance(value, str):
-            try:
-                decoded = json.loads(value)
-            except json.JSONDecodeError:
-                return value.strip() or None
-            return message_from(decoded)
-        if isinstance(value, dict):
-            error = value.get("error")
-            if error is not None:
-                nested = message_from(error)
-                if nested:
-                    return nested
-            message = value.get("message")
-            if message is not None:
-                return message_from(message)
-        return None
 
     for line in stdout.splitlines():
         if not line.strip():
@@ -664,13 +697,62 @@ def parse_codex_events(stdout: str) -> dict[str, Any]:
         if event.get("type") == "turn.completed":
             usage = event.get("usage")
         if event.get("type") in {"error", "turn.failed"}:
-            failure_message = message_from(event) or failure_message
+            failure_message = event_message(event) or failure_message
     return {
         "threadId": thread_id,
         "usage": usage,
         "eventCount": event_count,
         "unparsedLineCount": parse_errors,
         "failureMessage": failure_message,
+    }
+
+
+def parse_claude_events(stdout: str) -> dict[str, Any]:
+    session_id: str | None = None
+    usage: dict[str, Any] | None = None
+    parse_errors = 0
+    event_count = 0
+    failure_message: str | None = None
+    final_message: str | None = None
+
+    for line in stdout.splitlines():
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            parse_errors += 1
+            continue
+        event_count += 1
+        session_id = event.get("session_id") or event.get("sessionId") or session_id
+        if event.get("type") == "result":
+            result = event.get("result")
+            if isinstance(result, str):
+                final_message = result
+            usage_fields = {
+                key: event[key]
+                for key in (
+                    "usage",
+                    "modelUsage",
+                    "total_cost_usd",
+                    "duration_api_ms",
+                    "num_turns",
+                )
+                if event.get(key) is not None
+            }
+            usage = usage_fields or None
+            if event.get("is_error") or event.get("subtype") not in {None, "success"}:
+                failure_message = event_message(event) or final_message or failure_message
+        elif event.get("type") == "error":
+            failure_message = event_message(event) or failure_message
+
+    return {
+        "threadId": session_id,
+        "usage": usage,
+        "eventCount": event_count,
+        "unparsedLineCount": parse_errors,
+        "failureMessage": failure_message,
+        "finalMessage": final_message,
     }
 
 
@@ -681,9 +763,12 @@ def is_model_selection_failure(message: str | None, raw_output: str = "") -> boo
         "not supported when using codex",
         "model_not_found",
         "invalid model",
+        "invalid model name",
         "model does not exist",
         "model not found",
         "model is unavailable",
+        "unknown model",
+        "could not resolve model",
         "unsupported model",
         "does not exist or you do not have access to it",
         "you do not have access to this model",
@@ -862,6 +947,7 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
     output_names = expected_output_names(args.count)
     model_prompt = run_dir / "inputs" / "model-prompt.md"
     reference_manifest = run_dir / "inputs" / "reference-manifest.json"
+    log_prefix = args.harness
     return {
         "$schema": "../../schemas/run.schema.json",
         "schemaVersion": 1,
@@ -876,12 +962,12 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
             "inputFiles": input_files,
         },
         "model": {
-            "provider": "openai",
+            "provider": harness_provider(args.harness),
             "name": args.model,
             "reasoningEffort": args.reasoning_effort,
         },
         "harness": {
-            "name": "codex-cli",
+            "name": harness_manifest_name(args.harness),
             "version": None,
             "mode": "non-interactive",
             "command": [],
@@ -905,8 +991,8 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
         },
         "artifacts": {
             "task": "inputs/task.md",
-            "stdout": "logs/codex-events.jsonl",
-            "stderr": "logs/codex-stderr.txt",
+            "stdout": f"logs/{log_prefix}-events.jsonl",
+            "stderr": f"logs/{log_prefix}-stderr.txt",
             "finalMessage": "logs/final-message.txt",
             "outputs": [f"outputs/{name}" for name in output_names],
             "automatedEvaluation": "evaluation/automated.json",
@@ -917,24 +1003,46 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
     }
 
 
-def run_command(args: argparse.Namespace) -> int:
-    RUNS_ROOT.mkdir(exist_ok=True)
-    try:
-        run_id = unique_run_id(args.model, args.run_id)
-    except ValueError as error:
-        print(f"error: {error}", file=sys.stderr)
-        return 2
+def harness_executable(args: argparse.Namespace) -> str:
+    if args.harness == "claude":
+        return args.claude or os.environ.get("CLAUDE_CLI") or command_name("claude")
+    return args.codex or os.environ.get("CODEX_CLI") or command_name("codex")
 
-    run_dir = RUNS_ROOT / run_id
-    (run_dir / "outputs").mkdir(parents=True)
-    (run_dir / "logs").mkdir()
-    (run_dir / "evaluation").mkdir()
-    manifest = prepare_manifest(args, run_id, run_dir)
-    manifest_path = run_dir / "run.json"
-    write_json(manifest_path, manifest)
 
-    executable = args.codex or os.environ.get("CODEX_CLI") or command_name("codex")
-    manifest["harness"]["version"] = codex_version(executable)
+def build_harness_command(
+    args: argparse.Namespace,
+    run_dir: Path,
+    executable: str,
+) -> list[str]:
+    if args.harness == "claude":
+        file_tools = "Read,Write,Edit,Glob,Grep"
+        command = [
+            executable,
+            "--safe-mode",
+            "--print",
+            "--input-format",
+            "text",
+            "--output-format",
+            "stream-json",
+            "--verbose",
+            "--no-session-persistence",
+            "--no-chrome",
+            "--strict-mcp-config",
+            "--permission-mode",
+            "dontAsk",
+            "--tools",
+            file_tools,
+            "--allowedTools",
+            file_tools,
+            "--disallowedTools",
+            "Bash,PowerShell,WebFetch,WebSearch,mcp__*",
+            "--model",
+            args.model,
+        ]
+        if args.reasoning_effort:
+            command.extend(["--effort", args.reasoning_effort])
+        return command
+
     command = [
         executable,
         "exec",
@@ -961,12 +1069,55 @@ def run_command(args: argparse.Namespace) -> int:
             ["--config", f"model_reasoning_effort={json.dumps(args.reasoning_effort)}"]
         )
     command.append("-")
+    return command
+
+
+def run_command(args: argparse.Namespace) -> int:
+    RUNS_ROOT.mkdir(exist_ok=True)
+    executable = harness_executable(args)
+    version = cli_version(executable)
+    label = harness_label(args.harness)
+    if version is None:
+        override = "--claude or CLAUDE_CLI" if args.harness == "claude" else "--codex or CODEX_CLI"
+        print(
+            f"error: could not run {label}. Install or upgrade it and authenticate it, or set {override}.",
+            file=sys.stderr,
+        )
+        print("No run was saved, and evaluation was not started.", file=sys.stderr)
+        return 2
+    if args.harness == "claude":
+        version_error = claude_version_error(version)
+        if version_error:
+            print(f"error: {version_error}", file=sys.stderr)
+            print(
+                "Upgrade Claude CLI and try again. No run was saved, and evaluation was not started.",
+                file=sys.stderr,
+            )
+            return 2
+
+    try:
+        run_id = unique_run_id(args.model, args.run_id, args.harness)
+    except ValueError as error:
+        print(f"error: {error}", file=sys.stderr)
+        return 2
+
+    run_dir = RUNS_ROOT / run_id
+    (run_dir / "outputs").mkdir(parents=True)
+    (run_dir / "logs").mkdir()
+    (run_dir / "evaluation").mkdir()
+    manifest = prepare_manifest(args, run_id, run_dir)
+    manifest_path = run_dir / "run.json"
+    write_json(manifest_path, manifest)
+
+    manifest["harness"]["version"] = version
+    command = build_harness_command(args, run_dir, executable)
     manifest["harness"]["command"] = portable_command(command, run_dir)
     manifest["status"] = "running"
     write_json(manifest_path, manifest)
 
     print(f"Starting benchmark run {run_id}")
-    print(f"Running {args.model} with Codex CLI…")
+    print(f"Running {args.model} with {label}…")
+    print(f"Reasoning effort: {args.reasoning_effort or 'CLI/model default'}")
     task = (run_dir / "inputs" / "task.md").read_text(encoding="utf-8")
     started = time.monotonic()
     stdout = ""
@@ -994,13 +1145,21 @@ def run_command(args: argparse.Namespace) -> int:
         stderr = error.stderr or ""
         exit_code = 124
     except OSError as error:
-        stderr = f"Could not launch Codex CLI: {error}\n"
+        stderr = f"Could not launch {label}: {error}\n"
         exit_code = 127
 
     duration = round(time.monotonic() - started, 3)
-    (run_dir / "logs" / "codex-events.jsonl").write_text(stdout, encoding="utf-8")
-    (run_dir / "logs" / "codex-stderr.txt").write_text(stderr, encoding="utf-8")
-    events = parse_codex_events(stdout)
+    (run_dir / manifest["artifacts"]["stdout"]).write_text(stdout, encoding="utf-8")
+    (run_dir / manifest["artifacts"]["stderr"]).write_text(stderr, encoding="utf-8")
+    events = (
+        parse_claude_events(stdout)
+        if args.harness == "claude"
+        else parse_codex_events(stdout)
+    )
+    final_message = events.pop("finalMessage", None)
+    final_message_path = run_dir / manifest["artifacts"]["finalMessage"]
+    if final_message is not None or not final_message_path.exists():
+        final_message_path.write_text(final_message or "", encoding="utf-8")
     manifest["harness"].update(
         {
             "exitCode": exit_code,
@@ -1018,8 +1177,8 @@ def run_command(args: argparse.Namespace) -> int:
     failure_message = manifest.get("harness", {}).get("failureMessage")
     if exit_code and is_model_selection_failure(failure_message, f"{stdout}\n{stderr}"):
         discard_new_run(run_dir)
-        detail = failure_message or f"Codex CLI exited with status {exit_code}."
-        print(f"Model {args.model!r} was rejected by Codex: {detail}", file=sys.stderr)
+        detail = failure_message or f"{label} exited with status {exit_code}."
+        print(f"Model {args.model!r} was rejected by {label}: {detail}", file=sys.stderr)
         print(
             "No run was saved, and evaluation was not started. Check the model ID and try again.",
             file=sys.stderr,
@@ -1051,7 +1210,7 @@ def run_command(args: argparse.Namespace) -> int:
         detail = manifest.get("harness", {}).get("failureMessage")
         suffix = f": {detail}" if detail else "."
         print(
-            f"Codex CLI exited with status {exit_code}; the partial run was preserved{suffix}",
+            f"{label} exited with status {exit_code}; the partial run was preserved{suffix}",
             file=sys.stderr,
         )
         return 1
@@ -1197,9 +1356,20 @@ def build_parser() -> argparse.ArgumentParser:
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    run = subparsers.add_parser("run", help="Run an OpenAI model through Codex CLI.")
-    run.add_argument("--model", required=True, help="Exact OpenAI model identifier for Codex.")
-    run.add_argument("--reasoning-effort", help="Optional Codex model reasoning effort.")
+    run = subparsers.add_parser("run", help="Run a model through Codex CLI or Claude CLI.")
+    run.add_argument(
+        "--harness",
+        choices=("codex", "claude"),
+        default="codex",
+        help="CLI harness to invoke (default: codex).",
+    )
+    run.add_argument("--model", required=True, help="Exact model identifier for the selected CLI.")
+    run.add_argument(
+        "--reasoning-effort",
+        "--effort",
+        dest="reasoning_effort",
+        help="Optional model effort level supported by the selected CLI.",
+    )
     run.add_argument("--run-id", help="Optional stable run directory name.")
     run.add_argument("--attempt", type=int, default=1, help="Independent attempt number.")
     run.add_argument(
@@ -1217,10 +1387,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Codex CLI executable path. Defaults to CODEX_CLI or codex on PATH.",
     )
     run.add_argument(
+        "--claude",
+        help="Claude CLI executable path. Defaults to CLAUDE_CLI or claude on PATH.",
+    )
+    run.add_argument(
         "--timeout",
         type=int,
         default=3600,
-        help="Maximum Codex execution time in seconds (default: 3600).",
+        help="Maximum model CLI execution time in seconds (default: 3600).",
     )
     run.add_argument(
         "--local-only",
