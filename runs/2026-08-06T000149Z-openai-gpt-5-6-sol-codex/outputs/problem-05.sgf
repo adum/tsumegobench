@@ -1,0 +1,24 @@
+(;FF[4]GM[1]CA[UTF-8]SZ[19]
+AB[md][nd][od][le][me][oe][pe][lf][pf][lg][mg][og][pg][mh][nh][oh]
+AW[mc][nc][oc][ld][pd][ke][qe][kf][qf][kg][qg][lh][ph][mi][ni][oi]
+(;W[nf]
+  (;B[ne]
+    (;W[mf](;B[of];W[ng]C[RIGHT])(;B[ng];W[of]C[RIGHT]))
+    (;W[of](;B[mf];W[ng]C[RIGHT])(;B[ng];W[mf]C[RIGHT]))
+    (;W[ng](;B[mf];W[of]C[RIGHT])(;B[of];W[mf]C[RIGHT])))
+  (;B[mf]
+    (;W[ne](;B[of];W[ng]C[RIGHT])(;B[ng];W[of]C[RIGHT]))
+    (;W[of](;B[ne];W[ng]C[RIGHT])(;B[ng];W[ne]C[RIGHT]))
+    (;W[ng](;B[ne];W[of]C[RIGHT])(;B[of];W[ne]C[RIGHT])))
+  (;B[of]
+    (;W[ne](;B[mf];W[ng]C[RIGHT])(;B[ng];W[mf]C[RIGHT]))
+    (;W[mf](;B[ne];W[ng]C[RIGHT])(;B[ng];W[ne]C[RIGHT]))
+    (;W[ng](;B[ne];W[mf]C[RIGHT])(;B[mf];W[ne]C[RIGHT])))
+  (;B[ng]
+    (;W[ne](;B[mf];W[of]C[RIGHT])(;B[of];W[mf]C[RIGHT]))
+    (;W[mf](;B[ne];W[of]C[RIGHT])(;B[of];W[ne]C[RIGHT]))
+    (;W[of](;B[ne];W[mf]C[RIGHT])(;B[mf];W[ne]C[RIGHT]))))
+(;W[ne];B[nf])
+(;W[mf];B[nf])
+(;W[of];B[nf])
+(;W[ng];B[nf]))

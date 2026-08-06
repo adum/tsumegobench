@@ -1,0 +1,28 @@
+(;FF[4]GM[1]CA[UTF-8]SZ[19]
+AB[cb][db][eb][bc][cc][ec][fc][bd][fd][be][ce][de][ee][fe]
+AW[ca][da][ea][bb][fb][ac][gc][ad][gd][ae][ge][bf][cf][df][ef][ff]
+(;W[dd]
+  (;B[dc]
+    (;W[cd];B[ed]
+      (;W[dd];B[cd];W[dd]C[RIGHT])
+      (;W[cd];B[dd];W[cd]C[RIGHT]))
+    (;W[ed];B[cd]
+      (;W[dd];B[ed];W[dd]C[RIGHT])
+      (;W[ed];B[dd];W[ed]C[RIGHT])))
+  (;B[cd]
+    (;W[dc];B[ed]
+      (;W[dd];B[dc];W[dd]C[RIGHT])
+      (;W[dc];B[dd];W[dc]C[RIGHT]))
+    (;W[ed];B[dc]
+      (;W[dd];B[ed];W[dd]C[RIGHT])
+      (;W[ed];B[dd];W[ed]C[RIGHT])))
+  (;B[ed]
+    (;W[dc];B[cd]
+      (;W[dd];B[dc];W[dd]C[RIGHT])
+      (;W[dc];B[dd];W[dc]C[RIGHT]))
+    (;W[cd];B[dc]
+      (;W[dd];B[cd];W[dd]C[RIGHT])
+      (;W[cd];B[dd];W[cd]C[RIGHT]))))
+(;W[dc];B[dd])
+(;W[cd];B[dd])
+(;W[ed];B[dd]))

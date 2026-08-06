@@ -1,0 +1,126 @@
+{
+  "$schema": "../../../schemas/human-reviews.schema.json",
+  "schemaVersion": 1,
+  "runId": "2026-08-06T000149Z-openai-gpt-5-6-sol-codex",
+  "updatedAt": "2026-08-06T03:34:51.016289Z",
+  "reviews": [
+    {
+      "reviewId": "c6de9d94-7c1c-4ddf-9547-095c7b6d4c93",
+      "reviewerName": "adam",
+      "createdAt": "2026-08-06T01:23:47.506Z",
+      "updatedAt": "2026-08-06T03:34:51.016289Z",
+      "problems": [
+        {
+          "file": "problem-01.sgf",
+          "status": "completed",
+          "valid": false,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": null,
+          "quality": 3,
+          "reviewedAt": "2026-08-06T03:25:29.660Z"
+        },
+        {
+          "file": "problem-02.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": true,
+          "wellPathed": null,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": 2,
+          "reviewedAt": "2026-08-06T01:59:39.888Z"
+        },
+        {
+          "file": "problem-03.sgf",
+          "status": "pending",
+          "valid": false,
+          "realistic": false,
+          "duplicate": true,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-04.sgf",
+          "status": "pending",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-05.sgf",
+          "status": "pending",
+          "valid": false,
+          "realistic": false,
+          "duplicate": true,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-06.sgf",
+          "status": "pending",
+          "valid": false,
+          "realistic": false,
+          "duplicate": true,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-07.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": 2,
+          "reviewedAt": "2026-08-06T03:34:19.507Z"
+        },
+        {
+          "file": "problem-08.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": 2,
+          "reviewedAt": "2026-08-06T03:34:38.070Z"
+        },
+        {
+          "file": "problem-09.sgf",
+          "status": "pending",
+          "valid": true,
+          "realistic": false,
+          "duplicate": false,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-10.sgf",
+          "status": "pending",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+(;FF[4]GM[1]CA[UTF-8]SZ[19]
+AB[hb][ib][jb][kb][lb][hc][lc][mc][hd][id][md][ie][je][le][me][jf][kf][lf]
+AW[ha][ia][ja][ka][la][gb][mb][gc][jc][kc][nc][gd][kd][nd][he][ne][if][mf][jg][kg][lg]
+(;W[jd]
+  (;B[ic]
+    (;W[ke];B[ld];W[kd]
+      (;B[ke]
+        (;W[jc](;B[jd];W[kc]C[RIGHT])(;B[kc];W[jd]C[RIGHT]))
+        (;W[jd](;B[jc];W[kc]C[RIGHT])(;B[kc];W[jc]C[RIGHT]))
+        (;W[kc](;B[jc];W[jd]C[RIGHT])(;B[jd];W[jc]C[RIGHT])))
+      (;B[jc]
+        (;W[ke](;B[jd];W[kc]C[RIGHT])(;B[kc];W[jd]C[RIGHT]))
+        (;W[jd](;B[ke];W[kc]C[RIGHT])(;B[kc];W[ke]C[RIGHT]))
+        (;W[kc](;B[ke];W[jd]C[RIGHT])(;B[jd];W[ke]C[RIGHT])))
+      (;B[jd];W[kc]
+        (;B[ke];W[jc]C[RIGHT])
+        (;B[jc];W[ke]C[RIGHT]))
+      (;B[kc];W[jd]
+        (;B[ke];W[jc]C[RIGHT])
+        (;B[jc];W[ke]C[RIGHT])))
+    (;W[ld];B[ke];W[kd]C[RIGHT]))
+  (;B[ke]
+    (;W[ic];B[ld];W[jc]C[RIGHT])
+    (;W[ld];B[ic];W[kd]C[RIGHT]))
+  (;B[ld]
+    (;W[ic];B[ke];W[jc]C[RIGHT])
+    (;W[ke];B[ic];W[kd]C[RIGHT])))
+(;W[ic];B[jd])
+(;W[ke];B[jd])
+(;W[ld];B[jd]))
