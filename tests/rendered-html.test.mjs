@@ -102,6 +102,12 @@ test("server-renders generated runs on their own page with a to-move stone", asy
     html,
     /href="https:\/\/www\.goproblems\.com\/problems\/\d+"[^>]*target="_blank"/,
   );
+  assert.match(html, /Human review choices/);
+  assert.match(html, /Valid/);
+  assert.match(html, /Realistic/);
+  assert.match(html, /Duplicate/);
+  assert.match(html, /Well pathed/);
+  assert.match(html, /adam/);
 });
 
 test("server-renders process and sources as dedicated pages", async () => {

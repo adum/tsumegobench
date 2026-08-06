@@ -138,6 +138,18 @@ function statusLabel(status: string) {
   return status.replaceAll("_", " ");
 }
 
+function reviewChoice(value: boolean | null | undefined, badWhenTrue = false) {
+  if (typeof value !== "boolean") {
+    return { valueLabel: "Not set", tone: "unset" };
+  }
+
+  const isBad = badWhenTrue ? value : !value;
+  return {
+    valueLabel: value ? "Yes" : "No",
+    tone: isBad ? "negative" : "positive",
+  };
+}
+
 function safeParseSgf(sgf: string | null | undefined, valid: boolean | undefined) {
   if (!sgf || !valid) return null;
   try {
@@ -554,6 +566,54 @@ export function RunBrowser() {
                   </dd>
                 </div>
               </dl>
+              {indexedReviews.length > 0 && (
+                <section className="recorded-reviews" aria-labelledby="recorded-reviews-title">
+                  <span className="recorded-reviews-title" id="recorded-reviews-title">
+                    Human review choices
+                  </span>
+                  <div className="recorded-review-list">
+                    {indexedReviews.map((review) => {
+                      const choices = [
+                        { name: "Valid", ...reviewChoice(review.valid) },
+                        { name: "Realistic", ...reviewChoice(review.realistic) },
+                        { name: "Duplicate", ...reviewChoice(review.duplicate, true) },
+                        { name: "Well pathed", ...reviewChoice(review.wellPathed) },
+                      ];
+
+                      return (
+                        <article className="recorded-review" key={review.reviewId}>
+                          <header>
+                            <strong>{review.reviewerName}</strong>
+                            <span className={review.status}>
+                              {review.status === "completed" ? "Reviewed" : "In progress"}
+                            </span>
+                          </header>
+                          <dl>
+                            {choices.map((choice) => (
+                              <div key={choice.name}>
+                                <dt>{choice.name}</dt>
+                                <dd className={choice.tone}>{choice.valueLabel}</dd>
+                              </div>
+                            ))}
+                            <div>
+                              <dt>Difficulty</dt>
+                              <dd className={review.estimatedDifficulty ? undefined : "unset"}>
+                                {review.estimatedDifficulty ?? "Not set"}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt>Quality</dt>
+                              <dd className={review.quality === null ? "unset" : undefined}>
+                                {review.quality === null ? "Not rated" : `${review.quality} / 5`}
+                              </dd>
+                            </div>
+                          </dl>
+                        </article>
+                      );
+                    })}
+                  </div>
+                </section>
+              )}
               {problem.validation.issues.length > 0 && (
                 <ul className="issue-list">
                   {problem.validation.issues.map((issue, index) => (
