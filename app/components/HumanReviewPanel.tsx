@@ -444,7 +444,7 @@ export function HumanReviewPanel({
 
           <div className="review-actions">
             <span className="review-autosave-status" role="status">
-              {saving ? "Saving…" : message || "Changes save automatically"}
+              {saving ? "Saving…" : message}
             </span>
             <button
               type="button"
