@@ -1421,6 +1421,13 @@ input:focus-visible,
   color: #fff;
 }
 
+.review-actions .review-save:disabled {
+  border-color: #8f918b;
+  background: #e1ded5;
+  color: #464b48;
+  opacity: 1;
+}
+
 .review-actions .review-switch {
   border-color: transparent;
   background: transparent;
