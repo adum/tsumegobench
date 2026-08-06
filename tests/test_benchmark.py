@@ -112,7 +112,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertIsNone(args.run_id)
         self.assertTrue(args.no_open)
 
-    def test_review_keeps_partial_auto_saved_values_until_complete(self):
+    def test_review_fields_are_optional_after_any_review_activity(self):
         files = [f"problem-{index:02d}.sgf" for index in range(1, 6)]
         problems = [
             {
@@ -130,13 +130,10 @@ class BenchmarkRunnerTests(unittest.TestCase):
         ]
         problems[0].update(
             {
-                "status": "completed",
                 "valid": False,
                 "realistic": False,
                 "duplicate": True,
                 "wellPathed": True,
-                "estimatedDifficulty": "20-30 kyu",
-                "quality": 1,
             }
         )
         normalized = benchmark.normalize_review(
@@ -152,8 +149,15 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertIsNone(normalized["problems"][0]["estimatedDifficulty"])
         self.assertTrue(normalized["problems"][0]["duplicate"])
         self.assertTrue(normalized["problems"][0]["wellPathed"])
+        self.assertIsNone(normalized["problems"][0]["quality"])
+        self.assertEqual(normalized["problems"][0]["status"], "completed")
+        self.assertEqual(
+            normalized["problems"][0]["reviewedAt"],
+            "2026-08-05T12:00:00Z",
+        )
+        self.assertEqual(normalized["problems"][1]["status"], "pending")
         problems[0].update({"valid": True, "realistic": True, "estimatedDifficulty": None})
-        partial = benchmark.normalize_review(
+        valid_without_optional_fields = benchmark.normalize_review(
             {
                 "reviewId": "reviewer-two",
                 "reviewerName": "Second Reviewer",
@@ -162,10 +166,10 @@ class BenchmarkRunnerTests(unittest.TestCase):
             files,
         )
 
-        self.assertEqual(partial["problems"][0]["status"], "pending")
-        self.assertTrue(partial["problems"][0]["valid"])
-        self.assertTrue(partial["problems"][0]["realistic"])
-        self.assertEqual(partial["problems"][0]["quality"], 1)
+        self.assertEqual(valid_without_optional_fields["problems"][0]["status"], "completed")
+        self.assertTrue(valid_without_optional_fields["problems"][0]["valid"])
+        self.assertTrue(valid_without_optional_fields["problems"][0]["realistic"])
+        self.assertIsNone(valid_without_optional_fields["problems"][0]["quality"])
 
     def test_review_store_keeps_independent_reviewer_records(self):
         with tempfile.TemporaryDirectory() as temporary:

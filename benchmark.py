@@ -218,11 +218,15 @@ def normalize_review(review: Any, expected_files: list[str], now: str | None = N
         if valid is not True:
             difficulty = None
 
-        complete = (
-            isinstance(valid, bool)
-            and isinstance(realistic, bool)
-            and quality is not None
-            and (not valid or difficulty in DIFFICULTY_BANDS)
+        complete = any(
+            (
+                isinstance(valid, bool),
+                isinstance(realistic, bool),
+                isinstance(duplicate, bool),
+                isinstance(well_pathed, bool),
+                difficulty in DIFFICULTY_BANDS,
+                quality is not None,
+            )
         )
         status = "completed" if complete else "pending"
         if complete:

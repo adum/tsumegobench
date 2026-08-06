@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
+import {
+  isReviewMarkedBad,
+  reviewProblemProgress,
+  type ReviewProblemProgress,
+} from "@/lib/review-progress";
 
 export interface ReviewProblem {
   file: string;
@@ -42,8 +47,6 @@ interface ReviewDraft {
   estimatedDifficulty: string;
   quality: number | null;
 }
-
-export type ReviewProblemProgress = "untouched" | "started" | "completed";
 
 export interface ReviewProgressSnapshot {
   runId: string;
@@ -93,30 +96,6 @@ function blankReviewProblem(file: string): ReviewProblem {
   };
 }
 
-function problemProgress(problem: ReviewProblem): ReviewProblemProgress {
-  if (problem.status === "completed") return "completed";
-  if (
-    problem.valid !== null ||
-    problem.realistic !== null ||
-    typeof problem.duplicate === "boolean" ||
-    typeof problem.wellPathed === "boolean" ||
-    problem.estimatedDifficulty !== null ||
-    problem.quality !== null
-  ) {
-    return "started";
-  }
-  return "untouched";
-}
-
-export function isProblemMarkedBad(problem: ReviewProblem): boolean {
-  return (
-    problem.valid === false ||
-    problem.realistic === false ||
-    problem.duplicate === true ||
-    problem.wellPathed === false
-  );
-}
-
 export function findNextUnreviewedProblemFile(
   problems: ReviewProblem[],
   currentFile: string,
@@ -131,7 +110,7 @@ export function findNextUnreviewedProblemFile(
         ...problems.slice(0, currentIndex),
       ];
   return orderedProblems.find(
-    (problem) => problemProgress(problem) === "untouched" && !rejected.has(problem.file),
+    (problem) => reviewProblemProgress(problem) === "untouched" && !rejected.has(problem.file),
   )?.file ?? null;
 }
 
@@ -139,10 +118,10 @@ function reviewProgressSnapshot(runId: string, review: ReviewerRecord): ReviewPr
   return {
     runId,
     problems: Object.fromEntries(
-      review.problems.map((problem) => [problem.file, problemProgress(problem)]),
+      review.problems.map((problem) => [problem.file, reviewProblemProgress(problem)]),
     ),
     badProblems: review.problems
-      .filter(isProblemMarkedBad)
+      .filter(isReviewMarkedBad)
       .map((problem) => problem.file),
   };
 }
@@ -275,9 +254,6 @@ export function HumanReviewPanel({
     setMessage("");
     try {
       const now = new Date().toISOString();
-      const isComplete =
-        draft.quality !== null &&
-        (!draft.valid || Boolean(draft.estimatedDifficulty));
       const nextReview: ReviewerRecord = {
         ...activeReview,
         updatedAt: now,
@@ -285,14 +261,14 @@ export function HumanReviewPanel({
           problem.file === problemFile
             ? {
                 file: problem.file,
-                status: isComplete ? "completed" : "pending",
+                status: "completed",
                 valid: draft.valid,
                 realistic: draft.realistic,
                 duplicate: draft.duplicate,
                 wellPathed: draft.wellPathed,
                 estimatedDifficulty: draft.valid ? draft.estimatedDifficulty || null : null,
                 quality: draft.quality,
-                reviewedAt: isComplete ? now : null,
+                reviewedAt: now,
               }
             : problem,
         ),

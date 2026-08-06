@@ -1,5 +1,6 @@
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { reviewProblemProgress } from "../lib/review-progress";
 
 interface RunManifest {
   runId: string;
@@ -113,10 +114,9 @@ for (const entry of entries.filter((item) => item.isDirectory())) {
       human: human?.problems.find((record) => record.file === problem.file) ?? null,
       reviews: reviewerRecords.flatMap((review) => {
         const record = review.problems.find(
-          (reviewedProblem) =>
-            reviewedProblem.file === problem.file && reviewedProblem.status === "completed",
+          (reviewedProblem) => reviewedProblem.file === problem.file,
         );
-        return record
+        return record && reviewProblemProgress(record) !== "untouched"
           ? [{ reviewId: review.reviewId, reviewerName: review.reviewerName, ...record }]
           : [];
       }),

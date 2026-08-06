@@ -76,13 +76,13 @@ Launch the local review UI with:
 python3 benchmark.py review
 ```
 
-The command selects the most recently completed evaluated run, opens a local browser session, and saves every checkbox, difficulty, and star change automatically. Pass a run ID only when reviewing an older run:
+The command selects the most recently completed evaluated run, opens a local browser session, and saves every checkbox, difficulty, and star change automatically. Changing any review control counts the problem as reviewed. Estimated difficulty and the 1–5 quality rating are optional, including when a problem is invalid. Pass a run ID only when reviewing an older run:
 
 ```bash
 python3 benchmark.py review 2026-08-05T225707Z-openai-gpt-5-6-luna-codex
 ```
 
-For each problem, the initial review records whether it is valid, whether the position is realistic, whether the reviewer considers it a duplicate, whether its solution and refutation paths are well formed, an estimated difficulty band for valid problems, and a 1–5 quality rating. Reviewer records are independent, so a second reviewer can assess the same run without overwriting the first review. The structured records live in `evaluation/reviews.json`; the hosted site remains read-only.
+For each problem, the initial review can record whether it is valid, whether the position is realistic, whether the reviewer considers it a duplicate, whether its solution and refutation paths are well formed, an estimated difficulty band for valid problems, and a 1–5 quality rating. Reviewer records are independent, so a second reviewer can assess the same run without overwriting the first review. The structured records live in `evaluation/reviews.json`; the hosted site remains read-only.
 
 ## Benchmark in one pass
 

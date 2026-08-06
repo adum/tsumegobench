@@ -5,10 +5,14 @@ import runData from "../data/runs.generated.json";
 import { GoBoard } from "./GoBoard";
 import {
   HumanReviewPanel,
-  type ReviewProblemProgress,
   type ReviewProgressSnapshot,
 } from "./HumanReviewPanel";
 import { SolutionTree } from "./SolutionTree";
+import {
+  aggregateReviewProgress,
+  isReviewMarkedBad,
+  type ReviewProblemProgress,
+} from "@/lib/review-progress";
 import {
   collectRightNodes,
   getBoardSize,
@@ -71,13 +75,14 @@ interface GeneratedProblem {
   reviews?: Array<{
     reviewId: string;
     reviewerName: string;
-    valid: boolean;
-    realistic: boolean;
+    status: "pending" | "completed";
+    valid: boolean | null;
+    realistic: boolean | null;
     duplicate?: boolean | null;
     wellPathed?: boolean | null;
     estimatedDifficulty: string | null;
-    quality: number;
-    reviewedAt: string;
+    quality: number | null;
+    reviewedAt: string | null;
   }>;
 }
 
@@ -200,14 +205,33 @@ export function RunBrowser() {
     problem?.playerColor ??
     (firstMove?.color === "B" ? "black" : firstMove?.color === "W" ? "white" : null);
   const playerName = playerColor === "black" ? "Black" : playerColor === "white" ? "White" : null;
-  const completedReviews = problem?.reviews ?? [];
+  const indexedReviews = problem?.reviews ?? [];
+  const completedReviews = indexedReviews.filter(
+    (review) => review.status === "completed",
+  );
+  const ratedReviews = completedReviews.filter((review) => review.quality !== null);
+  const startedReviewCount = indexedReviews.filter(
+    (review) => review.status === "pending",
+  ).length;
   const automaticallyRejectedFiles = run?.problems
     .filter((record) => record.automatedGate === "fail")
     .map((record) => record.file) ?? [];
   const duplicateReviewCount = completedReviews.filter((review) => review.duplicate).length;
-  const averageQuality = completedReviews.length
-    ? completedReviews.reduce((total, review) => total + review.quality, 0) / completedReviews.length
+  const averageQuality = ratedReviews.length
+    ? ratedReviews.reduce((total, review) => total + (review.quality ?? 0), 0) / ratedReviews.length
     : null;
+  const humanReviewSummary = completedReviews.length
+    ? [
+        `${completedReviews.length} review${completedReviews.length === 1 ? "" : "s"}`,
+        averageQuality !== null ? `${averageQuality.toFixed(1)}★` : null,
+        duplicateReviewCount
+          ? `${duplicateReviewCount} duplicate flag${duplicateReviewCount === 1 ? "" : "s"}`
+          : null,
+        startedReviewCount ? `${startedReviewCount} in progress` : null,
+      ].filter(Boolean).join(" · ")
+    : startedReviewCount
+      ? `${startedReviewCount} in progress`
+      : problem?.human?.status ?? "pending";
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -359,19 +383,12 @@ export function RunBrowser() {
               const reviewProgress: ReviewProblemProgress =
                 liveReviewProgress?.runId === run.runId
                   ? liveReviewProgress.problems[record.file] ?? "untouched"
-                  : record.reviews?.length
-                    ? "completed"
-                    : "untouched";
+                  : aggregateReviewProgress(record.reviews ?? []);
               const progressClass = reviewProgress === "untouched" ? "" : ` review-${reviewProgress}`;
               const humanMarkedBad =
                 liveReviewProgress?.runId === run.runId
                   ? liveReviewProgress.badProblems.includes(record.file)
-                  : record.reviews?.some((review) =>
-                      review.valid === false ||
-                      review.realistic === false ||
-                      review.duplicate === true ||
-                      review.wellPathed === false
-                    ) ?? false;
+                  : record.reviews?.some(isReviewMarkedBad) ?? false;
               const humanBadClass = humanMarkedBad ? " human-rejected" : "";
               const reviewLabel =
                 reviewProgress === "completed"
@@ -509,11 +526,7 @@ export function RunBrowser() {
                 <div><dt>Target difficulty</dt><dd>{problem.targetDifficulty}</dd></div>
                 <div>
                   <dt>Human review</dt>
-                  <dd>
-                    {completedReviews.length
-                      ? `${completedReviews.length} review${completedReviews.length === 1 ? "" : "s"} · ${averageQuality?.toFixed(1)}★${duplicateReviewCount ? ` · ${duplicateReviewCount} duplicate flag${duplicateReviewCount === 1 ? "" : "s"}` : ""}`
-                      : problem.human?.status ?? "pending"}
-                  </dd>
+                  <dd>{humanReviewSummary}</dd>
                 </div>
                 <div><dt>Closest reference</dt><dd>{problem.originality.closestLocalShape ? `#${problem.originality.closestLocalShape.id} · ${Math.round(problem.originality.closestLocalShape.percentage)}%` : "not available"}</dd></div>
                 <div>

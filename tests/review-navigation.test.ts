@@ -3,9 +3,13 @@ import test from "node:test";
 
 import {
   findNextUnreviewedProblemFile,
-  isProblemMarkedBad,
   type ReviewProblem,
 } from "../app/components/HumanReviewPanel";
+import {
+  aggregateReviewProgress,
+  isReviewMarkedBad,
+  reviewProblemProgress,
+} from "../lib/review-progress";
 
 function reviewProblem(
   file: string,
@@ -65,10 +69,25 @@ test("all four human review checkboxes can mark a problem bad", () => {
     wellPathed: true,
   });
 
-  assert.equal(isProblemMarkedBad(untouched), false);
-  assert.equal(isProblemMarkedBad(approved), false);
-  assert.equal(isProblemMarkedBad({ ...approved, valid: false }), true);
-  assert.equal(isProblemMarkedBad({ ...approved, realistic: false }), true);
-  assert.equal(isProblemMarkedBad({ ...approved, duplicate: true }), true);
-  assert.equal(isProblemMarkedBad({ ...approved, wellPathed: false }), true);
+  assert.equal(isReviewMarkedBad(untouched), false);
+  assert.equal(isReviewMarkedBad(approved), false);
+  assert.equal(isReviewMarkedBad({ ...approved, valid: false }), true);
+  assert.equal(isReviewMarkedBad({ ...approved, realistic: false }), true);
+  assert.equal(isReviewMarkedBad({ ...approved, duplicate: true }), true);
+  assert.equal(isReviewMarkedBad({ ...approved, wellPathed: false }), true);
+});
+
+test("saved partial reviews remain visibly in progress", () => {
+  const untouched = reviewProblem("problem-01.sgf");
+  const started = reviewProblem("problem-01.sgf", { duplicate: false });
+  const completed = reviewProblem("problem-01.sgf", {
+    status: "completed",
+    quality: null,
+  });
+
+  assert.equal(reviewProblemProgress(untouched), "untouched");
+  assert.equal(reviewProblemProgress(started), "started");
+  assert.equal(reviewProblemProgress(completed), "completed");
+  assert.equal(aggregateReviewProgress([untouched, started]), "started");
+  assert.equal(aggregateReviewProgress([started, completed]), "completed");
 });
