@@ -112,6 +112,10 @@ test("server-renders generated runs on their own page with a to-move stone", asy
     html,
     /class="run-pass-counts" aria-label="\d+ human passed, \d+ automated passed, \d+ total problems" title="Human passed \/ automated passed \/ total problems"/,
   );
+  assert.match(
+    html,
+    /class="run-summary"[^>]*>[\s\S]*structural[\s\S]*original[\s\S]*to review[\s\S]*human passed[\s\S]*<\/div>/,
+  );
 });
 
 test("server-renders process and sources as dedicated pages", async () => {

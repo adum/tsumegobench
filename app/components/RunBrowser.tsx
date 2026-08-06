@@ -164,6 +164,12 @@ function defaultProblem(run: BenchmarkRun | undefined) {
   return run?.problems.find((problem) => problem.validation.valid && problem.sgf) ?? run?.problems[0];
 }
 
+function humanPassedProblemCount(run: BenchmarkRun) {
+  return run.problems.filter((problem) =>
+    problemPassesHumanReview(problem.reviews ?? []),
+  ).length;
+}
+
 function rememberBrowserSelection(runId: string, problemFile: string) {
   const url = new URL(window.location.href);
   url.searchParams.set("run", runId);
@@ -349,9 +355,7 @@ export function RunBrowser() {
           </div>
           <div className="problem-list">
             {runs.map((record) => {
-              const humanPassed = record.problems.filter((generatedProblem) =>
-                problemPassesHumanReview(generatedProblem.reviews ?? []),
-              ).length;
+              const humanPassed = humanPassedProblemCount(record);
               const automatedPassed = record.summary.automatedGatePassed;
               const totalProblems = record.summary.expectedProblems ?? record.problems.length;
 
@@ -399,6 +403,7 @@ export function RunBrowser() {
               <span><strong>{run.summary.structuralPassed}</strong> structural</span>
               <span><strong>{run.summary.originalityPassed}</strong> original</span>
               <span><strong>{run.summary.humanReviewPending}</strong> to review</span>
+              <span><strong>{humanPassedProblemCount(run)}</strong> human passed</span>
             </div>
           </header>
 
