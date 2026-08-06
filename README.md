@@ -68,14 +68,30 @@ npm run sync:examples
 
 The synchronizer spaces its requests and verifies the corpus contract before writing files. Please follow the GoProblems request not to call its API excessively.
 
+## Human review
+
+Launch the local review UI with:
+
+```bash
+python3 benchmark.py review
+```
+
+The command selects the most recently completed evaluated run, opens a local browser session, and saves each submitted problem review immediately. Pass a run ID only when reviewing an older run:
+
+```bash
+python3 benchmark.py review 2026-08-05T225707Z-openai-gpt-5-6-luna-codex
+```
+
+For each problem, the initial review records whether it is valid, whether the position is realistic, an estimated difficulty band for valid problems, and a 1–5 quality rating. Reviewer records are independent, so a second reviewer can assess the same run without overwriting the first review. The structured records live in `evaluation/reviews.json`; the hosted site remains read-only.
+
 ## Benchmark in one pass
 
 1. Invoke `python benchmark.py run --model <openai-model-id>` from an authenticated Codex CLI environment.
 2. The runner snapshots the controlled inputs and asks Codex to write ten SGFs directly into the run directory.
 3. It preserves the Codex event log and runs structural and duplicate checks automatically.
-4. Browse the checked-in run and its generated problems in the web viewer.
-5. Have a competent Go player review life/death correctness and tree completeness.
-6. Complete `evaluation/human.json` using `docs/evaluation-rubric.md`; report both the mean score and acceptance rate.
+4. Run `python3 benchmark.py review`; it defaults to the run that just completed.
+5. Have one or more competent Go players submit the basic validity, realism, difficulty, and quality review in the browser.
+6. Check in the resulting `evaluation/reviews.json` with the rest of the run. Use `docs/evaluation-rubric.md` when a deeper 100-point review is needed.
 
 Structural validity and originality are hard gates. A beautiful but duplicated problem, or a novel position with a broken solution tree, is not an accepted result.
 

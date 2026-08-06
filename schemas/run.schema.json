@@ -147,6 +147,7 @@
         },
         "automatedEvaluation": { "type": "string" },
         "humanEvaluation": { "type": "string" },
+        "humanReviews": { "type": "string" },
         "results": { "type": "string" }
       }
     }

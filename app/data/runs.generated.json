@@ -73,6 +73,12 @@
       "reviewer": null,
       "reviewerRank": null
     },
+    "humanReviews": {
+      "updatedAt": null,
+      "reviewCount": 0,
+      "completedProblemReviews": 0,
+      "reviewers": []
+    },
     "problems": [
       {
         "file": "problem-01.sgf",
@@ -140,7 +146,8 @@
             "total": null
           },
           "notes": ""
-        }
+        },
+        "reviews": []
       },
       {
         "file": "problem-02.sgf",
@@ -218,7 +225,8 @@
             "total": null
           },
           "notes": ""
-        }
+        },
+        "reviews": []
       },
       {
         "file": "problem-03.sgf",
@@ -296,7 +304,8 @@
             "total": null
           },
           "notes": ""
-        }
+        },
+        "reviews": []
       },
       {
         "file": "problem-04.sgf",
@@ -400,7 +409,8 @@
             "total": null
           },
           "notes": ""
-        }
+        },
+        "reviews": []
       },
       {
         "file": "problem-05.sgf",
@@ -490,7 +500,8 @@
             "total": null
           },
           "notes": ""
-        }
+        },
+        "reviews": []
       }
     ]
   }

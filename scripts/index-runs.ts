@@ -45,6 +45,29 @@ interface HumanEvaluation {
   problems: Array<Record<string, unknown> & { file: string }>;
 }
 
+interface ReviewerProblem {
+  file: string;
+  status: "pending" | "completed";
+  valid: boolean | null;
+  realistic: boolean | null;
+  estimatedDifficulty: string | null;
+  quality: number | null;
+  reviewedAt: string | null;
+}
+
+interface ReviewerRecord {
+  reviewId: string;
+  reviewerName: string;
+  createdAt: string;
+  updatedAt: string;
+  problems: ReviewerProblem[];
+}
+
+interface HumanReviews {
+  updatedAt: string | null;
+  reviews: ReviewerRecord[];
+}
+
 async function readJson<T>(file: string): Promise<T | null> {
   try {
     return JSON.parse(await readFile(file, "utf8")) as T;
@@ -69,6 +92,10 @@ for (const entry of entries.filter((item) => item.isDirectory())) {
   );
   if (!manifest || !automated) continue;
   const human = await readJson<HumanEvaluation>(path.join(runDir, "evaluation", "human.json"));
+  const humanReviews = await readJson<HumanReviews>(
+    path.join(runDir, "evaluation", "reviews.json"),
+  );
+  const reviewerRecords = humanReviews?.reviews ?? [];
 
   const problems = [];
   for (const problem of automated.problems) {
@@ -82,6 +109,15 @@ for (const entry of entries.filter((item) => item.isDirectory())) {
       ...problem,
       sgf,
       human: human?.problems.find((record) => record.file === problem.file) ?? null,
+      reviews: reviewerRecords.flatMap((review) => {
+        const record = review.problems.find(
+          (reviewedProblem) =>
+            reviewedProblem.file === problem.file && reviewedProblem.status === "completed",
+        );
+        return record
+          ? [{ reviewId: review.reviewId, reviewerName: review.reviewerName, ...record }]
+          : [];
+      }),
     });
   }
 
@@ -109,6 +145,22 @@ for (const entry of entries.filter((item) => item.isDirectory())) {
           reviewerRank: human.reviewerRank,
         }
       : null,
+    humanReviews: {
+      updatedAt: humanReviews?.updatedAt ?? null,
+      reviewCount: reviewerRecords.length,
+      completedProblemReviews: reviewerRecords.reduce(
+        (total, review) =>
+          total + review.problems.filter((problem) => problem.status === "completed").length,
+        0,
+      ),
+      reviewers: reviewerRecords.map((review) => ({
+        reviewId: review.reviewId,
+        reviewerName: review.reviewerName,
+        updatedAt: review.updatedAt,
+        completed: review.problems.filter((problem) => problem.status === "completed").length,
+        total: review.problems.length,
+      })),
+    },
     problems,
   });
 }

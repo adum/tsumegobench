@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import runData from "../data/runs.generated.json";
 import { GoBoard } from "./GoBoard";
+import { HumanReviewPanel } from "./HumanReviewPanel";
 import { SolutionTree } from "./SolutionTree";
 import {
   collectRightNodes,
@@ -63,6 +64,15 @@ interface GeneratedProblem {
     estimatedDifficulty: string | null;
     notes: string;
   } | null;
+  reviews?: Array<{
+    reviewId: string;
+    reviewerName: string;
+    valid: boolean;
+    realistic: boolean;
+    estimatedDifficulty: string | null;
+    quality: number;
+    reviewedAt: string;
+  }>;
 }
 
 interface BenchmarkRun {
@@ -166,6 +176,22 @@ export function RunBrowser() {
     problem?.playerColor ??
     (firstMove?.color === "B" ? "black" : firstMove?.color === "W" ? "white" : null);
   const playerName = playerColor === "black" ? "Black" : playerColor === "white" ? "White" : null;
+  const completedReviews = problem?.reviews ?? [];
+  const averageQuality = completedReviews.length
+    ? completedReviews.reduce((total, review) => total + review.quality, 0) / completedReviews.length
+    : null;
+
+  useEffect(() => {
+    const requestedRunId = new URLSearchParams(window.location.search).get("run");
+    const requestedRun = runs.find((record) => record.runId === requestedRunId);
+    if (!requestedRun) return;
+    const selectionTimer = window.setTimeout(() => {
+      setSelectedRunId(requestedRun.runId);
+      setSelectedProblemFile(defaultProblem(requestedRun)?.file ?? "");
+      setSelectedNodeId("n0");
+    }, 0);
+    return () => window.clearTimeout(selectionTimer);
+  }, []);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -314,6 +340,12 @@ export function RunBrowser() {
             ))}
           </div>
 
+          <HumanReviewPanel
+            runId={run.runId}
+            problemFile={problem.file}
+            onChooseProblem={chooseProblem}
+          />
+
           {root && selected && stats ? (
             <div className="stage-grid run-stage-grid">
               <div className="board-column">
@@ -414,7 +446,14 @@ export function RunBrowser() {
               <span className="panel-label">DETAILS</span>
               <dl className="evaluation-details">
                 <div><dt>Target difficulty</dt><dd>{problem.targetDifficulty}</dd></div>
-                <div><dt>Human review</dt><dd>{problem.human?.status ?? "pending"}</dd></div>
+                <div>
+                  <dt>Human review</dt>
+                  <dd>
+                    {completedReviews.length
+                      ? `${completedReviews.length} review${completedReviews.length === 1 ? "" : "s"} · ${averageQuality?.toFixed(1)}★`
+                      : problem.human?.status ?? "pending"}
+                  </dd>
+                </div>
                 <div><dt>Closest reference</dt><dd>{problem.originality.closestLocalShape ? `#${problem.originality.closestLocalShape.id} · ${Math.round(problem.originality.closestLocalShape.percentage)}%` : "not available"}</dd></div>
                 <div><dt>Remote top match</dt><dd>{problem.originality.remote.topPercentage === null ? "not available" : `${problem.originality.remote.topPercentage}%${problem.originality.remote.topMatchId ? ` · #${problem.originality.remote.topMatchId}` : ""}`}</dd></div>
               </dl>

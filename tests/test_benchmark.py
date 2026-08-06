@@ -79,6 +79,127 @@ class BenchmarkRunnerTests(unittest.TestCase):
         )
         self.assertFalse(benchmark.is_model_selection_failure("The request timed out."))
 
+    def test_review_defaults_to_the_newest_completed_evaluated_run(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            runs_root = Path(temporary)
+            for run_id, status, completed_at, evaluated in [
+                ("older", "completed", "2026-08-05T10:00:00Z", True),
+                ("newest", "completed", "2026-08-05T12:00:00Z", True),
+                ("still-running", "running", None, False),
+            ]:
+                run_dir = runs_root / run_id
+                benchmark.write_json(
+                    run_dir / "run.json",
+                    {
+                        "runId": run_id,
+                        "status": status,
+                        "completedAt": completed_at,
+                    },
+                )
+                if evaluated:
+                    benchmark.write_json(
+                        run_dir / "evaluation" / "automated.json",
+                        {"problems": [{"file": "problem-01.sgf"}]},
+                    )
+
+            selected = benchmark.reviewable_run(runs_root=runs_root)
+
+        self.assertEqual(selected.name, "newest")
+
+    def test_review_parser_does_not_require_a_run_id(self):
+        args = benchmark.build_parser().parse_args(["review", "--no-open"])
+
+        self.assertIsNone(args.run_id)
+        self.assertTrue(args.no_open)
+
+    def test_completed_review_requires_difficulty_only_for_valid_problems(self):
+        files = [f"problem-{index:02d}.sgf" for index in range(1, 6)]
+        problems = [
+            {
+                "file": file,
+                "status": "pending",
+                "valid": None,
+                "realistic": None,
+                "estimatedDifficulty": None,
+                "quality": None,
+                "reviewedAt": None,
+            }
+            for file in files
+        ]
+        problems[0].update(
+            {
+                "status": "completed",
+                "valid": False,
+                "realistic": False,
+                "estimatedDifficulty": "20-30 kyu",
+                "quality": 1,
+            }
+        )
+        normalized = benchmark.normalize_review(
+            {
+                "reviewId": "reviewer-one",
+                "reviewerName": "First Reviewer",
+                "problems": problems,
+            },
+            files,
+            "2026-08-05T12:00:00Z",
+        )
+
+        self.assertIsNone(normalized["problems"][0]["estimatedDifficulty"])
+        problems[0].update({"valid": True, "realistic": True, "estimatedDifficulty": None})
+        with self.assertRaisesRegex(ValueError, "estimated difficulty"):
+            benchmark.normalize_review(
+                {
+                    "reviewId": "reviewer-two",
+                    "reviewerName": "Second Reviewer",
+                    "problems": problems,
+                },
+                files,
+            )
+
+    def test_review_store_keeps_independent_reviewer_records(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            run_dir = Path(temporary)
+            files = [f"problem-{index:02d}.sgf" for index in range(1, 6)]
+            benchmark.write_json(
+                run_dir / "evaluation" / "automated.json",
+                {"problems": [{"file": file} for file in files]},
+            )
+            benchmark.write_json(
+                run_dir / "evaluation" / "results.json",
+                {"problems": [{"file": file} for file in files]},
+            )
+
+            def review(review_id, name):
+                return {
+                    "reviewId": review_id,
+                    "reviewerName": name,
+                    "problems": [
+                        {
+                            "file": file,
+                            "status": "completed",
+                            "valid": True,
+                            "realistic": True,
+                            "estimatedDifficulty": "10-19 kyu",
+                            "quality": 4,
+                            "reviewedAt": None,
+                        }
+                        for file in files
+                    ],
+                }
+
+            benchmark.save_review(run_dir, "test-run", review("review-one", "Reviewer One"))
+            store, _ = benchmark.save_review(
+                run_dir,
+                "test-run",
+                review("review-two", "Reviewer Two"),
+            )
+            results = benchmark.read_json(run_dir / "evaluation" / "results.json")
+
+        self.assertEqual(len(store["reviews"]), 2)
+        self.assertEqual(results["humanReviews"]["reviewCount"], 2)
+        self.assertEqual(len(results["problems"][0]["reviews"]), 2)
+
 
 if __name__ == "__main__":
     unittest.main()

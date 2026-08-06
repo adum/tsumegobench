@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/tsumego-bench/human-reviews.schema.json",
+  "title": "Tsumego Bench reviewer records",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "runId", "updatedAt", "reviews"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "runId": { "type": "string", "minLength": 3 },
+    "updatedAt": { "type": ["string", "null"], "format": "date-time" },
+    "reviews": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/review" }
+    }
+  },
+  "$defs": {
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewId",
+        "reviewerName",
+        "createdAt",
+        "updatedAt",
+        "problems"
+      ],
+      "properties": {
+        "reviewId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{8,80}$"
+        },
+        "reviewerName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "problems": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 50,
+          "items": { "$ref": "#/$defs/problem" }
+        }
+      }
+    },
+    "problem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "file",
+        "status",
+        "valid",
+        "realistic",
+        "estimatedDifficulty",
+        "quality",
+        "reviewedAt"
+      ],
+      "properties": {
+        "file": { "type": "string", "pattern": "\\.sgf$" },
+        "status": { "enum": ["pending", "completed"] },
+        "valid": { "type": ["boolean", "null"] },
+        "realistic": { "type": ["boolean", "null"] },
+        "estimatedDifficulty": {
+          "enum": [
+            null,
+            "20-30 kyu",
+            "10-19 kyu",
+            "5-9 kyu",
+            "1-4 kyu",
+            "about 1 dan"
+          ]
+        },
+        "quality": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 5
+        },
+        "reviewedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  }
+}

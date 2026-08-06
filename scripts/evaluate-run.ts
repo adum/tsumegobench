@@ -446,11 +446,32 @@ if (!(await pathExists(humanPath))) {
   await writeFile(humanPath, `${JSON.stringify(human, null, 2)}\n`, "utf8");
 }
 
+const reviewsPath = path.join(evaluationDir, "reviews.json");
+if (!(await pathExists(reviewsPath))) {
+  const reviews = {
+    $schema: "../../../schemas/human-reviews.schema.json",
+    schemaVersion: 1,
+    runId,
+    updatedAt: null,
+    reviews: [],
+  };
+  await writeFile(reviewsPath, `${JSON.stringify(reviews, null, 2)}\n`, "utf8");
+}
+
 const humanEvaluation = JSON.parse(await readFile(humanPath, "utf8")) as {
   updatedAt: string | null;
   reviewer: string | null;
   reviewerRank: string | null;
   problems: Array<Record<string, unknown> & { file: string; status: string }>;
+};
+const reviewerRecords = JSON.parse(await readFile(reviewsPath, "utf8")) as {
+  updatedAt: string | null;
+  reviews: Array<{
+    reviewId: string;
+    reviewerName: string;
+    updatedAt: string;
+    problems: Array<Record<string, unknown> & { file: string; status: string }>;
+  }>;
 };
 const results = {
   schemaVersion: 1,
@@ -468,10 +489,35 @@ const results = {
     accepted: humanEvaluation.problems.filter((problem) => problem.status === "accepted").length,
     rejected: humanEvaluation.problems.filter((problem) => problem.status === "rejected").length,
   },
+  humanReviews: {
+    updatedAt: reviewerRecords.updatedAt,
+    reviewCount: reviewerRecords.reviews.length,
+    completedProblemReviews: reviewerRecords.reviews.reduce(
+      (total, review) =>
+        total + review.problems.filter((problem) => problem.status === "completed").length,
+      0,
+    ),
+    reviewers: reviewerRecords.reviews.map((review) => ({
+      reviewId: review.reviewId,
+      reviewerName: review.reviewerName,
+      updatedAt: review.updatedAt,
+      completed: review.problems.filter((problem) => problem.status === "completed").length,
+      total: review.problems.length,
+    })),
+  },
   problems: serializableProblems.map((problem) => ({
     ...problem,
     human:
       humanEvaluation.problems.find((humanProblem) => humanProblem.file === problem.file) ?? null,
+    reviews: reviewerRecords.reviews.flatMap((review) => {
+      const record = review.problems.find(
+        (reviewedProblem) =>
+          reviewedProblem.file === problem.file && reviewedProblem.status === "completed",
+      );
+      return record
+        ? [{ reviewId: review.reviewId, reviewerName: review.reviewerName, ...record }]
+        : [];
+    }),
   })),
 };
 await writeFile(

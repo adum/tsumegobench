@@ -41,6 +41,9 @@ test("evaluator follows the ten outputs declared by a run manifest", async (cont
   const human = JSON.parse(
     await readFile(path.join(runDir, "evaluation", "human.json"), "utf8"),
   );
+  const reviews = JSON.parse(
+    await readFile(path.join(runDir, "evaluation", "reviews.json"), "utf8"),
+  );
 
   assert.equal(automated.summary.expectedProblems, 10);
   assert.equal(automated.problems.length, 10);
@@ -61,4 +64,6 @@ test("evaluator follows the ten outputs declared by a run manifest", async (cont
     ],
   );
   assert.equal(human.problems.length, 10);
+  assert.equal(reviews.runId, "test-ten-problems");
+  assert.deepEqual(reviews.reviews, []);
 });

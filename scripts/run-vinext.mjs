@@ -9,7 +9,7 @@ if (!new Set(["dev", "build", "start"]).has(command)) {
 
 const child = spawn(
   process.execPath,
-  [path.join("node_modules", "vinext", "dist", "cli.js"), command],
+  [path.join("node_modules", "vinext", "dist", "cli.js"), command, ...process.argv.slice(3)],
   {
     stdio: "inherit",
     env: {
@@ -24,4 +24,3 @@ child.on("exit", (code, signal) => {
   if (signal) process.kill(process.pid, signal);
   else process.exit(code ?? 1);
 });
-
