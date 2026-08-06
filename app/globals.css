@@ -1217,6 +1217,30 @@ input:focus-visible,
   line-height: 1;
 }
 
+.run-problem-tabs i.review-started:not(.failed) {
+  border-color: #347487;
+  background: #d8edf1;
+  box-shadow: 0 0 0 2px rgba(52, 116, 135, 0.18);
+}
+
+.run-problem-tabs i.review-completed:not(.failed) {
+  border-color: var(--green);
+  background: var(--green);
+  box-shadow: 0 0 0 2px rgba(29, 122, 88, 0.18);
+}
+
+.run-problem-tabs i.failed.review-started {
+  box-shadow:
+    0 0 0 3px rgba(176, 57, 42, 0.14),
+    0 0 0 5px rgba(52, 116, 135, 0.4);
+}
+
+.run-problem-tabs i.failed.review-completed {
+  box-shadow:
+    0 0 0 3px rgba(176, 57, 42, 0.14),
+    0 0 0 5px rgba(29, 122, 88, 0.5);
+}
+
 .human-review-panel {
   padding: 14px 16px 16px;
   border-bottom: 1px solid var(--line-dark);

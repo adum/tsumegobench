@@ -39,10 +39,18 @@ interface ReviewDraft {
   quality: number | null;
 }
 
+export type ReviewProblemProgress = "untouched" | "started" | "completed";
+
+export interface ReviewProgressSnapshot {
+  runId: string;
+  problems: Record<string, ReviewProblemProgress>;
+}
+
 interface HumanReviewPanelProps {
   runId: string;
   problemFile: string;
   onChooseProblem: (file: string) => void;
+  onReviewProgressChange: (snapshot: ReviewProgressSnapshot | null) => void;
 }
 
 function launchFromLocation(): ReviewLaunch | null {
@@ -77,10 +85,33 @@ function blankReviewProblem(file: string): ReviewProblem {
   };
 }
 
+function problemProgress(problem: ReviewProblem): ReviewProblemProgress {
+  if (problem.status === "completed") return "completed";
+  if (
+    problem.valid !== null ||
+    problem.realistic !== null ||
+    problem.estimatedDifficulty !== null ||
+    problem.quality !== null
+  ) {
+    return "started";
+  }
+  return "untouched";
+}
+
+function reviewProgressSnapshot(runId: string, review: ReviewerRecord): ReviewProgressSnapshot {
+  return {
+    runId,
+    problems: Object.fromEntries(
+      review.problems.map((problem) => [problem.file, problemProgress(problem)]),
+    ),
+  };
+}
+
 export function HumanReviewPanel({
   runId,
   problemFile,
   onChooseProblem,
+  onReviewProgressChange,
 }: HumanReviewPanelProps) {
   const [launch, setLaunch] = useState<ReviewLaunch | null>(null);
   const [session, setSession] = useState<ReviewSession | null>(null);
@@ -136,6 +167,12 @@ export function HumanReviewPanel({
     }, 0);
     return () => window.clearTimeout(draftTimer);
   }, [activeReview, problemFile]);
+
+  useEffect(() => {
+    onReviewProgressChange(
+      activeReview ? reviewProgressSnapshot(runId, activeReview) : null,
+    );
+  }, [activeReview, onReviewProgressChange, runId]);
 
   async function persist(review: ReviewerRecord) {
     if (!launch) throw new Error("The local review service is unavailable.");
@@ -206,10 +243,12 @@ export function HumanReviewPanel({
             : problem,
         ),
       };
+      onReviewProgressChange(reviewProgressSnapshot(runId, nextReview));
       const saved = await persist(nextReview);
       setActiveReviewId(saved.reviewId);
       setMessage("Saved automatically.");
     } catch (reason) {
+      onReviewProgressChange(reviewProgressSnapshot(runId, activeReview));
       setError(reason instanceof Error ? reason.message : "The review change could not be saved.");
     } finally {
       setSaving(false);

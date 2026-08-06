@@ -1,9 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import runData from "../data/runs.generated.json";
 import { GoBoard } from "./GoBoard";
-import { HumanReviewPanel } from "./HumanReviewPanel";
+import {
+  HumanReviewPanel,
+  type ReviewProblemProgress,
+  type ReviewProgressSnapshot,
+} from "./HumanReviewPanel";
 import { SolutionTree } from "./SolutionTree";
 import {
   collectRightNodes,
@@ -144,6 +148,7 @@ export function RunBrowser() {
   const [selectedRunId, setSelectedRunId] = useState(runs[0]?.runId ?? "");
   const run = runs.find((record) => record.runId === selectedRunId) ?? runs[0];
   const [selectedProblemFile, setSelectedProblemFile] = useState(defaultProblem(run)?.file ?? "");
+  const [liveReviewProgress, setLiveReviewProgress] = useState<ReviewProgressSnapshot | null>(null);
   const problem =
     run?.problems.find((record) => record.file === selectedProblemFile) ?? defaultProblem(run);
   const root = safeParseSgf(problem?.sgf, problem?.validation.valid);
@@ -164,6 +169,9 @@ export function RunBrowser() {
     setSelectedProblemFile(file);
     setSelectedNodeId("n0");
   };
+  const updateReviewProgress = useCallback((snapshot: ReviewProgressSnapshot | null) => {
+    setLiveReviewProgress(snapshot);
+  }, []);
   const previousNode = selected?.parent;
   const nextNode = selected?.children[0];
   const path = selected ? getPath(selected) : [];
@@ -321,29 +329,45 @@ export function RunBrowser() {
           </header>
 
           <div className="run-problem-tabs" aria-label="Generated problems">
-            {run.problems.map((record) => (
-              <button
-                type="button"
-                key={record.file}
-                className={record.file === problem.file ? "active" : ""}
-                onClick={() => chooseProblem(record.file)}
-                aria-pressed={record.file === problem.file}
-              >
-                <span>{record.file.replace(".sgf", "")}</span>
-                <small>{record.targetDifficulty}</small>
-                <i
-                  className={record.status}
-                  role="img"
-                  aria-label={statusLabel(record.status)}
-                />
-              </button>
-            ))}
+            {run.problems.map((record) => {
+              const reviewProgress: ReviewProblemProgress =
+                liveReviewProgress?.runId === run.runId
+                  ? liveReviewProgress.problems[record.file] ?? "untouched"
+                  : record.reviews?.length
+                    ? "completed"
+                    : "untouched";
+              const progressClass = reviewProgress === "untouched" ? "" : ` review-${reviewProgress}`;
+              const reviewLabel =
+                reviewProgress === "completed"
+                  ? "human review completed"
+                  : reviewProgress === "started"
+                    ? "human review started"
+                    : "not yet reviewed";
+              return (
+                <button
+                  type="button"
+                  key={record.file}
+                  className={record.file === problem.file ? "active" : ""}
+                  onClick={() => chooseProblem(record.file)}
+                  aria-pressed={record.file === problem.file}
+                >
+                  <span>{record.file.replace(".sgf", "")}</span>
+                  <small>{record.targetDifficulty}</small>
+                  <i
+                    className={`${record.status}${progressClass}`}
+                    role="img"
+                    aria-label={`${statusLabel(record.status)}; ${reviewLabel}`}
+                  />
+                </button>
+              );
+            })}
           </div>
 
           <HumanReviewPanel
             runId={run.runId}
             problemFile={problem.file}
             onChooseProblem={chooseProblem}
+            onReviewProgressChange={updateReviewProgress}
           />
 
           {root && selected && stats ? (
