@@ -15,7 +15,7 @@ The repository combines a curated reference corpus, a strict SGF validator, loca
 - `docs/benchmark-spec.md` — run structure, acceptance gates, and comparison protocol.
 - `docs/evaluation-rubric.md` — the human review scorecard.
 - `scripts/` — corpus synchronization, validation, and duplicate checks.
-- `benchmark.py` — creates a reproducible run, invokes a model through Codex CLI or Claude CLI, evaluates its files, and rebuilds the web index.
+- `benchmark.py` — creates a reproducible run, invokes a model through Codex CLI, Claude CLI, Grok CLI, or OpenCode CLI, evaluates its files, and rebuilds the web index.
 - `runs/` — checked-in model runs with input snapshots, generated SGFs, logs, and structured evaluation records.
 - The web reviewer — browse each problem, replay any variation, and inspect the graphical solution tree.
 
@@ -40,14 +40,29 @@ Or run an Anthropic model through an authenticated Claude CLI:
 python benchmark.py run --harness claude --model <claude-model-id-or-alias>
 ```
 
+Or run an xAI model through an authenticated Grok CLI:
+
+```bash
+python benchmark.py run --harness grok --model <grok-model-id-or-alias>
+```
+
+Or run a provider/model combination available to an authenticated OpenCode CLI:
+
+```bash
+python benchmark.py run --harness opencode --model <provider>/<model-id>
+```
+
 Install and authenticate the selected CLI before running the benchmark. The runner finds `codex`
-or `claude` on `PATH`; use `--codex` / `CODEX_CLI` or `--claude` / `CLAUDE_CLI` to provide an
-explicit executable. Prefer a full, versioned model ID over a moving alias when reproducibility
-matters. Claude Code 2.1.169 or newer is required because that release added the safe-mode isolation
-used by the benchmark. The runner checks the version before creating a run; an obsolete or broken
-Claude CLI exits without saving or evaluating anything. See Anthropic's
-[Claude Code installation guide](https://code.claude.com/docs/en/installation) for install and
-upgrade options.
+`claude`, `grok`, or `opencode` on `PATH`; use `--codex` / `CODEX_CLI`, `--claude` /
+`CLAUDE_CLI`, `--grok` / `GROK_CLI`, or `--opencode` / `OPENCODE_CLI` to provide an explicit
+executable. Prefer a full, versioned model ID over a moving alias when reproducibility matters.
+OpenCode model names must use its exact `provider/model` form. Claude Code 2.1.169 or newer and
+OpenCode 1.1.1 or newer are required for the isolated modes used by the benchmark. The runner checks
+the version before creating a run; an obsolete or broken CLI exits without saving or evaluating
+anything. See
+Anthropic's [Claude Code installation guide](https://code.claude.com/docs/en/installation) or
+xAI's [Grok Build guide](https://docs.x.ai/build/overview), or the
+[OpenCode installation guide](https://opencode.ai/docs) for installation and authentication.
 
 The evaluator requires Node.js 22 or newer. When the checkout is shared between
 Windows and WSL, the runner automatically uses a compatible Windows Node runtime
@@ -58,7 +73,7 @@ If the selected CLI rejects an unknown, inaccessible, or unsupported model ID, t
 prints the rejection and exits immediately. It does not retain a run directory,
 evaluate empty outputs, or add the attempt to the web index.
 
-Add `--reasoning-effort high` (or `--effort high`) when you want to pin an effort setting exposed by the selected CLI, or `--local-only` to skip the post-run GoProblems API checks. The runner disables model web and network tools, captures the selected CLI's event log automatically, and writes ten candidate SGFs under `runs/<run-id>/outputs/` by default. Use `--count <5-50>` only when you want an explicitly different benchmark condition.
+Add `--reasoning-effort high` (or `--effort high`) when you want to pin an effort setting exposed by the selected CLI, or `--local-only` to skip the post-run GoProblems API checks. For OpenCode, the effort value is passed as the model's provider-specific `--variant`. The runner disables model web and network tools, captures the selected CLI's event log automatically, and writes ten candidate SGFs under `runs/<run-id>/outputs/` by default. Use `--count <5-50>` only when you want an explicitly different benchmark condition.
 
 When a run starts, the runner prints the selected reasoning effort. If the flag is omitted, it prints `CLI/model default`; the manifest records `null` because the benchmark did not request a specific level.
 
@@ -103,7 +118,7 @@ For each problem, the initial review can record whether it is valid, whether the
 
 ## Benchmark in one pass
 
-1. Invoke `python benchmark.py run --model <openai-model-id>` for Codex, or add `--harness claude` for Claude CLI.
+1. Invoke `python benchmark.py run --model <openai-model-id>` for Codex, add `--harness claude` for Claude CLI, add `--harness grok` for Grok CLI, or use `--harness opencode --model <provider>/<model-id>` for OpenCode CLI.
 2. The runner snapshots the controlled inputs and asks the selected model to write ten SGFs directly into the run directory.
 3. It preserves the selected CLI's event log and runs structural and duplicate checks automatically.
 4. Run `python3 benchmark.py review`; it defaults to the run that just completed.

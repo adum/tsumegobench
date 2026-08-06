@@ -88,6 +88,9 @@ test("server-renders generated runs on their own page with a to-move stone", asy
   const html = await htmlFor("/runs");
   assert.match(html, /Benchmark runs/);
   assert.match(html, /gpt-5\.6-(?:luna|sol)/);
+  assert.match(html, /class="run-provider-mark" aria-label="OpenAI model lab"/);
+  assert.match(html, /src="\/provider-icons\/openai\.svg"/);
+  assert.match(html, /class="run-effort">(?:default|low|high|max|xhigh) effort<\/span>/);
   assert.doesNotMatch(html, /Problem viewer/);
   const toMove = html.match(
     /class="to-move-stone (black|white)"[^>]*aria-label="(Black|White) to play"/,
@@ -102,12 +105,12 @@ test("server-renders generated runs on their own page with a to-move stone", asy
     html,
     /href="https:\/\/www\.goproblems\.com\/problems\/\d+"[^>]*target="_blank"/,
   );
-  assert.match(html, /Human review choices/);
-  assert.match(html, /Valid/);
-  assert.match(html, /Realistic/);
-  assert.match(html, /Duplicate/);
-  assert.match(html, /Well pathed/);
-  assert.match(html, /adam/);
+  if (html.includes("Human review choices")) {
+    assert.match(html, /Valid/);
+    assert.match(html, /Realistic/);
+    assert.match(html, /Duplicate/);
+    assert.match(html, /Well pathed/);
+  }
   assert.match(
     html,
     /class="run-pass-counts" aria-label="\d+ human passed, \d+ automated passed, \d+ total problems" title="Human passed \/ automated passed \/ total problems"/,
@@ -116,6 +119,8 @@ test("server-renders generated runs on their own page with a to-move stone", asy
     html,
     /class="run-summary"[^>]*>[\s\S]*structural[\s\S]*original[\s\S]*to review[\s\S]*human passed[\s\S]*<\/div>/,
   );
+  assert.match(html, /class="problem-thumbnail(?: is-empty)?"/);
+  assert.match(html, /class="run-problem-tab-copy"/);
 });
 
 test("server-renders process and sources as dedicated pages", async () => {

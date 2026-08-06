@@ -7,6 +7,7 @@ import {
   HumanReviewPanel,
   type ReviewProgressSnapshot,
 } from "./HumanReviewPanel";
+import { ProblemThumbnail } from "./ProblemThumbnail";
 import { SolutionTree } from "./SolutionTree";
 import {
   aggregateReviewProgress,
@@ -139,15 +140,68 @@ function statusLabel(status: string) {
   return status.replaceAll("_", " ");
 }
 
+function effortLabel(effort: string | null) {
+  return `${effort?.replaceAll("_", " ") ?? "default"} effort`;
+}
+
 function providerLabel(provider: string) {
   if (provider === "openai") return "OpenAI";
   if (provider === "anthropic") return "Anthropic";
+  if (provider === "xai") return "xAI";
+  if (provider === "opencode") return "OpenCode";
   return provider;
+}
+
+const providerIconSources: Record<string, string> = {
+  openai: "/provider-icons/openai.svg",
+  anthropic: "/provider-icons/anthropic.svg",
+  xai: "/provider-icons/xai.svg",
+  opencode: "/provider-icons/opencode.svg",
+};
+
+function providerInitials(provider: string) {
+  if (provider === "openai") return "OA";
+  if (provider === "anthropic") return "A";
+  if (provider === "xai") return "xAI";
+  if (provider === "opencode") return "OC";
+  return provider.replace(/[^a-z0-9]/gi, "").slice(0, 2).toUpperCase() || "?";
+}
+
+function ProviderMark({ provider }: { provider: string }) {
+  const source = providerIconSources[provider];
+
+  return (
+    <span
+      className={`run-provider-mark${source ? "" : " fallback"}`}
+      aria-label={`${providerLabel(provider)} model lab`}
+      role="img"
+      title={providerLabel(provider)}
+    >
+      <span className="run-provider-initials" aria-hidden="true">
+        {providerInitials(provider)}
+      </span>
+      {source ? (
+        // Provider marks are small local brand assets, not content images.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={source}
+          alt=""
+          aria-hidden="true"
+          onError={(event) => {
+            event.currentTarget.hidden = true;
+            event.currentTarget.parentElement?.classList.add("fallback");
+          }}
+        />
+      ) : null}
+    </span>
+  );
 }
 
 function harnessLabel(harness: string) {
   if (harness === "codex-cli") return "Codex CLI";
   if (harness === "claude-cli") return "Claude CLI";
+  if (harness === "grok-cli") return "Grok CLI";
+  if (harness === "opencode-cli") return "OpenCode CLI";
   return harness;
 }
 
@@ -176,6 +230,12 @@ function defaultProblem(run: BenchmarkRun | undefined) {
   return run?.problems.find((problem) => problem.validation.valid && problem.sgf) ?? run?.problems[0];
 }
 
+function defaultRun() {
+  return runs.find((run) => run.problems.some((problem) => problem.validation.valid && problem.sgf)) ?? runs[0];
+}
+
+const fallbackRun = defaultRun();
+
 function humanPassedProblemCount(run: BenchmarkRun) {
   return run.problems.filter((problem) =>
     problemPassesHumanReview(problem.reviews ?? []),
@@ -194,8 +254,8 @@ function rememberBrowserSelection(runId: string, problemFile: string) {
 }
 
 export function RunBrowser() {
-  const [selectedRunId, setSelectedRunId] = useState(runs[0]?.runId ?? "");
-  const run = runs.find((record) => record.runId === selectedRunId) ?? runs[0];
+  const [selectedRunId, setSelectedRunId] = useState(fallbackRun?.runId ?? "");
+  const run = runs.find((record) => record.runId === selectedRunId) ?? fallbackRun;
   const [selectedProblemFile, setSelectedProblemFile] = useState(defaultProblem(run)?.file ?? "");
   const [liveReviewProgress, setLiveReviewProgress] = useState<ReviewProgressSnapshot | null>(null);
   const problem =
@@ -268,7 +328,7 @@ export function RunBrowser() {
     const params = new URLSearchParams(window.location.search);
     const requestedRunId = params.get("run");
     const requestedRun = runs.find((record) => record.runId === requestedRunId);
-    const targetRun = requestedRun ?? runs[0];
+    const targetRun = requestedRun ?? fallbackRun;
     const requestedProblemFile = params.get("problem");
     const requestedProblem = targetRun?.problems.find(
       (record) => record.file === requestedProblemFile,
@@ -306,7 +366,7 @@ export function RunBrowser() {
         </div>
         <div className="run-empty">
           <span>No runs checked in yet</span>
-          <code>python benchmark.py run --harness &lt;codex|claude&gt; --model &lt;model-id&gt;</code>
+          <code>python benchmark.py run --harness &lt;codex|claude|grok|opencode&gt; --model &lt;model-id&gt;</code>
         </div>
       </section>
     );
@@ -379,7 +439,10 @@ export function RunBrowser() {
                   onClick={() => chooseRun(record.runId)}
                   aria-pressed={record.runId === run.runId}
                 >
-                  <span className={`run-status-dot ${record.status}`} aria-hidden="true" />
+                  <span className="run-provider-cell">
+                    <ProviderMark provider={record.model.provider} />
+                    <span className={`run-status-dot ${record.status}`} aria-hidden="true" />
+                  </span>
                   <span className="problem-list-copy">
                     <span className="problem-list-topline">
                       <strong>{record.model.name}</strong>
@@ -391,6 +454,7 @@ export function RunBrowser() {
                         {humanPassed}/{automatedPassed}/{totalProblems}
                       </span>
                     </span>
+                    <span className="run-effort">{effortLabel(record.model.reasoningEffort)}</span>
                     <small>{humanDate(record.createdAt)}</small>
                   </span>
                 </button>
@@ -445,8 +509,11 @@ export function RunBrowser() {
                   onClick={() => chooseProblem(record.file)}
                   aria-pressed={record.file === problem.file}
                 >
-                  <span>{record.file.replace(".sgf", "")}</span>
-                  <small>{record.targetDifficulty}</small>
+                  <ProblemThumbnail sgf={record.sgf} />
+                  <span className="run-problem-tab-copy">
+                    <span>{record.file.replace(".sgf", "")}</span>
+                    <small>{record.targetDifficulty}</small>
+                  </span>
                   <i
                     className={`${record.status}${progressClass}${humanBadClass}`}
                     role="img"

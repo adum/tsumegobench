@@ -11,7 +11,11 @@
   --red: #d7543f;
   --red-dark: #a93d2f;
   --green: #1d7a5b;
+  --green-dark: #155d46;
   --green-pale: #dcece5;
+  --blue: #347487;
+  --blue-dark: #24596b;
+  --blue-pale: #d8edf1;
   --amber: #bc7b22;
   --amber-pale: #f3e7cc;
   --wood: #d9a759;
@@ -56,7 +60,7 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 .solution-tree-scroll:focus-visible {
-  outline: 3px solid rgba(215, 84, 63, 0.42);
+  outline: 3px solid rgba(52, 116, 135, 0.42);
   outline-offset: 3px;
 }
 
@@ -112,7 +116,7 @@ input:focus-visible,
 }
 
 .site-header nav a:hover {
-  color: var(--red);
+  color: var(--blue-dark);
 }
 
 .header-status {
@@ -137,7 +141,7 @@ input:focus-visible,
 
 .eyebrow {
   margin: 0 0 25px;
-  color: var(--red-dark);
+  color: var(--blue-dark);
   font-family: var(--font-geist-mono), monospace;
   font-size: 11px;
   font-weight: 750;
@@ -169,7 +173,7 @@ input:focus-visible,
 
 .hero h1 em {
   display: block;
-  color: var(--red);
+  color: var(--blue);
   font-weight: 400;
 }
 
@@ -211,7 +215,7 @@ input:focus-visible,
 }
 
 .primary-action span {
-  color: #e5b6a9;
+  color: #b9dce4;
   font-size: 17px;
 }
 
@@ -316,7 +320,7 @@ input:focus-visible,
   position: absolute;
   right: 20px;
   bottom: 18px;
-  color: var(--red);
+  color: var(--blue);
   font-style: normal;
 }
 
@@ -462,7 +466,7 @@ input:focus-visible,
   position: absolute;
   inset: 0 auto 0 0;
   width: 3px;
-  background: var(--red);
+  background: var(--blue);
 }
 
 .mini-stone,
@@ -524,7 +528,7 @@ input:focus-visible,
 }
 
 .problem-list-topline > span {
-  color: var(--red-dark);
+  color: var(--blue-dark);
   font-family: var(--font-geist-mono), monospace;
   font-size: 8px;
   text-transform: uppercase;
@@ -541,13 +545,56 @@ input:focus-visible,
 }
 
 .run-library .problem-list-item {
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
   padding-top: 17px;
   padding-bottom: 16px;
 }
 
+.run-provider-cell {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  align-self: start;
+}
+
+.run-provider-mark {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #cfc8bc;
+  border-radius: 6px;
+  background: #fffdf7;
+}
+
+.run-provider-mark img {
+  width: 18px;
+  height: 18px;
+  display: block;
+  object-fit: contain;
+}
+
+.run-provider-initials {
+  display: none;
+  color: var(--ink);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.run-provider-mark.fallback .run-provider-initials {
+  display: block;
+}
+
+.run-provider-mark.fallback img {
+  display: none;
+}
+
 .run-library .problem-list-topline {
   align-items: baseline;
-  margin-bottom: 6px;
+  margin-bottom: 3px;
 }
 
 .run-library .problem-list-topline strong {
@@ -563,6 +610,18 @@ input:focus-visible,
   flex: none;
   font-size: 22px;
   font-weight: 700;
+}
+
+.run-library .run-effort {
+  display: block;
+  margin-bottom: 3px;
+  color: #4d5753;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.035em;
+  line-height: 1.25;
+  text-transform: uppercase;
 }
 
 .run-library .problem-list-copy small {
@@ -738,8 +797,8 @@ input:focus-visible,
 }
 
 .board-controls .reveal-button {
-  border-color: #8d221f;
-  background: #a52b27;
+  border-color: var(--blue-dark);
+  background: var(--blue-dark);
   color: #fff;
   font-family: var(--font-geist-mono), monospace;
   font-size: 7px;
@@ -812,7 +871,7 @@ input:focus-visible,
 }
 
 .move-inspector-main strong {
-  color: var(--red-dark);
+  color: var(--blue-dark);
   font-family: Georgia, serif;
   font-size: 27px;
   font-weight: 400;
@@ -860,7 +919,7 @@ input:focus-visible,
 }
 
 .panel-label {
-  color: var(--red-dark);
+  color: var(--blue-dark);
   font-family: var(--font-geist-mono), monospace;
   font-size: 8px;
   font-weight: 750;
@@ -977,10 +1036,10 @@ input:focus-visible,
 }
 
 .tree-root {
-  border: 1px solid #9f5f4f;
+  border: 1px solid var(--blue);
   border-radius: 3px;
-  background: #f2dfd7;
-  color: var(--red-dark);
+  background: var(--blue-pale);
+  color: var(--blue-dark);
   font-size: 18px;
   line-height: 1;
 }
@@ -1085,6 +1144,24 @@ input:focus-visible,
   border-radius: 50%;
 }
 
+.run-provider-cell .run-status-dot {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 11px;
+  height: 11px;
+  margin: 0;
+  box-shadow: 0 0 0 2px #ece8de;
+}
+
+.run-library .problem-list-item:hover .run-provider-cell .run-status-dot {
+  box-shadow: 0 0 0 2px #f7f4ec;
+}
+
+.run-library .problem-list-item.active .run-provider-cell .run-status-dot {
+  box-shadow: 0 0 0 2px #fffdf7;
+}
+
 .run-status-dot.needs_human_review,
 .run-badge.needs_human_review,
 .run-problem-tabs i.needs_human_review {
@@ -1155,10 +1232,12 @@ input:focus-visible,
 .run-problem-tabs button {
   position: relative;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 11px 24px 10px 12px;
+  min-height: 70px;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 8px 24px 8px 8px;
   border: 0;
   border-right: 1px solid var(--line);
   background: transparent;
@@ -1174,10 +1253,42 @@ input:focus-visible,
 .run-problem-tabs button.active {
   background: #fffdf8;
   color: var(--ink);
-  box-shadow: inset 0 -3px var(--red);
+  box-shadow: inset 0 -3px var(--blue);
 }
 
-.run-problem-tabs span {
+.problem-thumbnail {
+  display: block;
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgba(94, 72, 43, 0.35);
+  background: var(--wood);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.problem-thumbnail.is-empty {
+  background-color: #ddd5c4;
+  background-image:
+    linear-gradient(rgba(94, 84, 67, 0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94, 84, 67, 0.25) 1px, transparent 1px);
+  background-size: 10px 10px;
+  opacity: 0.64;
+}
+
+.run-problem-tabs button.active .problem-thumbnail {
+  border-color: rgba(52, 116, 135, 0.72);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 0 0 2px rgba(52, 116, 135, 0.14);
+}
+
+.run-problem-tab-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.run-problem-tab-copy > span {
   overflow: hidden;
   font-family: var(--font-geist-mono), monospace;
   font-size: 9px;
@@ -1223,8 +1334,8 @@ input:focus-visible,
 }
 
 .run-problem-tabs i.review-started:not(.failed) {
-  border-color: #347487;
-  background: #d8edf1;
+  border-color: var(--blue);
+  background: var(--blue-pale);
   box-shadow: 0 0 0 2px rgba(52, 116, 135, 0.18);
 }
 
@@ -1303,7 +1414,7 @@ input:focus-visible,
 }
 
 .review-progress strong {
-  color: var(--red-dark);
+  color: var(--blue-dark);
   font-family: inherit;
   font-size: 16px;
   font-weight: 700;
@@ -1352,7 +1463,7 @@ input:focus-visible,
 }
 
 .existing-reviewers button span {
-  color: var(--red-dark);
+  color: var(--blue-dark);
 }
 
 .new-reviewer-form label,
@@ -1619,8 +1730,8 @@ input:focus-visible,
 }
 
 .evaluation-details a {
-  color: var(--red-dark);
-  text-decoration-color: rgba(176, 57, 42, 0.45);
+  color: var(--blue-dark);
+  text-decoration-color: rgba(52, 116, 135, 0.45);
   text-underline-offset: 2px;
 }
 
@@ -1634,7 +1745,7 @@ input:focus-visible,
 
 .recorded-reviews-title {
   display: block;
-  color: var(--red-dark);
+  color: var(--blue-dark);
   font-family: var(--font-geist-mono), monospace;
   font-size: 8px;
   font-weight: 750;
@@ -1864,7 +1975,7 @@ input:focus-visible,
   margin: 36px auto 30px;
   border: 1px solid #aca598;
   border-radius: 50%;
-  color: var(--red);
+  color: var(--blue);
   font-family: Georgia, serif;
   font-size: 32px;
 }
@@ -1892,7 +2003,7 @@ input:focus-visible,
   bottom: 14px;
   width: 7px;
   height: 7px;
-  background: var(--red);
+  background: var(--blue);
 }
 
 .protocol-icon.compare {
@@ -1920,7 +2031,7 @@ input:focus-visible,
 .protocol-icon.judge i {
   width: 35px;
   height: 35px;
-  border: 8px double var(--red);
+  border: 8px double var(--blue);
   border-radius: 50%;
 }
 
@@ -2009,7 +2120,7 @@ input:focus-visible,
   position: absolute;
   top: 22px;
   right: 18px;
-  color: var(--red-dark);
+  color: var(--blue-dark);
   font-family: var(--font-geist-mono), monospace;
   font-size: 8px;
   text-transform: uppercase;
@@ -2024,7 +2135,7 @@ input:focus-visible,
 }
 
 .protocol-grid small {
-  color: var(--red-dark);
+  color: var(--blue-dark);
   font-family: var(--font-geist-mono), monospace;
   font-size: 7px;
   font-weight: 750;
@@ -2096,7 +2207,7 @@ input:focus-visible,
 }
 
 .footer-links a:hover {
-  color: #efa694;
+  color: #b9dce4;
 }
 
 .footer-note {
@@ -2289,7 +2400,7 @@ input:focus-visible,
   }
 
   .run-problem-tabs button {
-    min-width: 132px;
+    min-width: 164px;
   }
 
   .human-review-header,

@@ -298,7 +298,7 @@ export function GoBoard({
           const center = toCanvas(point.x, point.y);
           context.beginPath();
           context.arc(center.x, center.y, Math.max(2.4, cell * 0.11), 0, Math.PI * 2);
-          context.fillStyle = position.lastMove.color === "B" ? "#f8f4e8" : "#b23d2d";
+          context.fillStyle = position.lastMove.color === "B" ? "#f8f4e8" : "#24596b";
           context.fill();
         }
       }

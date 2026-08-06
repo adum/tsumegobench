@@ -1,12 +1,15 @@
 # Benchmark runs
 
-Create a complete run with an OpenAI model through the authenticated Codex CLI:
+Create a complete run with a model through an authenticated command-line harness:
 
 ```bash
 python benchmark.py run --model <openai-model-id>
+python benchmark.py run --harness claude --model <anthropic-model-id>
+python benchmark.py run --harness grok --model <xai-model-id>
+python benchmark.py run --harness opencode --model <provider>/<model-id>
 ```
 
-The runner creates one auditable directory here, gives Codex only the snapshotted benchmark packet, captures the CLI event stream, evaluates the ten named SGF outputs by default, and refreshes the data used by the web UI. The input snapshot and generated outputs are immutable; the human evaluation record can be completed later. Web search and subprocess network access are disabled for the model. Remote GoProblems duplicate checks run afterward by default.
+The runner creates one auditable directory here, gives the selected CLI only the snapshotted benchmark packet, captures its event stream, evaluates the ten named SGF outputs by default, and refreshes the data used by the web UI. The input snapshot and generated outputs are immutable; the human evaluation record can be completed later. Web search and subprocess network access are disabled for the model. Remote GoProblems duplicate checks run afterward by default.
 
 Useful maintenance commands:
 

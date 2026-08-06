@@ -30,7 +30,9 @@ RUNS_ROOT = PROJECT_ROOT / "runs"
 DEFAULT_PROBLEM_COUNT = 10
 MINIMUM_PROBLEM_COUNT = 5
 MAXIMUM_PROBLEM_COUNT = 50
+DEFAULT_RUN_TIMEOUT_SECONDS = 12 * 60 * 60
 MINIMUM_CLAUDE_VERSION = (2, 1, 169)
+MINIMUM_OPENCODE_VERSION = (1, 1, 1)
 DIFFICULTY_BANDS = (
     "20-30 kyu",
     "10-19 kyu",
@@ -93,6 +95,25 @@ def write_json(file: Path, value: Any) -> None:
     temporary = file.with_suffix(f"{file.suffix}.tmp")
     temporary.write_text(f"{json.dumps(value, indent=2, ensure_ascii=False)}\n", encoding="utf-8")
     temporary.replace(file)
+
+
+def captured_text(value: str | bytes | None) -> str:
+    """Normalize subprocess output, including TimeoutExpired's byte payloads."""
+    if value is None:
+        return ""
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="replace")
+    return value
+
+
+def format_timeout(seconds: int) -> str:
+    if seconds % 3600 == 0:
+        hours = seconds // 3600
+        return f"{hours} {'hour' if hours == 1 else 'hours'} ({seconds:,} seconds)"
+    if seconds % 60 == 0:
+        minutes = seconds // 60
+        return f"{minutes} {'minute' if minutes == 1 else 'minutes'} ({seconds:,} seconds)"
+    return f"{seconds:,} {'second' if seconds == 1 else 'seconds'}"
 
 
 def read_json(file: Path) -> dict[str, Any]:
@@ -541,19 +562,52 @@ def portable_command(command: list[str], run_dir: Path) -> list[str]:
     return recorded
 
 
-def harness_provider(harness: str) -> str:
-    return "anthropic" if harness == "claude" else "openai"
+def opencode_model_parts(model: str) -> tuple[str, str]:
+    provider, separator, model_name = model.partition("/")
+    if (
+        not separator
+        or not provider
+        or not model_name
+        or any(character.isspace() for character in model)
+    ):
+        raise ValueError(
+            "--model for OpenCode must use the exact provider/model format, "
+            "such as openai/gpt-5.2."
+        )
+    return provider.lower(), model_name
+
+
+def harness_provider(harness: str, model: str) -> str:
+    if harness == "opencode":
+        return opencode_model_parts(model)[0]
+    return {
+        "codex": "openai",
+        "claude": "anthropic",
+        "grok": "xai",
+    }[harness]
 
 
 def harness_manifest_name(harness: str) -> str:
-    return "claude-cli" if harness == "claude" else "codex-cli"
+    return {
+        "codex": "codex-cli",
+        "claude": "claude-cli",
+        "grok": "grok-cli",
+        "opencode": "opencode-cli",
+    }[harness]
 
 
 def harness_label(harness: str) -> str:
-    return "Claude CLI" if harness == "claude" else "Codex CLI"
+    return {
+        "codex": "Codex CLI",
+        "claude": "Claude CLI",
+        "grok": "Grok CLI",
+        "opencode": "OpenCode CLI",
+    }[harness]
 
 
 def unique_run_id(model: str, requested: str | None, harness: str = "codex") -> str:
+    provider = harness_provider(harness, model)
+    model_name = opencode_model_parts(model)[1] if harness == "opencode" else model
     if requested:
         if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9._-]{2,100}", requested):
             raise ValueError(
@@ -565,7 +619,7 @@ def unique_run_id(model: str, requested: str | None, harness: str = "codex") -> 
 
     prefix = (
         f"{datetime.now(timezone.utc):%Y-%m-%dT%H%M%SZ}-"
-        f"{harness_provider(harness)}-{slugify(model)}-{harness}"
+        f"{provider}-{slugify(model_name)}-{harness}"
     )
     candidate = prefix
     suffix = 2
@@ -575,7 +629,29 @@ def unique_run_id(model: str, requested: str | None, harness: str = "codex") -> 
     return candidate
 
 
-def copy_inputs(run_dir: Path, problem_count: int) -> list[dict[str, str]]:
+def opencode_config() -> dict[str, Any]:
+    return {
+        "$schema": "https://opencode.ai/config.json",
+        "share": "disabled",
+        "autoupdate": False,
+        "formatter": False,
+        "instructions": [],
+        "plugin": [],
+        "mcp": {},
+        "permission": {
+            "*": "deny",
+            "read": "allow",
+            "edit": "allow",
+            "glob": "allow",
+            "grep": "allow",
+            "list": "allow",
+        },
+    }
+
+
+def copy_inputs(
+    run_dir: Path, problem_count: int, harness: str = "codex"
+) -> list[dict[str, str]]:
     inputs = run_dir / "inputs"
     examples = inputs / "examples"
     examples.mkdir(parents=True)
@@ -612,6 +688,13 @@ This is a controlled benchmark run. Work only inside the current run directory.
 Do not ask the operator questions and do not wait for repair feedback.
 """
     (inputs / "task.md").write_text(task, encoding="utf-8")
+    if harness == "opencode":
+        config_dir = inputs / "opencode-config"
+        config_dir.mkdir()
+        (config_dir / "opencode.json").write_text(
+            json.dumps(opencode_config(), indent=2) + "\n",
+            encoding="utf-8",
+        )
 
     records: list[dict[str, str]] = []
     for file in sorted(path for path in inputs.rglob("*") if path.is_file()):
@@ -657,6 +740,20 @@ def claude_version_error(version: str) -> str | None:
     return None
 
 
+def opencode_version_error(version: str) -> str | None:
+    match = re.search(r"(?:^|\D)(\d+)\.(\d+)\.(\d+)(?:\D|$)", version)
+    if not match:
+        return f"Could not determine the OpenCode CLI version from {version!r}."
+    installed = tuple(int(part) for part in match.groups())
+    if installed < MINIMUM_OPENCODE_VERSION:
+        required = ".".join(str(part) for part in MINIMUM_OPENCODE_VERSION)
+        return (
+            f"OpenCode CLI {required} or newer is required for the benchmark's "
+            f"isolated permission mode; found {'.'.join(str(part) for part in installed)}."
+        )
+    return None
+
+
 def event_message(value: Any) -> str | None:
     if isinstance(value, str):
         try:
@@ -665,14 +762,13 @@ def event_message(value: Any) -> str | None:
             return value.strip() or None
         return event_message(decoded)
     if isinstance(value, dict):
-        error = value.get("error")
-        if error is not None:
-            nested = event_message(error)
+        for key in ("error", "message", "data", "cause"):
+            nested_value = value.get(key)
+            if nested_value is None:
+                continue
+            nested = event_message(nested_value)
             if nested:
                 return nested
-        message = value.get("message")
-        if message is not None:
-            return event_message(message)
     return None
 
 
@@ -749,6 +845,137 @@ def parse_claude_events(stdout: str) -> dict[str, Any]:
     return {
         "threadId": session_id,
         "usage": usage,
+        "eventCount": event_count,
+        "unparsedLineCount": parse_errors,
+        "failureMessage": failure_message,
+        "finalMessage": final_message,
+    }
+
+
+def parse_grok_events(stdout: str) -> dict[str, Any]:
+    session_id: str | None = None
+    usage: dict[str, Any] | None = None
+    parse_errors = 0
+    event_count = 0
+    failure_message: str | None = None
+    current_message_parts: list[str] = []
+    final_message: str | None = None
+
+    for line in stdout.splitlines():
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            parse_errors += 1
+            continue
+        event_count += 1
+        event_type = event.get("type")
+        if event_type == "text" and isinstance(event.get("data"), str):
+            current_message_parts.append(event["data"])
+        if event_type == "usage" and current_message_parts:
+            final_message = "".join(current_message_parts).strip() or final_message
+            current_message_parts = []
+        if event_type in {"end", "error"}:
+            session_id = event.get("sessionId") or event.get("session_id") or session_id
+            usage_fields = {
+                key: event[key]
+                for key in (
+                    "usage",
+                    "modelUsage",
+                    "total_cost_usd",
+                    "total_cost_usd_ticks",
+                    "cost_is_partial",
+                    "usage_is_incomplete",
+                    "num_turns",
+                    "requestId",
+                )
+                if event.get(key) is not None
+            }
+            usage = usage_fields or usage
+        if event_type == "error":
+            failure_message = event_message(event) or failure_message
+
+    if current_message_parts:
+        final_message = "".join(current_message_parts).strip() or final_message
+    return {
+        "threadId": session_id,
+        "usage": usage,
+        "eventCount": event_count,
+        "unparsedLineCount": parse_errors,
+        "failureMessage": failure_message,
+        "finalMessage": final_message,
+    }
+
+
+def parse_opencode_events(stdout: str) -> dict[str, Any]:
+    session_id: str | None = None
+    parse_errors = 0
+    event_count = 0
+    failure_message: str | None = None
+    text_by_message: dict[str, list[str]] = {}
+    last_text: str | None = None
+    final_message_id: str | None = None
+    usage = {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_tokens": 0,
+        "cache_read_tokens": 0,
+        "cache_write_tokens": 0,
+        "cost_usd": 0.0,
+        "steps": 0,
+    }
+    has_usage = False
+
+    for line in stdout.splitlines():
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            parse_errors += 1
+            continue
+        event_count += 1
+        session_id = event.get("sessionID") or event.get("session_id") or session_id
+        event_type = event.get("type")
+        part = event.get("part") if isinstance(event.get("part"), dict) else {}
+
+        if event_type == "text" and isinstance(part.get("text"), str):
+            text = part["text"]
+            message_id = part.get("messageID") or part.get("messageId") or ""
+            text_by_message.setdefault(message_id, []).append(text)
+            last_text = text.strip() or last_text
+
+        if event_type == "step_finish":
+            has_usage = True
+            usage["steps"] += 1
+            tokens = part.get("tokens") if isinstance(part.get("tokens"), dict) else {}
+            cache = tokens.get("cache") if isinstance(tokens.get("cache"), dict) else {}
+            for source, destination in (
+                (tokens.get("input"), "input_tokens"),
+                (tokens.get("output"), "output_tokens"),
+                (tokens.get("reasoning"), "reasoning_tokens"),
+                (cache.get("read"), "cache_read_tokens"),
+                (cache.get("write"), "cache_write_tokens"),
+            ):
+                if isinstance(source, (int, float)) and not isinstance(source, bool):
+                    usage[destination] += source
+            cost = part.get("cost")
+            if isinstance(cost, (int, float)) and not isinstance(cost, bool):
+                usage["cost_usd"] += cost
+            if part.get("reason") == "stop":
+                final_message_id = part.get("messageID") or part.get("messageId")
+
+        if event_type == "error":
+            failure_message = event_message(event) or failure_message
+
+    final_parts = text_by_message.get(final_message_id or "", [])
+    final_message = "".join(final_parts).strip() or last_text
+    if has_usage:
+        usage["cost_usd"] = round(usage["cost_usd"], 12)
+    return {
+        "threadId": session_id,
+        "usage": usage if has_usage else None,
         "eventCount": event_count,
         "unparsedLineCount": parse_errors,
         "failureMessage": failure_message,
@@ -943,7 +1170,7 @@ def open_review_url(url: str) -> bool:
 
 
 def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> dict[str, Any]:
-    input_files = copy_inputs(run_dir, args.count)
+    input_files = copy_inputs(run_dir, args.count, args.harness)
     output_names = expected_output_names(args.count)
     model_prompt = run_dir / "inputs" / "model-prompt.md"
     reference_manifest = run_dir / "inputs" / "reference-manifest.json"
@@ -962,7 +1189,7 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
             "inputFiles": input_files,
         },
         "model": {
-            "provider": harness_provider(args.harness),
+            "provider": harness_provider(args.harness, args.model),
             "name": args.model,
             "reasoningEffort": args.reasoning_effort,
         },
@@ -1006,7 +1233,30 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
 def harness_executable(args: argparse.Namespace) -> str:
     if args.harness == "claude":
         return args.claude or os.environ.get("CLAUDE_CLI") or command_name("claude")
+    if args.harness == "grok":
+        return args.grok or os.environ.get("GROK_CLI") or command_name("grok")
+    if args.harness == "opencode":
+        return args.opencode or os.environ.get("OPENCODE_CLI") or command_name("opencode")
     return args.codex or os.environ.get("CODEX_CLI") or command_name("codex")
+
+
+def harness_environment(args: argparse.Namespace, run_dir: Path) -> dict[str, str] | None:
+    if args.harness != "opencode":
+        return None
+    config_file = run_dir / "inputs" / "opencode-config" / "opencode.json"
+    environment = os.environ.copy()
+    environment.update(
+        {
+            "OPENCODE_CONFIG": str(config_file),
+            "OPENCODE_CONFIG_DIR": str(config_file.parent),
+            "OPENCODE_CONFIG_CONTENT": config_file.read_text(encoding="utf-8"),
+            "OPENCODE_AUTO_SHARE": "false",
+            "OPENCODE_DISABLE_AUTOUPDATE": "true",
+            "OPENCODE_DISABLE_PRUNE": "true",
+            "OPENCODE_DISABLE_TERMINAL_TITLE": "true",
+        }
+    )
+    return environment
 
 
 def build_harness_command(
@@ -1043,6 +1293,62 @@ def build_harness_command(
             command.extend(["--effort", args.reasoning_effort])
         return command
 
+    if args.harness == "grok":
+        command = [
+            executable,
+            "--no-auto-update",
+            "--cwd",
+            str(run_dir),
+            "--prompt-file",
+            str(run_dir / "inputs" / "task.md"),
+            "--verbatim",
+            "--output-format",
+            "streaming-json",
+            "--always-approve",
+            "--sandbox",
+            "strict",
+            "--no-plan",
+            "--no-subagents",
+            "--no-memory",
+            "--disable-web-search",
+            "--disallowed-tools",
+            "run_terminal_cmd,web_search,web_fetch,Agent",
+            "--deny",
+            "Bash",
+            "--deny",
+            "WebFetch",
+            "--deny",
+            "WebSearch",
+            "--deny",
+            "MCPTool",
+            "--model",
+            args.model,
+        ]
+        if args.reasoning_effort:
+            command.extend(["--effort", args.reasoning_effort])
+        return command
+
+    if args.harness == "opencode":
+        command = [
+            executable,
+            "--pure",
+            "run",
+            "--format",
+            "json",
+            "--model",
+            args.model,
+            "--agent",
+            "build",
+            "--dir",
+            str(run_dir),
+            "--title",
+            run_dir.name,
+            "--auto",
+        ]
+        if args.reasoning_effort:
+            command.extend(["--variant", args.reasoning_effort])
+        return command
+
     command = [
         executable,
         "exec",
@@ -1074,11 +1380,22 @@ def build_harness_command(
 
 def run_command(args: argparse.Namespace) -> int:
     RUNS_ROOT.mkdir(exist_ok=True)
+    try:
+        harness_provider(args.harness, args.model)
+    except ValueError as error:
+        print(f"error: {error}", file=sys.stderr)
+        print("No run was saved, and evaluation was not started.", file=sys.stderr)
+        return 2
     executable = harness_executable(args)
     version = cli_version(executable)
     label = harness_label(args.harness)
     if version is None:
-        override = "--claude or CLAUDE_CLI" if args.harness == "claude" else "--codex or CODEX_CLI"
+        override = {
+            "codex": "--codex or CODEX_CLI",
+            "claude": "--claude or CLAUDE_CLI",
+            "grok": "--grok or GROK_CLI",
+            "opencode": "--opencode or OPENCODE_CLI",
+        }[args.harness]
         print(
             f"error: could not run {label}. Install or upgrade it and authenticate it, or set {override}.",
             file=sys.stderr,
@@ -1091,6 +1408,15 @@ def run_command(args: argparse.Namespace) -> int:
             print(f"error: {version_error}", file=sys.stderr)
             print(
                 "Upgrade Claude CLI and try again. No run was saved, and evaluation was not started.",
+                file=sys.stderr,
+            )
+            return 2
+    if args.harness == "opencode":
+        version_error = opencode_version_error(version)
+        if version_error:
+            print(f"error: {version_error}", file=sys.stderr)
+            print(
+                "Upgrade OpenCode CLI and try again. No run was saved, and evaluation was not started.",
                 file=sys.stderr,
             )
             return 2
@@ -1118,17 +1444,20 @@ def run_command(args: argparse.Namespace) -> int:
     print(f"Starting benchmark run {run_id}")
     print(f"Running {args.model} with {label}…")
     print(f"Reasoning effort: {args.reasoning_effort or 'CLI/model default'}")
+    print(f"Execution timeout: {format_timeout(args.timeout)}")
     task = (run_dir / "inputs" / "task.md").read_text(encoding="utf-8")
     started = time.monotonic()
     stdout = ""
     stderr = ""
     exit_code: int | None = None
     timed_out = False
+    timeout_message: str | None = None
     try:
         completed = subprocess.run(
             command,
             cwd=run_dir,
-            input=task,
+            input=None if args.harness == "grok" else task,
+            env=harness_environment(args, run_dir),
             check=False,
             capture_output=True,
             text=True,
@@ -1136,13 +1465,15 @@ def run_command(args: argparse.Namespace) -> int:
             errors="replace",
             timeout=args.timeout,
         )
-        stdout = completed.stdout
-        stderr = completed.stderr
+        stdout = captured_text(completed.stdout)
+        stderr = captured_text(completed.stderr)
         exit_code = completed.returncode
     except subprocess.TimeoutExpired as error:
         timed_out = True
-        stdout = error.stdout or ""
-        stderr = error.stderr or ""
+        stdout = captured_text(error.stdout)
+        stderr = captured_text(error.stderr)
+        timeout_message = f"{label} timed out after {format_timeout(args.timeout)}."
+        stderr = f"{stderr.rstrip()}\n{timeout_message}\n" if stderr else f"{timeout_message}\n"
         exit_code = 124
     except OSError as error:
         stderr = f"Could not launch {label}: {error}\n"
@@ -1151,11 +1482,15 @@ def run_command(args: argparse.Namespace) -> int:
     duration = round(time.monotonic() - started, 3)
     (run_dir / manifest["artifacts"]["stdout"]).write_text(stdout, encoding="utf-8")
     (run_dir / manifest["artifacts"]["stderr"]).write_text(stderr, encoding="utf-8")
-    events = (
-        parse_claude_events(stdout)
-        if args.harness == "claude"
-        else parse_codex_events(stdout)
-    )
+    event_parsers = {
+        "codex": parse_codex_events,
+        "claude": parse_claude_events,
+        "grok": parse_grok_events,
+        "opencode": parse_opencode_events,
+    }
+    events = event_parsers[args.harness](stdout)
+    if timeout_message and not events.get("failureMessage"):
+        events["failureMessage"] = timeout_message
     final_message = events.pop("finalMessage", None)
     final_message_path = run_dir / manifest["artifacts"]["finalMessage"]
     if final_message is not None or not final_message_path.exists():
@@ -1170,7 +1505,7 @@ def run_command(args: argparse.Namespace) -> int:
     manifest["status"] = "harness_failed" if exit_code else "evaluating"
     if timed_out:
         manifest["condition"]["notes"] = (
-            f"{manifest['condition']['notes']} Harness timed out after {args.timeout} seconds."
+            f"{manifest['condition']['notes']} Harness timed out after {format_timeout(args.timeout)}."
         ).strip()
     write_json(manifest_path, manifest)
 
@@ -1356,10 +1691,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    run = subparsers.add_parser("run", help="Run a model through Codex CLI or Claude CLI.")
+    run = subparsers.add_parser(
+        "run",
+        help="Run a model through Codex CLI, Claude CLI, Grok CLI, or OpenCode CLI.",
+    )
     run.add_argument(
         "--harness",
-        choices=("codex", "claude"),
+        choices=("codex", "claude", "grok", "opencode"),
         default="codex",
         help="CLI harness to invoke (default: codex).",
     )
@@ -1391,10 +1729,18 @@ def build_parser() -> argparse.ArgumentParser:
         help="Claude CLI executable path. Defaults to CLAUDE_CLI or claude on PATH.",
     )
     run.add_argument(
+        "--grok",
+        help="Grok CLI executable path. Defaults to GROK_CLI or grok on PATH.",
+    )
+    run.add_argument(
+        "--opencode",
+        help="OpenCode CLI executable path. Defaults to OPENCODE_CLI or opencode on PATH.",
+    )
+    run.add_argument(
         "--timeout",
         type=int,
-        default=3600,
-        help="Maximum model CLI execution time in seconds (default: 3600).",
+        default=DEFAULT_RUN_TIMEOUT_SECONDS,
+        help="Maximum model CLI execution time in seconds (default: 43200 / 12 hours).",
     )
     run.add_argument(
         "--local-only",

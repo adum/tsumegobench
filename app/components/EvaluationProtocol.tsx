@@ -15,7 +15,7 @@ export function EvaluationProtocol() {
           <span className="protocol-number">01</span>
           <div className="protocol-icon generate" aria-hidden="true"><i /><i /><i /></div>
           <h2>Generate</h2>
-          <p>Invoke a selected model through Codex CLI or Claude CLI and write ten SGFs into an isolated run.</p>
+          <p>Invoke a selected model through Codex CLI, Claude CLI, Grok CLI, or OpenCode CLI and write ten SGFs into an isolated run.</p>
           <small>FILES + EVENT LOG SAVED</small>
         </li>
         <li>

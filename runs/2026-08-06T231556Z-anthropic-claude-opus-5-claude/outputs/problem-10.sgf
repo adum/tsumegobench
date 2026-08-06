@@ -1,0 +1,8 @@
+(;SZ[19]FF[4]GM[1]CA[UTF-8]
+AW[ac][bc][bb][cb][db][eb][ea]
+AB[ad][bd][cd][cc][dc][ec][fc][fb][fa][ba][da]
+(;W[aa];B[ab];W[ca]C[Black's counter capture is answered by taking the stone on the right; Black can never connect at the 1-1 point and White ends with eyes at a2, b1 and d1. RIGHT])
+(;W[ca]
+(;B[aa];W[ab]C[The two stones are captured, leaving an eye at d1 and a two point eye in the corner. RIGHT])
+(;B[ab];W[aa]C[Both black stones are taken at once and White has eyes at a2 and b1 as well as d1. RIGHT]))
+(;W[ab];B[ca]C[Black links all three stones up. White must capture them and the three point space that is left dies to a placement in the middle.]))

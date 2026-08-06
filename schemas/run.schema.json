@@ -63,7 +63,7 @@
       "additionalProperties": false,
       "required": ["provider", "name", "reasoningEffort"],
       "properties": {
-        "provider": { "enum": ["openai", "anthropic"] },
+        "provider": { "type": "string", "minLength": 1 },
         "name": { "type": "string", "minLength": 1 },
         "reasoningEffort": { "type": ["string", "null"] }
       }
@@ -84,7 +84,9 @@
         "unparsedLineCount"
       ],
       "properties": {
-        "name": { "enum": ["codex-cli", "claude-cli"] },
+        "name": {
+          "enum": ["codex-cli", "claude-cli", "grok-cli", "opencode-cli"]
+        },
         "version": { "type": ["string", "null"] },
         "mode": { "const": "non-interactive" },
         "command": { "type": "array", "items": { "type": "string" } },

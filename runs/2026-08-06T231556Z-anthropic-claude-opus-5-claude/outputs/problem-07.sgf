@@ -1,0 +1,9 @@
+(;SZ[19]FF[4]GM[1]CA[UTF-8]
+AW[ka][kb][lb][mb][nb][ob][pb][qb][rb][ra]
+AB[na][pa][ja][jb][jc][kc][lc][mc][nc][oc][pc][qc][rc][sc][sb][sa]
+(;W[oa]
+(;B[ma];W[la]C[Both stones are taken; White has an eye on the left and takes the last stone on the right for the second one. RIGHT])
+(;B[la];W[ma]C[This captures on both sides at once and White has two eyes. RIGHT]))
+(;W[ma];B[oa]C[The two stones join up; after White takes three stones Black plays the centre point again and White has only one eye.])
+(;W[qa];B[oa]C[The same link underneath, and the three point space left after the capture is not enough.])
+(;W[la];B[oa]C[Black connects and White can never get a second eye on the right.]))
