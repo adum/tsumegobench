@@ -145,6 +145,17 @@ function defaultProblem(run: BenchmarkRun | undefined) {
   return run?.problems.find((problem) => problem.validation.valid && problem.sgf) ?? run?.problems[0];
 }
 
+function rememberBrowserSelection(runId: string, problemFile: string) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("run", runId);
+  url.searchParams.set("problem", problemFile);
+  window.history.replaceState(
+    window.history.state,
+    "",
+    `${url.pathname}${url.search}${url.hash}`,
+  );
+}
+
 export function RunBrowser() {
   const [selectedRunId, setSelectedRunId] = useState(runs[0]?.runId ?? "");
   const run = runs.find((record) => record.runId === selectedRunId) ?? runs[0];
@@ -162,13 +173,16 @@ export function RunBrowser() {
   const chooseNode = (node: SgfNode) => setSelectedNodeId(node.id);
   const chooseRun = (runId: string) => {
     const nextRun = runs.find((record) => record.runId === runId);
+    const nextProblemFile = defaultProblem(nextRun)?.file ?? "";
     setSelectedRunId(runId);
-    setSelectedProblemFile(defaultProblem(nextRun)?.file ?? "");
+    setSelectedProblemFile(nextProblemFile);
     setSelectedNodeId("n0");
+    if (nextProblemFile) rememberBrowserSelection(runId, nextProblemFile);
   };
   const chooseProblem = (file: string) => {
     setSelectedProblemFile(file);
     setSelectedNodeId("n0");
+    rememberBrowserSelection(run.runId, file);
   };
   const updateReviewProgress = useCallback((snapshot: ReviewProgressSnapshot | null) => {
     setLiveReviewProgress(snapshot);
@@ -195,12 +209,18 @@ export function RunBrowser() {
     : null;
 
   useEffect(() => {
-    const requestedRunId = new URLSearchParams(window.location.search).get("run");
+    const params = new URLSearchParams(window.location.search);
+    const requestedRunId = params.get("run");
     const requestedRun = runs.find((record) => record.runId === requestedRunId);
-    if (!requestedRun) return;
+    const targetRun = requestedRun ?? runs[0];
+    const requestedProblemFile = params.get("problem");
+    const requestedProblem = targetRun?.problems.find(
+      (record) => record.file === requestedProblemFile,
+    );
+    if (!targetRun || (!requestedRun && !requestedProblem)) return;
     const selectionTimer = window.setTimeout(() => {
-      setSelectedRunId(requestedRun.runId);
-      setSelectedProblemFile(defaultProblem(requestedRun)?.file ?? "");
+      setSelectedRunId(targetRun.runId);
+      setSelectedProblemFile(requestedProblem?.file ?? defaultProblem(targetRun)?.file ?? "");
       setSelectedNodeId("n0");
     }, 0);
     return () => window.clearTimeout(selectionTimer);
