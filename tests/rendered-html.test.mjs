@@ -42,7 +42,17 @@ test("server-renders a compact overview with route navigation", async () => {
   assert.match(html, /Score definition/);
   assert.match(html, /Latest benchmark activity/);
   assert.match(html, /Current finding/);
+  assert.match(html, /All LLMs By Release Date/);
+  assert.match(html, /Score out of 10/);
+  assert.match(html, /class="model-chart-point"/);
   assert.match(html, /href="\/runs\?run=/);
+  const statusIndex = html.indexOf('class="benchmark-status-grid"');
+  const chartIndex = html.indexOf('class="home-model-chart"');
+  const resultsIndex = html.indexOf('class="home-results-layout"');
+  assert.ok(
+    statusIndex >= 0 && statusIndex < chartIndex && chartIndex < resultsIndex,
+    "the release-date graph should render immediately after the benchmark status strip",
+  );
   assert.doesNotMatch(html, /class="workbench-shell/);
   assert.doesNotMatch(html, /class="protocol-grid/);
 });

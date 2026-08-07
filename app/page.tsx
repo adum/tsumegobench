@@ -1,5 +1,6 @@
 import Link from "next/link";
 import modelMetadata from "../data/model-metadata.json";
+import { ModelReleaseChart } from "./components/ModelReleaseChart";
 import { ModelScoreChart } from "./components/ModelScoreChart";
 import chartData from "./data/model-scores.generated.json";
 import runsData from "./data/runs.generated.json";
@@ -141,6 +142,8 @@ export default function Home() {
           <small>UTC · indexed artifacts</small>
         </div>
       </dl>
+
+      <ModelReleaseChart />
 
       <div className="home-results-layout">
         <ModelScoreChart />
