@@ -97,6 +97,27 @@
         "eventCount": { "type": "integer", "minimum": 0 },
         "unparsedLineCount": { "type": "integer", "minimum": 0 },
         "failureMessage": { "type": ["string", "null"] },
+        "roundPolicy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["maxRounds", "stopWhenExpectedOutputsExist"],
+          "properties": {
+            "maxRounds": { "type": "integer", "minimum": 1 },
+            "stopWhenExpectedOutputsExist": { "type": "boolean" }
+          }
+        },
+        "roundsCompleted": { "type": "integer", "minimum": 0 },
+        "roundStopReason": {
+          "type": ["string", "null"],
+          "enum": [
+            "outputs_complete",
+            "max_rounds",
+            "harness_failed",
+            "timeout",
+            null
+          ]
+        },
+        "outputTokenCeiling": { "type": "integer", "minimum": 1 },
         "retryPolicy": {
           "type": "object",
           "additionalProperties": false,
@@ -128,6 +149,8 @@
             ],
             "properties": {
               "number": { "type": "integer", "minimum": 1 },
+              "roundNumber": { "type": "integer", "minimum": 1 },
+              "attemptInRound": { "type": "integer", "minimum": 1 },
               "startedAt": { "type": "string", "format": "date-time" },
               "completedAt": { "type": "string", "format": "date-time" },
               "exitCode": { "type": "integer" },

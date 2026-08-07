@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p05-fix",
+  "path": "outputs/problem-05.sgf",
+  "queryNumber": 14,
+  "queriesRemaining": 36,
+  "checkedAt": "2026-08-07T18:12:42.185Z",
+  "status": "invalid",
+  "candidateSha256": "91c40671bfbb6c5ba1d9cf0deb027938179b9efa3686078e4003784219802f65",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "B[mi] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[mi] plays on an occupied intersection."
+    }
+  ]
+}

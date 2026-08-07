@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p04-v1",
+  "path": "outputs/problem-04.sgf",
+  "queryNumber": 4,
+  "queriesRemaining": 46,
+  "checkedAt": "2026-08-07T19:00:38.774Z",
+  "status": "clear",
+  "candidateSha256": "30f3c41e97114214cc8572b3b7b935c5840bb55ba1da0a68e888bfa79095711c",
+  "cachedRemote": false,
+  "local": {
+    "builtInSetupMatch": null,
+    "exactReferenceMatch": null,
+    "closestReferenceMatch": {
+      "id": 5844,
+      "percentage": 45.24,
+      "url": "https://www.goproblems.com/problems/5844"
+    },
+    "peerExactMatches": [],
+    "peerShapeMatches": []
+  },
+  "goProblems": {
+    "radius": 2,
+    "signatureMatches": [],
+    "topPercentage": 43,
+    "percentageMatches": [
+      {
+        "id": 53368,
+        "difficulty": "28 kyu?",
+        "createdAt": "2025-12-08",
+        "url": "https://www.goproblems.com/problems/53368",
+        "percentage": 43
+      },
+      {
+        "id": 5118,
+        "difficulty": "5 dan",
+        "createdAt": "2004-09-23",
+        "url": "https://www.goproblems.com/problems/5118",
+        "percentage": 41
+      },
+      {
+        "id": 4493,
+        "difficulty": "5 dan",
+        "createdAt": "2004-05-18",
+        "url": "https://www.goproblems.com/problems/4493",
+        "percentage": 33
+      }
+    ]
+  },
+  "errors": []
+}

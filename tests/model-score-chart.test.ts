@@ -23,7 +23,11 @@ const metadata: ModelMetadataFile = {
   ],
 };
 
-function reviewedProblems(passing: number, total: number) {
+function reviewedProblems(
+  passing: number,
+  total: number,
+  difficulty = "5-9 kyu",
+) {
   return Array.from({ length: total }, (_, index) => ({
     reviews: [
       {
@@ -32,6 +36,7 @@ function reviewedProblems(passing: number, total: number) {
         realistic: true,
         duplicate: false,
         wellPathed: true,
+        estimatedDifficulty: index < passing ? difficulty : null,
       },
     ],
   }));
@@ -43,13 +48,14 @@ function run(
   passing: number,
   total: number,
   createdAt: string,
+  difficulty?: string,
 ): IndexedRunForChart {
   return {
     runId,
     createdAt,
     model: { provider: "example", name: model },
     condition: { problemCount: total },
-    problems: reviewedProblems(passing, total),
+    problems: reviewedProblems(passing, total, difficulty),
   };
 }
 
@@ -76,4 +82,23 @@ test("chart reports models that do not yet have release metadata", () => {
 
   assert.deepEqual(chart.models, []);
   assert.deepEqual(chart.unmatchedModels, ["example/unknown-model"]);
+});
+
+test("chart caps passing problems in the two easiest difficulty ranges", () => {
+  const chart = buildModelScoreChartData(
+    [
+      run(
+        "ten-easy-problems",
+        "example-model",
+        10,
+        10,
+        "2026-08-04T00:00:00Z",
+        "20-30 kyu",
+      ),
+    ],
+    metadata,
+  );
+
+  assert.equal(chart.models[0].passedProblems, 2);
+  assert.equal(chart.models[0].score, 2);
 });

@@ -1,0 +1,1 @@
+Completed: exactly 10 requested SGF files were written under `outputs/`.

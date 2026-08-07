@@ -13,7 +13,7 @@ The solution tree is a central part of the task, not an annotation added after f
 Each problem must be:
 
 - a realistic standard life-and-death problem with a clear local outcome (life and death means the killing or making alive of an entire group, not a tesuji problem where it's only capturing or saving a number of stones that cannot live independently -- see the supplied sample problems for examples);
-- approximately 30 kyu–1 dan in difficulty;
+- within the benchmark spectrum: 20–30 kyu at the easy end, with no hard ceiling; problems above 1 dan are allowed;
 - legal under ordinary Go rules;
 - on a 19×19 board, explicitly declared with `SZ[19]`;
 - expressed as a root setup with both `AB` and `AW`, followed by a complete alternating solution tree;
@@ -22,6 +22,8 @@ Each problem must be:
 - original rather than a disguised known problem.
 
 Originality is a hard requirement. No output may duplicate another problem in this run or any problem on GoProblems. A duplicate includes a translation, rotation, reflection, color reversal, lightly altered setup or tree, or a position with the same tactical core disguised by inconsequential stones or changes around the edge.
+
+Be especially careful with the easiest problems. Elementary basic living shapes are the quickest problems to construct, but they are also the hardest category in which to be genuinely original: GoProblems contains roughly 50,000 existing problems, and familiar corner and edge shapes have very little unexplored design space. Treat the easy slots as originality-intensive. Check those candidates early, and prefer a genuinely different tactical mechanism, choice structure, or resistance pattern instead of making cosmetic changes to a standard living shape.
 
 Use the supplied originality query tool while authoring and once more on every exact final file after the complete set exists. Built-in common-position checks use only the initial setup and may reject a known shape before inspecting its paths. Otherwise, GoProblems can check a candidate only when its solution tree contains at least one accepted path marked with uppercase `RIGHT`, so finish and mark a valid solution path before querying. An unmatched request without `RIGHT` returns a `missing-right` error and consumes query budget. Only `clear` is an acceptable final result; `review`, `duplicate`, `invalid`, `unavailable`, and `quota_exceeded` are not. Replace or materially redesign a flagged candidate rather than trying to evade the check with irrelevant stones. Do not edit a file after its final clear result. The exact query budget and file protocol are given in `inputs/task.md` and `inputs/originality-tool.md`.
 
@@ -39,7 +41,7 @@ SGF requirements:
 10. Use plain UTF-8 text with no HTML or JavaScript.
 11. Check captures, liberties, occupied points, and the final life/death result on every branch.
 
-Across the requested problems, demonstrate a deliberate range of difficulty rather than clustering at one level. Follow the per-file target difficulties listed in `inputs/task.md`; the default ten-problem run assigns two problems to each band from 20–30 kyu through about 1 dan. Difficulty should come from relevant reading depth, plausible choices, defenses, and endpoint judgment—not from irrelevant stones, obscure rules, or trick wording.
+Across the requested problems, demonstrate a deliberate range of difficulty rather than clustering at one level. Follow the per-file target difficulties listed in `inputs/task.md` as guidance; the default ten-problem run suggests two problems in each band from 20–30 kyu through about 1 dan, and harder problems are welcome. Human reviewers—not your own difficulty claims—determine the scored difficulty. At most two valid problems rated 20–30 kyu and at most two valid problems rated 10–19 kyu receive final-score credit. Every valid problem rated 5–9 kyu or harder can receive credit, including problems above 1 dan. Spread those harder problems across a useful range when possible. Difficulty should come from relevant reading depth, plausible choices, defenses, and endpoint judgment—not from irrelevant stones, obscure rules, or trick wording.
 
 Across the set, include at least two Black-to-play and at least two White-to-play problems. Establish the player color only through the first move in the tree, not through written instructions. Vary the board edge/corner shape and tactical idea. Do not explain your reasoning and do not claim that you searched for duplicates unless you actually used the supplied originality tool.
 

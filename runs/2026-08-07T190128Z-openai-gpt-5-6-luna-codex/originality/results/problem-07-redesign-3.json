@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-07-redesign-3",
+  "path": "outputs/problem-07.sgf",
+  "queryNumber": 19,
+  "queriesRemaining": 31,
+  "checkedAt": "2026-08-07T19:31:09.277Z",
+  "status": "clear",
+  "candidateSha256": "126c704515f9588517ba0fb089e9e50b9f0f497110afe7eda69370ef4593a77d",
+  "cachedRemote": false,
+  "local": {
+    "builtInSetupMatch": null,
+    "exactReferenceMatch": null,
+    "closestReferenceMatch": {
+      "id": 19150,
+      "percentage": 22.22,
+      "url": "https://www.goproblems.com/problems/19150"
+    },
+    "peerExactMatches": [],
+    "peerShapeMatches": []
+  },
+  "goProblems": {
+    "radius": 2,
+    "signatureMatches": [],
+    "topPercentage": 41,
+    "percentageMatches": [
+      {
+        "id": 37172,
+        "difficulty": "10 kyu",
+        "createdAt": "2024-09-24",
+        "url": "https://www.goproblems.com/problems/37172",
+        "percentage": 41
+      }
+    ]
+  },
+  "errors": []
+}

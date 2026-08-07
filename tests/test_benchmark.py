@@ -20,6 +20,8 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertEqual(args.max_attempts, 5)
         self.assertEqual(args.retry_base_delay, 15)
         self.assertEqual(args.retry_max_delay, 120)
+        self.assertEqual(benchmark.DEFAULT_OPENCODE_MAX_ROUNDS, 20)
+        self.assertEqual(benchmark.OPENCODE_OUTPUT_TOKEN_MAX, 65_536)
         self.assertIsNone(args.duplicate_query_limit)
         self.assertEqual(benchmark.duplicate_query_limit(args), 50)
         self.assertEqual(benchmark.retry_schedule(5, 15, 120), [15, 30, 60, 120])
@@ -41,6 +43,10 @@ class BenchmarkRunnerTests(unittest.TestCase):
                 "about 1 dan",
                 "about 1 dan",
             ],
+        )
+        self.assertEqual(
+            benchmark.DIFFICULTY_BANDS[-2:],
+            ("2-3 dan", "4 dan or harder"),
         )
 
     def test_progress_message_reports_outputs_and_originality_queries(self):
@@ -135,7 +141,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
             str(run_dir / "inputs" / "task.md"),
         )
         self.assertEqual(command[command.index("--output-format") + 1], "streaming-json")
-        self.assertEqual(command[command.index("--sandbox") + 1], "strict")
+        self.assertEqual(command[command.index("--sandbox") + 1], "workspace")
         self.assertIn("--always-approve", command)
         self.assertIn("--no-plan", command)
         self.assertIn("--no-subagents", command)
@@ -183,6 +189,10 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertEqual(config["share"], "disabled")
         self.assertFalse(config["autoupdate"])
         self.assertFalse(config["formatter"])
+        self.assertEqual(
+            environment["OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX"],
+            "65536",
+        )
         self.assertEqual(config["permission"]["*"], "deny")
         self.assertEqual(config["permission"]["edit"], "allow")
         self.assertNotIn("bash", [key for key, value in config["permission"].items() if value == "allow"])
@@ -234,6 +244,55 @@ class BenchmarkRunnerTests(unittest.TestCase):
     def test_opencode_requires_provider_model_identifier(self):
         with self.assertRaisesRegex(ValueError, "provider/model"):
             benchmark.unique_run_id("gpt-5.2", None, "opencode")
+
+    def test_opencode_model_catalog_parser_handles_ansi_and_bullets(self):
+        completed = subprocess.CompletedProcess(
+            [],
+            0,
+            stdout=(
+                "\x1b[32mopenai/gpt-5.2\x1b[0m\n"
+                "- openrouter/deepseek/deepseek-v4-flash-0731\n"
+                "not a model identifier\n"
+            ),
+            stderr="",
+        )
+        with mock.patch.object(benchmark.subprocess, "run", return_value=completed) as process:
+            models = benchmark.opencode_available_models("/opt/opencode")
+
+        self.assertEqual(
+            models,
+            [
+                "openai/gpt-5.2",
+                "openrouter/deepseek/deepseek-v4-flash-0731",
+            ],
+        )
+        self.assertEqual(
+            process.call_args.args[0],
+            ["/opt/opencode", "--pure", "models"],
+        )
+
+    def test_opencode_model_validation_explains_extra_provider_prefix(self):
+        available = [
+            "opencode/deepseek-v4-flash",
+            "opencode/deepseek-v4-flash-free",
+            "openrouter/deepseek/deepseek-v4-flash-0731",
+        ]
+        with mock.patch.object(
+            benchmark,
+            "opencode_available_models",
+            return_value=available,
+        ):
+            error = benchmark.opencode_model_validation_error(
+                "/opt/opencode",
+                "opencode/openrouter/deepseek/deepseek-v4-flash-0731",
+            )
+
+        self.assertIsNotNone(error)
+        self.assertIn("parsed as provider 'opencode'", error or "")
+        self.assertIn(
+            "Did you mean: 'openrouter/deepseek/deepseek-v4-flash-0731'?",
+            error or "",
+        )
 
     def test_extracts_claude_session_result_and_usage(self):
         events = "\n".join(
@@ -476,6 +535,53 @@ class BenchmarkRunnerTests(unittest.TestCase):
             evaluator.assert_not_called()
             indexer.assert_not_called()
 
+    def test_opencode_model_preflight_rejects_unknown_id_before_creating_run(self):
+        model = "opencode/openrouter/deepseek/deepseek-v4-flash-0731"
+        args = benchmark.build_parser().parse_args(
+            [
+                "run",
+                "--harness",
+                "opencode",
+                "--model",
+                model,
+                "--run-id",
+                "opencode-invalid-model-preflight",
+                "--local-only",
+            ]
+        )
+        available = [
+            "opencode/deepseek-v4-flash",
+            "openrouter/deepseek/deepseek-v4-flash-0731",
+        ]
+
+        with tempfile.TemporaryDirectory() as temporary:
+            runs_root = Path(temporary)
+            with (
+                mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
+                mock.patch.object(benchmark, "cli_version", return_value="1.18.15"),
+                mock.patch.object(
+                    benchmark,
+                    "opencode_available_models",
+                    return_value=available,
+                ),
+                mock.patch.object(benchmark, "run_evaluator") as evaluator,
+                mock.patch.object(benchmark, "build_run_index") as indexer,
+            ):
+                console_error = io.StringIO()
+                with redirect_stdout(io.StringIO()), redirect_stderr(console_error):
+                    exit_code = benchmark.run_command(args)
+
+            self.assertEqual(exit_code, 2)
+            self.assertEqual(list(runs_root.iterdir()), [])
+            self.assertIn("OpenCode does not list model", console_error.getvalue())
+            self.assertIn(
+                "Did you mean: 'openrouter/deepseek/deepseek-v4-flash-0731'?",
+                console_error.getvalue(),
+            )
+            self.assertIn("No model was invoked", console_error.getvalue())
+            evaluator.assert_not_called()
+            indexer.assert_not_called()
+
     def test_opencode_model_rejection_discards_run_before_evaluation(self):
         args = benchmark.build_parser().parse_args(
             [
@@ -506,6 +612,11 @@ class BenchmarkRunnerTests(unittest.TestCase):
             with (
                 mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
                 mock.patch.object(benchmark, "cli_version", return_value="1.1.1"),
+                mock.patch.object(
+                    benchmark,
+                    "opencode_model_validation_error",
+                    return_value=None,
+                ),
                 mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
                 mock.patch.object(benchmark.subprocess, "run", return_value=completed),
                 mock.patch.object(benchmark, "run_evaluator") as evaluator,
@@ -1012,6 +1123,21 @@ class BenchmarkRunnerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             runs_root = Path(temporary)
 
+            invocation_count = 0
+
+            def invoke(*_arguments, **keywords):
+                nonlocal invocation_count
+                invocation_count += 1
+                output_dir = Path(keywords["cwd"]) / "outputs"
+                last_problem = 4 if invocation_count == 1 else 10
+                first_problem = 1 if invocation_count == 1 else 5
+                for index in range(first_problem, last_problem + 1):
+                    (output_dir / f"problem-{index:02d}.sgf").write_text(
+                        "(;SZ[19])",
+                        encoding="utf-8",
+                    )
+                return completed
+
             def evaluate(run_dir, _local_only):
                 benchmark.write_json(
                     run_dir / "evaluation" / "automated.json",
@@ -1028,8 +1154,13 @@ class BenchmarkRunnerTests(unittest.TestCase):
             with (
                 mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
                 mock.patch.object(benchmark, "cli_version", return_value="1.1.1"),
+                mock.patch.object(
+                    benchmark,
+                    "opencode_model_validation_error",
+                    return_value=None,
+                ),
                 mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
-                mock.patch.object(benchmark.subprocess, "run", return_value=completed) as process,
+                mock.patch.object(benchmark.subprocess, "run", side_effect=invoke) as process,
                 mock.patch.object(benchmark, "run_evaluator", side_effect=evaluate),
                 mock.patch.object(
                     benchmark,
@@ -1048,6 +1179,15 @@ class BenchmarkRunnerTests(unittest.TestCase):
             self.assertEqual(manifest["model"]["provider"], "openai")
             self.assertEqual(manifest["harness"]["name"], "opencode-cli")
             self.assertEqual(manifest["harness"]["threadId"], "ses_opencode_success")
+            self.assertEqual(manifest["harness"]["roundsCompleted"], 2)
+            self.assertEqual(manifest["harness"]["roundStopReason"], "outputs_complete")
+            self.assertEqual(manifest["harness"]["outputTokenCeiling"], 65_536)
+            self.assertEqual(manifest["harness"]["roundPolicy"]["maxRounds"], 20)
+            self.assertEqual(process.call_count, 2)
+            self.assertEqual(
+                [attempt["roundNumber"] for attempt in manifest["harness"]["attempts"]],
+                [1, 2],
+            )
             self.assertEqual(manifest["artifacts"]["stdout"], "logs/opencode-events.jsonl")
             self.assertIn(
                 "inputs/opencode-config/opencode.json",
@@ -1057,12 +1197,229 @@ class BenchmarkRunnerTests(unittest.TestCase):
                 (run_dir / "logs" / "final-message.txt").read_text(encoding="utf-8"),
                 "Created 10 problems.",
             )
-            self.assertIn("Read `inputs/model-prompt.md`", process.call_args.kwargs["input"])
-            environment = process.call_args.kwargs["env"]
+            first_prompt = process.call_args_list[0].kwargs["input"]
+            continuation_prompt = process.call_args_list[1].kwargs["input"]
+            self.assertIn("Read `inputs/model-prompt.md`", first_prompt)
+            self.assertIn("OpenCode generation round 2 of at most 20", continuation_prompt)
+            self.assertIn("`outputs/problem-05.sgf`", continuation_prompt)
+            self.assertNotIn("`outputs/problem-04.sgf`", continuation_prompt)
+            environment = process.call_args_list[0].kwargs["env"]
             self.assertEqual(environment["OPENCODE_DISABLE_AUTOUPDATE"], "true")
+            self.assertEqual(
+                environment["OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX"],
+                "65536",
+            )
             self.assertTrue(
                 (run_dir / "inputs" / "opencode-config" / "opencode.json").exists()
             )
+
+    def test_opencode_stops_after_twenty_rounds_when_outputs_remain_missing(self):
+        args = benchmark.build_parser().parse_args(
+            [
+                "run",
+                "--harness",
+                "opencode",
+                "--model",
+                "openrouter/test-model",
+                "--run-id",
+                "opencode-round-cap",
+                "--local-only",
+            ]
+        )
+        stdout = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "type": "text",
+                        "sessionID": "ses_round_cap",
+                        "part": {
+                            "messageID": "msg_round_cap",
+                            "type": "text",
+                            "text": "Continuing.",
+                        },
+                    }
+                ),
+                json.dumps(
+                    {
+                        "type": "step_finish",
+                        "sessionID": "ses_round_cap",
+                        "part": {
+                            "messageID": "msg_round_cap",
+                            "reason": "length",
+                            "tokens": {"input": 1, "output": 1},
+                        },
+                    }
+                ),
+            ]
+        )
+        completed = subprocess.CompletedProcess([], 0, stdout=stdout, stderr="")
+
+        with tempfile.TemporaryDirectory() as temporary:
+            runs_root = Path(temporary)
+
+            def evaluate(run_dir, _local_only):
+                benchmark.write_json(
+                    run_dir / "evaluation" / "automated.json",
+                    {
+                        "summary": {
+                            "expectedProblems": 10,
+                            "structuralPassed": 0,
+                            "automatedGatePassed": 0,
+                        }
+                    },
+                )
+                return subprocess.CompletedProcess([], 0, stdout="", stderr="")
+
+            with (
+                mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
+                mock.patch.object(benchmark, "cli_version", return_value="1.18.15"),
+                mock.patch.object(
+                    benchmark,
+                    "opencode_model_validation_error",
+                    return_value=None,
+                ),
+                mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
+                mock.patch.object(
+                    benchmark.subprocess,
+                    "run",
+                    return_value=completed,
+                ) as process,
+                mock.patch.object(benchmark, "run_evaluator", side_effect=evaluate),
+                mock.patch.object(
+                    benchmark,
+                    "build_run_index",
+                    return_value=subprocess.CompletedProcess([], 0, stdout="", stderr=""),
+                ),
+            ):
+                console_error = io.StringIO()
+                with redirect_stdout(io.StringIO()), redirect_stderr(console_error):
+                    exit_code = benchmark.run_command(args)
+
+            manifest = benchmark.read_json(runs_root / "opencode-round-cap" / "run.json")
+
+            self.assertEqual(exit_code, 0)
+            self.assertEqual(process.call_count, 20)
+            self.assertEqual(manifest["harness"]["roundsCompleted"], 20)
+            self.assertEqual(manifest["harness"]["roundStopReason"], "max_rounds")
+            self.assertEqual(len(manifest["harness"]["attempts"]), 20)
+            self.assertEqual(manifest["harness"]["usage"]["steps"], 20)
+            self.assertIn("20-round cap", console_error.getvalue())
+
+    def test_opencode_transient_retry_preserves_progress_inside_one_round(self):
+        args = benchmark.build_parser().parse_args(
+            [
+                "run",
+                "--harness",
+                "opencode",
+                "--model",
+                "openrouter/test-model",
+                "--run-id",
+                "opencode-round-retry",
+                "--max-attempts",
+                "2",
+                "--retry-base-delay",
+                "1",
+                "--retry-max-delay",
+                "1",
+                "--local-only",
+            ]
+        )
+        failed = subprocess.CompletedProcess(
+            [],
+            1,
+            stdout=json.dumps(
+                {
+                    "type": "error",
+                    "sessionID": "ses_retry_failed",
+                    "error": {"data": {"message": "Service unavailable"}},
+                }
+            ),
+            stderr="",
+        )
+        succeeded = subprocess.CompletedProcess(
+            [],
+            0,
+            stdout=json.dumps(
+                {
+                    "type": "step_finish",
+                    "sessionID": "ses_retry_success",
+                    "part": {
+                        "messageID": "msg_retry_success",
+                        "reason": "stop",
+                        "tokens": {"input": 1, "output": 1},
+                    },
+                }
+            ),
+            stderr="",
+        )
+
+        with tempfile.TemporaryDirectory() as temporary:
+            runs_root = Path(temporary)
+            invocation_count = 0
+
+            def invoke(*_arguments, **keywords):
+                nonlocal invocation_count
+                invocation_count += 1
+                output_dir = Path(keywords["cwd"]) / "outputs"
+                if invocation_count == 1:
+                    (output_dir / "problem-01.sgf").write_text(
+                        "(;SZ[19])",
+                        encoding="utf-8",
+                    )
+                    return failed
+                for index in range(2, 11):
+                    (output_dir / f"problem-{index:02d}.sgf").write_text(
+                        "(;SZ[19])",
+                        encoding="utf-8",
+                    )
+                return succeeded
+
+            def evaluate(run_dir, _local_only):
+                benchmark.write_json(
+                    run_dir / "evaluation" / "automated.json",
+                    {
+                        "summary": {
+                            "expectedProblems": 10,
+                            "structuralPassed": 10,
+                            "automatedGatePassed": 10,
+                        }
+                    },
+                )
+                return subprocess.CompletedProcess([], 0, stdout="", stderr="")
+
+            with (
+                mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
+                mock.patch.object(benchmark, "cli_version", return_value="1.18.15"),
+                mock.patch.object(
+                    benchmark,
+                    "opencode_model_validation_error",
+                    return_value=None,
+                ),
+                mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
+                mock.patch.object(benchmark.subprocess, "run", side_effect=invoke),
+                mock.patch.object(benchmark.time, "sleep") as sleeper,
+                mock.patch.object(benchmark, "run_evaluator", side_effect=evaluate),
+                mock.patch.object(
+                    benchmark,
+                    "build_run_index",
+                    return_value=subprocess.CompletedProcess([], 0, stdout="", stderr=""),
+                ),
+            ):
+                with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+                    exit_code = benchmark.run_command(args)
+
+            run_dir = runs_root / "opencode-round-retry"
+            manifest = benchmark.read_json(run_dir / "run.json")
+            attempts = manifest["harness"]["attempts"]
+
+            self.assertEqual(exit_code, 0)
+            sleeper.assert_called_once_with(1)
+            self.assertEqual(manifest["harness"]["roundsCompleted"], 1)
+            self.assertEqual(manifest["harness"]["roundStopReason"], "outputs_complete")
+            self.assertEqual([attempt["roundNumber"] for attempt in attempts], [1, 1])
+            self.assertEqual([attempt["attemptInRound"] for attempt in attempts], [1, 2])
+            self.assertNotIn("archivedOutputs", attempts[0])
+            self.assertTrue((run_dir / "outputs" / "problem-01.sgf").exists())
 
     def test_missing_selected_cli_creates_no_run(self):
         for harness, model in (
@@ -1092,6 +1449,9 @@ class BenchmarkRunnerTests(unittest.TestCase):
             run_dir = Path(temporary)
             benchmark.copy_inputs(run_dir, benchmark.DEFAULT_PROBLEM_COUNT)
             task = (run_dir / "inputs" / "task.md").read_text(encoding="utf-8")
+            model_prompt = (run_dir / "inputs" / "model-prompt.md").read_text(
+                encoding="utf-8"
+            )
             tool_guide = (run_dir / "inputs" / "originality-tool.md").read_text(
                 encoding="utf-8"
             )
@@ -1104,6 +1464,11 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertIn("`outputs/problem-10.sgf`", task)
         self.assertNotIn("problem-11.sgf", task)
         self.assertEqual(task.count("target difficulty:"), 10)
+        self.assertIn("at most two valid 20-30 kyu problems", task)
+        self.assertIn("every valid problem rated 5-9 kyu or harder", task)
+        self.assertIn("Problems harder than 1 dan are allowed", task)
+        self.assertIn("roughly 50,000 existing problems", model_prompt)
+        self.assertIn("Treat the easy slots as originality-intensive", model_prompt)
         self.assertIn("originality query budget is 50 requests", task)
         self.assertIn("without at least one `C[RIGHT]` endpoint", task)
         self.assertIn("query every exact final output again", task)
@@ -1198,7 +1563,117 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertIsNone(args.run_id)
         self.assertTrue(args.no_open)
 
-    def test_review_fields_are_optional_after_any_review_activity(self):
+    def test_review_site_readiness_tolerates_a_slow_first_response(self):
+        process = mock.Mock()
+        process.poll.return_value = None
+        response = mock.MagicMock()
+        response.__enter__.return_value.status = 200
+
+        with (
+            mock.patch(
+                "benchmark.urllib.request.urlopen",
+                side_effect=[TimeoutError("cold compile"), response],
+            ) as urlopen,
+            mock.patch("benchmark.time.sleep"),
+        ):
+            ready = benchmark.wait_for_review_site(
+                "http://127.0.0.1:3001",
+                process,
+                timeout=30,
+            )
+
+        self.assertTrue(ready)
+        self.assertEqual(urlopen.call_count, 2)
+        self.assertGreater(urlopen.call_args.kwargs["timeout"], 1)
+
+    def test_review_site_readiness_uses_windows_network_for_windows_node_under_wsl(self):
+        process = mock.Mock()
+        process.poll.return_value = None
+        completed = subprocess.CompletedProcess(["curl.exe"], 0, "200", "")
+
+        with (
+            mock.patch(
+                "benchmark.shutil.which",
+                return_value="/mnt/c/Windows/System32/curl.exe",
+            ),
+            mock.patch("benchmark.subprocess.run", return_value=completed) as run,
+            mock.patch("benchmark.urllib.request.urlopen") as urlopen,
+        ):
+            ready = benchmark.wait_for_review_site(
+                "http://127.0.0.1:3001",
+                process,
+                timeout=30,
+                windows_runtime=True,
+            )
+
+        self.assertTrue(ready)
+        urlopen.assert_not_called()
+        command = run.call_args.args[0]
+        self.assertEqual(command[0], "/mnt/c/Windows/System32/curl.exe")
+        self.assertIn("NUL", command)
+
+    def test_review_terminal_state_is_restored_after_vite_changes_it(self):
+        stdin = mock.Mock()
+        stdin.isatty.return_value = True
+        stdin.fileno.return_value = 7
+        termios = mock.Mock()
+        termios.TCSANOW = 0
+        termios.tcgetattr.return_value = ["original settings"]
+
+        with (
+            mock.patch("benchmark.os.name", "posix"),
+            mock.patch("benchmark.sys.stdin", stdin),
+            mock.patch.dict("sys.modules", {"termios": termios}),
+        ):
+            state = benchmark.capture_terminal_state()
+            benchmark.restore_terminal_state(state)
+
+        self.assertEqual(state, (7, ["original settings"]))
+        termios.tcsetattr.assert_called_once_with(7, 0, ["original settings"])
+
+    def test_review_site_cannot_take_over_terminal_input(self):
+        process = mock.Mock()
+
+        with mock.patch("benchmark.subprocess.Popen", return_value=process) as popen:
+            launched = benchmark.launch_review_site(["node", "dev-server.js"])
+
+        self.assertIs(launched, process)
+        popen.assert_called_once_with(
+            ["node", "dev-server.js"],
+            cwd=benchmark.PROJECT_ROOT,
+            stdin=subprocess.DEVNULL,
+        )
+
+    def test_review_url_uses_windows_url_handler_without_parsing_query_string(self):
+        url = "http://127.0.0.1:3001/runs?review=1&run=example&token=secret"
+        completed = subprocess.CompletedProcess(["rundll32.exe"], 0, "", "")
+
+        def executable(name):
+            return (
+                "/mnt/c/Windows/System32/rundll32.exe"
+                if name == "rundll32.exe"
+                else None
+            )
+
+        with (
+            mock.patch("benchmark.os.name", "posix"),
+            mock.patch("benchmark.is_wsl", return_value=True),
+            mock.patch("benchmark.shutil.which", side_effect=executable),
+            mock.patch("benchmark.subprocess.run", return_value=completed) as run,
+        ):
+            opened = benchmark.open_review_url(url)
+
+        self.assertTrue(opened)
+        self.assertEqual(
+            run.call_args.args[0],
+            [
+                "/mnt/c/Windows/System32/rundll32.exe",
+                "url.dll,FileProtocolHandler",
+                url,
+            ],
+        )
+
+    def test_valid_review_requires_human_difficulty_to_complete(self):
         files = [f"problem-{index:02d}.sgf" for index in range(1, 6)]
         problems = [
             {
@@ -1252,10 +1727,25 @@ class BenchmarkRunnerTests(unittest.TestCase):
             files,
         )
 
-        self.assertEqual(valid_without_optional_fields["problems"][0]["status"], "completed")
+        self.assertEqual(valid_without_optional_fields["problems"][0]["status"], "pending")
         self.assertTrue(valid_without_optional_fields["problems"][0]["valid"])
         self.assertTrue(valid_without_optional_fields["problems"][0]["realistic"])
         self.assertIsNone(valid_without_optional_fields["problems"][0]["quality"])
+        problems[0]["estimatedDifficulty"] = "4 dan or harder"
+        valid_with_difficulty = benchmark.normalize_review(
+            {
+                "reviewId": "reviewer-three",
+                "reviewerName": "Third Reviewer",
+                "problems": problems,
+            },
+            files,
+        )
+
+        self.assertEqual(valid_with_difficulty["problems"][0]["status"], "completed")
+        self.assertEqual(
+            valid_with_difficulty["problems"][0]["estimatedDifficulty"],
+            "4 dan or harder",
+        )
 
     def test_review_store_keeps_independent_reviewer_records(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p07-v7",
+  "path": "outputs/problem-07.sgf",
+  "queryNumber": 32,
+  "queriesRemaining": 18,
+  "checkedAt": "2026-08-07T19:11:16.347Z",
+  "status": "invalid",
+  "candidateSha256": "e6eeb90aeb46d43e9f638ed28563b59b644f2c2cd324f3b0709dbe5433403105",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "B[qq] plays on an occupied intersection."
+    },
+    {
+      "code": "suicide-move",
+      "message": "B[pq] is suicide under ordinary Go rules."
+    }
+  ]
+}

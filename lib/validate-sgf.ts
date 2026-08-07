@@ -10,6 +10,7 @@ import {
   parsePoint,
   parseSgf,
   playMove,
+  pointToSgf,
   visibleComment,
   walkSgf,
   type SgfNode,
@@ -78,6 +79,53 @@ function applySetup(board: Map<string, StoneColor>, node: SgfNode) {
   for (const point of expandPointValues(node.properties.AB)) board.set(point, "B");
   for (const point of expandPointValues(node.properties.AW)) board.set(point, "W");
   for (const point of expandPointValues(node.properties.AE)) board.delete(point);
+}
+
+function findDeadSetupGroups(board: Map<string, StoneColor>, size: number) {
+  const visited = new Set<string>();
+  const deadGroups: Array<{ color: StoneColor; stones: string[] }> = [];
+
+  for (const [seed, color] of board) {
+    if (visited.has(seed)) continue;
+
+    const stones: string[] = [];
+    const pending = [seed];
+    let hasLiberty = false;
+    visited.add(seed);
+
+    while (pending.length) {
+      const stone = pending.pop()!;
+      const point = parsePoint(stone);
+      stones.push(stone);
+      if (!point) {
+        hasLiberty = true;
+        continue;
+      }
+
+      for (const neighbor of [
+        { x: point.x - 1, y: point.y },
+        { x: point.x + 1, y: point.y },
+        { x: point.x, y: point.y - 1 },
+        { x: point.x, y: point.y + 1 },
+      ]) {
+        if (neighbor.x < 0 || neighbor.y < 0 || neighbor.x >= size || neighbor.y >= size) {
+          continue;
+        }
+        const neighborPoint = pointToSgf(neighbor);
+        const neighborColor = board.get(neighborPoint);
+        if (!neighborColor) {
+          hasLiberty = true;
+        } else if (neighborColor === color && !visited.has(neighborPoint)) {
+          visited.add(neighborPoint);
+          pending.push(neighborPoint);
+        }
+      }
+    }
+
+    if (!hasLiberty) deadGroups.push({ color, stones: stones.sort() });
+  }
+
+  return deadGroups;
 }
 
 export function validateSgf(input: string): ValidationReport {
@@ -372,6 +420,22 @@ export function validateSgf(input: string): ValidationReport {
 
   const initialBoard = new Map<string, StoneColor>();
   applySetup(initialBoard, root);
+  const setupPoints = [...setupBlack, ...setupWhite, ...expandPointValues(root.properties.AE)];
+  if (!overlap.length && setupPoints.every((point) => isPointOnBoard(point, size))) {
+    for (const group of findDeadSetupGroups(initialBoard, size)) {
+      const color = group.color === "B" ? "Black" : "White";
+      const property = group.color === "B" ? "AB" : "AW";
+      const stones = group.stones.map((point) => `${property}[${point}]`).join(", ");
+      issues.push(
+        issue(
+          "error",
+          "dead-setup-group",
+          `The initial ${color} group containing ${stones} has no liberties and would already have been captured.`,
+          root,
+        ),
+      );
+    }
+  }
   for (const child of root.children) validateBranch(child, initialBoard);
 
   if (protagonist) {

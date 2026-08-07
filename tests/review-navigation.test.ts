@@ -7,8 +7,10 @@ import {
 } from "../app/components/HumanReviewPanel";
 import {
   aggregateReviewProgress,
+  difficultyCappedHumanScore,
   isReviewMarkedBad,
   problemPassesHumanReview,
+  reviewedProblemDifficulty,
   reviewProblemProgress,
 } from "../lib/review-progress";
 
@@ -108,4 +110,63 @@ test("human pass requires completed valid, well-pathed, non-duplicate reviews", 
   assert.equal(problemPassesHumanReview([passing, { ...passing, valid: false }]), false);
   assert.equal(problemPassesHumanReview([passing, { ...passing, wellPathed: false }]), false);
   assert.equal(problemPassesHumanReview([passing, { ...passing, duplicate: true }]), false);
+});
+
+test("human score caps the two easiest ranges and leaves harder problems uncapped", () => {
+  function passingProblem(difficulty: string | null) {
+    return {
+      reviews: [
+        reviewProblem("problem.sgf", {
+          status: "completed",
+          valid: true,
+          realistic: true,
+          duplicate: false,
+          wellPathed: true,
+          estimatedDifficulty: difficulty,
+        }),
+      ],
+    };
+  }
+
+  const score = difficultyCappedHumanScore([
+    ...Array.from({ length: 5 }, () => passingProblem("20-30 kyu")),
+    ...Array.from({ length: 3 }, () => passingProblem("10-19 kyu")),
+    ...Array.from({ length: 2 }, () => passingProblem("5-9 kyu")),
+    passingProblem("2-3 dan"),
+    passingProblem("4 dan or harder"),
+    passingProblem(null),
+  ]);
+
+  assert.equal(score.passingProblems, 13);
+  assert.equal(score.creditedProblems, 8);
+  assert.deepEqual(score.counts, {
+    twentyToThirtyKyu: 5,
+    tenToNineteenKyu: 3,
+    fiveKyuOrHarder: 4,
+    unrated: 1,
+  });
+});
+
+test("difficulty disagreements use the easiest completed human rating", () => {
+  const base = reviewProblem("problem-01.sgf", {
+    status: "completed",
+    valid: true,
+    duplicate: false,
+    wellPathed: true,
+  });
+
+  assert.equal(
+    reviewedProblemDifficulty([
+      { ...base, estimatedDifficulty: "2-3 dan" },
+      { ...base, estimatedDifficulty: "10-19 kyu" },
+    ]),
+    "10-19 kyu",
+  );
+  assert.equal(
+    reviewedProblemDifficulty([
+      { ...base, estimatedDifficulty: "5-9 kyu" },
+      { ...base, estimatedDifficulty: null },
+    ]),
+    null,
+  );
 });

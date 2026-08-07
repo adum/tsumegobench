@@ -11,8 +11,8 @@ import { ProblemThumbnail } from "./ProblemThumbnail";
 import { SolutionTree } from "./SolutionTree";
 import {
   aggregateReviewProgress,
+  difficultyCappedHumanScore,
   isReviewMarkedBad,
-  problemPassesHumanReview,
   type ReviewProblemProgress,
 } from "@/lib/review-progress";
 import {
@@ -252,10 +252,8 @@ function defaultRun() {
 
 const fallbackRun = defaultRun();
 
-function humanPassedProblemCount(run: BenchmarkRun) {
-  return run.problems.filter((problem) =>
-    problemPassesHumanReview(problem.reviews ?? []),
-  ).length;
+function humanCreditedProblemCount(run: BenchmarkRun) {
+  return difficultyCappedHumanScore(run.problems).creditedProblems;
 }
 
 export function runHasSgfFiles(record: {
@@ -427,6 +425,16 @@ export function RunBrowser() {
 
   if (!run || !problem) return null;
 
+  const runHumanScore = difficultyCappedHumanScore(run.problems);
+  const runHumanScoreTitle = [
+    `${runHumanScore.counts.twentyToThirtyKyu} passing at 20-30 kyu (maximum 2 credited)`,
+    `${runHumanScore.counts.tenToNineteenKyu} passing at 10-19 kyu (maximum 2 credited)`,
+    `${runHumanScore.counts.fiveKyuOrHarder} passing at 5-9 kyu or harder (uncapped)`,
+    runHumanScore.counts.unrated
+      ? `${runHumanScore.counts.unrated} passing without a difficulty rating (not credited)`
+      : null,
+  ].filter(Boolean).join("; ");
+
   const structuralCheck: RunCheck = {
     id: "structural",
     status: problem.validation.valid ? "pass" : "fail",
@@ -482,7 +490,7 @@ export function RunBrowser() {
           </div>
           <div className="problem-list">
             {runs.map((record) => {
-              const humanPassed = humanPassedProblemCount(record);
+              const humanPassed = humanCreditedProblemCount(record);
               const automatedPassed = record.summary.automatedGatePassed;
               const totalProblems = record.summary.expectedProblems ?? record.problems.length;
               const showPassCounts = runHasSgfFiles(record);
@@ -505,8 +513,8 @@ export function RunBrowser() {
                       {showPassCounts ? (
                         <span
                           className="run-pass-counts"
-                          aria-label={`${humanPassed} human passed, ${automatedPassed} automated passed, ${totalProblems} total problems`}
-                          title="Human passed / automated passed / total problems"
+                          aria-label={`${humanPassed} difficulty-credited, ${automatedPassed} automated passed, ${totalProblems} total problems`}
+                          title="Difficulty-credited / automated passed / total problems"
                         >
                           {humanPassed}/{automatedPassed}/{totalProblems}
                         </span>
@@ -537,7 +545,11 @@ export function RunBrowser() {
               <span><strong>{run.summary.structuralPassed}</strong> structural</span>
               <span><strong>{run.summary.originalityPassed}</strong> original</span>
               <span><strong>{run.summary.humanReviewPending}</strong> to review</span>
-              <span><strong>{humanPassedProblemCount(run)}</strong> human passed</span>
+              <span
+                title={runHumanScoreTitle}
+              >
+                <strong>{runHumanScore.creditedProblems}</strong> human score
+              </span>
               {run.originalityTool ? (
                 <>
                   <span

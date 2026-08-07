@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import difflib
 import hashlib
 import http.server
 import json
@@ -38,14 +39,23 @@ DEFAULT_RETRY_BASE_DELAY_SECONDS = 15
 DEFAULT_RETRY_MAX_DELAY_SECONDS = 120
 DEFAULT_DUPLICATE_QUERIES_PER_PROBLEM = 5
 DEFAULT_PROGRESS_INTERVAL_SECONDS = 60
+DEFAULT_OPENCODE_MAX_ROUNDS = 20
+OPENCODE_OUTPUT_TOKEN_MAX = 65_536
+DEFAULT_REVIEW_STARTUP_TIMEOUT_SECONDS = 120
+REVIEW_PROBE_REQUEST_TIMEOUT_SECONDS = 10
 MINIMUM_CLAUDE_VERSION = (2, 1, 169)
 MINIMUM_OPENCODE_VERSION = (1, 1, 1)
-DIFFICULTY_BANDS = (
+GENERATION_DIFFICULTY_BANDS = (
     "20-30 kyu",
     "10-19 kyu",
     "5-9 kyu",
     "1-4 kyu",
     "about 1 dan",
+)
+DIFFICULTY_BANDS = (
+    *GENERATION_DIFFICULTY_BANDS,
+    "2-3 dan",
+    "4 dan or harder",
 )
 MINIMUM_NODE_MAJOR = 22
 _TYPESCRIPT_NODE: str | None = None
@@ -59,8 +69,11 @@ def expected_output_names(count: int) -> list[str]:
 
 def difficulty_targets(count: int) -> list[str]:
     return [
-        DIFFICULTY_BANDS[
-            min(len(DIFFICULTY_BANDS) - 1, index * len(DIFFICULTY_BANDS) // count)
+        GENERATION_DIFFICULTY_BANDS[
+            min(
+                len(GENERATION_DIFFICULTY_BANDS) - 1,
+                index * len(GENERATION_DIFFICULTY_BANDS) // count,
+            )
         ]
         for index in range(count)
     ]
@@ -113,6 +126,17 @@ def captured_text(value: str | bytes | None) -> str:
     return value
 
 
+def concatenate_harness_output(chunks: list[str]) -> str:
+    combined = ""
+    for chunk in chunks:
+        if not chunk:
+            continue
+        if combined and not combined.endswith("\n"):
+            combined += "\n"
+        combined += chunk
+    return combined
+
+
 def format_timeout(seconds: int) -> str:
     if seconds % 3600 == 0:
         hours = seconds // 3600
@@ -150,6 +174,44 @@ def generated_sgf_count(run_dir: Path) -> int:
         for file in (run_dir / "outputs").glob("*.sgf")
         if file.is_file()
     )
+
+
+def missing_expected_sgf_names(run_dir: Path, count: int) -> list[str]:
+    outputs = run_dir / "outputs"
+    return [
+        name
+        for name in expected_output_names(count)
+        if not (outputs / name).is_file()
+    ]
+
+
+def expected_sgf_count(run_dir: Path, count: int) -> int:
+    return count - len(missing_expected_sgf_names(run_dir, count))
+
+
+def opencode_round_task(
+    base_task: str,
+    run_dir: Path,
+    count: int,
+    round_number: int,
+    max_rounds: int = DEFAULT_OPENCODE_MAX_ROUNDS,
+) -> str:
+    if round_number == 1:
+        return base_task
+
+    missing = missing_expected_sgf_names(run_dir, count)
+    present_count = count - len(missing)
+    missing_list = "\n".join(f"- `outputs/{name}`" for name in missing)
+    return f"""# Tsumego Bench continuation round
+
+This is OpenCode generation round {round_number} of at most {max_rounds}. Continue from the current run directory; work from the files already present rather than starting over.
+
+Read `inputs/task.md` again and follow the complete original task. There are currently {present_count}/{count} expected SGF files present. Create and finish these missing files:
+
+{missing_list}
+
+The originality-query budget is shared across every round. Inspect `originality/summary.json` before making more requests. Preserve good existing outputs, repair any existing output you determine is incomplete, and do not merely describe future work. Write the remaining final SGFs now, perform the required final originality checks, and return control only after making as much concrete progress as possible in this round.
+"""
 
 
 def benchmark_progress_message(
@@ -356,15 +418,8 @@ def normalize_review(review: Any, expected_files: list[str], now: str | None = N
         if valid is not True:
             difficulty = None
 
-        complete = any(
-            (
-                isinstance(valid, bool),
-                isinstance(realistic, bool),
-                isinstance(duplicate, bool),
-                isinstance(well_pathed, bool),
-                difficulty in DIFFICULTY_BANDS,
-                quality is not None,
-            )
+        complete = valid is False or (
+            valid is True and difficulty in DIFFICULTY_BANDS
         )
         status = "completed" if complete else "pending"
         if complete:
@@ -797,6 +852,75 @@ def opencode_model_parts(model: str) -> tuple[str, str]:
     return provider.lower(), model_name
 
 
+def opencode_available_models(executable: str) -> list[str] | None:
+    try:
+        result = subprocess.run(
+            [executable, "--pure", "models"],
+            cwd=PROJECT_ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=60,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if result.returncode:
+        return None
+
+    ansi_escape = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
+    models: set[str] = set()
+    for raw_line in result.stdout.splitlines():
+        line = ansi_escape.sub("", raw_line).strip()
+        if line.startswith(("- ", "* ")):
+            line = line[2:].strip()
+        if line and "/" in line and not any(character.isspace() for character in line):
+            models.add(line)
+    return sorted(models)
+
+
+def opencode_model_validation_error(executable: str, model: str) -> str | None:
+    available = opencode_available_models(executable)
+    if not available or model in available:
+        return None
+
+    provider, model_name = opencode_model_parts(model)
+    provider_models = [candidate for candidate in available if candidate.startswith(f"{provider}/")]
+    suggestions: list[str] = []
+    if model_name in available:
+        suggestions.append(model_name)
+    else:
+        suggestions.extend(
+            difflib.get_close_matches(model, available, n=3, cutoff=0.45)
+        )
+    if not suggestions:
+        basename = model.rsplit("/", 1)[-1]
+        suggestions.extend(
+            candidate
+            for candidate in available
+            if candidate.rsplit("/", 1)[-1] == basename
+        )
+
+    lines = [
+        f"OpenCode does not list model {model!r}.",
+        f"It is parsed as provider {provider!r} and model {model_name!r}.",
+    ]
+    if suggestions:
+        label = "Did you mean" if len(suggestions) == 1 else "Closest available models"
+        lines.append(f"{label}: {', '.join(repr(candidate) for candidate in suggestions[:3])}?")
+    elif provider_models:
+        lines.append(
+            f"Provider {provider!r} is available, but that model ID is not in its catalog."
+        )
+    else:
+        lines.append(
+            f"Provider {provider!r} is not available in this OpenCode installation or account."
+        )
+    lines.append("Run `opencode models` to copy an exact provider/model ID.")
+    return "\n".join(lines)
+
+
 def harness_provider(harness: str, model: str) -> str:
     if harness == "opencode":
         return opencode_model_parts(model)[0]
@@ -921,6 +1045,7 @@ This is a controlled benchmark run. Work only inside the current run directory.
 2. Use `inputs/authoring-guide.md`, `inputs/reference-manifest.json`, and all SGFs in `inputs/examples/` as the supplied reference material.
 3. Create exactly {problem_count} final candidate SGF files using these names and target difficulties:
 {target_lines}
+   These targets are guidance for producing a useful range, not score caps on harder work. Human reviewers determine actual difficulty. In the final score, at most two valid 20-30 kyu problems and at most two valid 10-19 kyu problems receive credit; every valid problem rated 5-9 kyu or harder can receive credit. Problems harder than 1 dan are allowed. Aim to spread the harder problems across multiple levels rather than clustering them all at one difficulty.
 4. Each output file must contain only one complete SGF collection—no Markdown fences or explanatory prose.
 5. Do not modify anything under `inputs/`, `logs/`, `evaluation/`, or `originality/results/`; do not modify `originality/summary.json` or `run.json`. Under `originality/`, you may only create new request files in `originality/requests/`.
 {originality_steps}
@@ -1520,18 +1645,90 @@ def make_review_handler(
     return ReviewHandler
 
 
-def wait_for_review_site(url: str, process: subprocess.Popen[Any], timeout: float = 45) -> bool:
+def wait_for_review_site(
+    url: str,
+    process: subprocess.Popen[Any],
+    timeout: float = DEFAULT_REVIEW_STARTUP_TIMEOUT_SECONDS,
+    request_timeout: float = REVIEW_PROBE_REQUEST_TIMEOUT_SECONDS,
+    windows_runtime: bool = False,
+) -> bool:
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         if process.poll() is not None:
             return False
-        try:
-            with urllib.request.urlopen(url, timeout=1) as response:
-                if response.status < 500:
+        remaining = deadline - time.monotonic()
+        probe_timeout = max(0.1, min(request_timeout, remaining))
+        if windows_runtime:
+            curl = shutil.which("curl.exe")
+            if not curl:
+                return False
+            try:
+                probe = subprocess.run(
+                    [
+                        curl,
+                        "--noproxy",
+                        "*",
+                        "--silent",
+                        "--output",
+                        "NUL",
+                        "--write-out",
+                        "%{http_code}",
+                        "--max-time",
+                        str(max(1, math.ceil(probe_timeout))),
+                        url,
+                    ],
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    timeout=probe_timeout + 2,
+                )
+                status = int(probe.stdout.strip() or "0")
+                if 100 <= status < 500:
                     return True
-        except (OSError, urllib.error.URLError):
-            time.sleep(0.25)
+            except (OSError, subprocess.TimeoutExpired, ValueError):
+                pass
+        else:
+            try:
+                with urllib.request.urlopen(url, timeout=probe_timeout) as response:
+                    if response.status < 500:
+                        return True
+            except (OSError, urllib.error.URLError):
+                pass
+        time.sleep(0.25)
     return False
+
+
+def capture_terminal_state() -> tuple[int, list[Any]] | None:
+    if os.name == "nt" or not sys.stdin.isatty():
+        return None
+    try:
+        import termios
+
+        descriptor = sys.stdin.fileno()
+        return descriptor, termios.tcgetattr(descriptor)
+    except (ImportError, OSError, ValueError):
+        return None
+
+
+def restore_terminal_state(state: tuple[int, list[Any]] | None) -> None:
+    if state is None:
+        return
+    try:
+        import termios
+
+        descriptor, attributes = state
+        termios.tcsetattr(descriptor, termios.TCSANOW, attributes)
+    except (ImportError, OSError, ValueError):
+        pass
+
+
+def launch_review_site(command: list[str]) -> subprocess.Popen[Any]:
+    # The dev server must not inherit the operator's terminal input. Vite can
+    # otherwise enable raw mode after startup, preventing Python from receiving
+    # the Ctrl+C that is supposed to end the review session.
+    return subprocess.Popen(command, cwd=PROJECT_ROOT, stdin=subprocess.DEVNULL)
 
 
 def open_review_url(url: str) -> bool:
@@ -1540,17 +1737,17 @@ def open_review_url(url: str) -> bool:
             os.startfile(url)  # type: ignore[attr-defined]
             return True
         if is_wsl():
-            if shutil.which("wslview"):
-                return subprocess.Popen(["wslview", url]).poll() is None
-            command = [
-                "powershell.exe",
-                "-NoProfile",
-                "-NonInteractive",
-                "-Command",
-                "Start-Process -FilePath $args[0]",
-                url,
-            ]
-            return subprocess.run(command, check=False).returncode == 0
+            if viewer := shutil.which("wslview"):
+                return subprocess.run([viewer, url], check=False).returncode == 0
+            if handler := shutil.which("rundll32.exe"):
+                return (
+                    subprocess.run(
+                        [handler, "url.dll,FileProtocolHandler", url],
+                        check=False,
+                    ).returncode
+                    == 0
+                )
+            return False
         return webbrowser.open(url)
     except OSError:
         return False
@@ -1570,7 +1767,7 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
     model_prompt = run_dir / "inputs" / "model-prompt.md"
     reference_manifest = run_dir / "inputs" / "reference-manifest.json"
     log_prefix = args.harness
-    return {
+    manifest = {
         "$schema": "../../schemas/run.schema.json",
         "schemaVersion": 1,
         "runId": run_id,
@@ -1635,6 +1832,19 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
             "results": "evaluation/results.json",
         },
     }
+    if args.harness == "opencode":
+        manifest["harness"].update(
+            {
+                "roundPolicy": {
+                    "maxRounds": DEFAULT_OPENCODE_MAX_ROUNDS,
+                    "stopWhenExpectedOutputsExist": True,
+                },
+                "roundsCompleted": 0,
+                "roundStopReason": None,
+                "outputTokenCeiling": OPENCODE_OUTPUT_TOKEN_MAX,
+            }
+        )
+    return manifest
 
 
 def harness_executable(args: argparse.Namespace) -> str:
@@ -1661,6 +1871,7 @@ def harness_environment(args: argparse.Namespace, run_dir: Path) -> dict[str, st
             "OPENCODE_DISABLE_AUTOUPDATE": "true",
             "OPENCODE_DISABLE_PRUNE": "true",
             "OPENCODE_DISABLE_TERMINAL_TITLE": "true",
+            "OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX": str(OPENCODE_OUTPUT_TOKEN_MAX),
         }
     )
     return environment
@@ -1712,8 +1923,11 @@ def build_harness_command(
             "--output-format",
             "streaming-json",
             "--always-approve",
+            # Grok 1.0.0 under WSL can block its own inference transport under
+            # `strict`; `workspace` retains write confinement while the deny
+            # rules below block shell, web, and MCP access.
             "--sandbox",
-            "strict",
+            "workspace",
             "--no-plan",
             "--no-subagents",
             "--no-memory",
@@ -1827,6 +2041,11 @@ def _run_command(args: argparse.Namespace) -> int:
                 file=sys.stderr,
             )
             return 2
+        model_error = opencode_model_validation_error(executable, args.model)
+        if model_error:
+            print(f"error: {model_error}", file=sys.stderr)
+            print("No model was invoked, and no run was saved.", file=sys.stderr)
+            return 2
 
     try:
         run_id = unique_run_id(args.model, args.run_id, args.harness)
@@ -1852,6 +2071,15 @@ def _run_command(args: argparse.Namespace) -> int:
     print(f"Running {args.model} with {label}…")
     print(f"Reasoning effort: {args.reasoning_effort or 'CLI/model default'}")
     print(f"Execution timeout: {format_timeout(args.timeout)}")
+    if args.harness == "opencode":
+        print(
+            "OpenCode generation rounds: up to "
+            f"{DEFAULT_OPENCODE_MAX_ROUNDS}, stopping when all {args.count} expected SGFs exist."
+        )
+        print(
+            "OpenCode per-call output ceiling: "
+            f"{OPENCODE_OUTPUT_TOKEN_MAX:,} tokens"
+        )
     originality_broker: dict[str, Any] | None = None
     if manifest["condition"]["duplicateToolEnabled"]:
         query_limit = manifest["condition"]["duplicateQueryLimit"]
@@ -1871,8 +2099,9 @@ def _run_command(args: argparse.Namespace) -> int:
         args.retry_max_delay,
     )
     if retry_delays:
+        retry_scope = " per OpenCode round" if args.harness == "opencode" else ""
         print(
-            f"Transient retry policy: up to {args.max_attempts} attempts; "
+            f"Transient retry policy: up to {args.max_attempts} attempts{retry_scope}; "
             f"backoff delays {', '.join(f'{delay}s' for delay in retry_delays)} "
             f"({format_elapsed(sum(retry_delays))} maximum wait)."
         )
@@ -1895,6 +2124,13 @@ def _run_command(args: argparse.Namespace) -> int:
     final_message: str | None = None
     attempt_records: list[dict[str, Any]] = []
     total_backoff_seconds = 0
+    max_rounds = DEFAULT_OPENCODE_MAX_ROUNDS if args.harness == "opencode" else 1
+    rounds_completed = 0
+    round_stop_reason: str | None = None
+    invocation_number = 0
+    accepted_stdout_chunks: list[str] = []
+    accepted_stderr_chunks: list[str] = []
+    last_final_message: str | None = None
     event_parsers = {
         "codex": parse_codex_events,
         "claude": parse_claude_events,
@@ -1902,118 +2138,230 @@ def _run_command(args: argparse.Namespace) -> int:
         "opencode": parse_opencode_events,
     }
 
-    for attempt_number in range(1, args.max_attempts + 1):
-        remaining_timeout = args.timeout - (time.monotonic() - started)
-        if remaining_timeout <= 0:
+    stop_model_phase = False
+    for round_number in range(1, max_rounds + 1):
+        if (
+            args.harness == "opencode"
+            and expected_sgf_count(run_dir, args.count) >= args.count
+        ):
+            round_stop_reason = "outputs_complete"
             break
+
+        round_task = (
+            opencode_round_task(task, run_dir, args.count, round_number, max_rounds)
+            if args.harness == "opencode"
+            else task
+        )
+        round_label = (
+            f"{label} round {round_number}/{max_rounds}"
+            if args.harness == "opencode"
+            else label
+        )
+        if args.harness == "opencode":
+            print(
+                f"Starting OpenCode generation round {round_number}/{max_rounds}; "
+                f"{expected_sgf_count(run_dir, args.count)}/{args.count} expected SGFs present.",
+                flush=True,
+            )
+
+        round_completed = False
+        for round_attempt in range(1, args.max_attempts + 1):
+            remaining_timeout = args.timeout - (time.monotonic() - started)
+            if remaining_timeout <= 0:
+                timed_out = True
+                exit_code = 124
+                timeout_message = (
+                    f"{label} exhausted the overall execution timeout of "
+                    f"{format_timeout(args.timeout)}."
+                )
+                stderr = timeout_message
+                accepted_stderr_chunks.append(stderr)
+                round_stop_reason = "timeout"
+                stop_model_phase = True
+                break
+
+            invocation_number += 1
+            if args.harness == "opencode":
+                attempt_description = (
+                    f"Starting round attempt {round_attempt}/{args.max_attempts} "
+                    f"for OpenCode round {round_number}/{max_rounds}…"
+                )
+            else:
+                attempt_description = (
+                    f"Starting model attempt {round_attempt}/{args.max_attempts}…"
+                )
+            print(attempt_description, flush=True)
+
+            attempt_started_at = utc_now()
+            result = run_harness_once(
+                args,
+                command,
+                run_dir,
+                round_task,
+                round_label,
+                remaining_timeout,
+                round_attempt,
+            )
+            stdout = result["stdout"]
+            stderr = result["stderr"]
+            exit_code = result["exitCode"]
+            timed_out = result["timedOut"]
+            timeout_message = result["timeoutMessage"]
+            attempt_events = event_parsers[args.harness](stdout)
+            if timeout_message and not attempt_events.get("failureMessage"):
+                attempt_events["failureMessage"] = timeout_message
+            attempt_final_message = attempt_events.pop("finalMessage", None)
+            failure_message = attempt_events.get("failureMessage")
+            raw_output = f"{stdout}\n{stderr}"
+            model_rejected = bool(
+                exit_code and is_model_selection_failure(failure_message, raw_output)
+            )
+            retryable = bool(
+                exit_code
+                and not timed_out
+                and not model_rejected
+                and is_transient_harness_failure(failure_message, raw_output)
+            )
+            failure_detail = (
+                compact_failure(failure_message, stdout, stderr, exit_code)
+                if exit_code is not None and exit_code != 0
+                else None
+            )
+            attempt_dir, attempt_stdout, attempt_stderr = write_harness_attempt_logs(
+                run_dir,
+                args.harness,
+                invocation_number,
+                stdout,
+                stderr,
+            )
+            output_file_count = generated_sgf_count(run_dir)
+            attempt_record: dict[str, Any] = {
+                "number": invocation_number,
+                "startedAt": attempt_started_at,
+                "completedAt": utc_now(),
+                "exitCode": exit_code,
+                "durationSeconds": result["durationSeconds"],
+                "timedOut": timed_out,
+                "retryable": retryable,
+                "failureMessage": failure_detail,
+                "outputFileCount": output_file_count,
+                "stdout": attempt_stdout,
+                "stderr": attempt_stderr,
+            }
+            if args.harness == "opencode":
+                attempt_record.update(
+                    {
+                        "roundNumber": round_number,
+                        "attemptInRound": round_attempt,
+                    }
+                )
+
+            can_retry = retryable and round_attempt < args.max_attempts
+            if can_retry:
+                delay = retry_delay_seconds(
+                    round_attempt,
+                    args.retry_base_delay,
+                    args.retry_max_delay,
+                )
+                remaining_after_attempt = args.timeout - (time.monotonic() - started)
+                if delay < remaining_after_attempt:
+                    attempt_record["outcome"] = "transient_failure"
+                    attempt_record["retryDelaySeconds"] = delay
+                    # OpenCode rounds deliberately share their workspace. Preserve
+                    # partial SGFs so retries and later rounds can continue them.
+                    if args.harness != "opencode":
+                        archived_outputs = archive_retry_outputs(run_dir, attempt_dir)
+                        if archived_outputs:
+                            attempt_record["archivedOutputs"] = archived_outputs
+                    attempt_records.append(attempt_record)
+                    manifest["harness"]["attempts"] = attempt_records
+                    write_json(manifest_path, manifest)
+                    prefix = (
+                        f"Round {round_number}/{max_rounds} attempt"
+                        if args.harness == "opencode"
+                        else "Attempt"
+                    )
+                    print(
+                        f"{prefix} {round_attempt}/{args.max_attempts} failed after "
+                        f"{format_elapsed(result['durationSeconds'])} with a transient error: "
+                        f"{failure_detail}"
+                    )
+                    print(
+                        f"Retrying in {format_elapsed(delay)} "
+                        f"(attempt {round_attempt + 1}/{args.max_attempts})."
+                    )
+                    time.sleep(delay)
+                    total_backoff_seconds += delay
+                    continue
+                attempt_record["retrySkippedReason"] = (
+                    "The remaining execution-time budget was too short for the next backoff delay."
+                )
+
+            if exit_code == 0:
+                attempt_record["outcome"] = "success"
+            elif model_rejected:
+                attempt_record["outcome"] = "model_rejected"
+            elif timed_out:
+                attempt_record["outcome"] = "timeout"
+            elif retryable:
+                attempt_record["outcome"] = "transient_failure"
+            else:
+                attempt_record["outcome"] = "permanent_failure"
+            attempt_records.append(attempt_record)
+            manifest["harness"]["attempts"] = attempt_records
+
+            accepted_stdout_chunks.append(stdout)
+            accepted_stderr_chunks.append(stderr)
+            if attempt_final_message:
+                last_final_message = attempt_final_message
+            if exit_code == 0:
+                round_completed = True
+                rounds_completed += 1
+                if args.harness == "opencode":
+                    manifest["harness"]["roundsCompleted"] = rounds_completed
+            write_json(manifest_path, manifest)
+            break
+
+        if stop_model_phase:
+            break
+        if not round_completed:
+            round_stop_reason = "timeout" if timed_out else "harness_failed"
+            break
+        if args.harness != "opencode":
+            round_stop_reason = "single_round"
+            break
+
+        present_count = expected_sgf_count(run_dir, args.count)
         print(
-            f"Starting model attempt {attempt_number}/{args.max_attempts}…",
+            f"OpenCode round {round_number}/{max_rounds} finished; "
+            f"{present_count}/{args.count} expected SGFs are present.",
             flush=True,
         )
-        attempt_started_at = utc_now()
-        result = run_harness_once(
-            args,
-            command,
-            run_dir,
-            task,
-            label,
-            remaining_timeout,
-            attempt_number,
-        )
-        stdout = result["stdout"]
-        stderr = result["stderr"]
-        exit_code = result["exitCode"]
-        timed_out = result["timedOut"]
-        timeout_message = result["timeoutMessage"]
-        events = event_parsers[args.harness](stdout)
-        if timeout_message and not events.get("failureMessage"):
-            events["failureMessage"] = timeout_message
-        final_message = events.pop("finalMessage", None)
-        failure_message = events.get("failureMessage")
-        raw_output = f"{stdout}\n{stderr}"
-        model_rejected = bool(
-            exit_code and is_model_selection_failure(failure_message, raw_output)
-        )
-        retryable = bool(
-            exit_code
-            and not timed_out
-            and not model_rejected
-            and is_transient_harness_failure(failure_message, raw_output)
-        )
-        failure_detail = (
-            compact_failure(failure_message, stdout, stderr, exit_code)
-            if exit_code is not None and exit_code != 0
-            else None
-        )
-        attempt_dir, attempt_stdout, attempt_stderr = write_harness_attempt_logs(
-            run_dir,
-            args.harness,
-            attempt_number,
-            stdout,
-            stderr,
-        )
-        output_file_count = generated_sgf_count(run_dir)
-        attempt_record: dict[str, Any] = {
-            "number": attempt_number,
-            "startedAt": attempt_started_at,
-            "completedAt": utc_now(),
-            "exitCode": exit_code,
-            "durationSeconds": result["durationSeconds"],
-            "timedOut": timed_out,
-            "retryable": retryable,
-            "failureMessage": failure_detail,
-            "outputFileCount": output_file_count,
-            "stdout": attempt_stdout,
-            "stderr": attempt_stderr,
-        }
+        if present_count >= args.count:
+            round_stop_reason = "outputs_complete"
+            break
+        if round_number >= max_rounds:
+            round_stop_reason = "max_rounds"
+            break
+        print("Expected outputs are still missing; starting a fresh OpenCode round.")
 
-        can_retry = retryable and attempt_number < args.max_attempts
-        if can_retry:
-            delay = retry_delay_seconds(
-                attempt_number,
-                args.retry_base_delay,
-                args.retry_max_delay,
-            )
-            remaining_after_attempt = args.timeout - (time.monotonic() - started)
-            if delay < remaining_after_attempt:
-                attempt_record["outcome"] = "transient_failure"
-                attempt_record["retryDelaySeconds"] = delay
-                archived_outputs = archive_retry_outputs(run_dir, attempt_dir)
-                if archived_outputs:
-                    attempt_record["archivedOutputs"] = archived_outputs
-                attempt_records.append(attempt_record)
-                manifest["harness"]["attempts"] = attempt_records
-                write_json(manifest_path, manifest)
-                print(
-                    f"Attempt {attempt_number}/{args.max_attempts} failed after "
-                    f"{format_elapsed(result['durationSeconds'])} with a transient error: "
-                    f"{failure_detail}"
-                )
-                print(
-                    f"Retrying in {format_elapsed(delay)} "
-                    f"(attempt {attempt_number + 1}/{args.max_attempts})."
-                )
-                time.sleep(delay)
-                total_backoff_seconds += delay
-                continue
-            attempt_record["retrySkippedReason"] = (
-                "The remaining execution-time budget was too short for the next backoff delay."
-            )
-
-        if exit_code == 0:
-            attempt_record["outcome"] = "success"
-        elif model_rejected:
-            attempt_record["outcome"] = "model_rejected"
-        elif timed_out:
-            attempt_record["outcome"] = "timeout"
-        elif retryable:
-            attempt_record["outcome"] = "transient_failure"
-        else:
-            attempt_record["outcome"] = "permanent_failure"
-        attempt_records.append(attempt_record)
-        manifest["harness"]["attempts"] = attempt_records
+    if args.harness == "opencode":
+        round_stop_reason = round_stop_reason or "max_rounds"
+        manifest["harness"].update(
+            {
+                "roundsCompleted": rounds_completed,
+                "roundStopReason": round_stop_reason,
+            }
+        )
         write_json(manifest_path, manifest)
-        break
+
+    stdout = concatenate_harness_output(accepted_stdout_chunks)
+    stderr = concatenate_harness_output(accepted_stderr_chunks)
+    events = event_parsers[args.harness](stdout)
+    parsed_final_message = events.pop("finalMessage", None)
+    final_message = last_final_message or parsed_final_message
+    if timeout_message and not events.get("failureMessage"):
+        events["failureMessage"] = timeout_message
 
     if originality_broker is not None:
         broker_exit_code = stop_originality_broker(run_dir, originality_broker)
@@ -2043,7 +2391,7 @@ def _run_command(args: argparse.Namespace) -> int:
     duration = round(time.monotonic() - started, 3)
     print(
         f"Model phase finished in {format_elapsed(duration)}; "
-        f"{generated_sgf_count(run_dir)}/{args.count} SGF files are present.",
+        f"{expected_sgf_count(run_dir, args.count)}/{args.count} expected SGF files are present.",
         flush=True,
     )
     (run_dir / manifest["artifacts"]["stdout"]).write_text(stdout, encoding="utf-8")
@@ -2067,7 +2415,24 @@ def _run_command(args: argparse.Namespace) -> int:
     write_json(manifest_path, manifest)
 
     failure_message = manifest.get("harness", {}).get("failureMessage")
-    if not exit_code and len(attempt_records) > 1:
+    if args.harness == "opencode" and not exit_code:
+        if round_stop_reason == "outputs_complete":
+            print(
+                f"OpenCode created all {args.count} expected SGFs in "
+                f"{rounds_completed} {'round' if rounds_completed == 1 else 'rounds'}."
+            )
+        elif round_stop_reason == "max_rounds":
+            print(
+                f"OpenCode reached the {max_rounds}-round cap with "
+                f"{expected_sgf_count(run_dir, args.count)}/{args.count} expected SGFs present.",
+                file=sys.stderr,
+            )
+        if total_backoff_seconds:
+            print(
+                "Transient retries waited "
+                f"{format_elapsed(total_backoff_seconds)} total across the OpenCode rounds."
+            )
+    elif not exit_code and len(attempt_records) > 1:
         print(
             f"{label} succeeded on attempt {len(attempt_records)}/{args.max_attempts} "
             f"after {format_elapsed(duration)} total "
@@ -2255,6 +2620,7 @@ def review_command(args: argparse.Namespace) -> int:
     api_port = int(api_server.server_address[1])
     api_thread = threading.Thread(target=api_server.serve_forever, daemon=True)
     api_thread.start()
+    terminal_state = capture_terminal_state()
 
     command = [
         executable,
@@ -2267,17 +2633,29 @@ def review_command(args: argparse.Namespace) -> int:
     ]
     process: subprocess.Popen[Any] | None = None
     try:
-        process = subprocess.Popen(command, cwd=PROJECT_ROOT)
+        process = launch_review_site(command)
         site_root = f"http://127.0.0.1:{web_port}"
-        if not wait_for_review_site(f"{site_root}/runs", process):
+        # Probe the lightweight root route. Probing /runs during a cold Vite start can
+        # repeatedly abort its first SSR compilation before the review route is ready.
+        # Under WSL this project can use Windows node.exe for Windows node_modules. In
+        # that case Vite is on Windows loopback, so probe it with Windows curl.exe.
+        windows_runtime = is_wsl() and executable.lower().endswith(".exe")
+        if not wait_for_review_site(site_root, process, windows_runtime=windows_runtime):
             return_code = process.poll()
             message = (
                 f"The review site exited with status {return_code}."
                 if return_code is not None
-                else "The review site did not become ready in time."
+                else (
+                    "The review site did not become ready within "
+                    f"{DEFAULT_REVIEW_STARTUP_TIMEOUT_SECONDS} seconds."
+                )
             )
             print(f"error: {message}", file=sys.stderr)
             return 1
+
+        # Vite enables raw input while it starts. Python remains the session owner, so
+        # restore the operator's terminal before printing instructions or waiting.
+        restore_terminal_state(terminal_state)
 
         query = urllib.parse.urlencode(
             {
@@ -2314,6 +2692,7 @@ def review_command(args: argparse.Namespace) -> int:
                 process.wait(timeout=10)
             except subprocess.TimeoutExpired:
                 process.kill()
+        restore_terminal_state(terminal_state)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -2371,14 +2750,14 @@ def build_parser() -> argparse.ArgumentParser:
         "--timeout",
         type=int,
         default=DEFAULT_RUN_TIMEOUT_SECONDS,
-        help="Maximum model CLI execution time in seconds (default: 43200 / 12 hours).",
+        help="Maximum model-phase wall-clock time in seconds (default: 43200 / 12 hours).",
     )
     run.add_argument(
         "--max-attempts",
         type=int,
         default=DEFAULT_MAX_HARNESS_ATTEMPTS,
         help=(
-            "Maximum CLI attempts for recognized transient failures "
+            "Maximum CLI attempts per generation round for recognized transient failures "
             f"(default: {DEFAULT_MAX_HARNESS_ATTEMPTS})."
         ),
     )

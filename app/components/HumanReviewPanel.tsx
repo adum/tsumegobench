@@ -254,6 +254,7 @@ export function HumanReviewPanel({
     setMessage("");
     try {
       const now = new Date().toISOString();
+      const reviewComplete = !draft.valid || Boolean(draft.estimatedDifficulty);
       const nextReview: ReviewerRecord = {
         ...activeReview,
         updatedAt: now,
@@ -261,14 +262,14 @@ export function HumanReviewPanel({
           problem.file === problemFile
             ? {
                 file: problem.file,
-                status: "completed",
+                status: reviewComplete ? "completed" : "pending",
                 valid: draft.valid,
                 realistic: draft.realistic,
                 duplicate: draft.duplicate,
                 wellPathed: draft.wellPathed,
                 estimatedDifficulty: draft.valid ? draft.estimatedDifficulty || null : null,
                 quality: draft.quality,
-                reviewedAt: now,
+                reviewedAt: reviewComplete ? now : null,
               }
             : problem,
         ),
@@ -437,7 +438,7 @@ export function HumanReviewPanel({
           </div>
 
           <label className="review-difficulty">
-            <span>Estimated difficulty</span>
+            <span>Estimated difficulty · required for score</span>
             <select
               value={estimatedDifficulty}
               onChange={(event) => {
@@ -454,7 +455,7 @@ export function HumanReviewPanel({
               }}
               disabled={!valid || saving}
             >
-              <option value="">Select difficulty</option>
+              <option value="">Select human-estimated range</option>
               {session.difficultyOptions.map((option) => <option key={option}>{option}</option>)}
             </select>
           </label>

@@ -1,5 +1,5 @@
 import {
-  problemPassesHumanReview,
+  difficultyCappedHumanScore,
   type ReviewProgressFields,
 } from "./review-progress";
 
@@ -69,9 +69,7 @@ function normalizedRunScore(run: IndexedRunForChart) {
     Number.isFinite(configuredCount) && configuredCount > 0
       ? configuredCount
       : run.problems.length;
-  const passedProblems = run.problems.filter((problem) =>
-    problemPassesHumanReview(problem.reviews ?? []),
-  ).length;
+  const passedProblems = difficultyCappedHumanScore(run.problems).creditedProblems;
   const score = problemCount > 0
     ? Math.min(10, Math.round((passedProblems / problemCount) * 100) / 10)
     : 0;

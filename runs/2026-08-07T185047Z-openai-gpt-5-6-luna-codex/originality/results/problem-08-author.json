@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-08-author",
+  "path": "outputs/problem-08.sgf",
+  "queryNumber": 8,
+  "queriesRemaining": 42,
+  "checkedAt": "2026-08-07T18:51:55.953Z",
+  "status": "invalid",
+  "candidateSha256": "cd2d08e9f46951fe02bb90634cf753adb1163d286d880c8a6b49d2dca0a3227c",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "suicide-move",
+      "message": "W[nm] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[mm] plays on an occupied intersection."
+    },
+    {
+      "code": "suicide-move",
+      "message": "W[nm] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[mm] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[mm] plays on an occupied intersection."
+    },
+    {
+      "code": "suicide-move",
+      "message": "W[nm] is suicide under ordinary Go rules."
+    }
+  ]
+}

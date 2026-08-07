@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p08-c",
+  "path": "outputs/problem-08.sgf",
+  "queryNumber": 30,
+  "queriesRemaining": 20,
+  "checkedAt": "2026-08-07T20:43:46.367Z",
+  "status": "clear",
+  "candidateSha256": "3d8c79bca841be943e3f238266827ba07f64ea1bcc59ce9428b52dfd81f8bafa",
+  "cachedRemote": false,
+  "local": {
+    "builtInSetupMatch": null,
+    "exactReferenceMatch": null,
+    "closestReferenceMatch": {
+      "id": 5973,
+      "percentage": 52.27,
+      "url": "https://www.goproblems.com/problems/5973"
+    },
+    "peerExactMatches": [],
+    "peerShapeMatches": []
+  },
+  "goProblems": {
+    "radius": 2,
+    "signatureMatches": [],
+    "topPercentage": 57,
+    "percentageMatches": [
+      {
+        "id": 24999,
+        "difficulty": "2 kyu?",
+        "createdAt": "2023-12-18",
+        "url": "https://www.goproblems.com/problems/24999",
+        "percentage": 57
+      },
+      {
+        "id": 24817,
+        "difficulty": "10 kyu?",
+        "createdAt": "2023-12-12",
+        "url": "https://www.goproblems.com/problems/24817",
+        "percentage": 56
+      },
+      {
+        "id": 13632,
+        "difficulty": "6 kyu",
+        "createdAt": "2010-04-16",
+        "url": "https://www.goproblems.com/problems/13632",
+        "percentage": 55
+      },
+      {
+        "id": 33649,
+        "difficulty": "1 dan",
+        "createdAt": "2024-07-28",
+        "url": "https://www.goproblems.com/problems/33649",
+        "percentage": 54
+      },
+      {
+        "id": 26800,
+        "difficulty": "3 kyu?",
+        "createdAt": "2024-03-15",
+        "url": "https://www.goproblems.com/problems/26800",
+        "percentage": 49
+      },
+      {
+        "id": 24697,
+        "difficulty": "8 kyu?",
+        "createdAt": "2023-12-07",
+        "url": "https://www.goproblems.com/problems/24697",
+        "percentage": 47
+      },
+      {
+        "id": 33512,
+        "difficulty": "6 dan",
+        "createdAt": "2024-07-26",
+        "url": "https://www.goproblems.com/problems/33512",
+        "percentage": 47
+      },
+      {
+        "id": 39342,
+        "difficulty": "19 kyu",
+        "createdAt": "2024-11-04",
+        "url": "https://www.goproblems.com/problems/39342",
+        "percentage": 47
+      },
+      {
+        "id": 11601,
+        "difficulty": "22 kyu",
+        "createdAt": "2008-08-01",
+        "url": "https://www.goproblems.com/problems/11601",
+        "percentage": 41
+      },
+      {
+        "id": 27264,
+        "difficulty": "6 kyu?",
+        "createdAt": "2024-04-10",
+        "url": "https://www.goproblems.com/problems/27264",
+        "percentage": 40
+      },
+      {
+        "id": 38695,
+        "difficulty": "6 dan",
+        "createdAt": "2024-10-23",
+        "url": "https://www.goproblems.com/problems/38695",
+        "percentage": 37
+      },
+      {
+        "id": 36502,
+        "difficulty": "13 kyu?",
+        "createdAt": "2024-09-10",
+        "url": "https://www.goproblems.com/problems/36502",
+        "percentage": 32
+      },
+      {
+        "id": 57826,
+        "difficulty": "6 kyu?",
+        "createdAt": "2026-04-14",
+        "url": "https://www.goproblems.com/problems/57826",
+        "percentage": 31
+      },
+      {
+        "id": 61255,
+        "difficulty": "12 kyu?",
+        "createdAt": "2026-07-18",
+        "url": "https://www.goproblems.com/problems/61255",
+        "percentage": 31
+      },
+      {
+        "id": 54865,
+        "difficulty": "3 kyu?",
+        "createdAt": "2026-01-18",
+        "url": "https://www.goproblems.com/problems/54865",
+        "percentage": 30
+      },
+      {
+        "id": 58602,
+        "difficulty": "15 kyu?",
+        "createdAt": "2026-05-07",
+        "url": "https://www.goproblems.com/problems/58602",
+        "percentage": 25
+      },
+      {
+        "id": 39598,
+        "difficulty": "8 dan",
+        "createdAt": "2024-11-07",
+        "url": "https://www.goproblems.com/problems/39598",
+        "percentage": 22
+      }
+    ]
+  },
+  "errors": []
+}

@@ -36,12 +36,12 @@ export function EvaluationProtocol() {
           <span className="protocol-number">04</span>
           <div className="protocol-icon judge" aria-hidden="true"><i /></div>
           <h2>Judge</h2>
-          <p>A competent player checks solution and refutation coverage, endpoint judgment, clarity, and teaching value.</p>
+          <p>A competent player checks solution and refutation coverage, endpoint judgment, clarity, teaching value, and actual difficulty.</p>
           <small>100-POINT RUBRIC</small>
         </li>
       </ol>
       <div className="protocol-footer">
-        <p><strong>Report:</strong> acceptance rate and mean score, with rejected problems scored as zero.</p>
+        <p><strong>Report:</strong> difficulty-capped acceptance: at most two 20–30 kyu and two 10–19 kyu problems receive credit; harder problems are uncapped.</p>
         <p><strong>Limitation:</strong> structural validation does not establish life-and-death correctness; human review is required.</p>
       </div>
     </section>

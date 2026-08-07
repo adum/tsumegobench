@@ -24,7 +24,7 @@ Apply this 100-point rubric only after a candidate passes every hard gate in `do
 
 ## 4. Pedagogical value and difficulty fit — 15 points
 
-- **13–15:** Has a recognizable lesson, an instructive wrong idea, and a fair difficulty within the 30 kyu–1 dan target range.
+- **13–15:** Has a recognizable lesson, an instructive wrong idea, and an honestly graded difficulty; problems harder than 1 dan are allowed.
 - **9–12:** Useful practice but obvious, unevenly graded, or weakly differentiated.
 - **1–8:** Little beyond a one-move spot-the-point exercise or an opaque reading contest.
 
@@ -36,6 +36,8 @@ Apply this 100-point rubric only after a candidate passes every hard gate in `do
 - **0 / reject:** Exact/transformed local match, any radius-2 GoProblems signature match, or ≥90% default percentage match.
 
 ## Review record
+
+Estimated difficulty is required for a valid problem to receive final-score credit. After applying the hard gates, credit at most two human-rated 20–30 kyu problems and at most two human-rated 10–19 kyu problems. Human-passed problems rated 5–9 kyu or harder are uncapped.
 
 ```text
 Run / problem:

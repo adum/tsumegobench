@@ -101,3 +101,22 @@ test("validator rejects website-specific playback controls", () => {
     assert.ok(report.issues.some((issue) => issue.code === "website-control"));
   }
 });
+
+test("validator rejects setup stones that have already been captured", () => {
+  const report = validateSgf(
+    "(;SZ[19]AB[dm][em][fm][dn][fn][do][eo]AW[en][ep][dp][dq](;B[gm];W[gn];B[fo]C[RIGHT])(;B[gn];W[gm];B[fo]C[RIGHT])(;B[fo];W[gm]C[wrong]))",
+  );
+
+  assert.equal(report.valid, false);
+  const deadGroup = report.issues.find((issue) => issue.code === "dead-setup-group");
+  assert.ok(deadGroup);
+  assert.match(deadGroup.message, /White group containing AW\[en\].*no liberties/);
+});
+
+test("validator allows setup groups that still have a liberty", () => {
+  const report = validateSgf(
+    "(;SZ[19]AB[dm][em][fm][dn][fn][do]AW[en][ep][dp][dq](;B[eo]C[RIGHT]))",
+  );
+
+  assert.ok(!report.issues.some((issue) => issue.code === "dead-setup-group"));
+});

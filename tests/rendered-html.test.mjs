@@ -34,7 +34,7 @@ test("server-renders a compact overview with route navigation", async () => {
   assert.match(html, /<link[^>]+rel="icon"[^>]+href="\/favicon\.svg"/);
   assert.match(html, /19×19 boards/);
   assert.match(html, /Model summary/);
-  assert.match(html, /Human-passed/);
+  assert.match(html, /Human score/);
   assert.match(html, /class="model-results-table"/);
   assert.match(html, /GPT-5\.6 Luna/);
   assert.match(html, /Claude Opus 5/);
@@ -134,11 +134,11 @@ test("server-renders generated runs on their own page with a to-move stone", asy
   }
   assert.match(
     html,
-    /class="run-pass-counts" aria-label="\d+ human passed, \d+ automated passed, \d+ total problems" title="Human passed \/ automated passed \/ total problems"/,
+    /class="run-pass-counts" aria-label="\d+ difficulty-credited, \d+ automated passed, \d+ total problems" title="Difficulty-credited \/ automated passed \/ total problems"/,
   );
   assert.match(
     html,
-    /class="run-summary"[^>]*>[\s\S]*structural[\s\S]*original[\s\S]*to review[\s\S]*human passed[\s\S]*<\/div>/,
+    /class="run-summary"[^>]*>[\s\S]*structural[\s\S]*original[\s\S]*to review[\s\S]*human score[\s\S]*<\/div>/,
   );
   assert.match(html, /class="problem-thumbnail(?: is-empty)?"/);
   assert.match(html, /class="run-problem-tab-copy"/);

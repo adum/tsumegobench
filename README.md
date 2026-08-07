@@ -65,6 +65,13 @@ Anthropic's [Claude Code installation guide](https://code.claude.com/docs/en/ins
 xAI's [Grok Build guide](https://docs.x.ai/build/overview), or the
 [OpenCode installation guide](https://opencode.ai/docs) for installation and authentication.
 
+OpenCode generation uses fresh outer rounds against the same run directory. It stops as soon as all
+requested, correctly named SGF files exist, or after 20 completed OpenCode rounds. Later rounds receive
+the missing filename list and continue from files already written; the originality-query budget remains
+shared across the whole benchmark run. Each OpenCode model response is allowed up to 65,536 output and
+reasoning tokens through `OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`. The normal `--timeout` remains the
+wall-clock limit for the entire model phase across every round and retry.
+
 The evaluator requires Node.js 22 or newer. When the checkout is shared between
 Windows and WSL, the runner automatically uses a compatible Windows Node runtime
 for Windows-installed dependencies. Set `TSUMEGO_NODE` only if you need to
@@ -78,7 +85,7 @@ Add `--reasoning-effort high` (or `--effort high`) when you want to pin an effor
 
 When a run starts, the runner prints the selected reasoning effort. If the flag is omitted, it prints `CLI/model default`; the manifest records `null` because the benchmark did not request a specific level.
 
-Recognized transient transport, rate-limit, and service failures are retried up to five total CLI attempts with exponential backoff of 15, 30, 60, and 120 seconds. Model-selection, authentication, launch, and other permanent failures still fail immediately. Every invocation is recorded under `harness.attempts` in `run.json`, with full per-attempt logs under `logs/attempts/`; partial SGFs from a failed retryable attempt are archived there before the next clean attempt. The final terminal report lists every attempt, duration, exit status, SGF count, and the total time spent waiting. Use `--max-attempts`, `--retry-base-delay`, or `--retry-max-delay` to override the defaults; all attempts and waits remain within `--timeout` (12 hours by default).
+Recognized transient transport, rate-limit, and service failures are retried up to five times within each CLI round, with exponential backoff of 15, 30, 60, and 120 seconds. Model-selection, authentication, launch, and other permanent failures still fail immediately. Every invocation is recorded under `harness.attempts` in `run.json`, with full per-attempt logs under `logs/attempts/`. Other harnesses archive partial SGFs from a failed retryable attempt before retrying; OpenCode deliberately preserves them because its retries and outer rounds share one workspace. The final terminal report lists every attempt, duration, exit status, SGF count, and the total time spent waiting. Use `--max-attempts`, `--retry-base-delay`, or `--retry-max-delay` to override the retry defaults; all rounds, attempts, and waits remain within `--timeout` (12 hours by default).
 
 Every normal run includes a file-based originality tool. The model receives five queries per requested problem by default—50 for the standard ten-problem run—and must spend one final query on each exact output. Built-in common setups are rejected locally from their initial stones alone, across board symmetries and color reversal, without an API call. Other queries require a structurally complete SGF with at least one `C[RIGHT]` solution endpoint; invalid queries return an error and still consume budget. The tool also checks other generated files, the local reference corpus, a radius-2 GoProblems solution signature, and an independent full-corpus percentage search. Use `--duplicate-query-limit` only when deliberately defining a different benchmark condition.
 
@@ -113,7 +120,7 @@ Launch the local review UI with:
 python3 benchmark.py review
 ```
 
-The command selects the most recently completed evaluated run, opens a local browser session, and saves every checkbox, difficulty, and star change automatically. Changing any review control counts the problem as reviewed. Estimated difficulty and the 1–5 quality rating are optional, including when a problem is invalid. Pass a run ID only when reviewing an older run:
+The command selects the most recently completed evaluated run, opens a local browser session, and saves every checkbox, difficulty, and star change automatically. A rejected problem is complete as soon as it is marked invalid; a valid problem needs a human-estimated difficulty before its review is complete and it can receive score credit. The 1–5 quality rating remains optional. Pass a run ID only when reviewing an older run:
 
 ```bash
 python3 benchmark.py review 2026-08-05T225707Z-openai-gpt-5-6-luna-codex
@@ -123,7 +130,7 @@ For each problem, the initial review can record whether it is valid, whether the
 
 ## Release-date score chart
 
-The home page plots each normalized model once by public release date. Its score is the best human-passed problem rate across that model's runs, normalized to 10 even when a nonstandard run size is used. Equivalent model aliases are grouped by `data/model-metadata.json`.
+The home page plots each normalized model once by public release date. Its score is the best difficulty-capped human-passed problem rate across that model's runs, normalized to 10 even when a nonstandard run size is used. At most two reviewed 20–30 kyu problems and two reviewed 10–19 kyu problems receive credit; reviewed problems rated 5–9 kyu or harder are uncapped. A valid problem without a human difficulty estimate receives no score credit. Equivalent model aliases are grouped by `data/model-metadata.json`.
 
 The run index rebuilds the chart automatically. To rebuild only the chart after editing model metadata, run:
 

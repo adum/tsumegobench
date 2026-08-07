@@ -84,7 +84,7 @@ export function ModelReleaseChart() {
         </div>
         <p>
           Each model is plotted once by public release date, using its best
-          human-reviewed run and normalizing the result to a score out of 10.
+          human-reviewed run and a difficulty-capped score out of 10.
         </p>
       </div>
 

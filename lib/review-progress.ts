@@ -10,6 +10,42 @@ export interface ReviewProgressFields {
   quality?: number | null;
 }
 
+export const HUMAN_DIFFICULTY_BANDS = [
+  "20-30 kyu",
+  "10-19 kyu",
+  "5-9 kyu",
+  "1-4 kyu",
+  "about 1 dan",
+  "2-3 dan",
+  "4 dan or harder",
+] as const;
+
+export type HumanDifficultyBand = (typeof HUMAN_DIFFICULTY_BANDS)[number];
+
+export interface DifficultyScoredProblem {
+  reviews?: readonly ReviewProgressFields[];
+}
+
+export interface DifficultyCappedHumanScore {
+  creditedProblems: number;
+  passingProblems: number;
+  counts: {
+    twentyToThirtyKyu: number;
+    tenToNineteenKyu: number;
+    fiveKyuOrHarder: number;
+    unrated: number;
+  };
+}
+
+const DIFFICULTY_INDEX = new Map<string, number>(
+  HUMAN_DIFFICULTY_BANDS.map((band, index) => [band, index]),
+);
+
+export const HUMAN_DIFFICULTY_CREDIT_CAPS = {
+  twentyToThirtyKyu: 2,
+  tenToNineteenKyu: 2,
+} as const;
+
 export function reviewProblemProgress(
   problem: ReviewProgressFields,
 ): ReviewProblemProgress {
@@ -61,4 +97,62 @@ export function problemPassesHumanReview(
         review.duplicate === false,
     )
   );
+}
+
+export function reviewedProblemDifficulty(
+  reviews: readonly ReviewProgressFields[],
+): HumanDifficultyBand | null {
+  if (!problemPassesHumanReview(reviews)) return null;
+
+  const completedReviews = reviews.filter(
+    (review) => review.status === "completed",
+  );
+  const difficultyIndexes = completedReviews.map((review) =>
+    typeof review.estimatedDifficulty === "string"
+      ? DIFFICULTY_INDEX.get(review.estimatedDifficulty)
+      : undefined,
+  );
+  if (difficultyIndexes.some((index) => index === undefined)) return null;
+
+  // Multiple reviewers can disagree. Use the easiest submitted band so a
+  // disagreement can never inflate a model's credited score.
+  const easiestIndex = Math.min(...(difficultyIndexes as number[]));
+  return HUMAN_DIFFICULTY_BANDS[easiestIndex];
+}
+
+export function difficultyCappedHumanScore(
+  problems: readonly DifficultyScoredProblem[],
+): DifficultyCappedHumanScore {
+  const counts = {
+    twentyToThirtyKyu: 0,
+    tenToNineteenKyu: 0,
+    fiveKyuOrHarder: 0,
+    unrated: 0,
+  };
+  let passingProblems = 0;
+
+  for (const problem of problems) {
+    const reviews = problem.reviews ?? [];
+    if (!problemPassesHumanReview(reviews)) continue;
+    passingProblems += 1;
+
+    const difficulty = reviewedProblemDifficulty(reviews);
+    if (difficulty === "20-30 kyu") counts.twentyToThirtyKyu += 1;
+    else if (difficulty === "10-19 kyu") counts.tenToNineteenKyu += 1;
+    else if (difficulty) counts.fiveKyuOrHarder += 1;
+    else counts.unrated += 1;
+  }
+
+  const creditedProblems =
+    Math.min(
+      HUMAN_DIFFICULTY_CREDIT_CAPS.twentyToThirtyKyu,
+      counts.twentyToThirtyKyu,
+    ) +
+    Math.min(
+      HUMAN_DIFFICULTY_CREDIT_CAPS.tenToNineteenKyu,
+      counts.tenToNineteenKyu,
+    ) +
+    counts.fiveKyuOrHarder;
+
+  return { creditedProblems, passingProblems, counts };
 }

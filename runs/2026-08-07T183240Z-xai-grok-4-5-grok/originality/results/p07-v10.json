@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p07-v10",
+  "path": "outputs/problem-07.sgf",
+  "queryNumber": 38,
+  "queriesRemaining": 12,
+  "checkedAt": "2026-08-07T19:12:05.468Z",
+  "status": "invalid",
+  "candidateSha256": "e3ea0a26f2d2d1c85ecaac6fec55004ee1402759f554ae9c2552ec20bf40ac12",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "B[fp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[fo] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[go] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[go] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[fo] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[fp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[cp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[cp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[dp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[fo] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[go] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[cp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[fp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[fq] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[fq] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[fp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[dp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[fp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[fo] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[fp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[fp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[dp] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[fo] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[fq] plays on an occupied intersection."
+    }
+  ]
+}

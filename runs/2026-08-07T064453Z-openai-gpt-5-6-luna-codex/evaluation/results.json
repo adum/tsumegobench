@@ -60,10 +60,17 @@
     "rejected": 0
   },
   "humanReviews": {
-    "updatedAt": null,
-    "reviewCount": 0,
-    "completedProblemReviews": 0,
-    "reviewers": []
+    "reviewCount": 1,
+    "completedProblemReviews": 5,
+    "reviewers": [
+      {
+        "reviewId": "9356d925-d879-4e61-9913-b747f678128c",
+        "reviewerName": "adam",
+        "updatedAt": "2026-08-07T17:28:44.692893Z",
+        "completed": 5,
+        "total": 10
+      }
+    ]
   },
   "problems": [
     {
@@ -268,7 +275,21 @@
         },
         "notes": ""
       },
-      "reviews": []
+      "reviews": [
+        {
+          "reviewId": "9356d925-d879-4e61-9913-b747f678128c",
+          "reviewerName": "adam",
+          "file": "problem-03.sgf",
+          "status": "completed",
+          "valid": false,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-08-07T17:27:48.142Z"
+        }
+      ]
     },
     {
       "file": "problem-04.sgf",
@@ -353,7 +374,21 @@
         },
         "notes": ""
       },
-      "reviews": []
+      "reviews": [
+        {
+          "reviewId": "9356d925-d879-4e61-9913-b747f678128c",
+          "reviewerName": "adam",
+          "file": "problem-04.sgf",
+          "status": "completed",
+          "valid": false,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-08-07T17:28:12.035Z"
+        }
+      ]
     },
     {
       "file": "problem-05.sgf",
@@ -419,7 +454,21 @@
         },
         "notes": ""
       },
-      "reviews": []
+      "reviews": [
+        {
+          "reviewId": "9356d925-d879-4e61-9913-b747f678128c",
+          "reviewerName": "adam",
+          "file": "problem-05.sgf",
+          "status": "completed",
+          "valid": false,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-08-07T17:28:22.500Z"
+        }
+      ]
     },
     {
       "file": "problem-06.sgf",
@@ -504,7 +553,21 @@
         },
         "notes": ""
       },
-      "reviews": []
+      "reviews": [
+        {
+          "reviewId": "9356d925-d879-4e61-9913-b747f678128c",
+          "reviewerName": "adam",
+          "file": "problem-06.sgf",
+          "status": "completed",
+          "valid": false,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-08-07T17:28:34.079Z"
+        }
+      ]
     },
     {
       "file": "problem-07.sgf",
@@ -570,7 +633,21 @@
         },
         "notes": ""
       },
-      "reviews": []
+      "reviews": [
+        {
+          "reviewId": "9356d925-d879-4e61-9913-b747f678128c",
+          "reviewerName": "adam",
+          "file": "problem-07.sgf",
+          "status": "completed",
+          "valid": false,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-08-07T17:28:44.678Z"
+        }
+      ]
     },
     {
       "file": "problem-08.sgf",

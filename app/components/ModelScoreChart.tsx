@@ -59,7 +59,7 @@ export function ModelScoreChart() {
           <thead>
             <tr>
               <th>Model</th>
-              <th>Human-passed</th>
+              <th>Human score</th>
               <th>Automated gate</th>
               <th>Structural</th>
               <th>Runs</th>
@@ -105,8 +105,9 @@ export function ModelScoreChart() {
 
       <footer className="model-results-note">
         <span>Score definition</span>
-        A problem counts only after completed human review confirms validity,
-        realism, originality, and a well-pathed solution tree.
+        Human-passed problems require a difficulty rating. At most two 20–30
+        kyu and two 10–19 kyu problems receive credit; 5–9 kyu and harder
+        problems are uncapped.
       </footer>
 
       {chartData.unmatchedModels.length > 0 ? (

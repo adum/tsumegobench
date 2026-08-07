@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p04-author",
+  "path": "outputs/problem-04.sgf",
+  "queryNumber": 4,
+  "queriesRemaining": 46,
+  "checkedAt": "2026-08-07T18:11:20.986Z",
+  "status": "invalid",
+  "candidateSha256": "7e8a7ea9deadfb5393a6fa9648a31077c26e4c2ab951edc08f0cb182c92b8d44",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "W[qr] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[qr] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[qr] plays on an occupied intersection."
+    }
+  ]
+}

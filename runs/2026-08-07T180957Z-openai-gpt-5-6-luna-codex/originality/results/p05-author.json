@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p05-author",
+  "path": "outputs/problem-05.sgf",
+  "queryNumber": 5,
+  "queriesRemaining": 45,
+  "checkedAt": "2026-08-07T18:11:21.632Z",
+  "status": "invalid",
+  "candidateSha256": "eefbd0bb7daf2ae8fe5eecbe0989135112072c6086db1b9ef9c21067eaae3d8c",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "setup-overlap",
+      "message": "Black and white are both set on kj, kh."
+    }
+  ]
+}

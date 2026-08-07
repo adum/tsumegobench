@@ -154,7 +154,7 @@ export default function Home() {
           <ol>
             <li>
               <span>01</span>
-              <div><strong>Generate</strong><p>Ten SGF problems across five difficulty bands.</p></div>
+              <div><strong>Generate</strong><p>Ten SGF problems with a deliberate range of difficulty.</p></div>
             </li>
             <li>
               <span>02</span>
@@ -166,7 +166,7 @@ export default function Home() {
             </li>
             <li>
               <span>04</span>
-              <div><strong>Review</strong><p>Judge correctness, realism, pathing, and originality.</p></div>
+              <div><strong>Review</strong><p>Judge correctness, realism, pathing, originality, and actual difficulty.</p></div>
             </li>
           </ol>
           <Link className="definition-link" href="/evaluation">
