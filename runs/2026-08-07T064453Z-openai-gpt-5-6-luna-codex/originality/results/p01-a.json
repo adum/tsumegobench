@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p01-a",
+  "path": "outputs/problem-01.sgf",
+  "queryNumber": 1,
+  "checkedAt": "2026-08-07T06:46:36.738Z",
+  "status": "unavailable",
+  "candidateSha256": "455b4d4ca5e2c42c8fc7ed07154d078548189bf9490ccd5b4ec2b2299567d68f",
+  "cachedRemote": false,
+  "local": {
+    "builtInSetupMatch": null,
+    "exactReferenceMatch": null,
+    "closestReferenceMatch": {
+      "id": 32711,
+      "percentage": 18.52,
+      "url": "https://www.goproblems.com/problems/32711"
+    },
+    "peerExactMatches": [],
+    "peerShapeMatches": []
+  },
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "goproblems-unavailable",
+      "message": "The operation was aborted due to timeout"
+    }
+  ]
+}

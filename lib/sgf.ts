@@ -564,6 +564,43 @@ export function canonicalProblemFingerprint(root: SgfNode): string {
   return canonicalCandidates(root).sort()[0];
 }
 
+export function canonicalInitialSetupFingerprint(root: SgfNode): string {
+  const size = getBoardSize(root);
+  const last = size - 1;
+  const transforms: Transform[] = [
+    ({ x, y }) => ({ x, y }),
+    ({ x, y }) => ({ x: last - y, y: x }),
+    ({ x, y }) => ({ x: last - x, y: last - y }),
+    ({ x, y }) => ({ x: y, y: last - x }),
+    ({ x, y }) => ({ x: last - x, y }),
+    ({ x, y }) => ({ x, y: last - y }),
+    ({ x, y }) => ({ x: y, y: x }),
+    ({ x, y }) => ({ x: last - y, y: last - x }),
+  ];
+  const stones = (["B", "W"] as StoneColor[]).flatMap((color) => {
+    const property = color === "B" ? "AB" : "AW";
+    return expandPointValues(root.properties[property])
+      .map(parsePoint)
+      .filter((point): point is Point => Boolean(point))
+      .map((point) => ({ color, point }));
+  });
+
+  return transforms
+    .flatMap((transform) =>
+      [false, true].map((flipColors) => {
+        const tokens = stones
+          .map(({ color, point }) => {
+            const mapped = transform(point);
+            const mappedColor = flipColors ? (color === "B" ? "W" : "B") : color;
+            return `${mappedColor}:${mapped.x},${mapped.y}`;
+          })
+          .sort();
+        return `${size}#${tokens.join("|")}`;
+      }),
+    )
+    .sort()[0];
+}
+
 export function canonicalRightShapes(root: SgfNode): string[] {
   return collectRightNodes(root)
     .map((rightNode) => canonicalCandidates(root, rightNode).sort()[0])

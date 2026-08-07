@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p01-d",
+  "path": "outputs/problem-01.sgf",
+  "queryNumber": 26,
+  "checkedAt": "2026-08-07T06:50:49.075Z",
+  "status": "invalid",
+  "candidateSha256": "09c9fb0a42f95052b91109c32e819175d7af5ea557af69fa0a5c0684bc1b0d03",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "setup-overlap",
+      "message": "Black and white are both set on qe."
+    }
+  ]
+}

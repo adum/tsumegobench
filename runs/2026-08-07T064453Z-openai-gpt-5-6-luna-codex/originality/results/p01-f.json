@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p01-f",
+  "path": "outputs/problem-01.sgf",
+  "queryNumber": 35,
+  "checkedAt": "2026-08-07T06:52:38.421Z",
+  "status": "invalid",
+  "candidateSha256": "570f25ed9518bf199429170138ef60feee1767eee3d48957d3553520b71c9b09",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "B[qa] plays on an occupied intersection."
+    }
+  ]
+}

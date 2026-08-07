@@ -15,6 +15,7 @@ The repository combines a curated reference corpus, a strict SGF validator, loca
 - `docs/benchmark-spec.md` — run structure, acceptance gates, and comparison protocol.
 - `docs/evaluation-rubric.md` — the human review scorecard.
 - `scripts/` — corpus synchronization, validation, and duplicate checks.
+- `data/model-metadata.json` — normalized model names, family icons, and public release dates used by the home-page score chart.
 - `benchmark.py` — creates a reproducible run, invokes a model through Codex CLI, Claude CLI, Grok CLI, or OpenCode CLI, evaluates its files, and rebuilds the web index.
 - `runs/` — checked-in model runs with input snapshots, generated SGFs, logs, and structured evaluation records.
 - The web reviewer — browse each problem, replay any variation, and inspect the graphical solution tree.
@@ -73,9 +74,13 @@ If the selected CLI rejects an unknown, inaccessible, or unsupported model ID, t
 prints the rejection and exits immediately. It does not retain a run directory,
 evaluate empty outputs, or add the attempt to the web index.
 
-Add `--reasoning-effort high` (or `--effort high`) when you want to pin an effort setting exposed by the selected CLI, or `--local-only` to skip the post-run GoProblems API checks. For OpenCode, the effort value is passed as the model's provider-specific `--variant`. The runner disables model web and network tools, captures the selected CLI's event log automatically, and writes ten candidate SGFs under `runs/<run-id>/outputs/` by default. Use `--count <5-50>` only when you want an explicitly different benchmark condition.
+Add `--reasoning-effort high` (or `--effort high`) when you want to pin an effort setting exposed by the selected CLI. For OpenCode, the effort value is passed as the model's provider-specific `--variant`. The runner disables general model web and network tools, captures the selected CLI's event log automatically, and writes ten candidate SGFs under `runs/<run-id>/outputs/` by default. Use `--count <5-50>` only when you want an explicitly different benchmark condition. `--local-only` is a diagnostic mode that disables both the live originality tool and post-run GoProblems checks, so it cannot produce an originality-complete benchmark result.
 
 When a run starts, the runner prints the selected reasoning effort. If the flag is omitted, it prints `CLI/model default`; the manifest records `null` because the benchmark did not request a specific level.
+
+Recognized transient transport, rate-limit, and service failures are retried up to five total CLI attempts with exponential backoff of 15, 30, 60, and 120 seconds. Model-selection, authentication, launch, and other permanent failures still fail immediately. Every invocation is recorded under `harness.attempts` in `run.json`, with full per-attempt logs under `logs/attempts/`; partial SGFs from a failed retryable attempt are archived there before the next clean attempt. The final terminal report lists every attempt, duration, exit status, SGF count, and the total time spent waiting. Use `--max-attempts`, `--retry-base-delay`, or `--retry-max-delay` to override the defaults; all attempts and waits remain within `--timeout` (12 hours by default).
+
+Every normal run includes a file-based originality tool. The model receives five queries per requested problem by default—50 for the standard ten-problem run—and must spend one final query on each exact output. Built-in common setups are rejected locally from their initial stones alone, across board symmetries and color reversal, without an API call. Other queries require a structurally complete SGF with at least one `C[RIGHT]` solution endpoint; invalid queries return an error and still consume budget. The tool also checks other generated files, the local reference corpus, a radius-2 GoProblems solution signature, and an independent full-corpus percentage search. Use `--duplicate-query-limit` only when deliberately defining a different benchmark condition.
 
 Validate the reference set or a submission:
 
@@ -90,7 +95,7 @@ Check one candidate for duplicates locally and against GoProblems:
 npm run duplicates -- runs/my-run/outputs/problem-01.sgf
 ```
 
-The remote duplicate gate fails on any radius-2 solution-signature match or a percentage match at or above 90%. Use `--local-only`, `--threshold=95`, or `--exclude-id=18843` when appropriate.
+The remote duplicate gate fails on any radius-2 solution-signature match or a full-corpus percentage match at or above 90%. An 80–89% match requires review. Use `--local-only`, `--threshold=95`, or `--exclude-id=18843` only for diagnostic or corpus-maintenance work.
 
 Refresh the public reference data deliberately—not as part of a normal build:
 
@@ -115,6 +120,18 @@ python3 benchmark.py review 2026-08-05T225707Z-openai-gpt-5-6-luna-codex
 ```
 
 For each problem, the initial review can record whether it is valid, whether the position is realistic, whether the reviewer considers it a duplicate, whether its solution and refutation paths are well formed, an estimated difficulty band for valid problems, and a 1–5 quality rating. Reviewer records are independent, so a second reviewer can assess the same run without overwriting the first review. The structured records live in `evaluation/reviews.json`; the hosted site remains read-only.
+
+## Release-date score chart
+
+The home page plots each normalized model once by public release date. Its score is the best human-passed problem rate across that model's runs, normalized to 10 even when a nonstandard run size is used. Equivalent model aliases are grouped by `data/model-metadata.json`.
+
+The run index rebuilds the chart automatically. To rebuild only the chart after editing model metadata, run:
+
+```bash
+npm run chart:build
+```
+
+Models without release metadata are listed by the script and omitted from the chart until an entry is added.
 
 ## Benchmark in one pass
 

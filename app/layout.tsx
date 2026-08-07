@@ -39,11 +39,20 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       type: "website",
       url: origin,
+      images: [
+        {
+          url: `${origin}/og.png`,
+          width: 1734,
+          height: 907,
+          alt: "Tsumego Bench — AI Go Problem Creation Benchmark",
+        },
+      ],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title,
       description,
+      images: [`${origin}/og.png`],
     },
   };
 }

@@ -57,6 +57,7 @@ interface GeneratedProblem {
   };
   originality: {
     status: "pass" | "fail" | "manual_review" | "not_run";
+    builtInSetupMatch?: { id: string; label: string } | null;
     exactLocalMatch: { id: number; sourceUrl: string } | null;
     closestLocalShape: { id: number; sourceUrl: string; percentage: number } | null;
     peerExactMatches: string[];
@@ -107,8 +108,23 @@ interface BenchmarkRun {
   condition: {
     remoteDuplicateEvaluation?: boolean;
   };
+  originalityTool?: {
+    queryLimit: number;
+    queriesUsed: number;
+    queriesRemaining: number;
+    quotaExceeded: number;
+    remoteCacheHits: number;
+    results: {
+      clear: number;
+      review: number;
+      duplicate: number;
+      invalid: number;
+      unavailable: number;
+    };
+  } | null;
   summary: {
     expectedProblems?: number;
+    filesFound?: number;
     structuralPassed: number;
     originalityPassed: number;
     automatedGatePassed: number;
@@ -242,6 +258,18 @@ function humanPassedProblemCount(run: BenchmarkRun) {
   ).length;
 }
 
+export function runHasSgfFiles(record: {
+  summary: { filesFound?: number };
+  problems: Array<{ sgf: string | null }>;
+}) {
+  if (typeof record.summary.filesFound === "number") {
+    return record.summary.filesFound > 0;
+  }
+  return record.problems.some(
+    (problem) => typeof problem.sgf === "string" && problem.sgf.trim().length > 0,
+  );
+}
+
 function rememberBrowserSelection(runId: string, problemFile: string) {
   const url = new URL(window.location.href);
   url.searchParams.set("run", runId);
@@ -258,6 +286,10 @@ export function RunBrowser() {
   const run = runs.find((record) => record.runId === selectedRunId) ?? fallbackRun;
   const [selectedProblemFile, setSelectedProblemFile] = useState(defaultProblem(run)?.file ?? "");
   const [liveReviewProgress, setLiveReviewProgress] = useState<ReviewProgressSnapshot | null>(null);
+  const [sgfCopyState, setSgfCopyState] = useState<{
+    file: string;
+    status: "copied" | "failed";
+  } | null>(null);
   const problem =
     run?.problems.find((record) => record.file === selectedProblemFile) ?? defaultProblem(run);
   const root = safeParseSgf(problem?.sgf, problem?.validation.valid);
@@ -284,6 +316,19 @@ export function RunBrowser() {
   const updateReviewProgress = useCallback((snapshot: ReviewProgressSnapshot | null) => {
     setLiveReviewProgress(snapshot);
   }, []);
+  const copyProblemSgf = async () => {
+    if (!problem?.sgf) return;
+    const file = problem.file;
+    try {
+      await navigator.clipboard.writeText(problem.sgf);
+      setSgfCopyState({ file, status: "copied" });
+    } catch {
+      setSgfCopyState({ file, status: "failed" });
+    }
+    window.setTimeout(() => {
+      setSgfCopyState((current) => (current?.file === file ? null : current));
+    }, 1800);
+  };
   const previousNode = selected?.parent;
   const nextNode = selected?.children[0];
   const path = selected ? getPath(selected) : [];
@@ -323,6 +368,14 @@ export function RunBrowser() {
     : startedReviewCount
       ? `${startedReviewCount} in progress`
       : problem?.human?.status ?? "pending";
+  const originalityFlagged = run?.originalityTool
+    ? run.originalityTool.results.duplicate + run.originalityTool.results.review
+    : 0;
+  const originalityErrors = run?.originalityTool
+    ? run.originalityTool.results.invalid +
+      run.originalityTool.results.unavailable +
+      run.originalityTool.quotaExceeded
+    : 0;
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -395,7 +448,9 @@ export function RunBrowser() {
     id: "originality",
     status: effectiveOriginalityStatus,
     message:
-      peerDuplicate
+      problem.originality.builtInSetupMatch
+        ? `Built-in common setup match: ${problem.originality.builtInSetupMatch.label}.`
+        : peerDuplicate
         ? `Exact transformed match within this run: ${problem.originality.peerExactMatches.join(", ")}.`
         : peerReview
           ? `Another generated problem has a similar solution shape: ${problem.originality.peerShapeMatches.map((match) => `${match.file} (${Math.round(match.percentage)}%)`).join(", ")}.`
@@ -430,6 +485,7 @@ export function RunBrowser() {
               const humanPassed = humanPassedProblemCount(record);
               const automatedPassed = record.summary.automatedGatePassed;
               const totalProblems = record.summary.expectedProblems ?? record.problems.length;
+              const showPassCounts = runHasSgfFiles(record);
 
               return (
                 <button
@@ -446,13 +502,15 @@ export function RunBrowser() {
                   <span className="problem-list-copy">
                     <span className="problem-list-topline">
                       <strong>{record.model.name}</strong>
-                      <span
-                        className="run-pass-counts"
-                        aria-label={`${humanPassed} human passed, ${automatedPassed} automated passed, ${totalProblems} total problems`}
-                        title="Human passed / automated passed / total problems"
-                      >
-                        {humanPassed}/{automatedPassed}/{totalProblems}
-                      </span>
+                      {showPassCounts ? (
+                        <span
+                          className="run-pass-counts"
+                          aria-label={`${humanPassed} human passed, ${automatedPassed} automated passed, ${totalProblems} total problems`}
+                          title="Human passed / automated passed / total problems"
+                        >
+                          {humanPassed}/{automatedPassed}/{totalProblems}
+                        </span>
+                      ) : null}
                     </span>
                     <span className="run-effort">{effortLabel(record.model.reasoningEffort)}</span>
                     <small>{humanDate(record.createdAt)}</small>
@@ -480,6 +538,24 @@ export function RunBrowser() {
               <span><strong>{run.summary.originalityPassed}</strong> original</span>
               <span><strong>{run.summary.humanReviewPending}</strong> to review</span>
               <span><strong>{humanPassedProblemCount(run)}</strong> human passed</span>
+              {run.originalityTool ? (
+                <>
+                  <span
+                    title={`${run.originalityTool.queriesRemaining} queries remaining`}
+                    aria-label={`${run.originalityTool.queriesUsed} of ${run.originalityTool.queryLimit} originality queries used`}
+                  >
+                    <strong>{run.originalityTool.queriesUsed} / {run.originalityTool.queryLimit}</strong>
+                    queries used
+                  </span>
+                  <span
+                    className="originality-result-summary"
+                    title={`${run.originalityTool.results.clear} clear, ${originalityFlagged} flagged, ${originalityErrors} errors`}
+                  >
+                    <strong>{run.originalityTool.results.clear} / {originalityFlagged} / {originalityErrors}</strong>
+                    clear / flagged / error
+                  </span>
+                </>
+              ) : null}
             </div>
           </header>
 
@@ -636,6 +712,12 @@ export function RunBrowser() {
                   <dt>Human review</dt>
                   <dd>{humanReviewSummary}</dd>
                 </div>
+                {problem.originality.builtInSetupMatch && (
+                  <div>
+                    <dt>Built-in common setup</dt>
+                    <dd>{problem.originality.builtInSetupMatch.label}</dd>
+                  </div>
+                )}
                 <div><dt>Closest reference</dt><dd>{problem.originality.closestLocalShape ? `#${problem.originality.closestLocalShape.id} · ${Math.round(problem.originality.closestLocalShape.percentage)}%` : "not available"}</dd></div>
                 <div>
                   <dt>Remote top match</dt>
@@ -719,6 +801,37 @@ export function RunBrowser() {
                   ))}
                 </ul>
               )}
+              <section className="sgf-source" aria-label={`SGF source for ${problem.file}`}>
+                <div className="sgf-source-bar">
+                  <div>
+                    <span>SGF SOURCE</span>
+                    <code>{problem.file}</code>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={copyProblemSgf}
+                    disabled={!problem.sgf}
+                    className={
+                      sgfCopyState?.file === problem.file ? sgfCopyState.status : undefined
+                    }
+                    aria-live="polite"
+                  >
+                    {sgfCopyState?.file === problem.file
+                      ? sgfCopyState.status === "copied"
+                        ? "Copied"
+                        : "Copy failed"
+                      : "Copy SGF"}
+                  </button>
+                </div>
+                {problem.sgf ? (
+                  <details>
+                    <summary>Reveal SGF source</summary>
+                    <pre>{problem.sgf}</pre>
+                  </details>
+                ) : (
+                  <p className="sgf-source-empty">No SGF source was produced for this problem.</p>
+                )}
+              </section>
             </div>
           </div>
         </div>

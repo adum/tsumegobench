@@ -16,6 +16,7 @@
     "duplicates": "tsx scripts/check-duplicates.ts",
     "evaluate:run": "tsx scripts/evaluate-run.ts",
     "runs:index": "tsx scripts/index-runs.ts",
+    "chart:build": "tsx scripts/build-model-score-chart.ts",
     "sync:examples": "tsx scripts/sync-examples.ts",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
   },

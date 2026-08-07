@@ -7,6 +7,7 @@ import {
   loadDuplicateCorpus,
   type DuplicateReport,
 } from "../lib/duplicate-check";
+import { findBuiltInSetupDuplicate } from "../lib/common-setup-duplicates";
 import {
   canonicalProblemFingerprint,
   canonicalRightShapes,
@@ -31,10 +32,17 @@ interface RunManifest {
   };
   condition?: {
     problemCount?: number;
+    duplicateToolEnabled?: boolean;
   };
   artifacts?: {
     outputs?: string[];
   };
+}
+
+interface OriginalityToolResponse {
+  path: string | null;
+  status: string;
+  candidateSha256: string | null;
 }
 
 interface ProblemEvaluation {
@@ -174,6 +182,16 @@ const unexpectedNames = outputEntries
   .map((entry) => entry.name)
   .sort();
 
+const originalityToolResponses: OriginalityToolResponse[] = [];
+try {
+  const audit = await readFile(path.join(runDir, "logs", "originality-tool.jsonl"), "utf8");
+  for (const line of audit.split(/\r?\n/).filter(Boolean)) {
+    originalityToolResponses.push(JSON.parse(line) as OriginalityToolResponse);
+  }
+} catch {
+  // A disabled or failed tool has no trusted audit; the run check below records that state.
+}
+
 runChecks.push({
   id: "expected-files",
   status: missingNames.length ? "fail" : "pass",
@@ -235,12 +253,14 @@ for (let index = 0; index < expectedProblems.length; index += 1) {
         ],
       };
   const root = validation.root;
+  const builtInSetupMatch = root ? findBuiltInSetupDuplicate(root) : null;
   const firstMove = root?.children.map(getMove).find(Boolean);
   const playerColor =
     firstMove?.color === "B" ? "black" : firstMove?.color === "W" ? "white" : null;
 
   let originality: ProblemEvaluation["originality"] = {
     status: "not_run",
+    builtInSetupMatch: null,
     exactLocalMatch: null,
     closestLocalShape: null,
     remote: {
@@ -253,7 +273,7 @@ for (let index = 0; index < expectedProblems.length; index += 1) {
     peerExactMatches: [],
     peerShapeMatches: [],
   };
-  if (sgf && validation.valid && root) {
+  if (sgf && root && (validation.valid || builtInSetupMatch)) {
     originality = {
       ...(await checkProblemDuplicates(sgf, root, corpus, {
         remote: !localOnly,
@@ -355,6 +375,40 @@ runChecks.push({
   status: "needs_human_review",
   message:
     `The ${expectedProblems.length} per-file difficulty targets span the benchmark range; a human reviewer must verify the actual difficulty.`,
+});
+
+const duplicateToolEnabled = runManifest.condition?.duplicateToolEnabled === true;
+const outputsWithoutFinalClear = problems
+  .filter((problem) => {
+    if (!problem.sha256) return true;
+    const expectedPath = `outputs/${problem.file}`;
+    return !originalityToolResponses.some(
+      (response) =>
+        response.status === "clear" &&
+        response.path === expectedPath &&
+        response.candidateSha256 === problem.sha256,
+    );
+  })
+  .map((problem) => problem.file);
+if (duplicateToolEnabled) {
+  for (const problem of problems) {
+    if (!outputsWithoutFinalClear.includes(problem.file)) continue;
+    problem.status = "failed";
+    problem.automatedGate = "fail";
+  }
+}
+runChecks.push({
+  id: "originality-tool-final-coverage",
+  status: !duplicateToolEnabled
+    ? "not_run"
+    : outputsWithoutFinalClear.length
+      ? "fail"
+      : "pass",
+  message: !duplicateToolEnabled
+    ? "The live originality tool was disabled for this diagnostic run."
+    : outputsWithoutFinalClear.length
+      ? `No final clear originality result matched the exact output hash for: ${outputsWithoutFinalClear.join(", ")}.`
+      : `All ${problems.length} exact final output hashes received a clear originality result.`,
 });
 
 const serializableProblems = problems.map((problem) => {

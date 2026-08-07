@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "queryLimit": 50,
+  "queriesUsed": 50,
+  "queriesRemaining": 0,
+  "quotaExceeded": 0,
+  "remoteCacheHits": 8,
+  "results": {
+    "clear": 8,
+    "review": 9,
+    "duplicate": 13,
+    "invalid": 19,
+    "unavailable": 1
+  },
+  "updatedAt": "2026-08-07T06:54:29.790Z"
+}

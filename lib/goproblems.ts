@@ -53,11 +53,9 @@ export async function findSimilarProblems(
     {
       pattern: sgf,
       excludedIds,
-      includedIds: radiusTwo.entries.map((entry) => entry.id),
       limit,
     },
   );
 
   return { radiusTwo, percentage };
 }
-

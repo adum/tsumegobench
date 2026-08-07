@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p04-a",
+  "path": "outputs/problem-04.sgf",
+  "queryNumber": 4,
+  "checkedAt": "2026-08-07T06:46:49.371Z",
+  "status": "invalid",
+  "candidateSha256": "576e527f9050cff827414c356e28be6bd6690bf25355902c0a1454e9e212f1a6",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "W[nd] plays on an occupied intersection."
+    }
+  ]
+}

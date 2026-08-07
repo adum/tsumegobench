@@ -96,7 +96,63 @@
         "usage": { "type": ["object", "null"] },
         "eventCount": { "type": "integer", "minimum": 0 },
         "unparsedLineCount": { "type": "integer", "minimum": 0 },
-        "failureMessage": { "type": ["string", "null"] }
+        "failureMessage": { "type": ["string", "null"] },
+        "retryPolicy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["maxAttempts", "baseDelaySeconds", "maximumDelaySeconds"],
+          "properties": {
+            "maxAttempts": { "type": "integer", "minimum": 1 },
+            "baseDelaySeconds": { "type": "integer", "minimum": 0 },
+            "maximumDelaySeconds": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "attempts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "number",
+              "startedAt",
+              "completedAt",
+              "exitCode",
+              "durationSeconds",
+              "timedOut",
+              "retryable",
+              "failureMessage",
+              "outputFileCount",
+              "stdout",
+              "stderr",
+              "outcome"
+            ],
+            "properties": {
+              "number": { "type": "integer", "minimum": 1 },
+              "startedAt": { "type": "string", "format": "date-time" },
+              "completedAt": { "type": "string", "format": "date-time" },
+              "exitCode": { "type": "integer" },
+              "durationSeconds": { "type": "number", "minimum": 0 },
+              "timedOut": { "type": "boolean" },
+              "retryable": { "type": "boolean" },
+              "failureMessage": { "type": ["string", "null"] },
+              "outputFileCount": { "type": "integer", "minimum": 0 },
+              "stdout": { "type": "string" },
+              "stderr": { "type": "string" },
+              "outcome": {
+                "enum": [
+                  "success",
+                  "transient_failure",
+                  "permanent_failure",
+                  "model_rejected",
+                  "timeout"
+                ]
+              },
+              "retryDelaySeconds": { "type": "integer", "minimum": 0 },
+              "archivedOutputs": { "type": "string" },
+              "retrySkippedReason": { "type": "string" }
+            }
+          }
+        }
       }
     },
     "condition": {
@@ -108,6 +164,8 @@
         "webEnabled",
         "networkEnabled",
         "duplicateToolEnabled",
+        "duplicateToolVersion",
+        "duplicateQueryLimit",
         "remoteDuplicateEvaluation",
         "notes"
       ],
@@ -118,6 +176,8 @@
         "webEnabled": { "type": "boolean" },
         "networkEnabled": { "type": "boolean" },
         "duplicateToolEnabled": { "type": "boolean" },
+        "duplicateToolVersion": { "const": 1 },
+        "duplicateQueryLimit": { "type": "integer", "minimum": 5 },
         "remoteDuplicateEvaluation": { "type": "boolean" },
         "notes": { "type": "string" }
       }
@@ -129,6 +189,9 @@
         "task",
         "stdout",
         "stderr",
+        "originalityToolGuide",
+        "originalityToolSummary",
+        "originalityToolAudit",
         "finalMessage",
         "outputs",
         "automatedEvaluation",
@@ -139,6 +202,10 @@
         "task": { "type": "string" },
         "stdout": { "type": "string" },
         "stderr": { "type": "string" },
+        "attempts": { "type": "string" },
+        "originalityToolGuide": { "type": "string" },
+        "originalityToolSummary": { "type": "string" },
+        "originalityToolAudit": { "type": "string" },
         "finalMessage": { "type": "string" },
         "outputs": {
           "type": "array",

@@ -71,6 +71,23 @@ interface HumanReviews {
   reviews: ReviewerRecord[];
 }
 
+interface OriginalityToolSummary {
+  schemaVersion: number;
+  queryLimit: number;
+  queriesUsed: number;
+  queriesRemaining: number;
+  quotaExceeded: number;
+  remoteCacheHits: number;
+  results: {
+    clear: number;
+    review: number;
+    duplicate: number;
+    invalid: number;
+    unavailable: number;
+  };
+  updatedAt: string;
+}
+
 async function readJson<T>(file: string): Promise<T | null> {
   try {
     return JSON.parse(await readFile(file, "utf8")) as T;
@@ -97,6 +114,9 @@ for (const entry of entries.filter((item) => item.isDirectory())) {
   const human = await readJson<HumanEvaluation>(path.join(runDir, "evaluation", "human.json"));
   const humanReviews = await readJson<HumanReviews>(
     path.join(runDir, "evaluation", "reviews.json"),
+  );
+  const originalityTool = await readJson<OriginalityToolSummary>(
+    path.join(runDir, "originality", "summary.json"),
   );
   const reviewerRecords = humanReviews?.reviews ?? [];
 
@@ -136,6 +156,7 @@ for (const entry of entries.filter((item) => item.isDirectory())) {
       durationSeconds: manifest.harness.durationSeconds ?? null,
     },
     condition: manifest.condition,
+    originalityTool,
     evaluatedAt: automated.evaluatedAt,
     configuration: automated.configuration,
     summary: automated.summary,
@@ -170,3 +191,4 @@ for (const entry of entries.filter((item) => item.isDirectory())) {
 indexedRuns.sort((left, right) => right.createdAt.localeCompare(left.createdAt));
 await writeFile(outputFile, `${JSON.stringify(indexedRuns, null, 2)}\n`, "utf8");
 process.stdout.write(`Indexed ${indexedRuns.length} benchmark run(s).\n`);
+await import("./build-model-score-chart");

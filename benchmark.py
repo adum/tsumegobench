@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import http.server
 import json
+import math
 import os
 import re
 import secrets
@@ -14,6 +15,7 @@ import shutil
 import socket
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 import urllib.error
@@ -31,6 +33,10 @@ DEFAULT_PROBLEM_COUNT = 10
 MINIMUM_PROBLEM_COUNT = 5
 MAXIMUM_PROBLEM_COUNT = 50
 DEFAULT_RUN_TIMEOUT_SECONDS = 12 * 60 * 60
+DEFAULT_MAX_HARNESS_ATTEMPTS = 5
+DEFAULT_RETRY_BASE_DELAY_SECONDS = 15
+DEFAULT_RETRY_MAX_DELAY_SECONDS = 120
+DEFAULT_DUPLICATE_QUERIES_PER_PROBLEM = 5
 MINIMUM_CLAUDE_VERSION = (2, 1, 169)
 MINIMUM_OPENCODE_VERSION = (1, 1, 1)
 DIFFICULTY_BANDS = (
@@ -114,6 +120,38 @@ def format_timeout(seconds: int) -> str:
         minutes = seconds // 60
         return f"{minutes} {'minute' if minutes == 1 else 'minutes'} ({seconds:,} seconds)"
     return f"{seconds:,} {'second' if seconds == 1 else 'seconds'}"
+
+
+def format_elapsed(seconds: float) -> str:
+    seconds = max(0, seconds)
+    if seconds < 60:
+        rounded = round(seconds, 1)
+        value = f"{rounded:.1f}".rstrip("0").rstrip(".")
+        return f"{value} {'second' if rounded == 1 else 'seconds'}"
+    total_seconds = int(round(seconds))
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, remaining_seconds = divmod(remainder, 60)
+    parts = []
+    if hours:
+        parts.append(f"{hours} {'hour' if hours == 1 else 'hours'}")
+    if minutes:
+        parts.append(f"{minutes} {'minute' if minutes == 1 else 'minutes'}")
+    if remaining_seconds:
+        parts.append(
+            f"{remaining_seconds} {'second' if remaining_seconds == 1 else 'seconds'}"
+        )
+    return " ".join(parts) or "0 seconds"
+
+
+def retry_delay_seconds(completed_attempt: int, base_delay: int, maximum_delay: int) -> int:
+    return min(maximum_delay, base_delay * (2 ** max(0, completed_attempt - 1)))
+
+
+def retry_schedule(max_attempts: int, base_delay: int, maximum_delay: int) -> list[int]:
+    return [
+        retry_delay_seconds(attempt, base_delay, maximum_delay)
+        for attempt in range(1, max_attempts)
+    ]
 
 
 def read_json(file: Path) -> dict[str, Any]:
@@ -550,6 +588,110 @@ def run_typescript(script: str, arguments: list[str]) -> subprocess.CompletedPro
     )
 
 
+def duplicate_query_limit(args: argparse.Namespace) -> int:
+    configured = getattr(args, "duplicate_query_limit", None)
+    return configured if configured is not None else args.count * DEFAULT_DUPLICATE_QUERIES_PER_PROBLEM
+
+
+def start_originality_broker(run_dir: Path, query_limit: int) -> dict[str, Any]:
+    executable = typescript_node()
+    trusted_directory = tempfile.TemporaryDirectory(prefix="tsumego-originality-audit-")
+    trusted_path = Path(trusted_directory.name)
+    stdout_path = run_dir / "logs" / "originality-broker-stdout.txt"
+    stderr_path = run_dir / "logs" / "originality-broker-stderr.txt"
+    stdout_handle = stdout_path.open("w", encoding="utf-8")
+    stderr_handle = stderr_path.open("w", encoding="utf-8")
+    command = [
+        executable,
+        "--import",
+        "tsx",
+        "scripts/originality-broker.ts",
+        "--run-dir",
+        runtime_path(run_dir, executable),
+        "--query-limit",
+        str(query_limit),
+        "--audit-dir",
+        runtime_path(trusted_path, executable),
+    ]
+    try:
+        process = subprocess.Popen(
+            command,
+            cwd=PROJECT_ROOT,
+            stdout=stdout_handle,
+            stderr=stderr_handle,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+        )
+    except OSError:
+        stdout_handle.close()
+        stderr_handle.close()
+        trusted_directory.cleanup()
+        raise
+
+    ready_path = run_dir / "originality" / "ready.json"
+    deadline = time.monotonic() + 30
+    while time.monotonic() < deadline:
+        if ready_path.exists():
+            return {
+                "process": process,
+                "stdoutHandle": stdout_handle,
+                "stderrHandle": stderr_handle,
+                "trustedDirectory": trusted_directory,
+                "trustedPath": trusted_path,
+            }
+        exit_code = process.poll()
+        if exit_code is not None:
+            stdout_handle.close()
+            stderr_handle.close()
+            trusted_directory.cleanup()
+            detail = stderr_path.read_text(encoding="utf-8").strip()
+            raise RuntimeError(
+                f"The originality broker exited with status {exit_code}"
+                f"{f': {detail}' if detail else '.'}"
+            )
+        time.sleep(0.1)
+
+    process.terminate()
+    try:
+        process.wait(timeout=10)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait(timeout=5)
+    stdout_handle.close()
+    stderr_handle.close()
+    trusted_directory.cleanup()
+    raise RuntimeError("The originality broker did not become ready within 30 seconds.")
+
+
+def stop_originality_broker(run_dir: Path, broker: dict[str, Any]) -> int | None:
+    process = broker["process"]
+    (run_dir / "originality" / "stop").write_text("stop\n", encoding="utf-8")
+    try:
+        exit_code = process.wait(timeout=60)
+    except subprocess.TimeoutExpired:
+        process.terminate()
+        try:
+            exit_code = process.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            exit_code = process.wait(timeout=5)
+    finally:
+        broker["stdoutHandle"].close()
+        broker["stderrHandle"].close()
+        trusted_path = broker["trustedPath"]
+        trusted_summary = trusted_path / "summary.json"
+        trusted_audit = trusted_path / "audit.jsonl"
+        if trusted_summary.exists():
+            shutil.copy2(trusted_summary, run_dir / "originality" / "summary.json")
+        if trusted_audit.exists():
+            shutil.copy2(trusted_audit, run_dir / "logs" / "originality-tool.jsonl")
+        broker["trustedDirectory"].cleanup()
+        (run_dir / "originality" / "stop").unlink(missing_ok=True)
+        (run_dir / "originality" / "ready.json").unlink(missing_ok=True)
+    return exit_code
+
+
 def portable_command(command: list[str], run_dir: Path) -> list[str]:
     recorded: list[str] = []
     for index, argument in enumerate(command):
@@ -650,7 +792,11 @@ def opencode_config() -> dict[str, Any]:
 
 
 def copy_inputs(
-    run_dir: Path, problem_count: int, harness: str = "codex"
+    run_dir: Path,
+    problem_count: int,
+    harness: str = "codex",
+    duplicate_tool_enabled: bool = True,
+    query_limit: int | None = None,
 ) -> list[dict[str, str]]:
     inputs = run_dir / "inputs"
     examples = inputs / "examples"
@@ -660,7 +806,14 @@ def copy_inputs(
         PROJECT_ROOT / "docs" / "model-prompt.md": inputs / "model-prompt.md",
         PROJECT_ROOT / "docs" / "authoring-guide.md": inputs / "authoring-guide.md",
         PROJECT_ROOT / "docs" / "benchmark-spec.md": inputs / "benchmark-spec.md",
+        PROJECT_ROOT / "docs" / "originality-tool.md": inputs / "originality-tool.md",
         PROJECT_ROOT / "examples" / "manifest.json": inputs / "reference-manifest.json",
+        PROJECT_ROOT / "schemas" / "originality-request.schema.json": inputs
+        / "originality-request.schema.json",
+        PROJECT_ROOT / "schemas" / "originality-response.schema.json": inputs
+        / "originality-response.schema.json",
+        PROJECT_ROOT / "schemas" / "originality-summary.schema.json": inputs
+        / "originality-summary.schema.json",
     }
     for source, destination in copies.items():
         shutil.copy2(source, destination)
@@ -672,6 +825,16 @@ def copy_inputs(
         f"   - `outputs/{name}` - target difficulty: {target}"
         for name, target in zip(output_names, difficulty_targets(problem_count), strict=True)
     )
+    effective_query_limit = query_limit or problem_count * DEFAULT_DUPLICATE_QUERIES_PER_PROBLEM
+    if duplicate_tool_enabled:
+        originality_steps = f"""6. Read `inputs/originality-tool.md`. The originality query budget is {effective_query_limit} requests ({DEFAULT_DUPLICATE_QUERIES_PER_PROBLEM} per requested problem). Built-in common setups can return `duplicate` from the initial stones alone; otherwise, a request without at least one `C[RIGHT]` endpoint returns `invalid`. Either outcome still consumes one query.
+7. Use the originality tool while authoring, then query every exact final output again after all {problem_count} files exist. Only a final `clear` result is acceptable. Do not edit a file after its final clear result.
+8. Do not access the web or any other network service. The file-based originality tool is the only permitted external lookup.
+9. Do not run the benchmark evaluator yourself. Finish all {problem_count} files, verify them, then exit."""
+    else:
+        originality_steps = f"""6. This is a local-only diagnostic run, so the live originality tool is disabled and the run cannot satisfy the remote originality gate. Do not create originality requests or wait for results.
+7. Do not access the web or any network service.
+8. Do not run the benchmark evaluator yourself. Finish all {problem_count} files, verify them locally as far as you can, then exit."""
     task = f"""# Tsumego Bench execution task
 
 This is a controlled benchmark run. Work only inside the current run directory.
@@ -681,9 +844,8 @@ This is a controlled benchmark run. Work only inside the current run directory.
 3. Create exactly {problem_count} final candidate SGF files using these names and target difficulties:
 {target_lines}
 4. Each output file must contain only one complete SGF collection—no Markdown fences or explanatory prose.
-5. Do not modify anything under `inputs/`, `logs/`, or `evaluation/`, and do not modify `run.json`.
-6. Do not access the web or any network service. Duplicate checks are performed by the benchmark after you exit.
-7. Do not run the benchmark evaluator yourself. Finish all {problem_count} files, verify them locally as far as you can, then exit.
+5. Do not modify anything under `inputs/`, `logs/`, `evaluation/`, or `originality/results/`; do not modify `originality/summary.json` or `run.json`. Under `originality/`, you may only create new request files in `originality/requests/`.
+{originality_steps}
 
 Do not ask the operator questions and do not wait for repair feedback.
 """
@@ -1003,6 +1165,143 @@ def is_model_selection_failure(message: str | None, raw_output: str = "") -> boo
     return any(pattern in evidence for pattern in patterns)
 
 
+def is_transient_harness_failure(message: str | None, raw_output: str = "") -> bool:
+    evidence = f"{message or ''}\n{raw_output}".lower()
+    if is_model_selection_failure(message, raw_output):
+        return False
+    patterns = (
+        "reqwest error",
+        "error sending request for url",
+        "connection reset",
+        "connection closed",
+        "connection refused",
+        "connection aborted",
+        "network is unreachable",
+        "network error",
+        "transport error",
+        "temporary failure in name resolution",
+        "name or service not known",
+        "dns error",
+        "tls handshake",
+        "unexpected eof",
+        "stream error",
+        "error decoding response body",
+        "request timeout",
+        "request timed out",
+        "operation timed out",
+        "deadline exceeded",
+        "temporarily unavailable",
+        "service unavailable",
+        "bad gateway",
+        "gateway timeout",
+        "too many requests",
+        "rate limit",
+        "overloaded_error",
+        "server_error",
+        "internal server error",
+        "upstream connect error",
+    )
+    retryable_status = re.search(
+        r"(?:http(?: status)?|status(?: code)?|error)[^\n]{0,24}\b(?:408|425|429|500|502|503|504|521|522|523|524|529)\b",
+        evidence,
+    )
+    return bool(retryable_status) or any(pattern in evidence for pattern in patterns)
+
+
+def compact_failure(message: str | None, stdout: str, stderr: str, exit_code: int) -> str:
+    candidates = [message, stderr.strip(), stdout.strip()]
+    detail = next((candidate for candidate in candidates if candidate), None)
+    if not detail:
+        return f"Exited with status {exit_code}."
+    compact = re.sub(r"\s+", " ", detail).strip()
+    return compact if len(compact) <= 500 else f"{compact[:497]}..."
+
+
+def run_harness_once(
+    args: argparse.Namespace,
+    command: list[str],
+    run_dir: Path,
+    task: str,
+    label: str,
+    timeout_seconds: float,
+) -> dict[str, Any]:
+    started = time.monotonic()
+    stdout = ""
+    stderr = ""
+    exit_code: int | None = None
+    timed_out = False
+    timeout_message: str | None = None
+    try:
+        completed = subprocess.run(
+            command,
+            cwd=run_dir,
+            input=None if args.harness == "grok" else task,
+            env=harness_environment(args, run_dir),
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=timeout_seconds,
+        )
+        stdout = captured_text(completed.stdout)
+        stderr = captured_text(completed.stderr)
+        exit_code = completed.returncode
+    except subprocess.TimeoutExpired as error:
+        timed_out = True
+        stdout = captured_text(error.stdout)
+        stderr = captured_text(error.stderr)
+        timeout_message = (
+            f"{label} timed out after {format_timeout(max(1, math.ceil(timeout_seconds)))}."
+        )
+        stderr = f"{stderr.rstrip()}\n{timeout_message}\n" if stderr else f"{timeout_message}\n"
+        exit_code = 124
+    except OSError as error:
+        stderr = f"Could not launch {label}: {error}\n"
+        exit_code = 127
+
+    return {
+        "stdout": stdout,
+        "stderr": stderr,
+        "exitCode": exit_code,
+        "timedOut": timed_out,
+        "timeoutMessage": timeout_message,
+        "durationSeconds": round(time.monotonic() - started, 3),
+    }
+
+
+def write_harness_attempt_logs(
+    run_dir: Path,
+    harness: str,
+    attempt_number: int,
+    stdout: str,
+    stderr: str,
+) -> tuple[Path, str, str]:
+    attempt_dir = run_dir / "logs" / "attempts" / f"attempt-{attempt_number:02d}"
+    attempt_dir.mkdir(parents=True, exist_ok=True)
+    stdout_path = attempt_dir / f"{harness}-events.jsonl"
+    stderr_path = attempt_dir / f"{harness}-stderr.txt"
+    stdout_path.write_text(stdout, encoding="utf-8")
+    stderr_path.write_text(stderr, encoding="utf-8")
+    return (
+        attempt_dir,
+        stdout_path.relative_to(run_dir).as_posix(),
+        stderr_path.relative_to(run_dir).as_posix(),
+    )
+
+
+def archive_retry_outputs(run_dir: Path, attempt_dir: Path) -> str | None:
+    outputs_dir = run_dir / "outputs"
+    output_items = list(outputs_dir.iterdir())
+    if not output_items:
+        return None
+    archive_dir = attempt_dir / "outputs"
+    archive_dir.mkdir()
+    for item in output_items:
+        shutil.move(str(item), str(archive_dir / item.name))
+    return archive_dir.relative_to(run_dir).as_posix()
+
+
 def discard_new_run(run_dir: Path) -> None:
     target = run_dir.resolve()
     runs_root = RUNS_ROOT.resolve()
@@ -1170,7 +1469,15 @@ def open_review_url(url: str) -> bool:
 
 
 def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> dict[str, Any]:
-    input_files = copy_inputs(run_dir, args.count, args.harness)
+    tool_enabled = not args.local_only
+    query_limit = duplicate_query_limit(args)
+    input_files = copy_inputs(
+        run_dir,
+        args.count,
+        args.harness,
+        duplicate_tool_enabled=tool_enabled,
+        query_limit=query_limit,
+    )
     output_names = expected_output_names(args.count)
     model_prompt = run_dir / "inputs" / "model-prompt.md"
     reference_manifest = run_dir / "inputs" / "reference-manifest.json"
@@ -1205,6 +1512,12 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
             "eventCount": 0,
             "unparsedLineCount": 0,
             "failureMessage": None,
+            "retryPolicy": {
+                "maxAttempts": args.max_attempts,
+                "baseDelaySeconds": args.retry_base_delay,
+                "maximumDelaySeconds": args.retry_max_delay,
+            },
+            "attempts": [],
         },
         "condition": {
             "attempt": args.attempt,
@@ -1212,7 +1525,9 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
             "toolsEnabled": True,
             "webEnabled": False,
             "networkEnabled": False,
-            "duplicateToolEnabled": False,
+            "duplicateToolEnabled": tool_enabled,
+            "duplicateToolVersion": 1,
+            "duplicateQueryLimit": query_limit,
             "remoteDuplicateEvaluation": not args.local_only,
             "notes": args.notes or "",
         },
@@ -1220,6 +1535,10 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
             "task": "inputs/task.md",
             "stdout": f"logs/{log_prefix}-events.jsonl",
             "stderr": f"logs/{log_prefix}-stderr.txt",
+            "attempts": "logs/attempts",
+            "originalityToolGuide": "inputs/originality-tool.md",
+            "originalityToolSummary": "originality/summary.json",
+            "originalityToolAudit": "logs/originality-tool.jsonl",
             "finalMessage": "logs/final-message.txt",
             "outputs": [f"outputs/{name}" for name in output_names],
             "automatedEvaluation": "evaluation/automated.json",
@@ -1445,6 +1764,32 @@ def run_command(args: argparse.Namespace) -> int:
     print(f"Running {args.model} with {label}…")
     print(f"Reasoning effort: {args.reasoning_effort or 'CLI/model default'}")
     print(f"Execution timeout: {format_timeout(args.timeout)}")
+    originality_broker: dict[str, Any] | None = None
+    if manifest["condition"]["duplicateToolEnabled"]:
+        query_limit = manifest["condition"]["duplicateQueryLimit"]
+        print(f"Originality query budget: {query_limit} requests")
+        try:
+            originality_broker = start_originality_broker(run_dir, query_limit)
+        except (OSError, RuntimeError) as error:
+            discard_new_run(run_dir)
+            print(f"error: could not start the originality tool: {error}", file=sys.stderr)
+            print("No model was invoked, and no run was saved.", file=sys.stderr)
+            return 2
+    else:
+        print("Originality query tool: disabled for this local-only diagnostic run")
+    retry_delays = retry_schedule(
+        args.max_attempts,
+        args.retry_base_delay,
+        args.retry_max_delay,
+    )
+    if retry_delays:
+        print(
+            f"Transient retry policy: up to {args.max_attempts} attempts; "
+            f"backoff delays {', '.join(f'{delay}s' for delay in retry_delays)} "
+            f"({format_elapsed(sum(retry_delays))} maximum wait)."
+        )
+    else:
+        print("Transient retry policy: disabled (one attempt).")
     task = (run_dir / "inputs" / "task.md").read_text(encoding="utf-8")
     started = time.monotonic()
     stdout = ""
@@ -1452,46 +1797,157 @@ def run_command(args: argparse.Namespace) -> int:
     exit_code: int | None = None
     timed_out = False
     timeout_message: str | None = None
-    try:
-        completed = subprocess.run(
-            command,
-            cwd=run_dir,
-            input=None if args.harness == "grok" else task,
-            env=harness_environment(args, run_dir),
-            check=False,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            timeout=args.timeout,
-        )
-        stdout = captured_text(completed.stdout)
-        stderr = captured_text(completed.stderr)
-        exit_code = completed.returncode
-    except subprocess.TimeoutExpired as error:
-        timed_out = True
-        stdout = captured_text(error.stdout)
-        stderr = captured_text(error.stderr)
-        timeout_message = f"{label} timed out after {format_timeout(args.timeout)}."
-        stderr = f"{stderr.rstrip()}\n{timeout_message}\n" if stderr else f"{timeout_message}\n"
-        exit_code = 124
-    except OSError as error:
-        stderr = f"Could not launch {label}: {error}\n"
-        exit_code = 127
-
-    duration = round(time.monotonic() - started, 3)
-    (run_dir / manifest["artifacts"]["stdout"]).write_text(stdout, encoding="utf-8")
-    (run_dir / manifest["artifacts"]["stderr"]).write_text(stderr, encoding="utf-8")
+    events: dict[str, Any] = {}
+    final_message: str | None = None
+    attempt_records: list[dict[str, Any]] = []
+    total_backoff_seconds = 0
     event_parsers = {
         "codex": parse_codex_events,
         "claude": parse_claude_events,
         "grok": parse_grok_events,
         "opencode": parse_opencode_events,
     }
-    events = event_parsers[args.harness](stdout)
-    if timeout_message and not events.get("failureMessage"):
-        events["failureMessage"] = timeout_message
-    final_message = events.pop("finalMessage", None)
+
+    for attempt_number in range(1, args.max_attempts + 1):
+        remaining_timeout = args.timeout - (time.monotonic() - started)
+        if remaining_timeout <= 0:
+            break
+        attempt_started_at = utc_now()
+        result = run_harness_once(
+            args,
+            command,
+            run_dir,
+            task,
+            label,
+            remaining_timeout,
+        )
+        stdout = result["stdout"]
+        stderr = result["stderr"]
+        exit_code = result["exitCode"]
+        timed_out = result["timedOut"]
+        timeout_message = result["timeoutMessage"]
+        events = event_parsers[args.harness](stdout)
+        if timeout_message and not events.get("failureMessage"):
+            events["failureMessage"] = timeout_message
+        final_message = events.pop("finalMessage", None)
+        failure_message = events.get("failureMessage")
+        raw_output = f"{stdout}\n{stderr}"
+        model_rejected = bool(
+            exit_code and is_model_selection_failure(failure_message, raw_output)
+        )
+        retryable = bool(
+            exit_code
+            and not timed_out
+            and not model_rejected
+            and is_transient_harness_failure(failure_message, raw_output)
+        )
+        failure_detail = (
+            compact_failure(failure_message, stdout, stderr, exit_code)
+            if exit_code is not None and exit_code != 0
+            else None
+        )
+        attempt_dir, attempt_stdout, attempt_stderr = write_harness_attempt_logs(
+            run_dir,
+            args.harness,
+            attempt_number,
+            stdout,
+            stderr,
+        )
+        output_file_count = sum(
+            1
+            for file in (run_dir / "outputs").glob("*.sgf")
+            if file.is_file()
+        )
+        attempt_record: dict[str, Any] = {
+            "number": attempt_number,
+            "startedAt": attempt_started_at,
+            "completedAt": utc_now(),
+            "exitCode": exit_code,
+            "durationSeconds": result["durationSeconds"],
+            "timedOut": timed_out,
+            "retryable": retryable,
+            "failureMessage": failure_detail,
+            "outputFileCount": output_file_count,
+            "stdout": attempt_stdout,
+            "stderr": attempt_stderr,
+        }
+
+        can_retry = retryable and attempt_number < args.max_attempts
+        if can_retry:
+            delay = retry_delay_seconds(
+                attempt_number,
+                args.retry_base_delay,
+                args.retry_max_delay,
+            )
+            remaining_after_attempt = args.timeout - (time.monotonic() - started)
+            if delay < remaining_after_attempt:
+                attempt_record["outcome"] = "transient_failure"
+                attempt_record["retryDelaySeconds"] = delay
+                archived_outputs = archive_retry_outputs(run_dir, attempt_dir)
+                if archived_outputs:
+                    attempt_record["archivedOutputs"] = archived_outputs
+                attempt_records.append(attempt_record)
+                manifest["harness"]["attempts"] = attempt_records
+                write_json(manifest_path, manifest)
+                print(
+                    f"Attempt {attempt_number}/{args.max_attempts} failed after "
+                    f"{format_elapsed(result['durationSeconds'])} with a transient error: "
+                    f"{failure_detail}"
+                )
+                print(
+                    f"Retrying in {format_elapsed(delay)} "
+                    f"(attempt {attempt_number + 1}/{args.max_attempts})."
+                )
+                time.sleep(delay)
+                total_backoff_seconds += delay
+                continue
+            attempt_record["retrySkippedReason"] = (
+                "The remaining execution-time budget was too short for the next backoff delay."
+            )
+
+        if exit_code == 0:
+            attempt_record["outcome"] = "success"
+        elif model_rejected:
+            attempt_record["outcome"] = "model_rejected"
+        elif timed_out:
+            attempt_record["outcome"] = "timeout"
+        elif retryable:
+            attempt_record["outcome"] = "transient_failure"
+        else:
+            attempt_record["outcome"] = "permanent_failure"
+        attempt_records.append(attempt_record)
+        manifest["harness"]["attempts"] = attempt_records
+        write_json(manifest_path, manifest)
+        break
+
+    if originality_broker is not None:
+        broker_exit_code = stop_originality_broker(run_dir, originality_broker)
+        if broker_exit_code:
+            broker_error = (run_dir / "logs" / "originality-broker-stderr.txt").read_text(
+                encoding="utf-8"
+            ).strip()
+            print(
+                f"Originality tool exited with status {broker_exit_code}"
+                f"{f': {broker_error}' if broker_error else '.'}",
+                file=sys.stderr,
+            )
+        summary_path = run_dir / "originality" / "summary.json"
+        if summary_path.exists():
+            originality_summary = read_json(summary_path)
+            counts = originality_summary.get("results", {})
+            print(
+                "Originality queries: "
+                f"{originality_summary.get('queriesUsed', 0)}/"
+                f"{originality_summary.get('queryLimit', 0)}; "
+                f"{counts.get('clear', 0)} clear, "
+                f"{counts.get('duplicate', 0)} duplicate, "
+                f"{counts.get('review', 0)} review, "
+                f"{counts.get('invalid', 0) + counts.get('unavailable', 0)} errors."
+            )
+
+    duration = round(time.monotonic() - started, 3)
+    (run_dir / manifest["artifacts"]["stdout"]).write_text(stdout, encoding="utf-8")
+    (run_dir / manifest["artifacts"]["stderr"]).write_text(stderr, encoding="utf-8")
     final_message_path = run_dir / manifest["artifacts"]["finalMessage"]
     if final_message is not None or not final_message_path.exists():
         final_message_path.write_text(final_message or "", encoding="utf-8")
@@ -1499,6 +1955,7 @@ def run_command(args: argparse.Namespace) -> int:
         {
             "exitCode": exit_code,
             "durationSeconds": duration,
+            "attempts": attempt_records,
             **events,
         }
     )
@@ -1510,16 +1967,30 @@ def run_command(args: argparse.Namespace) -> int:
     write_json(manifest_path, manifest)
 
     failure_message = manifest.get("harness", {}).get("failureMessage")
+    if not exit_code and len(attempt_records) > 1:
+        print(
+            f"{label} succeeded on attempt {len(attempt_records)}/{args.max_attempts} "
+            f"after {format_elapsed(duration)} total "
+            f"({format_elapsed(total_backoff_seconds)} in backoff)."
+        )
     if exit_code and is_model_selection_failure(failure_message, f"{stdout}\n{stderr}"):
         discard_new_run(run_dir)
         detail = failure_message or f"{label} exited with status {exit_code}."
         print(f"Model {args.model!r} was rejected by {label}: {detail}", file=sys.stderr)
         print(
+            "No retries were attempted because model-selection failures are permanent. "
             "No run was saved, and evaluation was not started. Check the model ID and try again.",
             file=sys.stderr,
         )
         return 2
 
+    if exit_code:
+        print(
+            f"{label} did not complete after {len(attempt_records)} "
+            f"{'attempt' if len(attempt_records) == 1 else 'attempts'} over "
+            f"{format_elapsed(duration)}. Evaluating any partial SGFs before finalizing the run.",
+            file=sys.stderr,
+        )
     print("Evaluating generated SGFs…")
     evaluator = run_evaluator(run_dir, args.local_only)
     manifest = read_json(manifest_path)
@@ -1542,12 +2013,50 @@ def run_command(args: argparse.Namespace) -> int:
         print(evaluator.stderr.strip() or "The evaluator failed.", file=sys.stderr)
         return 1
     if exit_code:
-        detail = manifest.get("harness", {}).get("failureMessage")
+        detail = manifest.get("harness", {}).get("failureMessage") or (
+            attempt_records[-1].get("failureMessage") if attempt_records else None
+        )
         suffix = f": {detail}" if detail else "."
         print(
-            f"{label} exited with status {exit_code}; the partial run was preserved{suffix}",
+            f"{label} exited with status {exit_code} after {len(attempt_records)} "
+            f"{'attempt' if len(attempt_records) == 1 else 'attempts'} over "
+            f"{format_elapsed(duration)}; the partial run was preserved{suffix}",
             file=sys.stderr,
         )
+        used_delays = [
+            record["retryDelaySeconds"]
+            for record in attempt_records
+            if record.get("retryDelaySeconds") is not None
+        ]
+        if used_delays:
+            print(
+                "Retry report: exponential backoff waited "
+                f"{format_elapsed(sum(used_delays))} total "
+                f"({', '.join(format_elapsed(delay) for delay in used_delays)}).",
+                file=sys.stderr,
+            )
+        else:
+            final_outcome = attempt_records[-1].get("outcome") if attempt_records else None
+            reasons = {
+                "timeout": "the harness consumed the execution-time budget",
+                "permanent_failure": "the failure was not classified as transient",
+                "transient_failure": "no retry attempts or execution-time budget remained",
+            }
+            print(
+                "Retry report: no retry was made because "
+                f"{reasons.get(final_outcome, 'the failure was not retryable')}.",
+                file=sys.stderr,
+            )
+        print("Attempt details:", file=sys.stderr)
+        for record in attempt_records:
+            outcome = record.get("outcome", "unknown").replace("_", " ")
+            attempt_detail = record.get("failureMessage") or "Completed successfully."
+            print(
+                f"  {record['number']}. {outcome}; exit {record.get('exitCode')}; "
+                f"{format_elapsed(record.get('durationSeconds', 0))}; "
+                f"{record.get('outputFileCount', 0)} SGF files; {attempt_detail}",
+                file=sys.stderr,
+            )
         return 1
 
     evaluation = read_json(run_dir / "evaluation" / "automated.json")
@@ -1743,9 +2252,44 @@ def build_parser() -> argparse.ArgumentParser:
         help="Maximum model CLI execution time in seconds (default: 43200 / 12 hours).",
     )
     run.add_argument(
+        "--max-attempts",
+        type=int,
+        default=DEFAULT_MAX_HARNESS_ATTEMPTS,
+        help=(
+            "Maximum CLI attempts for recognized transient failures "
+            f"(default: {DEFAULT_MAX_HARNESS_ATTEMPTS})."
+        ),
+    )
+    run.add_argument(
+        "--retry-base-delay",
+        type=int,
+        default=DEFAULT_RETRY_BASE_DELAY_SECONDS,
+        help=(
+            "Initial transient-failure backoff in seconds "
+            f"(default: {DEFAULT_RETRY_BASE_DELAY_SECONDS})."
+        ),
+    )
+    run.add_argument(
+        "--retry-max-delay",
+        type=int,
+        default=DEFAULT_RETRY_MAX_DELAY_SECONDS,
+        help=(
+            "Maximum delay between transient retries in seconds "
+            f"(default: {DEFAULT_RETRY_MAX_DELAY_SECONDS})."
+        ),
+    )
+    run.add_argument(
+        "--duplicate-query-limit",
+        type=int,
+        help=(
+            "Maximum model-facing originality checks. Defaults to five times "
+            "the requested problem count."
+        ),
+    )
+    run.add_argument(
         "--local-only",
         action="store_true",
-        help="Skip GoProblems API checks during post-run evaluation.",
+        help="Disable the live originality tool and skip post-run GoProblems API checks.",
     )
     run.set_defaults(handler=run_command)
 
@@ -1783,10 +2327,21 @@ def main() -> int:
         parser.error("--attempt must be at least 1")
     if getattr(args, "timeout", 1) < 1:
         parser.error("--timeout must be at least 1 second")
+    if getattr(args, "max_attempts", 1) < 1:
+        parser.error("--max-attempts must be at least 1")
+    if getattr(args, "retry_base_delay", 0) < 0:
+        parser.error("--retry-base-delay cannot be negative")
+    if getattr(args, "retry_max_delay", 0) < 0:
+        parser.error("--retry-max-delay cannot be negative")
     count = getattr(args, "count", DEFAULT_PROBLEM_COUNT)
     if not MINIMUM_PROBLEM_COUNT <= count <= MAXIMUM_PROBLEM_COUNT:
         parser.error(
             f"--count must be between {MINIMUM_PROBLEM_COUNT} and {MAXIMUM_PROBLEM_COUNT}"
+        )
+    configured_query_limit = getattr(args, "duplicate_query_limit", None)
+    if configured_query_limit is not None and configured_query_limit < count:
+        parser.error(
+            "--duplicate-query-limit must allow at least one final query per problem"
         )
     port = getattr(args, "port", None)
     if port is not None and not 1 <= port <= 65535:

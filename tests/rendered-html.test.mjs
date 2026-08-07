@@ -26,12 +26,23 @@ test("server-renders a compact overview with route navigation", async () => {
   const html = await htmlFor("/");
   assert.match(html, /AI Go Problem Creation Benchmark/);
   assert.match(html, /href="\/problems"/);
-  assert.match(html, /href="\/problems">Reference<\/a>/);
+  assert.match(html, /href="\/problems">Problems<\/a>/);
   assert.match(html, /href="\/runs"/);
-  assert.match(html, /href="\/evaluation">Process<\/a>/);
+  assert.match(html, /href="\/runs">Results<\/a>/);
+  assert.match(html, /href="\/evaluation">Method<\/a>/);
   assert.match(html, /href="\/sources"/);
   assert.match(html, /<link[^>]+rel="icon"[^>]+href="\/favicon\.svg"/);
   assert.match(html, /19×19 boards/);
+  assert.match(html, /Model summary/);
+  assert.match(html, /Human-passed/);
+  assert.match(html, /class="model-results-table"/);
+  assert.match(html, /GPT-5\.6 Luna/);
+  assert.match(html, /Claude Opus 5/);
+  assert.match(html, /src="\/provider-icons\/(?:openai|anthropic|xai)\.svg"/);
+  assert.match(html, /Score definition/);
+  assert.match(html, /Latest benchmark activity/);
+  assert.match(html, /Current finding/);
+  assert.match(html, /href="\/runs\?run=/);
   assert.doesNotMatch(html, /class="workbench-shell/);
   assert.doesNotMatch(html, /class="protocol-grid/);
 });
@@ -121,6 +132,9 @@ test("server-renders generated runs on their own page with a to-move stone", asy
   );
   assert.match(html, /class="problem-thumbnail(?: is-empty)?"/);
   assert.match(html, /class="run-problem-tab-copy"/);
+  assert.match(html, /class="sgf-source"[^>]*aria-label="SGF source for problem-\d{2}\.sgf"/);
+  assert.match(html, />Copy SGF<\/button>/);
+  assert.match(html, /<summary>Reveal SGF source<\/summary>/);
 });
 
 test("server-renders process and sources as dedicated pages", async () => {
@@ -133,7 +147,12 @@ test("server-renders process and sources as dedicated pages", async () => {
   assert.match(sources, /Guidance and APIs/);
   assert.match(sources, /Problem types/);
   assert.match(sources, /Solution signatures/);
-  assert.match(sources, /github\.com\/adum\/tsumegobench/);
+  assert.match(
+    sources,
+    /class="source-repository-link"[^>]+href="https:\/\/github\.com\/adum\/tsumegobench"[^>]+target="_blank"/,
+  );
+  assert.match(sources, /GitHub repository/);
+  assert.match(sources, /adum\/tsumegobench/);
 });
 
 test("rendered pages omit retired controls and marketing copy", async () => {
@@ -146,5 +165,6 @@ test("rendered pages omit retired controls and marketing copy", async () => {
     /Can a model invent|worth solving|evidence-first|Reference laboratory|Read the position|One prompt\. Four gates|No quiet repairs|difficult creative claim|does not pretend/i,
   );
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
-  assert.doesNotMatch(html, /property="og:image"/i);
+  assert.match(html, /property="og:image"[^>]+content="http:\/\/localhost(?::3000)?\/og\.png"/i);
+  assert.match(html, /name="twitter:card"[^>]+content="summary_large_image"/i);
 });

@@ -1,5 +1,9 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import {
+  findBuiltInSetupDuplicate,
+  type BuiltInSetupDuplicate,
+} from "./common-setup-duplicates";
 import { findSimilarProblems, type SimilarProblem } from "./goproblems";
 import {
   canonicalProblemFingerprint,
@@ -49,6 +53,7 @@ export interface RemoteDuplicateReport {
 
 export interface DuplicateReport {
   status: "pass" | "fail" | "manual_review" | "not_run";
+  builtInSetupMatch: BuiltInSetupDuplicate | null;
   exactLocalMatch: DuplicateMatch | null;
   closestLocalShape: LocalShapeMatch | null;
   remote: RemoteDuplicateReport;
@@ -87,6 +92,22 @@ export async function checkProblemDuplicates(
   const failThreshold = options.failThreshold ?? 90;
   const manualReviewThreshold = options.manualReviewThreshold ?? 80;
   const excludedIds = new Set(options.excludedIds ?? []);
+  const builtInSetupMatch = findBuiltInSetupDuplicate(root);
+  if (builtInSetupMatch) {
+    return {
+      status: "fail",
+      builtInSetupMatch,
+      exactLocalMatch: null,
+      closestLocalShape: null,
+      remote: {
+        status: "not_run",
+        radiusTwoMatches: [],
+        topPercentage: null,
+        topMatchId: null,
+        error: null,
+      },
+    };
+  }
   const candidateFingerprint = canonicalProblemFingerprint(root);
   const candidateShapes = canonicalRightShapes(root);
 
@@ -173,5 +194,5 @@ export async function checkProblemDuplicates(
     status = "not_run";
   }
 
-  return { status, exactLocalMatch, closestLocalShape, remote };
+  return { status, builtInSetupMatch: null, exactLocalMatch, closestLocalShape, remote };
 }

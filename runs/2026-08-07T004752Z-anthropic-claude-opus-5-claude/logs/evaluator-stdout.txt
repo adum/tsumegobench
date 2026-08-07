@@ -1,0 +1,1 @@
+{"runId":"2026-08-07T004752Z-anthropic-claude-opus-5-claude","status":"failed","output":"runs\\2026-08-07T004752Z-anthropic-claude-opus-5-claude\\evaluation\\automated.json","summary":{"expectedProblems":10,"filesFound":10,"structuralPassed":10,"originalityPassed":1,"automatedGatePassed":2,"failedProblems":8,"incompleteProblems":0,"humanReviewPending":2,"failedRunChecks":0}}

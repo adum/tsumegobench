@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { findBuiltInSetupDuplicate } from "../lib/common-setup-duplicates";
 import { checkProblemDuplicates, loadDuplicateCorpus } from "../lib/duplicate-check";
 import { validateSgf } from "../lib/validate-sgf";
 
@@ -22,8 +23,11 @@ const localOnly = argumentsList.includes("--local-only");
 const file = path.resolve(fileArgument);
 const sgf = await readFile(file, "utf8");
 const validation = validateSgf(sgf);
+const builtInSetupMatch = validation.root
+  ? findBuiltInSetupDuplicate(validation.root)
+  : null;
 
-if (!validation.valid || !validation.root) {
+if (!validation.root || (!validation.valid && !builtInSetupMatch)) {
   process.stderr.write("Structural validation failed; duplicate checks were not run.\n");
   for (const item of validation.issues.filter((entry) => entry.severity === "error")) {
     process.stderr.write(`  ${item.code}: ${item.message}\n`);
@@ -43,6 +47,13 @@ const report = await checkProblemDuplicates(
 );
 
 process.stdout.write(`Candidate: ${path.relative(process.cwd(), file)}\n`);
+process.stdout.write(
+  `Built-in common setup: ${
+    report.builtInSetupMatch
+      ? `${report.builtInSetupMatch.label} (${report.builtInSetupMatch.id})`
+      : "none"
+  }\n`,
+);
 process.stdout.write(
   `Local exact match: ${report.exactLocalMatch ? `GoProblems #${report.exactLocalMatch.id}` : "none"}\n`,
 );

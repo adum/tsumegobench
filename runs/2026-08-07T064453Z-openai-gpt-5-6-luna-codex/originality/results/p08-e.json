@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p08-e",
+  "path": "outputs/problem-08.sgf",
+  "queryNumber": 32,
+  "checkedAt": "2026-08-07T06:51:19.133Z",
+  "status": "invalid",
+  "candidateSha256": "de7f216ae7a18bcc14b4097eb60fada374f5963e4cf4008b32fc14ce27d9f4dc",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "off-board",
+      "message": "W[mt] is outside the 19×19 board."
+    },
+    {
+      "code": "off-board",
+      "message": "B[mt] is outside the 19×19 board."
+    },
+    {
+      "code": "off-board",
+      "message": "B[mt] is outside the 19×19 board."
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+(;FF[4]GM[1]CA[UTF-8]SZ[19]AB[mq][nq][oq][pq][qq][rq][sq][mr][ms]AW[nr][or][pr][qr][rr][ns][ss]
+(;B[sr]
+(;W[qs];B[rs]C[Ko. RIGHT])
+(;W[ps];B[rs]C[Ko. RIGHT])
+(;W[rs];B[ps]C[RIGHT]))
+(;B[rs];W[qs];B[sr];W[ps];B[rs]C[Ko. RIGHT])
+(;B[qs];W[sr];B[rs];W[ps]C[White captures both stones and lives.])
+(;B[ps];W[sr];B[os];W[qs]C[White captures both stones and lives.])
+(;B[os];W[sr];B[ps];W[qs]C[White captures both stones and lives.]))

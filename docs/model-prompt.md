@@ -12,7 +12,7 @@ The solution tree is a central part of the task, not an annotation added after f
 
 Each problem must be:
 
-- a realistic standard life-and-death problem with a clear local outcome;
+- a realistic standard life-and-death problem with a clear local outcome (life and death means the killing or making alive of an entire group, not a tesuji problem where it's only capturing or saving a number of stones that cannot live independently -- see the supplied sample problems for examples);
 - approximately 30 kyu–1 dan in difficulty;
 - legal under ordinary Go rules;
 - on a 19×19 board, explicitly declared with `SZ[19]`;
@@ -21,9 +21,13 @@ Each problem must be:
 - short: no more than 14 moves on any line and no more than 120 total nodes;
 - original rather than a disguised known problem.
 
+Originality is a hard requirement. No output may duplicate another problem in this run or any problem on GoProblems. A duplicate includes a translation, rotation, reflection, color reversal, lightly altered setup or tree, or a position with the same tactical core disguised by inconsequential stones or changes around the edge.
+
+Use the supplied originality query tool while authoring and once more on every exact final file after the complete set exists. Built-in common-position checks use only the initial setup and may reject a known shape before inspecting its paths. Otherwise, GoProblems can check a candidate only when its solution tree contains at least one accepted path marked with uppercase `RIGHT`, so finish and mark a valid solution path before querying. An unmatched request without `RIGHT` returns a `missing-right` error and consumes query budget. Only `clear` is an acceptable final result; `review`, `duplicate`, `invalid`, `unavailable`, and `quota_exceeded` are not. Replace or materially redesign a flagged candidate rather than trying to evade the check with irrelevant stones. Do not edit a file after its final clear result. The exact query budget and file protocol are given in `inputs/task.md` and `inputs/originality-tool.md`.
+
 SGF requirements:
 
-1. Put no move and no `C[...]` comment at the root. Do not write a problem instruction; the board position and first-move color must make the ordinary life-and-death objective clear.
+1. Put no move and no `C[...]` comment at the root. Do not write a problem instruction; the board position and first-move color must make the ordinary life-and-death objective clear. There is no need to add other comment text to nodes, although it's not an error if you do.
 2. Every node after the root must contain exactly one `B` or `W` move.
 3. Alternate colors, use one consistent first-player color, and include no pass moves.
 4. `RIGHT` is the only control marker in this benchmark. Mark every accepted solution endpoint with uppercase `RIGHT` inside `C[...]`; variations without it are treated as wrong.
@@ -37,6 +41,6 @@ SGF requirements:
 
 Across the requested problems, demonstrate a deliberate range of difficulty rather than clustering at one level. Follow the per-file target difficulties listed in `inputs/task.md`; the default ten-problem run assigns two problems to each band from 20–30 kyu through about 1 dan. Difficulty should come from relevant reading depth, plausible choices, defenses, and endpoint judgment—not from irrelevant stones, obscure rules, or trick wording.
 
-Across the set, include at least two Black-to-play and at least two White-to-play problems. Establish the player color only through the first move in the tree, not through written instructions. Vary the board edge/corner shape and tactical idea. Do not explain your reasoning and do not claim that you searched for duplicates unless you actually used a search tool.
+Across the set, include at least two Black-to-play and at least two White-to-play problems. Establish the player color only through the first move in the tree, not through written instructions. Vary the board edge/corner shape and tactical idea. Do not explain your reasoning and do not claim that you searched for duplicates unless you actually used the supplied originality tool.
 
 Write exactly the files listed in `inputs/task.md` and no others. Each file must contain only one complete SGF collection beginning with `(;` and ending with `)`—no Markdown fences or explanatory prose. Your final command-line response may only confirm that the requested files were written; the files themselves are the benchmark output.

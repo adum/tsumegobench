@@ -1,4 +1,5 @@
 import Link from "next/link";
+import runsData from "../data/runs.generated.json";
 
 export function SiteHeader() {
   return (
@@ -8,12 +9,13 @@ export function SiteHeader() {
         <span>TSUMEGO / BENCH</span>
       </Link>
       <nav aria-label="Primary navigation">
-        <Link href="/problems">Reference</Link>
-        <Link href="/runs">Runs</Link>
-        <Link href="/evaluation">Process</Link>
+        <Link href="/">Overview</Link>
+        <Link href="/runs">Results</Link>
+        <Link href="/problems">Problems</Link>
+        <Link href="/evaluation">Method</Link>
         <Link href="/sources">Sources</Link>
       </nav>
-      <span className="header-status">v0.1 · LOCAL + API</span>
+      <span className="header-status">v0.1 · {runsData.length} runs</span>
     </header>
   );
 }

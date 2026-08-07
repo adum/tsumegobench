@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p08-d",
+  "path": "outputs/problem-08.sgf",
+  "queryNumber": 29,
+  "checkedAt": "2026-08-07T06:51:00.504Z",
+  "status": "invalid",
+  "candidateSha256": "e23913d43cba243ce81ecfa624c829a056fe74dcf70853a80ea3e7478a06ede3",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "off-board",
+      "message": "W[ot] is outside the 19×19 board."
+    },
+    {
+      "code": "off-board",
+      "message": "B[ot] is outside the 19×19 board."
+    },
+    {
+      "code": "off-board",
+      "message": "B[ot] is outside the 19×19 board."
+    },
+    {
+      "code": "suicide-move",
+      "message": "W[ot] is suicide under ordinary Go rules."
+    }
+  ]
+}

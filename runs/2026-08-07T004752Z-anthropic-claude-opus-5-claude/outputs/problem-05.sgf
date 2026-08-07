@@ -1,0 +1,13 @@
+(;FF[4]GM[1]CA[UTF-8]SZ[19]AB[aq][bq][cq][dq][eq][fq][fr][fs]AW[ar][br][cr][dr][er]
+(;B[bs]
+(;W[es];B[cs]C[RIGHT])
+(;W[cs];B[es]C[RIGHT])
+(;W[ds];B[es]C[RIGHT])
+(;W[as];B[es]C[RIGHT]))
+(;B[es]
+(;W[ds];B[bs]C[RIGHT])
+(;W[bs];B[ds]C[RIGHT])
+(;W[cs];B[ds]C[RIGHT]))
+(;B[cs];W[bs];B[ds];W[es]C[White has an eye at as and a second at cs or ds. Alive.])
+(;B[ds];W[es]C[The intruder is caught and White gets two eyes.])
+(;B[as];W[bs]C[White captures and keeps a four-point eye space.]))

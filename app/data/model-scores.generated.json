@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "scoreScale": {
+    "minimum": 0,
+    "maximum": 10
+  },
+  "models": [
+    {
+      "id": "grok-4.5",
+      "displayName": "Grok 4.5",
+      "family": "xAI",
+      "releaseDate": "2026-07-08",
+      "icon": "/provider-icons/xai.svg",
+      "score": 0,
+      "passedProblems": 0,
+      "problemCount": 10,
+      "runCount": 4,
+      "bestRunId": "2026-08-07T064510Z-xai-grok-4-5-grok",
+      "bestRunCreatedAt": "2026-08-07T06:45:11.914272Z"
+    },
+    {
+      "id": "gpt-5.6-luna",
+      "displayName": "GPT-5.6 Luna",
+      "family": "OpenAI",
+      "releaseDate": "2026-07-09",
+      "icon": "/provider-icons/openai.svg",
+      "score": 0,
+      "passedProblems": 0,
+      "problemCount": 10,
+      "runCount": 2,
+      "bestRunId": "2026-08-07T064453Z-openai-gpt-5-6-luna-codex",
+      "bestRunCreatedAt": "2026-08-07T06:44:56.014838Z"
+    },
+    {
+      "id": "gpt-5.6-sol",
+      "displayName": "GPT-5.6 Sol",
+      "family": "OpenAI",
+      "releaseDate": "2026-07-09",
+      "icon": "/provider-icons/openai.svg",
+      "score": 0,
+      "passedProblems": 0,
+      "problemCount": 10,
+      "runCount": 1,
+      "bestRunId": "2026-08-06T000149Z-openai-gpt-5-6-sol-codex",
+      "bestRunCreatedAt": "2026-08-06T00:01:50.732224Z"
+    },
+    {
+      "id": "claude-opus-5",
+      "displayName": "Claude Opus 5",
+      "family": "Anthropic",
+      "releaseDate": "2026-07-24",
+      "icon": "/provider-icons/anthropic.svg",
+      "score": 0,
+      "passedProblems": 0,
+      "problemCount": 10,
+      "runCount": 3,
+      "bestRunId": "2026-08-07T004752Z-anthropic-claude-opus-5-claude",
+      "bestRunCreatedAt": "2026-08-07T00:47:53.458779Z"
+    }
+  ],
+  "unmatchedModels": []
+}

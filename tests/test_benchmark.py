@@ -17,6 +17,12 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertEqual(args.harness, "codex")
         self.assertEqual(args.count, 10)
         self.assertEqual(args.timeout, 12 * 60 * 60)
+        self.assertEqual(args.max_attempts, 5)
+        self.assertEqual(args.retry_base_delay, 15)
+        self.assertEqual(args.retry_max_delay, 120)
+        self.assertIsNone(args.duplicate_query_limit)
+        self.assertEqual(benchmark.duplicate_query_limit(args), 50)
+        self.assertEqual(benchmark.retry_schedule(5, 15, 120), [15, 30, 60, 120])
         self.assertEqual(
             benchmark.expected_output_names(args.count),
             [f"problem-{index:02d}.sgf" for index in range(1, 11)],
@@ -729,6 +735,200 @@ class BenchmarkRunnerTests(unittest.TestCase):
             )
             self.assertIsNone(process.call_args.kwargs["input"])
 
+    def test_grok_transient_failure_retries_and_preserves_attempt_artifacts(self):
+        args = benchmark.build_parser().parse_args(
+            [
+                "run",
+                "--harness",
+                "grok",
+                "--model",
+                "grok-4.5",
+                "--run-id",
+                "grok-retry-success",
+                "--max-attempts",
+                "3",
+                "--retry-base-delay",
+                "1",
+                "--retry-max-delay",
+                "2",
+                "--local-only",
+            ]
+        )
+        failure_message = (
+            'Internal error: "reqwest error stream: error sending request for url '
+            '(https://cli-chat-proxy.grok.com/v1/responses)"'
+        )
+        failed_stdout = json.dumps({"type": "error", "message": failure_message})
+        successful_stdout = "\n".join(
+            [
+                json.dumps({"type": "text", "data": "Created 10 problems."}),
+                json.dumps(
+                    {
+                        "type": "end",
+                        "stopReason": "end_turn",
+                        "sessionId": "grok-session-retried",
+                    }
+                ),
+            ]
+        )
+
+        with tempfile.TemporaryDirectory() as temporary:
+            runs_root = Path(temporary)
+            invocation_count = 0
+
+            def invoke(*_arguments, **keywords):
+                nonlocal invocation_count
+                invocation_count += 1
+                if invocation_count == 1:
+                    output = Path(keywords["cwd"]) / "outputs" / "problem-01.sgf"
+                    output.write_text("(;SZ[19])", encoding="utf-8")
+                    return subprocess.CompletedProcess(
+                        [], 1, stdout=failed_stdout, stderr="transport failed"
+                    )
+                return subprocess.CompletedProcess(
+                    [], 0, stdout=successful_stdout, stderr=""
+                )
+
+            def evaluate(run_dir, _local_only):
+                benchmark.write_json(
+                    run_dir / "evaluation" / "automated.json",
+                    {
+                        "summary": {
+                            "expectedProblems": 10,
+                            "structuralPassed": 10,
+                            "automatedGatePassed": 10,
+                        }
+                    },
+                )
+                return subprocess.CompletedProcess([], 0, stdout="", stderr="")
+
+            with (
+                mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
+                mock.patch.object(benchmark, "cli_version", return_value="grok 0.2.121"),
+                mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
+                mock.patch.object(benchmark.subprocess, "run", side_effect=invoke) as process,
+                mock.patch.object(benchmark.time, "sleep") as sleeper,
+                mock.patch.object(benchmark, "run_evaluator", side_effect=evaluate),
+                mock.patch.object(
+                    benchmark,
+                    "build_run_index",
+                    return_value=subprocess.CompletedProcess([], 0, stdout="", stderr=""),
+                ),
+            ):
+                console = io.StringIO()
+                with redirect_stdout(console), redirect_stderr(io.StringIO()):
+                    exit_code = benchmark.run_command(args)
+
+            run_dir = runs_root / "grok-retry-success"
+            manifest = benchmark.read_json(run_dir / "run.json")
+            attempts = manifest["harness"]["attempts"]
+
+            self.assertEqual(exit_code, 0)
+            self.assertEqual(process.call_count, 2)
+            sleeper.assert_called_once_with(1)
+            self.assertEqual(len(attempts), 2)
+            self.assertEqual(attempts[0]["outcome"], "transient_failure")
+            self.assertTrue(attempts[0]["retryable"])
+            self.assertEqual(attempts[0]["retryDelaySeconds"], 1)
+            self.assertEqual(attempts[0]["outputFileCount"], 1)
+            self.assertEqual(attempts[1]["outcome"], "success")
+            self.assertEqual(
+                attempts[0]["archivedOutputs"],
+                "logs/attempts/attempt-01/outputs",
+            )
+            self.assertTrue(
+                (run_dir / attempts[0]["archivedOutputs"] / "problem-01.sgf").exists()
+            )
+            self.assertFalse((run_dir / "outputs" / "problem-01.sgf").exists())
+            self.assertTrue((run_dir / attempts[0]["stdout"]).exists())
+            self.assertTrue((run_dir / attempts[1]["stdout"]).exists())
+            self.assertIn("Attempt 1/3 failed", console.getvalue())
+            self.assertIn("Retrying in 1 second", console.getvalue())
+            self.assertIn("succeeded on attempt 2/3", console.getvalue())
+
+    def test_grok_exhausted_transient_retries_report_every_attempt(self):
+        args = benchmark.build_parser().parse_args(
+            [
+                "run",
+                "--harness",
+                "grok",
+                "--model",
+                "grok-4.5",
+                "--run-id",
+                "grok-retry-failed",
+                "--max-attempts",
+                "3",
+                "--retry-base-delay",
+                "1",
+                "--retry-max-delay",
+                "2",
+                "--local-only",
+            ]
+        )
+        failure_message = (
+            'Internal error: "reqwest error stream: error sending request for url '
+            '(https://cli-chat-proxy.grok.com/v1/responses)"'
+        )
+        failed = subprocess.CompletedProcess(
+            [],
+            1,
+            stdout=json.dumps({"type": "error", "message": failure_message}),
+            stderr="transport failed",
+        )
+
+        with tempfile.TemporaryDirectory() as temporary:
+            runs_root = Path(temporary)
+
+            def evaluate(run_dir, _local_only):
+                benchmark.write_json(
+                    run_dir / "evaluation" / "automated.json",
+                    {
+                        "summary": {
+                            "expectedProblems": 10,
+                            "structuralPassed": 0,
+                            "automatedGatePassed": 0,
+                        }
+                    },
+                )
+                return subprocess.CompletedProcess([], 0, stdout="", stderr="")
+
+            with (
+                mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
+                mock.patch.object(benchmark, "cli_version", return_value="grok 0.2.121"),
+                mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
+                mock.patch.object(benchmark.subprocess, "run", return_value=failed) as process,
+                mock.patch.object(benchmark.time, "sleep") as sleeper,
+                mock.patch.object(benchmark, "run_evaluator", side_effect=evaluate),
+                mock.patch.object(
+                    benchmark,
+                    "build_run_index",
+                    return_value=subprocess.CompletedProcess([], 0, stdout="", stderr=""),
+                ),
+            ):
+                console_error = io.StringIO()
+                with redirect_stdout(io.StringIO()), redirect_stderr(console_error):
+                    exit_code = benchmark.run_command(args)
+
+            run_dir = runs_root / "grok-retry-failed"
+            manifest = benchmark.read_json(run_dir / "run.json")
+            attempts = manifest["harness"]["attempts"]
+            report = console_error.getvalue()
+
+            self.assertEqual(exit_code, 1)
+            self.assertEqual(process.call_count, 3)
+            self.assertEqual(sleeper.call_args_list, [mock.call(1), mock.call(2)])
+            self.assertEqual(len(attempts), 3)
+            self.assertTrue(all(attempt["retryable"] for attempt in attempts))
+            self.assertTrue(
+                all(attempt["outcome"] == "transient_failure" for attempt in attempts)
+            )
+            self.assertIn("after 3 attempts", report)
+            self.assertIn("exponential backoff waited 3 seconds total", report)
+            self.assertIn("Attempt details:", report)
+            self.assertIn("1. transient failure", report)
+            self.assertIn("3. transient failure", report)
+            self.assertIn("reqwest error stream", report)
+
     def test_successful_opencode_run_records_normalized_artifacts(self):
         args = benchmark.build_parser().parse_args(
             [
@@ -854,12 +1054,21 @@ class BenchmarkRunnerTests(unittest.TestCase):
             run_dir = Path(temporary)
             benchmark.copy_inputs(run_dir, benchmark.DEFAULT_PROBLEM_COUNT)
             task = (run_dir / "inputs" / "task.md").read_text(encoding="utf-8")
+            tool_exists = (run_dir / "inputs" / "originality-tool.md").exists()
+            summary_schema_exists = (
+                run_dir / "inputs" / "originality-summary.schema.json"
+            ).exists()
 
         self.assertIn("Create exactly 10 final candidate SGF files", task)
         self.assertIn("`outputs/problem-01.sgf`", task)
         self.assertIn("`outputs/problem-10.sgf`", task)
         self.assertNotIn("problem-11.sgf", task)
         self.assertEqual(task.count("target difficulty:"), 10)
+        self.assertIn("originality query budget is 50 requests", task)
+        self.assertIn("without at least one `C[RIGHT]` endpoint", task)
+        self.assertIn("query every exact final output again", task)
+        self.assertTrue(tool_exists)
+        self.assertTrue(summary_schema_exists)
 
     def test_extracts_nested_codex_failure(self):
         upstream = {
@@ -896,6 +1105,25 @@ class BenchmarkRunnerTests(unittest.TestCase):
             benchmark.is_model_selection_failure(None, "error: unsupported model identifier")
         )
         self.assertFalse(benchmark.is_model_selection_failure("The request timed out."))
+
+    def test_recognizes_retryable_transport_and_service_errors(self):
+        self.assertTrue(
+            benchmark.is_transient_harness_failure(
+                'Internal error: "reqwest error stream: error sending request for url '
+                '(https://cli-chat-proxy.grok.com/v1/responses)"'
+            )
+        )
+        self.assertTrue(
+            benchmark.is_transient_harness_failure(
+                "Request failed with HTTP status 429: too many requests"
+            )
+        )
+        self.assertFalse(
+            benchmark.is_transient_harness_failure("Model not found: made-up-model")
+        )
+        self.assertFalse(
+            benchmark.is_transient_harness_failure("Authentication failed: invalid API key")
+        )
 
     def test_review_defaults_to_the_newest_completed_evaluated_run(self):
         with tempfile.TemporaryDirectory() as temporary:

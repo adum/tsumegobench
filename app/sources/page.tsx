@@ -23,6 +23,16 @@ export default function SourcesPage() {
           The authoring prompt and evaluator are based on the GoProblems construction guidance,
           while every reference problem retains its original author and source URL in the corpus manifest.
         </p>
+        <a
+          className="source-repository-link"
+          href="https://github.com/adum/tsumegobench"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span>GitHub repository</span>
+          <strong>adum/tsumegobench</strong>
+          <i aria-hidden="true">↗</i>
+        </a>
       </header>
       <div className="source-groups">
         <section aria-labelledby="construction-sources">
@@ -45,11 +55,6 @@ export default function SourcesPage() {
                 <strong>{title}</strong><p>{detail}</p><span>Open ↗</span>
               </a>
             ))}
-            <a href="https://github.com/adum/tsumegobench">
-              <strong>Project repository</strong>
-              <p>Prompt, examples, runner, evaluator, schemas, and checked-in results.</p>
-              <span>Open ↗</span>
-            </a>
           </div>
         </section>
       </div>
