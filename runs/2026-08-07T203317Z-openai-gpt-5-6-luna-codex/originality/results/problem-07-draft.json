@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-07-draft",
+  "path": "outputs/problem-07.sgf",
+  "queryNumber": 9,
+  "queriesRemaining": 41,
+  "checkedAt": "2026-08-07T21:05:01.035Z",
+  "status": "invalid",
+  "candidateSha256": "2ad6f210dfcf3fc8da9e6feee7114950f124fd8ff65488810831d953cb6846d3",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "suicide-move",
+      "message": "B[cq] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "suicide-move",
+      "message": "B[cq] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "suicide-move",
+      "message": "B[cq] is suicide under ordinary Go rules."
+    }
+  ]
+}

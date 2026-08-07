@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/tsumego-bench/originality-response.schema.json",
+  "title": "Tsumego Bench originality query result",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "requestId",
+    "path",
+    "queryNumber",
+    "checkedAt",
+    "status",
+    "candidateSha256",
+    "cachedRemote",
+    "errors"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "requestId": { "type": "string" },
+    "path": { "type": ["string", "null"] },
+    "queryNumber": { "type": ["integer", "null"], "minimum": 1 },
+    "checkedAt": { "type": "string", "format": "date-time" },
+    "status": {
+      "enum": ["clear", "review", "duplicate", "invalid", "unavailable", "quota_exceeded"]
+    },
+    "candidateSha256": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "cachedRemote": { "type": "boolean" },
+    "local": { "type": ["object", "null"] },
+    "goProblems": { "type": ["object", "null"] },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "message"],
+        "properties": {
+          "code": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      }
+    }
+  }
+}

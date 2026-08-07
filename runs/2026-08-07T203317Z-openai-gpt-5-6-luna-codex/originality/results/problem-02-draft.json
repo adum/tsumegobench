@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-02-draft",
+  "path": "outputs/problem-02.sgf",
+  "queryNumber": 2,
+  "queriesRemaining": 48,
+  "checkedAt": "2026-08-07T20:46:34.739Z",
+  "status": "invalid",
+  "candidateSha256": "b3ee42cbb6943fb5eba1a02a78f211e875ad52770c750e7299f47d94b0bad0ae",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "setup-colors",
+      "message": "A life-and-death setup must contain both black and white stones at the root."
+    }
+  ]
+}

@@ -160,6 +160,10 @@ function effortLabel(effort: string | null) {
   return `${effort?.replaceAll("_", " ") ?? "default"} effort`;
 }
 
+export function compactModelName(name: string) {
+  return name.split("/").filter(Boolean).at(-1) ?? name;
+}
+
 function providerLabel(provider: string) {
   if (provider === "openai") return "OpenAI";
   if (provider === "anthropic") return "Anthropic";
@@ -509,7 +513,12 @@ export function RunBrowser() {
                   </span>
                   <span className="problem-list-copy">
                     <span className="problem-list-topline">
-                      <strong>{record.model.name}</strong>
+                      <strong
+                        aria-label={record.model.name}
+                        title={record.model.name}
+                      >
+                        {compactModelName(record.model.name)}
+                      </strong>
                       {showPassCounts ? (
                         <span
                           className="run-pass-counts"
@@ -536,7 +545,9 @@ export function RunBrowser() {
                 <span>{providerLabel(run.model.provider)} / {harnessLabel(run.harness.name)}</span>
                 <span className={`run-badge ${run.status}`}>{statusLabel(run.status)}</span>
               </div>
-              <h3>{run.model.name}</h3>
+              <h3 aria-label={run.model.name} title={run.model.name}>
+                {compactModelName(run.model.name)}
+              </h3>
               <p>
                 {humanDate(run.createdAt)} · {run.model.reasoningEffort ?? "default effort"} · {run.harness.durationSeconds ?? 0}s
               </p>

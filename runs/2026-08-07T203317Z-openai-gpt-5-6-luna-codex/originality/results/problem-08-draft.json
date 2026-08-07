@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-08-draft",
+  "path": "outputs/problem-08.sgf",
+  "queryNumber": 10,
+  "queriesRemaining": 40,
+  "checkedAt": "2026-08-07T21:05:01.664Z",
+  "status": "invalid",
+  "candidateSha256": "23061a37baecddf1a9875ac3ac0b6377b52f679bad1d931f3ede5c7688c98a96",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "W[hg] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[gh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[ih] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[gh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[hg] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[ih] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[ih] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[gh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[hg] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[gh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[hg] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[gh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[gh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[hh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[gh] plays on an occupied intersection."
+    }
+  ]
+}

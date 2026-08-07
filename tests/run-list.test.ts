@@ -1,6 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { runHasSgfFiles } from "../app/components/RunBrowser";
+import { compactModelName, runHasSgfFiles } from "../app/components/RunBrowser";
+
+test("slash-delimited model IDs display only their final fragment", () => {
+  assert.equal(
+    compactModelName("openrouter/deepseek/deepseek-v4-flash-0731"),
+    "deepseek-v4-flash-0731",
+  );
+  assert.equal(compactModelName("gpt-5.6-luna"), "gpt-5.6-luna");
+});
 
 test("run pass counts are hidden when no SGF files were found", () => {
   assert.equal(
