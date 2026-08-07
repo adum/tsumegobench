@@ -1,5 +1,0 @@
-All ten files are written to `outputs/`:
-
-- `problem-01.sgf` – `problem-10.sgf`, each a single SGF collection with `SZ[19]`, root `AB`/`AW` setup, no root move or comment, alternating single-move nodes, and `RIGHT` on every accepted endpoint.
-
-Colors: Black plays first in 01, 03, 06, 08, 09; White plays first in 02, 04, 05, 07, 10. Shapes span the top-left, top edge, bottom edge, bottom-left and top-right areas, with ideas ranging from three-space vital points and nakade placements up to cutting inside stones apart, correct capture direction, and the 1-1 placement.

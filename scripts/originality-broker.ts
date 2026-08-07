@@ -116,6 +116,7 @@ function invalidRequest(options: {
   requestId: string;
   candidatePath: string | null;
   queryNumber: number;
+  queriesRemaining: number;
   code: string;
   message: string;
 }): OriginalityToolResponse {
@@ -124,6 +125,7 @@ function invalidRequest(options: {
     requestId: options.requestId,
     path: options.candidatePath,
     queryNumber: options.queryNumber,
+    queriesRemaining: options.queriesRemaining,
     checkedAt: new Date().toISOString(),
     status: "invalid",
     candidateSha256: null,
@@ -200,6 +202,7 @@ while (true) {
 
     queriesUsed += 1;
     const queryNumber = queriesUsed;
+    const queriesRemaining = Math.max(0, queryLimit - queriesUsed);
     if (!/^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/.test(fileRequestId)) {
       await recordResult(
         resultFile,
@@ -207,6 +210,7 @@ while (true) {
           requestId,
           candidatePath,
           queryNumber,
+          queriesRemaining,
           code: "invalid-request-id",
           message: "The request filename must contain only letters, numbers, dots, dashes, or underscores.",
         }),
@@ -220,6 +224,7 @@ while (true) {
           requestId,
           candidatePath,
           queryNumber,
+          queriesRemaining,
           code: "request-id-mismatch",
           message: "requestId must equal the request filename without .json.",
         }),
@@ -233,6 +238,7 @@ while (true) {
           requestId,
           candidatePath,
           queryNumber,
+          queriesRemaining,
           code: "missing-path",
           message: "The request must include path: outputs/problem-NN.sgf.",
         }),
@@ -245,6 +251,7 @@ while (true) {
       candidatePath,
       requestId,
       queryNumber,
+      queriesRemaining,
       corpus,
       remoteLookup: async (sgf) => {
         const hash = sha256(sgf);

@@ -1,1 +1,0 @@
-The 10 requested SGF files were written to `outputs/`.

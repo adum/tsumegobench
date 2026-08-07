@@ -43,6 +43,37 @@ class BenchmarkRunnerTests(unittest.TestCase):
             ],
         )
 
+    def test_progress_message_reports_outputs_and_originality_queries(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            run_dir = Path(temporary)
+            (run_dir / "outputs").mkdir()
+            (run_dir / "originality").mkdir()
+            (run_dir / "outputs" / "problem-01.sgf").write_text(
+                "(;SZ[19])", encoding="utf-8"
+            )
+            (run_dir / "outputs" / "problem-02.sgf").write_text(
+                "(;SZ[19])", encoding="utf-8"
+            )
+            benchmark.write_json(
+                run_dir / "originality" / "summary.json",
+                {"queriesUsed": 8, "queryLimit": 50},
+            )
+
+            message = benchmark.benchmark_progress_message(
+                run_dir,
+                "Codex CLI",
+                attempt_number=1,
+                max_attempts=5,
+                expected_count=10,
+                elapsed_seconds=125,
+            )
+
+        self.assertEqual(
+            message,
+            "Still running Codex CLI (attempt 1/5): 2 minutes 5 seconds elapsed; "
+            "2/10 SGFs written; 8/50 originality queries used.",
+        )
+
     def test_claude_harness_parser_and_command_are_non_interactive_and_restricted(self):
         args = benchmark.build_parser().parse_args(
             [
@@ -572,6 +603,13 @@ class BenchmarkRunnerTests(unittest.TestCase):
             self.assertEqual(final_message, "Created 10 problems.")
             self.assertIn("Reasoning effort: CLI/model default", console.getvalue())
             self.assertIn("Execution timeout: 12 hours (43,200 seconds)", console.getvalue())
+            self.assertIn("Progress updates every 1 minute", console.getvalue())
+            self.assertIn("Model phase finished in", console.getvalue())
+            self.assertIn("Evaluation finished in", console.getvalue())
+            self.assertRegex(
+                console.getvalue().strip().splitlines()[-1],
+                r"^Benchmark finished in .+\.$",
+            )
 
     def test_claude_timeout_decodes_partial_byte_logs_and_finishes_the_run(self):
         args = benchmark.build_parser().parse_args(
@@ -1054,7 +1092,9 @@ class BenchmarkRunnerTests(unittest.TestCase):
             run_dir = Path(temporary)
             benchmark.copy_inputs(run_dir, benchmark.DEFAULT_PROBLEM_COUNT)
             task = (run_dir / "inputs" / "task.md").read_text(encoding="utf-8")
-            tool_exists = (run_dir / "inputs" / "originality-tool.md").exists()
+            tool_guide = (run_dir / "inputs" / "originality-tool.md").read_text(
+                encoding="utf-8"
+            )
             summary_schema_exists = (
                 run_dir / "inputs" / "originality-summary.schema.json"
             ).exists()
@@ -1067,7 +1107,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertIn("originality query budget is 50 requests", task)
         self.assertIn("without at least one `C[RIGHT]` endpoint", task)
         self.assertIn("query every exact final output again", task)
-        self.assertTrue(tool_exists)
+        self.assertIn("`queryNumber` and `queriesRemaining`", tool_guide)
         self.assertTrue(summary_schema_exists)
 
     def test_extracts_nested_codex_failure(self):

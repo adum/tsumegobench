@@ -8,6 +8,7 @@
     "requestId",
     "path",
     "queryNumber",
+    "queriesRemaining",
     "checkedAt",
     "status",
     "candidateSha256",
@@ -19,6 +20,7 @@
     "requestId": { "type": "string" },
     "path": { "type": ["string", "null"] },
     "queryNumber": { "type": ["integer", "null"], "minimum": 1 },
+    "queriesRemaining": { "type": "integer", "minimum": 0 },
     "checkedAt": { "type": "string", "format": "date-time" },
     "status": {
       "enum": ["clear", "review", "duplicate", "invalid", "unavailable", "quota_exceeded"]

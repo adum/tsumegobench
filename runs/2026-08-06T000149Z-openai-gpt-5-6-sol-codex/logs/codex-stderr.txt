@@ -1,2 +1,0 @@
-2026-08-06T00:19:06.411752Z ERROR codex_core::tools::router: error=write_stdin failed: Unknown process id 12655
-2026-08-06T00:40:32.421792Z ERROR codex_core::tools::router: error=write_stdin failed: Unknown process id 75154

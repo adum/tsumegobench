@@ -1,5 +1,0 @@
-All ten candidate files are written:
-
-- `outputs/problem-01.sgf` … `outputs/problem-10.sgf`
-
-Each contains a single SGF collection with an `SZ[19]` root setup (`AB` + `AW`, no root move or comment), alternating one-move nodes, `RIGHT` markers on accepted endpoints, and refutation branches ending on the opponent's refuting move.

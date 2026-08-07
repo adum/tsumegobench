@@ -1,1 +1,0 @@
-Wrote and locally validated the 10 requested SGF files in `outputs/`.

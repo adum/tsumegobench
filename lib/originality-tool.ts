@@ -42,6 +42,7 @@ export interface OriginalityToolResponse {
   requestId: string;
   path: string | null;
   queryNumber: number | null;
+  queriesRemaining: number;
   checkedAt: string;
   status: OriginalityToolStatus;
   candidateSha256: string | null;
@@ -112,6 +113,7 @@ function invalidResponse(
   requestId: string,
   candidatePath: string | null,
   queryNumber: number,
+  queriesRemaining: number,
   candidateSha256: string | null,
   errors: Array<{ code: string; message: string }>,
 ): OriginalityToolResponse {
@@ -120,6 +122,7 @@ function invalidResponse(
     requestId,
     path: candidatePath,
     queryNumber,
+    queriesRemaining,
     checkedAt: new Date().toISOString(),
     status: "invalid",
     candidateSha256,
@@ -135,6 +138,7 @@ export async function checkOriginalityCandidate(options: {
   candidatePath: string;
   requestId: string;
   queryNumber: number;
+  queriesRemaining: number;
   corpus: DuplicateCorpus;
   remoteLookup?: RemoteOriginalityLookup;
   failThreshold?: number;
@@ -144,29 +148,51 @@ export async function checkOriginalityCandidate(options: {
   const reviewThreshold = options.reviewThreshold ?? ORIGINALITY_REVIEW_THRESHOLD;
   const normalizedPath = options.candidatePath.replaceAll("\\", "/");
   if (!/^outputs\/problem-[0-9]{2}\.sgf$/.test(normalizedPath)) {
-    return invalidResponse(options.requestId, normalizedPath, options.queryNumber, null, [
+    return invalidResponse(
+      options.requestId,
+      normalizedPath,
+      options.queryNumber,
+      options.queriesRemaining,
+      null,
+      [
       {
         code: "invalid-path",
         message: "The path must name an SGF as outputs/problem-NN.sgf.",
       },
-    ]);
+      ],
+    );
   }
 
   const outputsDir = path.resolve(options.runDir, "outputs");
   const absoluteCandidate = path.resolve(options.runDir, ...normalizedPath.split("/"));
   if (path.dirname(absoluteCandidate) !== outputsDir) {
-    return invalidResponse(options.requestId, normalizedPath, options.queryNumber, null, [
-      { code: "invalid-path", message: "The candidate must be inside the run output directory." },
-    ]);
+    return invalidResponse(
+      options.requestId,
+      normalizedPath,
+      options.queryNumber,
+      options.queriesRemaining,
+      null,
+      [
+        {
+          code: "invalid-path",
+          message: "The candidate must be inside the run output directory.",
+        },
+      ],
+    );
   }
 
   let sgf: string;
   try {
     sgf = await readFile(absoluteCandidate, "utf8");
   } catch {
-    return invalidResponse(options.requestId, normalizedPath, options.queryNumber, null, [
-      { code: "missing-file", message: `${normalizedPath} does not exist or cannot be read.` },
-    ]);
+    return invalidResponse(
+      options.requestId,
+      normalizedPath,
+      options.queryNumber,
+      options.queriesRemaining,
+      null,
+      [{ code: "missing-file", message: `${normalizedPath} does not exist or cannot be read.` }],
+    );
   }
 
   const candidateSha256 = sha256(sgf);
@@ -181,6 +207,7 @@ export async function checkOriginalityCandidate(options: {
       requestId: options.requestId,
       path: normalizedPath,
       queryNumber: options.queryNumber,
+      queriesRemaining: options.queriesRemaining,
       checkedAt: new Date().toISOString(),
       status: "duplicate",
       candidateSha256,
@@ -202,6 +229,7 @@ export async function checkOriginalityCandidate(options: {
       options.requestId,
       normalizedPath,
       options.queryNumber,
+      options.queriesRemaining,
       candidateSha256,
       missingRight
         ? [
@@ -304,6 +332,7 @@ export async function checkOriginalityCandidate(options: {
       requestId: options.requestId,
       path: normalizedPath,
       queryNumber: options.queryNumber,
+      queriesRemaining: options.queriesRemaining,
       checkedAt: new Date().toISOString(),
       status: duplicate ? "duplicate" : review ? "review" : "clear",
       candidateSha256,
@@ -318,6 +347,7 @@ export async function checkOriginalityCandidate(options: {
       requestId: options.requestId,
       path: normalizedPath,
       queryNumber: options.queryNumber,
+      queriesRemaining: options.queriesRemaining,
       checkedAt: new Date().toISOString(),
       status: "unavailable",
       candidateSha256,
@@ -344,6 +374,7 @@ export function quotaExceededResponse(options: {
     requestId: options.requestId,
     path: options.candidatePath,
     queryNumber: null,
+    queriesRemaining: 0,
     checkedAt: new Date().toISOString(),
     status: "quota_exceeded",
     candidateSha256: null,

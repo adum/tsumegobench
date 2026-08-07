@@ -58,6 +58,7 @@ test("a candidate without RIGHT returns an error before remote lookup", async ()
       candidatePath: "outputs/problem-01.sgf",
       requestId: "missing-right",
       queryNumber: 1,
+      queriesRemaining: 49,
       corpus: emptyCorpus,
       remoteLookup: async (sgf) => {
         remoteCalls += 1;
@@ -66,6 +67,7 @@ test("a candidate without RIGHT returns an error before remote lookup", async ()
     });
 
     assert.equal(response.status, "invalid");
+    assert.equal(response.queriesRemaining, 49);
     assert.ok(response.errors.some((error) => error.code === "missing-right"));
     assert.equal(remoteCalls, 0);
     assert.match(response.candidateSha256 ?? "", /^[a-f0-9]{64}$/);
@@ -85,6 +87,7 @@ test("a built-in common setup is rejected without RIGHT before remote lookup", a
       candidatePath: "outputs/problem-01.sgf",
       requestId: "common-without-right",
       queryNumber: 1,
+      queriesRemaining: 49,
       corpus: emptyCorpus,
       remoteLookup: async (sgf) => {
         remoteCalls += 1;
@@ -110,6 +113,7 @@ test("same-run canonical duplicates are rejected", async () => {
       candidatePath: "outputs/problem-02.sgf",
       requestId: "peer-check",
       queryNumber: 2,
+      queriesRemaining: 48,
       corpus: emptyCorpus,
       remoteLookup: clearRemote,
     });
@@ -131,6 +135,7 @@ test("a full-corpus percentage match can reject without a radius match", async (
       candidatePath: "outputs/problem-01.sgf",
       requestId: "percentage-check",
       queryNumber: 3,
+      queriesRemaining: 47,
       corpus: emptyCorpus,
       remoteLookup: async () => ({
         cached: false,
@@ -167,6 +172,7 @@ test("quota errors do not claim to consume another query", () => {
   });
   assert.equal(response.status, "quota_exceeded");
   assert.equal(response.queryNumber, null);
+  assert.equal(response.queriesRemaining, 0);
   assert.match(response.errors[0].message, /50/);
 });
 
@@ -211,10 +217,18 @@ test("the broker enforces its query budget and records result totals", async () 
       const firstResult = path.join(runDir, "originality", "results", "first.json");
       const secondResult = path.join(runDir, "originality", "results", "second.json");
       await Promise.all([waitForFile(firstResult), waitForFile(secondResult)]);
-      const first = JSON.parse(await readFile(firstResult, "utf8")) as { status: string };
-      const second = JSON.parse(await readFile(secondResult, "utf8")) as { status: string };
+      const first = JSON.parse(await readFile(firstResult, "utf8")) as {
+        status: string;
+        queriesRemaining: number;
+      };
+      const second = JSON.parse(await readFile(secondResult, "utf8")) as {
+        status: string;
+        queriesRemaining: number;
+      };
       assert.equal(first.status, "invalid");
+      assert.equal(first.queriesRemaining, 0);
       assert.equal(second.status, "quota_exceeded");
+      assert.equal(second.queriesRemaining, 0);
 
       await writeFile(path.join(runDir, "originality", "stop"), "stop\n", "utf8");
       if (child.exitCode === null) {

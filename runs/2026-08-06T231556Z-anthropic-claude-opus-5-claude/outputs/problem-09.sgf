@@ -1,6 +1,0 @@
-(;SZ[19]FF[4]GM[1]CA[UTF-8]
-AW[ac][bc][bb][cb][db][da]
-AB[ad][bd][cd][cc][dc][ec][eb][ea][ba]
-(;B[aa]C[The 1-1 point. White must capture two stones from one side or the other, and each time he has to fill his own space, so only a two point eye is left. RIGHT])
-(;B[ca];W[aa]C[Black puts his own two stones in atari; after the capture White has an eye in the corner and one on the second line.])
-(;B[ab];W[ca]C[Both black stones are now dead: Black cannot connect at the 1-1 point, and White ends with an eye on the second line and one at b1.]))

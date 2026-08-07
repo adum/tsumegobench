@@ -37,6 +37,7 @@ DEFAULT_MAX_HARNESS_ATTEMPTS = 5
 DEFAULT_RETRY_BASE_DELAY_SECONDS = 15
 DEFAULT_RETRY_MAX_DELAY_SECONDS = 120
 DEFAULT_DUPLICATE_QUERIES_PER_PROBLEM = 5
+DEFAULT_PROGRESS_INTERVAL_SECONDS = 60
 MINIMUM_CLAUDE_VERSION = (2, 1, 169)
 MINIMUM_OPENCODE_VERSION = (1, 1, 1)
 DIFFICULTY_BANDS = (
@@ -141,6 +142,83 @@ def format_elapsed(seconds: float) -> str:
             f"{remaining_seconds} {'second' if remaining_seconds == 1 else 'seconds'}"
         )
     return " ".join(parts) or "0 seconds"
+
+
+def generated_sgf_count(run_dir: Path) -> int:
+    return sum(
+        1
+        for file in (run_dir / "outputs").glob("*.sgf")
+        if file.is_file()
+    )
+
+
+def benchmark_progress_message(
+    run_dir: Path,
+    label: str,
+    attempt_number: int,
+    max_attempts: int,
+    expected_count: int,
+    elapsed_seconds: float,
+) -> str:
+    details = [
+        f"{format_elapsed(elapsed_seconds)} elapsed",
+        f"{generated_sgf_count(run_dir)}/{expected_count} SGFs written",
+    ]
+    summary_path = run_dir / "originality" / "summary.json"
+    try:
+        summary = read_json(summary_path) if summary_path.exists() else None
+    except (OSError, json.JSONDecodeError):
+        # The broker rewrites this file while the reporter may be reading it.
+        summary = None
+    if isinstance(summary, dict):
+        queries_used = summary.get("queriesUsed")
+        query_limit = summary.get("queryLimit")
+        if isinstance(queries_used, int) and isinstance(query_limit, int):
+            details.append(f"{queries_used}/{query_limit} originality queries used")
+    return (
+        f"Still running {label} (attempt {attempt_number}/{max_attempts}): "
+        f"{'; '.join(details)}."
+    )
+
+
+def start_progress_reporter(
+    run_dir: Path,
+    label: str,
+    attempt_number: int,
+    max_attempts: int,
+    expected_count: int,
+    interval_seconds: float = DEFAULT_PROGRESS_INTERVAL_SECONDS,
+) -> tuple[threading.Event, threading.Thread]:
+    stop_event = threading.Event()
+    started = time.monotonic()
+
+    def report() -> None:
+        while not stop_event.wait(interval_seconds):
+            print(
+                benchmark_progress_message(
+                    run_dir,
+                    label,
+                    attempt_number,
+                    max_attempts,
+                    expected_count,
+                    time.monotonic() - started,
+                ),
+                flush=True,
+            )
+
+    thread = threading.Thread(
+        target=report,
+        name="benchmark-progress-reporter",
+        daemon=True,
+    )
+    thread.start()
+    return stop_event, thread
+
+
+def stop_progress_reporter(reporter: tuple[threading.Event, threading.Thread]) -> None:
+    stop_event, thread = reporter
+    stop_event.set()
+    thread.join()
 
 
 def retry_delay_seconds(completed_attempt: int, base_delay: int, maximum_delay: int) -> int:
@@ -1224,8 +1302,16 @@ def run_harness_once(
     task: str,
     label: str,
     timeout_seconds: float,
+    attempt_number: int,
 ) -> dict[str, Any]:
     started = time.monotonic()
+    reporter = start_progress_reporter(
+        run_dir,
+        label,
+        attempt_number,
+        args.max_attempts,
+        args.count,
+    )
     stdout = ""
     stderr = ""
     exit_code: int | None = None
@@ -1259,6 +1345,8 @@ def run_harness_once(
     except OSError as error:
         stderr = f"Could not launch {label}: {error}\n"
         exit_code = 127
+    finally:
+        stop_progress_reporter(reporter)
 
     return {
         "stdout": stdout,
@@ -1697,7 +1785,7 @@ def build_harness_command(
     return command
 
 
-def run_command(args: argparse.Namespace) -> int:
+def _run_command(args: argparse.Namespace) -> int:
     RUNS_ROOT.mkdir(exist_ok=True)
     try:
         harness_provider(args.harness, args.model)
@@ -1790,6 +1878,12 @@ def run_command(args: argparse.Namespace) -> int:
         )
     else:
         print("Transient retry policy: disabled (one attempt).")
+    print(
+        "Progress updates every "
+        f"{format_elapsed(DEFAULT_PROGRESS_INTERVAL_SECONDS)} while the model runs; "
+        "they include elapsed time, generated SGFs, and originality queries when enabled.",
+        flush=True,
+    )
     task = (run_dir / "inputs" / "task.md").read_text(encoding="utf-8")
     started = time.monotonic()
     stdout = ""
@@ -1812,6 +1906,10 @@ def run_command(args: argparse.Namespace) -> int:
         remaining_timeout = args.timeout - (time.monotonic() - started)
         if remaining_timeout <= 0:
             break
+        print(
+            f"Starting model attempt {attempt_number}/{args.max_attempts}…",
+            flush=True,
+        )
         attempt_started_at = utc_now()
         result = run_harness_once(
             args,
@@ -1820,6 +1918,7 @@ def run_command(args: argparse.Namespace) -> int:
             task,
             label,
             remaining_timeout,
+            attempt_number,
         )
         stdout = result["stdout"]
         stderr = result["stderr"]
@@ -1853,11 +1952,7 @@ def run_command(args: argparse.Namespace) -> int:
             stdout,
             stderr,
         )
-        output_file_count = sum(
-            1
-            for file in (run_dir / "outputs").glob("*.sgf")
-            if file.is_file()
-        )
+        output_file_count = generated_sgf_count(run_dir)
         attempt_record: dict[str, Any] = {
             "number": attempt_number,
             "startedAt": attempt_started_at,
@@ -1946,6 +2041,11 @@ def run_command(args: argparse.Namespace) -> int:
             )
 
     duration = round(time.monotonic() - started, 3)
+    print(
+        f"Model phase finished in {format_elapsed(duration)}; "
+        f"{generated_sgf_count(run_dir)}/{args.count} SGF files are present.",
+        flush=True,
+    )
     (run_dir / manifest["artifacts"]["stdout"]).write_text(stdout, encoding="utf-8")
     (run_dir / manifest["artifacts"]["stderr"]).write_text(stderr, encoding="utf-8")
     final_message_path = run_dir / manifest["artifacts"]["finalMessage"]
@@ -1991,8 +2091,13 @@ def run_command(args: argparse.Namespace) -> int:
             f"{format_elapsed(duration)}. Evaluating any partial SGFs before finalizing the run.",
             file=sys.stderr,
         )
-    print("Evaluating generated SGFs…")
+    print("Evaluating generated SGFs…", flush=True)
+    evaluation_started = time.monotonic()
     evaluator = run_evaluator(run_dir, args.local_only)
+    print(
+        f"Evaluation finished in {format_elapsed(time.monotonic() - evaluation_started)}.",
+        flush=True,
+    )
     manifest = read_json(manifest_path)
     if evaluator.returncode:
         manifest["status"] = "evaluation_failed"
@@ -2003,7 +2108,13 @@ def run_command(args: argparse.Namespace) -> int:
     manifest["completedAt"] = utc_now()
     write_json(manifest_path, manifest)
 
+    print("Rebuilding the web index…", flush=True)
+    index_started = time.monotonic()
     indexed = build_run_index()
+    print(
+        f"Web index rebuild finished in {format_elapsed(time.monotonic() - index_started)}.",
+        flush=True,
+    )
     if indexed.returncode:
         (run_dir / "logs" / "indexer-stderr.txt").write_text(indexed.stderr, encoding="utf-8")
         print("Run completed, but the web index could not be rebuilt.", file=sys.stderr)
@@ -2068,6 +2179,17 @@ def run_command(args: argparse.Namespace) -> int:
     )
     print(f"Review it under runs/{run_id} or in the web UI.")
     return 0
+
+
+def run_command(args: argparse.Namespace) -> int:
+    started = time.monotonic()
+    try:
+        return _run_command(args)
+    finally:
+        print(
+            f"Benchmark finished in {format_elapsed(time.monotonic() - started)}.",
+            flush=True,
+        )
 
 
 def evaluate_command(args: argparse.Namespace) -> int:

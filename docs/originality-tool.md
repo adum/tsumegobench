@@ -23,7 +23,7 @@ If no built-in setup matches, the candidate must contain at least one accepted s
 
 4. Read `originality/results/<request-id>.json`. The result may take a short time to appear. Do not overwrite or reuse an earlier request ID.
 
-The live budget and current usage are recorded in `originality/summary.json`. Every submitted request that is within the budget consumes one query, including malformed or structurally invalid candidates. Requests after the budget is exhausted return `quota_exceeded`.
+The live budget and current usage are recorded in `originality/summary.json`. Every result also includes `queryNumber` and `queriesRemaining`, where `queriesRemaining` is the budget left after that request. Every submitted request that is within the budget consumes one query, including malformed or structurally invalid candidates. Requests after the budget is exhausted return `quota_exceeded` with `queriesRemaining: 0`.
 
 ## Interpret the result
 
