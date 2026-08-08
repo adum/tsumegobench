@@ -69,6 +69,18 @@ export function rankModelScoresForLegend<
   );
 }
 
+export function topScoringModelsForLegend<
+  T extends Pick<ModelScorePoint, "displayName" | "score">,
+>(
+  models: readonly T[],
+  options: { limit: number; minimumScore: number },
+): T[] {
+  const limit = Math.max(0, Math.floor(options.limit));
+  return rankModelScoresForLegend(models)
+    .filter((model) => model.score >= options.minimumScore)
+    .slice(0, limit);
+}
+
 function modelKey(provider: string, name: string) {
   return `${provider.trim().toLowerCase()}/${name.trim().toLowerCase()}`;
 }

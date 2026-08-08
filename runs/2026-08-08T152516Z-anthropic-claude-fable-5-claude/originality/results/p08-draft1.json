@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p08-draft1",
+  "path": "outputs/problem-08.sgf",
+  "queryNumber": 22,
+  "queriesRemaining": 28,
+  "checkedAt": "2026-08-08T18:46:48.155Z",
+  "status": "invalid",
+  "candidateSha256": "06b21f60b3b833d27203f4f67c6c1277ccd070ff3d74547a58ddb43c12af0529",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "W[sk] plays on an occupied intersection."
+    }
+  ]
+}

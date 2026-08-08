@@ -1,9 +1,9 @@
 [
   {
-    "runId": "2026-08-08T042120Z-anthropic-claude-fable-5-claude",
-    "status": "failed",
-    "createdAt": "2026-08-08T04:21:22.364361Z",
-    "completedAt": "2026-08-08T05:29:40.989026Z",
+    "runId": "2026-08-08T152516Z-anthropic-claude-fable-5-claude",
+    "status": "needs_human_review",
+    "createdAt": "2026-08-08T15:25:17.351170Z",
+    "completedAt": "2026-08-08T19:07:22.732795Z",
     "model": {
       "provider": "anthropic",
       "name": "claude-fable-5",
@@ -12,8 +12,8 @@
     "harness": {
       "name": "claude-cli",
       "version": "2.1.223 (Claude Code)",
-      "exitCode": 1,
-      "durationSeconds": 4090.194
+      "exitCode": 0,
+      "durationSeconds": 13308.886
     },
     "condition": {
       "attempt": 1,
@@ -30,20 +30,20 @@
     "originalityTool": {
       "schemaVersion": 1,
       "queryLimit": 50,
-      "queriesUsed": 0,
-      "queriesRemaining": 50,
+      "queriesUsed": 42,
+      "queriesRemaining": 8,
       "quotaExceeded": 0,
-      "remoteCacheHits": 0,
+      "remoteCacheHits": 10,
       "results": {
-        "clear": 0,
-        "review": 0,
-        "duplicate": 0,
-        "invalid": 0,
+        "clear": 20,
+        "review": 6,
+        "duplicate": 15,
+        "invalid": 1,
         "unavailable": 0
       },
-      "updatedAt": "2026-08-08T05:29:33.312Z"
+      "updatedAt": "2026-08-08T19:07:07.135Z"
     },
-    "evaluatedAt": "2026-08-08T05:29:40.785Z",
+    "evaluatedAt": "2026-08-08T19:07:22.607Z",
     "configuration": {
       "remoteDuplicateChecks": true,
       "duplicateFailThreshold": 90,
@@ -51,20 +51,20 @@
     },
     "summary": {
       "expectedProblems": 10,
-      "filesFound": 0,
-      "structuralPassed": 0,
-      "originalityPassed": 0,
-      "automatedGatePassed": 0,
-      "failedProblems": 10,
+      "filesFound": 10,
+      "structuralPassed": 10,
+      "originalityPassed": 10,
+      "automatedGatePassed": 10,
+      "failedProblems": 0,
       "incompleteProblems": 0,
-      "humanReviewPending": 0,
-      "failedRunChecks": 3
+      "humanReviewPending": 10,
+      "failedRunChecks": 0
     },
     "runChecks": [
       {
         "id": "expected-files",
-        "status": "fail",
-        "message": "Missing problem-01.sgf, problem-02.sgf, problem-03.sgf, problem-04.sgf, problem-05.sgf, problem-06.sgf, problem-07.sgf, problem-08.sgf, problem-09.sgf, problem-10.sgf."
+        "status": "pass",
+        "message": "All 10 expected SGF files are present."
       },
       {
         "id": "unexpected-files",
@@ -78,8 +78,8 @@
       },
       {
         "id": "player-color-range",
-        "status": "fail",
-        "message": "The set requires at least two of each first-player color; found 0 Black and 0 White."
+        "status": "pass",
+        "message": "The set includes 6 Black-to-play and 4 White-to-play problems."
       },
       {
         "id": "difficulty-range",
@@ -88,8 +88,8 @@
       },
       {
         "id": "originality-tool-final-coverage",
-        "status": "fail",
-        "message": "No final clear originality result matched the exact output hash for: problem-01.sgf, problem-02.sgf, problem-03.sgf, problem-04.sgf, problem-05.sgf, problem-06.sgf, problem-07.sgf, problem-08.sgf, problem-09.sgf, problem-10.sgf."
+        "status": "pass",
+        "message": "All 10 exact final output hashes received a clear originality result."
       }
     ],
     "human": {
@@ -98,41 +98,54 @@
       "reviewerRank": null
     },
     "humanReviews": {
-      "updatedAt": null,
-      "reviewCount": 0,
-      "completedProblemReviews": 0,
-      "reviewers": []
+      "updatedAt": "2026-08-08T19:55:46.058391Z",
+      "reviewCount": 1,
+      "completedProblemReviews": 10,
+      "reviewers": [
+        {
+          "reviewId": "627bcdfa-3e87-435d-bca1-49d5c6300f4b",
+          "reviewerName": "Adam",
+          "updatedAt": "2026-08-08T19:55:46.058391Z",
+          "completed": 10,
+          "total": 10
+        }
+      ]
     },
     "problems": [
       {
         "file": "problem-01.sgf",
         "targetDifficulty": "20–30 kyu",
-        "sha256": null,
-        "playerColor": null,
-        "status": "failed",
-        "automatedGate": "fail",
+        "sha256": "0b3b26aa5536ea22701adc6cf9c45957185ff3de4293dc9f5f81812ba1d607bf",
+        "playerColor": "white",
+        "status": "needs_human_review",
+        "automatedGate": "pass",
         "validation": {
-          "status": "fail",
-          "valid": false,
-          "issues": [
-            {
-              "severity": "error",
-              "code": "missing-file",
-              "message": "problem-01.sgf was not created."
-            }
-          ],
-          "stats": null
+          "status": "pass",
+          "valid": true,
+          "issues": [],
+          "stats": {
+            "nodeCount": 10,
+            "moveCount": 9,
+            "maxDepth": 3,
+            "variationPoints": 2,
+            "rightCount": 2,
+            "setupStoneCount": 17
+          }
         },
         "originality": {
-          "status": "not_run",
+          "status": "pass",
           "builtInSetupMatch": null,
           "exactLocalMatch": null,
-          "closestLocalShape": null,
+          "closestLocalShape": {
+            "id": 10330,
+            "sourceUrl": "https://www.goproblems.com/problems/10330",
+            "percentage": 18
+          },
           "remote": {
-            "status": "not_run",
+            "status": "pass",
             "radiusTwoMatches": [],
-            "topPercentage": null,
-            "topMatchId": null,
+            "topPercentage": 71,
+            "topMatchId": 39541,
             "error": null
           },
           "peerExactMatches": [],
@@ -145,7 +158,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 20–30 kyu"
         ],
-        "sgf": null,
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AP[tsumego-bench]AB[ar][cr][cs][dq][dr][er][es]AW[aq][bq][cq][cp][dp][ep][eq][fq][fr][fs]\n(;W[br]\n(;B[as];W[bs]C[RIGHT])\n(;B[bs];W[as]C[RIGHT]))\n(;W[bs];B[br])\n(;W[as];B[br]))\n",
         "human": {
           "file": "problem-01.sgf",
           "status": "pending",
@@ -164,37 +177,56 @@
           },
           "notes": ""
         },
-        "reviews": []
+        "reviews": [
+          {
+            "reviewId": "627bcdfa-3e87-435d-bca1-49d5c6300f4b",
+            "reviewerName": "Adam",
+            "file": "problem-01.sgf",
+            "status": "completed",
+            "valid": true,
+            "realistic": true,
+            "duplicate": false,
+            "wellPathed": false,
+            "estimatedDifficulty": null,
+            "quality": null,
+            "reviewedAt": "2026-08-08T19:47:43.528Z"
+          }
+        ]
       },
       {
         "file": "problem-02.sgf",
         "targetDifficulty": "20–30 kyu",
-        "sha256": null,
-        "playerColor": null,
-        "status": "failed",
-        "automatedGate": "fail",
+        "sha256": "51000b79c36e1c0a312453b7d6250d696baf8d97aefe05054c4dcf1f0b418985",
+        "playerColor": "black",
+        "status": "needs_human_review",
+        "automatedGate": "pass",
         "validation": {
-          "status": "fail",
-          "valid": false,
-          "issues": [
-            {
-              "severity": "error",
-              "code": "missing-file",
-              "message": "problem-02.sgf was not created."
-            }
-          ],
-          "stats": null
+          "status": "pass",
+          "valid": true,
+          "issues": [],
+          "stats": {
+            "nodeCount": 6,
+            "moveCount": 5,
+            "maxDepth": 3,
+            "variationPoints": 1,
+            "rightCount": 1,
+            "setupStoneCount": 25
+          }
         },
         "originality": {
-          "status": "not_run",
+          "status": "pass",
           "builtInSetupMatch": null,
           "exactLocalMatch": null,
-          "closestLocalShape": null,
+          "closestLocalShape": {
+            "id": 53750,
+            "sourceUrl": "https://www.goproblems.com/problems/53750",
+            "percentage": 31.58
+          },
           "remote": {
-            "status": "not_run",
+            "status": "pass",
             "radiusTwoMatches": [],
-            "topPercentage": null,
-            "topMatchId": null,
+            "topPercentage": 52,
+            "topMatchId": 41383,
             "error": null
           },
           "peerExactMatches": [],
@@ -207,7 +239,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 20–30 kyu"
         ],
-        "sgf": null,
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AP[tsumego-bench]AB[ja][jb][ka][kc][la][lb][lc][mb][ob][pb][qa]AW[ma][na][oa][ia][ib][jc][kd][ld][mc][nc][oc][pc][qb][ra]\n(;B[nb];W[pa];B[qa]C[RIGHT])\n(;B[pa];W[nb]))\n",
         "human": {
           "file": "problem-02.sgf",
           "status": "pending",
@@ -226,37 +258,56 @@
           },
           "notes": ""
         },
-        "reviews": []
+        "reviews": [
+          {
+            "reviewId": "627bcdfa-3e87-435d-bca1-49d5c6300f4b",
+            "reviewerName": "Adam",
+            "file": "problem-02.sgf",
+            "status": "completed",
+            "valid": true,
+            "realistic": true,
+            "duplicate": false,
+            "wellPathed": true,
+            "estimatedDifficulty": "20-30 kyu",
+            "quality": 2,
+            "reviewedAt": "2026-08-08T19:48:15.496Z"
+          }
+        ]
       },
       {
         "file": "problem-03.sgf",
         "targetDifficulty": "10–19 kyu",
-        "sha256": null,
-        "playerColor": null,
-        "status": "failed",
-        "automatedGate": "fail",
+        "sha256": "ac135dd7c46488c44ac16aa5026dc7f7d46e5cabe48d26ff0b93b049667eb46b",
+        "playerColor": "black",
+        "status": "needs_human_review",
+        "automatedGate": "pass",
         "validation": {
-          "status": "fail",
-          "valid": false,
-          "issues": [
-            {
-              "severity": "error",
-              "code": "missing-file",
-              "message": "problem-03.sgf was not created."
-            }
-          ],
-          "stats": null
+          "status": "pass",
+          "valid": true,
+          "issues": [],
+          "stats": {
+            "nodeCount": 10,
+            "moveCount": 9,
+            "maxDepth": 3,
+            "variationPoints": 1,
+            "rightCount": 1,
+            "setupStoneCount": 16
+          }
         },
         "originality": {
-          "status": "not_run",
+          "status": "pass",
           "builtInSetupMatch": null,
           "exactLocalMatch": null,
-          "closestLocalShape": null,
+          "closestLocalShape": {
+            "id": 10507,
+            "sourceUrl": "https://www.goproblems.com/problems/10507",
+            "percentage": 20
+          },
           "remote": {
-            "status": "not_run",
+            "status": "pass",
             "radiusTwoMatches": [],
-            "topPercentage": null,
-            "topMatchId": null,
+            "topPercentage": 71,
+            "topMatchId": 23098,
             "error": null
           },
           "peerExactMatches": [],
@@ -269,7 +320,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 10–19 kyu"
         ],
-        "sgf": null,
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AP[tsumego-bench]AW[pa][qa][qb][rb][sb][rc][rd]AB[oa][ob][pb][qc][qd][re][rf][sf][sg]\n(;B[sd];W[sc];B[se]C[RIGHT])\n(;B[se];W[sd])\n(;B[sc];W[sd])\n(;B[ra];W[sd]))\n",
         "human": {
           "file": "problem-03.sgf",
           "status": "pending",
@@ -288,37 +339,56 @@
           },
           "notes": ""
         },
-        "reviews": []
+        "reviews": [
+          {
+            "reviewId": "627bcdfa-3e87-435d-bca1-49d5c6300f4b",
+            "reviewerName": "Adam",
+            "file": "problem-03.sgf",
+            "status": "completed",
+            "valid": true,
+            "realistic": true,
+            "duplicate": false,
+            "wellPathed": false,
+            "estimatedDifficulty": null,
+            "quality": null,
+            "reviewedAt": "2026-08-08T19:48:31.953Z"
+          }
+        ]
       },
       {
         "file": "problem-04.sgf",
         "targetDifficulty": "10–19 kyu",
-        "sha256": null,
-        "playerColor": null,
-        "status": "failed",
-        "automatedGate": "fail",
+        "sha256": "6c96a593f76305904f60f64b640bcefc2b3ce151985f4d4b9ad79056b259aa89",
+        "playerColor": "white",
+        "status": "needs_human_review",
+        "automatedGate": "pass",
         "validation": {
-          "status": "fail",
-          "valid": false,
-          "issues": [
-            {
-              "severity": "error",
-              "code": "missing-file",
-              "message": "problem-04.sgf was not created."
-            }
-          ],
-          "stats": null
+          "status": "pass",
+          "valid": true,
+          "issues": [],
+          "stats": {
+            "nodeCount": 6,
+            "moveCount": 5,
+            "maxDepth": 3,
+            "variationPoints": 1,
+            "rightCount": 1,
+            "setupStoneCount": 17
+          }
         },
         "originality": {
-          "status": "not_run",
+          "status": "pass",
           "builtInSetupMatch": null,
           "exactLocalMatch": null,
-          "closestLocalShape": null,
+          "closestLocalShape": {
+            "id": 5973,
+            "sourceUrl": "https://www.goproblems.com/problems/5973",
+            "percentage": 21.95
+          },
           "remote": {
-            "status": "not_run",
+            "status": "pass",
             "radiusTwoMatches": [],
-            "topPercentage": null,
-            "topMatchId": null,
+            "topPercentage": 73,
+            "topMatchId": 61678,
             "error": null
           },
           "peerExactMatches": [],
@@ -331,7 +401,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 10–19 kyu"
         ],
-        "sgf": null,
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AP[tsumego-bench]AW[ap][bp][bq][br][cq][cr][dr]AB[as][bs][cs][ao][bo][co][cp][dq][er][es]\n(;W[ds];B[ar];W[aq]C[RIGHT])\n(;W[ar];B[ds]))\n",
         "human": {
           "file": "problem-04.sgf",
           "status": "pending",
@@ -350,37 +420,56 @@
           },
           "notes": ""
         },
-        "reviews": []
+        "reviews": [
+          {
+            "reviewId": "627bcdfa-3e87-435d-bca1-49d5c6300f4b",
+            "reviewerName": "Adam",
+            "file": "problem-04.sgf",
+            "status": "completed",
+            "valid": false,
+            "realistic": true,
+            "duplicate": false,
+            "wellPathed": true,
+            "estimatedDifficulty": null,
+            "quality": null,
+            "reviewedAt": "2026-08-08T19:49:10.508Z"
+          }
+        ]
       },
       {
         "file": "problem-05.sgf",
         "targetDifficulty": "5–9 kyu",
-        "sha256": null,
-        "playerColor": null,
-        "status": "failed",
-        "automatedGate": "fail",
+        "sha256": "8382182d8c7bebf9fa4af0463365789a5188a0af0b06bfdcefa89277880cd7aa",
+        "playerColor": "black",
+        "status": "needs_human_review",
+        "automatedGate": "pass",
         "validation": {
-          "status": "fail",
-          "valid": false,
-          "issues": [
-            {
-              "severity": "error",
-              "code": "missing-file",
-              "message": "problem-05.sgf was not created."
-            }
-          ],
-          "stats": null
+          "status": "pass",
+          "valid": true,
+          "issues": [],
+          "stats": {
+            "nodeCount": 6,
+            "moveCount": 5,
+            "maxDepth": 3,
+            "variationPoints": 1,
+            "rightCount": 1,
+            "setupStoneCount": 23
+          }
         },
         "originality": {
-          "status": "not_run",
+          "status": "pass",
           "builtInSetupMatch": null,
           "exactLocalMatch": null,
-          "closestLocalShape": null,
+          "closestLocalShape": {
+            "id": 28281,
+            "sourceUrl": "https://www.goproblems.com/problems/28281",
+            "percentage": 18.6
+          },
           "remote": {
-            "status": "not_run",
+            "status": "pass",
             "radiusTwoMatches": [],
-            "topPercentage": null,
-            "topMatchId": null,
+            "topPercentage": 54,
+            "topMatchId": 29260,
             "error": null
           },
           "peerExactMatches": [],
@@ -393,7 +482,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 5–9 kyu"
         ],
-        "sgf": null,
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AP[tsumego-bench]AW[lb][mb][nb][ob][pb][qb][qa][ra][rb][sb]AB[ma][na][oa][ka][kb][lc][mc][nc][oc][pc][qc][rc][sc]\n(;B[la];W[pa];B[sa]C[RIGHT])\n(;B[pa];W[la]))\n",
         "human": {
           "file": "problem-05.sgf",
           "status": "pending",
@@ -412,37 +501,56 @@
           },
           "notes": ""
         },
-        "reviews": []
+        "reviews": [
+          {
+            "reviewId": "627bcdfa-3e87-435d-bca1-49d5c6300f4b",
+            "reviewerName": "Adam",
+            "file": "problem-05.sgf",
+            "status": "completed",
+            "valid": true,
+            "realistic": true,
+            "duplicate": false,
+            "wellPathed": false,
+            "estimatedDifficulty": null,
+            "quality": null,
+            "reviewedAt": "2026-08-08T19:49:26.368Z"
+          }
+        ]
       },
       {
         "file": "problem-06.sgf",
         "targetDifficulty": "5–9 kyu",
-        "sha256": null,
-        "playerColor": null,
-        "status": "failed",
-        "automatedGate": "fail",
+        "sha256": "64daa0b8a4a4fa3280540c2fc05c947d06f9dd82843f27fb3c3c4eea5e37ce01",
+        "playerColor": "white",
+        "status": "needs_human_review",
+        "automatedGate": "pass",
         "validation": {
-          "status": "fail",
-          "valid": false,
-          "issues": [
-            {
-              "severity": "error",
-              "code": "missing-file",
-              "message": "problem-06.sgf was not created."
-            }
-          ],
-          "stats": null
+          "status": "pass",
+          "valid": true,
+          "issues": [],
+          "stats": {
+            "nodeCount": 10,
+            "moveCount": 9,
+            "maxDepth": 3,
+            "variationPoints": 2,
+            "rightCount": 2,
+            "setupStoneCount": 25
+          }
         },
         "originality": {
-          "status": "not_run",
+          "status": "pass",
           "builtInSetupMatch": null,
           "exactLocalMatch": null,
-          "closestLocalShape": null,
+          "closestLocalShape": {
+            "id": 53750,
+            "sourceUrl": "https://www.goproblems.com/problems/53750",
+            "percentage": 38.89
+          },
           "remote": {
-            "status": "not_run",
+            "status": "pass",
             "radiusTwoMatches": [],
-            "topPercentage": null,
-            "topMatchId": null,
+            "topPercentage": 67,
+            "topMatchId": 47735,
             "error": null
           },
           "peerExactMatches": [],
@@ -455,7 +563,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 5–9 kyu"
         ],
-        "sgf": null,
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AP[tsumego-bench]AW[af][bf][bg][bh][bi][bj][bk][bl][bm]AB[ai][aj][ak][ae][be][cf][cg][ch][ci][cj][ck][cl][cm][am][an][bn]\n(;W[al]\n(;B[ah];W[ag]C[RIGHT])\n(;B[ag];W[ah]C[RIGHT]))\n(;W[ah];B[al])\n(;W[ag];B[al]))\n",
         "human": {
           "file": "problem-06.sgf",
           "status": "pending",
@@ -474,37 +582,56 @@
           },
           "notes": ""
         },
-        "reviews": []
+        "reviews": [
+          {
+            "reviewId": "627bcdfa-3e87-435d-bca1-49d5c6300f4b",
+            "reviewerName": "Adam",
+            "file": "problem-06.sgf",
+            "status": "completed",
+            "valid": true,
+            "realistic": true,
+            "duplicate": false,
+            "wellPathed": true,
+            "estimatedDifficulty": "20-30 kyu",
+            "quality": 3,
+            "reviewedAt": "2026-08-08T19:50:19.862Z"
+          }
+        ]
       },
       {
         "file": "problem-07.sgf",
         "targetDifficulty": "1–4 kyu",
-        "sha256": null,
-        "playerColor": null,
-        "status": "failed",
-        "automatedGate": "fail",
+        "sha256": "5c48eece86568705f07d425670a3a7c457f9191b657b7c02336264a5ff233589",
+        "playerColor": "black",
+        "status": "needs_human_review",
+        "automatedGate": "pass",
         "validation": {
-          "status": "fail",
-          "valid": false,
-          "issues": [
-            {
-              "severity": "error",
-              "code": "missing-file",
-              "message": "problem-07.sgf was not created."
-            }
-          ],
-          "stats": null
+          "status": "pass",
+          "valid": true,
+          "issues": [],
+          "stats": {
+            "nodeCount": 6,
+            "moveCount": 5,
+            "maxDepth": 3,
+            "variationPoints": 1,
+            "rightCount": 1,
+            "setupStoneCount": 23
+          }
         },
         "originality": {
-          "status": "not_run",
+          "status": "pass",
           "builtInSetupMatch": null,
           "exactLocalMatch": null,
-          "closestLocalShape": null,
+          "closestLocalShape": {
+            "id": 5922,
+            "sourceUrl": "https://www.goproblems.com/problems/5922",
+            "percentage": 23.81
+          },
           "remote": {
-            "status": "not_run",
+            "status": "pass",
             "radiusTwoMatches": [],
-            "topPercentage": null,
-            "topMatchId": null,
+            "topPercentage": 55,
+            "topMatchId": 44503,
             "error": null
           },
           "peerExactMatches": [],
@@ -517,7 +644,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 1–4 kyu"
         ],
-        "sgf": null,
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AP[tsumego-bench]AW[eb][fb][gb][hb][ib][jb][kb][ka]AB[fa][ga][ha][ja][da][db][ec][fc][gc][hc][ic][jc][kc][la][lb]\n(;B[ea];W[ia];B[ja]C[RIGHT])\n(;B[ia];W[ea]))\n",
         "human": {
           "file": "problem-07.sgf",
           "status": "pending",
@@ -536,37 +663,56 @@
           },
           "notes": ""
         },
-        "reviews": []
+        "reviews": [
+          {
+            "reviewId": "627bcdfa-3e87-435d-bca1-49d5c6300f4b",
+            "reviewerName": "Adam",
+            "file": "problem-07.sgf",
+            "status": "completed",
+            "valid": true,
+            "realistic": true,
+            "duplicate": false,
+            "wellPathed": true,
+            "estimatedDifficulty": "20-30 kyu",
+            "quality": 3,
+            "reviewedAt": "2026-08-08T19:52:31.783Z"
+          }
+        ]
       },
       {
         "file": "problem-08.sgf",
         "targetDifficulty": "1–4 kyu",
-        "sha256": null,
-        "playerColor": null,
-        "status": "failed",
-        "automatedGate": "fail",
+        "sha256": "ff0f4a4a8184a3c18ff569e31426a5c72daa54f475bee530add76ff3dd76b60e",
+        "playerColor": "black",
+        "status": "needs_human_review",
+        "automatedGate": "pass",
         "validation": {
-          "status": "fail",
-          "valid": false,
-          "issues": [
-            {
-              "severity": "error",
-              "code": "missing-file",
-              "message": "problem-08.sgf was not created."
-            }
-          ],
-          "stats": null
+          "status": "pass",
+          "valid": true,
+          "issues": [],
+          "stats": {
+            "nodeCount": 13,
+            "moveCount": 12,
+            "maxDepth": 3,
+            "variationPoints": 3,
+            "rightCount": 4,
+            "setupStoneCount": 30
+          }
         },
         "originality": {
-          "status": "not_run",
+          "status": "pass",
           "builtInSetupMatch": null,
           "exactLocalMatch": null,
-          "closestLocalShape": null,
+          "closestLocalShape": {
+            "id": 5922,
+            "sourceUrl": "https://www.goproblems.com/problems/5922",
+            "percentage": 18
+          },
           "remote": {
-            "status": "not_run",
+            "status": "pass",
             "radiusTwoMatches": [],
-            "topPercentage": null,
-            "topMatchId": null,
+            "topPercentage": 56,
+            "topMatchId": 58834,
             "error": null
           },
           "peerExactMatches": [],
@@ -579,7 +725,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 1–4 kyu"
         ],
-        "sgf": null,
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AP[tsumego-bench]AW[dr][er][fr][gr][hr][ir][jr][kr][lr][ls][eq][iq]AB[gs][hs][is][ks][cr][cs][ds][dq][ep][fq][gq][hq][ip][jq][kq][lq][mr][ms]\n(;B[fs]\n(;W[es];B[js]C[RIGHT])\n(;W[js];B[es]C[RIGHT]))\n(;B[es]\n(;W[fs];B[js]C[RIGHT])\n(;W[js];B[fs]C[RIGHT]))\n(;B[js];W[fs]))\n",
         "human": {
           "file": "problem-08.sgf",
           "status": "pending",
@@ -598,37 +744,56 @@
           },
           "notes": ""
         },
-        "reviews": []
+        "reviews": [
+          {
+            "reviewId": "627bcdfa-3e87-435d-bca1-49d5c6300f4b",
+            "reviewerName": "Adam",
+            "file": "problem-08.sgf",
+            "status": "completed",
+            "valid": true,
+            "realistic": true,
+            "duplicate": false,
+            "wellPathed": true,
+            "estimatedDifficulty": "20-30 kyu",
+            "quality": 2,
+            "reviewedAt": "2026-08-08T19:54:21.144Z"
+          }
+        ]
       },
       {
         "file": "problem-09.sgf",
         "targetDifficulty": "about 1 dan",
-        "sha256": null,
-        "playerColor": null,
-        "status": "failed",
-        "automatedGate": "fail",
+        "sha256": "ce02a61c0389d3349a3b7f48e29067fd3f69bcc5b29ece4bb3c811cf1af2aac7",
+        "playerColor": "white",
+        "status": "needs_human_review",
+        "automatedGate": "pass",
         "validation": {
-          "status": "fail",
-          "valid": false,
-          "issues": [
-            {
-              "severity": "error",
-              "code": "missing-file",
-              "message": "problem-09.sgf was not created."
-            }
-          ],
-          "stats": null
+          "status": "pass",
+          "valid": true,
+          "issues": [],
+          "stats": {
+            "nodeCount": 10,
+            "moveCount": 9,
+            "maxDepth": 3,
+            "variationPoints": 2,
+            "rightCount": 2,
+            "setupStoneCount": 24
+          }
         },
         "originality": {
-          "status": "not_run",
+          "status": "pass",
           "builtInSetupMatch": null,
           "exactLocalMatch": null,
-          "closestLocalShape": null,
+          "closestLocalShape": {
+            "id": 10507,
+            "sourceUrl": "https://www.goproblems.com/problems/10507",
+            "percentage": 31.58
+          },
           "remote": {
-            "status": "not_run",
+            "status": "pass",
             "radiusTwoMatches": [],
-            "topPercentage": null,
-            "topMatchId": null,
+            "topPercentage": 67,
+            "topMatchId": 41411,
             "error": null
           },
           "peerExactMatches": [],
@@ -641,7 +806,7 @@
           "canonical construction and teaching value",
           "difficulty fit for about 1 dan"
         ],
-        "sgf": null,
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AP[tsumego-bench]AW[br][cr][dr][er][fr][gr][hr][hs][cq][fq]AB[cs][ds][fs][ar][as][bq][dq][eq][gq][cp][fp][hq][ir][is]\n(;W[bs]\n(;B[es];W[gs]C[RIGHT])\n(;B[gs];W[es]C[RIGHT]))\n(;W[es];B[bs])\n(;W[gs];B[bs]))\n",
         "human": {
           "file": "problem-09.sgf",
           "status": "pending",
@@ -660,37 +825,56 @@
           },
           "notes": ""
         },
-        "reviews": []
+        "reviews": [
+          {
+            "reviewId": "627bcdfa-3e87-435d-bca1-49d5c6300f4b",
+            "reviewerName": "Adam",
+            "file": "problem-09.sgf",
+            "status": "completed",
+            "valid": true,
+            "realistic": true,
+            "duplicate": false,
+            "wellPathed": false,
+            "estimatedDifficulty": null,
+            "quality": null,
+            "reviewedAt": "2026-08-08T19:54:47.436Z"
+          }
+        ]
       },
       {
         "file": "problem-10.sgf",
         "targetDifficulty": "about 1 dan",
-        "sha256": null,
-        "playerColor": null,
-        "status": "failed",
-        "automatedGate": "fail",
+        "sha256": "b78ef283a1600cae131735ee98bc03924b3c5bb22abfa56bf164f83a67c870cd",
+        "playerColor": "black",
+        "status": "needs_human_review",
+        "automatedGate": "pass",
         "validation": {
-          "status": "fail",
-          "valid": false,
-          "issues": [
-            {
-              "severity": "error",
-              "code": "missing-file",
-              "message": "problem-10.sgf was not created."
-            }
-          ],
-          "stats": null
+          "status": "pass",
+          "valid": true,
+          "issues": [],
+          "stats": {
+            "nodeCount": 13,
+            "moveCount": 12,
+            "maxDepth": 3,
+            "variationPoints": 3,
+            "rightCount": 4,
+            "setupStoneCount": 22
+          }
         },
         "originality": {
-          "status": "not_run",
+          "status": "pass",
           "builtInSetupMatch": null,
           "exactLocalMatch": null,
-          "closestLocalShape": null,
+          "closestLocalShape": {
+            "id": 28281,
+            "sourceUrl": "https://www.goproblems.com/problems/28281",
+            "percentage": 21.95
+          },
           "remote": {
-            "status": "not_run",
+            "status": "pass",
             "radiusTwoMatches": [],
-            "topPercentage": null,
-            "topMatchId": null,
+            "topPercentage": 79,
+            "topMatchId": 49666,
             "error": null
           },
           "peerExactMatches": [],
@@ -703,7 +887,7 @@
           "canonical construction and teaching value",
           "difficulty fit for about 1 dan"
         ],
-        "sgf": null,
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AP[tsumego-bench]AW[ar][br][cr][dr][er][fr][gr][gq]AB[as][cs][ds][es][aq][bq][cq][dq][eq][fq][gp][hq][hr][hs]\n(;B[fs]\n(;W[gs];B[bs]C[RIGHT])\n(;W[bs];B[gs]C[RIGHT]))\n(;B[gs]\n(;W[bs];B[fs]C[RIGHT])\n(;W[fs];B[bs]C[RIGHT]))\n(;B[bs];W[fs]))\n",
         "human": {
           "file": "problem-10.sgf",
           "status": "pending",
@@ -722,7 +906,21 @@
           },
           "notes": ""
         },
-        "reviews": []
+        "reviews": [
+          {
+            "reviewId": "627bcdfa-3e87-435d-bca1-49d5c6300f4b",
+            "reviewerName": "Adam",
+            "file": "problem-10.sgf",
+            "status": "completed",
+            "valid": true,
+            "realistic": true,
+            "duplicate": false,
+            "wellPathed": true,
+            "estimatedDifficulty": "20-30 kyu",
+            "quality": 3,
+            "reviewedAt": "2026-08-08T19:55:46.043Z"
+          }
+        ]
       }
     ]
   },
@@ -885,7 +1083,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 20–30 kyu"
         ],
-        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\nAB[ab][bb][cb][db][eb][fb][gb][ac][gc][ad][bd][cd][dd][ed][fd][gd]\nAW[aa][ba][ca][da][ea][fa][ga][ha][ae][be][ce][de][ee][fe][ge][he][hb][hc][hd][bc][cc][dc][ec]\n(;B[fc]C[RIGHT])\n(;B[ia];W[fc])\n(;B[ib];W[fc]))\n",
+        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\r\nAB[ab][bb][cb][db][eb][fb][gb][ac][gc][ad][bd][cd][dd][ed][fd][gd]\r\nAW[aa][ba][ca][da][ea][fa][ga][ha][ae][be][ce][de][ee][fe][ge][he][hb][hc][hd][bc][cc][dc][ec]\r\n(;B[fc]C[RIGHT])\r\n(;B[ia];W[fc])\r\n(;B[ib];W[fc]))\r\n",
         "human": {
           "file": "problem-01.sgf",
           "status": "pending",
@@ -966,7 +1164,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 20–30 kyu"
         ],
-        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\nAB[bb][cb][db][eb][fb][bc][dc][bd][cd][dd][ed][fd]\nAW[ab][ac][ad][ba][ca][da][ea][fa][be][de][ee][fe][bf][gb][gc][gd][ec]\n(;W[fc]\n  (;B[ce];W[cf]C[RIGHT])\n  (;B[cc];W[ce]C[RIGHT]))\n(;W[ce];B[fc])\n(;W[cf];B[fc]))\n",
+        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\r\nAB[bb][cb][db][eb][fb][bc][dc][bd][cd][dd][ed][fd]\r\nAW[ab][ac][ad][ba][ca][da][ea][fa][be][de][ee][fe][bf][gb][gc][gd][ec]\r\n(;W[fc]\r\n  (;B[ce];W[cf]C[RIGHT])\r\n  (;B[cc];W[ce]C[RIGHT]))\r\n(;W[ce];B[fc])\r\n(;W[cf];B[fc]))\r\n",
         "human": {
           "file": "problem-02.sgf",
           "status": "pending",
@@ -1047,7 +1245,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 10–19 kyu"
         ],
-        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\nAB[ac][bc][cc][fa][fc][dd][ed]\nAW[aa][ab][bb][ca][cb][da][db][dc][ea][ec]\n(;B[fb]\n  (;W[eb];B[ba]C[RIGHT])\n  (;W[ba];B[eb]C[RIGHT])\n  (;W[gb];B[eb]C[RIGHT]))\n(;B[eb];W[fb])\n(;B[gb];W[fb]))\n",
+        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\r\nAB[ac][bc][cc][fa][fc][dd][ed]\r\nAW[aa][ab][bb][ca][cb][da][db][dc][ea][ec]\r\n(;B[fb]\r\n  (;W[eb];B[ba]C[RIGHT])\r\n  (;W[ba];B[eb]C[RIGHT])\r\n  (;W[gb];B[eb]C[RIGHT]))\r\n(;B[eb];W[fb])\r\n(;B[gb];W[fb]))\r\n",
         "human": {
           "file": "problem-03.sgf",
           "status": "pending",
@@ -1128,7 +1326,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 10–19 kyu"
         ],
-        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\nAB[aa][ba][ca][da][ea][fb][ae][be][ee][cf][df][fc][fd][dc]\nAW[ab][ac][ad][bb][bd][cb][cc][cd][ce][db][eb][de]\n(;W[ec]\n  (;B[dd];W[ed]C[RIGHT])\n  (;B[ed];W[dd]C[RIGHT]))\n(;W[dd];B[ec];W[ed];B[bc])\n(;W[ed];B[ec];W[dd];B[bc]))\n",
+        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\r\nAB[aa][ba][ca][da][ea][fb][ae][be][ee][cf][df][fc][fd][dc]\r\nAW[ab][ac][ad][bb][bd][cb][cc][cd][ce][db][eb][de]\r\n(;W[ec]\r\n  (;B[dd];W[ed]C[RIGHT])\r\n  (;B[ed];W[dd]C[RIGHT]))\r\n(;W[dd];B[ec];W[ed];B[bc])\r\n(;W[ed];B[ec];W[dd];B[bc]))\r\n",
         "human": {
           "file": "problem-04.sgf",
           "status": "pending",
@@ -1209,7 +1407,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 5–9 kyu"
         ],
-        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\nAB[ba][ca][da][ab][eb][ac][ec][fc][gc][ad][hd][be][ce][he][cf][gf][cg][fg][dh][eh]\nAW[bb][cb][db][bc][dc][bd][cd][dd][ed][fd][gd][de][ee][ge][df][dg][eg]\n(;B[ff]\n  (;W[fe];B[ef]C[RIGHT])\n  (;W[ef];B[fe]C[RIGHT])\n  (;W[cc];B[fe]C[RIGHT]))\n(;B[fe];W[ff])\n(;B[ef];W[ff]))\n",
+        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\r\nAB[ba][ca][da][ab][eb][ac][ec][fc][gc][ad][hd][be][ce][he][cf][gf][cg][fg][dh][eh]\r\nAW[bb][cb][db][bc][dc][bd][cd][dd][ed][fd][gd][de][ee][ge][df][dg][eg]\r\n(;B[ff]\r\n  (;W[fe];B[ef]C[RIGHT])\r\n  (;W[ef];B[fe]C[RIGHT])\r\n  (;W[cc];B[fe]C[RIGHT]))\r\n(;B[fe];W[ff])\r\n(;B[ef];W[ff]))\r\n",
         "human": {
           "file": "problem-05.sgf",
           "status": "pending",
@@ -1290,7 +1488,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 5–9 kyu"
         ],
-        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\nAB[bb][eb][fb][gb][hc][hd][be][he][bf][hf][cg][dg][eg][fg][gg][ef][dd][de][ed][fd]\nAW[bc][bd][cb][db][dc][ec][fc][gc][cd][gd][ce][ge][cf][df][ff][gf]\n(;W[ee];B[fe];W[ee]C[RIGHT])\n(;W[fe];B[ee])\n(;W[cc];B[fe]))\n",
+        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\r\nAB[bb][eb][fb][gb][hc][hd][be][he][bf][hf][cg][dg][eg][fg][gg][ef][dd][de][ed][fd]\r\nAW[bc][bd][cb][db][dc][ec][fc][gc][cd][gd][ce][ge][cf][df][ff][gf]\r\n(;W[ee];B[fe];W[ee]C[RIGHT])\r\n(;W[fe];B[ee])\r\n(;W[cc];B[fe]))\r\n",
         "human": {
           "file": "problem-06.sgf",
           "status": "pending",
@@ -1371,7 +1569,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 1–4 kyu"
         ],
-        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\nAB[ba][ca][da][ab][eb][fb][gb][ac][hc][ad][dd][ed][fd][hd][be][ce][fe][he][ff][hf][gh][ei][fj]\nAW[bb][cb][db][bc][dc][bd][cd][ec][fc][gc][gd][ge][gf][gg]\n(;B[hg]\n  (;W[fg]\n    (;B[eg]\n      (;W[fh]\n        (;B[eh]\n          (;W[fi];B[gi]C[RIGHT])\n          (;W[cc];B[fi]C[RIGHT]))\n        (;B[fi];W[eh]))\n      (;W[cc];B[fh]C[RIGHT]))\n    (;B[fh];W[eg]))\n  (;W[cc];B[fg]C[RIGHT]))\n(;B[fg];W[hg])\n(;B[fh];W[hg]))\n",
+        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\r\nAB[ba][ca][da][ab][eb][fb][gb][ac][hc][ad][dd][ed][fd][hd][be][ce][fe][he][ff][hf][gh][ei][fj]\r\nAW[bb][cb][db][bc][dc][bd][cd][ec][fc][gc][gd][ge][gf][gg]\r\n(;B[hg]\r\n  (;W[fg]\r\n    (;B[eg]\r\n      (;W[fh]\r\n        (;B[eh]\r\n          (;W[fi];B[gi]C[RIGHT])\r\n          (;W[cc];B[fi]C[RIGHT]))\r\n        (;B[fi];W[eh]))\r\n      (;W[cc];B[fh]C[RIGHT]))\r\n    (;B[fh];W[eg]))\r\n  (;W[cc];B[fg]C[RIGHT]))\r\n(;B[fg];W[hg])\r\n(;B[fh];W[hg]))\r\n",
         "human": {
           "file": "problem-07.sgf",
           "status": "pending",
@@ -1452,7 +1650,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 1–4 kyu"
         ],
-        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\nAB[bb][cb][db][bc][dc][bd][cd][dd][ec][fc][fd][gd][ce][ge][cf][df][gf][ff]\nAW[ba][ca][da][ab][eb][fb][ac][gc][ad][hd][be][he][bf][hf][cg][dg][eg][fg][gg][ed][ef]\n(;W[ee]\n  (;B[de];W[fe]C[RIGHT])\n  (;B[fe];W[de]C[RIGHT])\n  (;B[cc];W[de]C[RIGHT]))\n(;W[de];B[ee])\n(;W[fe];B[ee]))\n",
+        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\r\nAB[bb][cb][db][bc][dc][bd][cd][dd][ec][fc][fd][gd][ce][ge][cf][df][gf][ff]\r\nAW[ba][ca][da][ab][eb][fb][ac][gc][ad][hd][be][he][bf][hf][cg][dg][eg][fg][gg][ed][ef]\r\n(;W[ee]\r\n  (;B[de];W[fe]C[RIGHT])\r\n  (;B[fe];W[de]C[RIGHT])\r\n  (;B[cc];W[de]C[RIGHT]))\r\n(;W[de];B[ee])\r\n(;W[fe];B[ee]))\r\n",
         "human": {
           "file": "problem-08.sgf",
           "status": "pending",
@@ -1533,7 +1731,7 @@
           "canonical construction and teaching value",
           "difficulty fit for about 1 dan"
         ],
-        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\nAB[bb][cb][db][bc][dc][bd][cd][ec][fc][gc][hc][hd][he][hf][hg][hh]\nAW[ba][ca][da][ab][eb][fb][gb][hb][ac][ic][ad][dd][ed][fd][gd][id][be][ce][ge][ie][gf][if][gg][ig][hi][fj][fk][hl][hm][gn]\n(;W[ih]\n  (;B[gh]\n    (;W[fh]\n      (;B[gi]\n        (;W[fi]\n          (;B[gj]\n            (;W[hj]\n              (;B[gk]\n                (;W[hk]\n                  (;B[gl]\n                    (;W[fl]\n                      (;B[gm];W[fm]C[RIGHT])\n                      (;B[cc];W[gm]C[RIGHT]))\n                    (;W[gm];B[fl]))\n                  (;B[cc];W[gl]C[RIGHT]))\n                (;W[gl];B[hk];W[ik]C[RIGHT]))\n              (;B[cc];W[gk]C[RIGHT]))\n            (;W[gk];B[hj]))\n          (;B[cc];W[gj]C[RIGHT]))\n        (;W[gj];B[fi];W[ei]C[RIGHT]))\n      (;B[cc];W[gi]C[RIGHT]))\n    (;W[gi];B[fh]))\n  (;B[cc];W[gh]C[RIGHT]))\n(;W[gh];B[ih])\n(;W[fh];B[ih]))\n",
+        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\r\nAB[bb][cb][db][bc][dc][bd][cd][ec][fc][gc][hc][hd][he][hf][hg][hh]\r\nAW[ba][ca][da][ab][eb][fb][gb][hb][ac][ic][ad][dd][ed][fd][gd][id][be][ce][ge][ie][gf][if][gg][ig][hi][fj][fk][hl][hm][gn]\r\n(;W[ih]\r\n  (;B[gh]\r\n    (;W[fh]\r\n      (;B[gi]\r\n        (;W[fi]\r\n          (;B[gj]\r\n            (;W[hj]\r\n              (;B[gk]\r\n                (;W[hk]\r\n                  (;B[gl]\r\n                    (;W[fl]\r\n                      (;B[gm];W[fm]C[RIGHT])\r\n                      (;B[cc];W[gm]C[RIGHT]))\r\n                    (;W[gm];B[fl]))\r\n                  (;B[cc];W[gl]C[RIGHT]))\r\n                (;W[gl];B[hk];W[ik]C[RIGHT]))\r\n              (;B[cc];W[gk]C[RIGHT]))\r\n            (;W[gk];B[hj]))\r\n          (;B[cc];W[gj]C[RIGHT]))\r\n        (;W[gj];B[fi];W[ei]C[RIGHT]))\r\n      (;B[cc];W[gi]C[RIGHT]))\r\n    (;W[gi];B[fh]))\r\n  (;B[cc];W[gh]C[RIGHT]))\r\n(;W[gh];B[ih])\r\n(;W[fh];B[ih]))\r\n",
         "human": {
           "file": "problem-09.sgf",
           "status": "pending",
@@ -1621,7 +1819,7 @@
           "canonical construction and teaching value",
           "difficulty fit for about 1 dan"
         ],
-        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\nAB[fa][fb][fc][fd][ae][be][ce][de][fe][ge][he][df][if][dg][ig][dh][ih][ei][fi][hi][gj][bb][bc][cb][db][cd][fg]\nAW[aa][ba][ca][da][ea][ab][ac][ad][bd][eb][ec][dd][ed][ee][ef][eg][ff][fh][eh][gf][hf][hg][hh]\n(;W[cc]\n  (;B[dc];W[cc]\n    (;B[gg];W[gh]C[RIGHT])\n    (;B[gh];W[gg]C[RIGHT]))\n  (;B[gg]\n    (;W[dc];B[gh];W[gi]C[RIGHT])\n    (;W[gh];B[dc];W[cc]C[RIGHT]))\n  (;B[gh];W[gg];B[dc];W[cc]C[RIGHT]))\n(;W[dc];B[cc])\n(;W[gg];B[cc])\n(;W[gh];B[cc]))\n",
+        "sgf": "(;FF[4]GM[1]CA[UTF-8]SZ[19]\r\nAB[fa][fb][fc][fd][ae][be][ce][de][fe][ge][he][df][if][dg][ig][dh][ih][ei][fi][hi][gj][bb][bc][cb][db][cd][fg]\r\nAW[aa][ba][ca][da][ea][ab][ac][ad][bd][eb][ec][dd][ed][ee][ef][eg][ff][fh][eh][gf][hf][hg][hh]\r\n(;W[cc]\r\n  (;B[dc];W[cc]\r\n    (;B[gg];W[gh]C[RIGHT])\r\n    (;B[gh];W[gg]C[RIGHT]))\r\n  (;B[gg]\r\n    (;W[dc];B[gh];W[gi]C[RIGHT])\r\n    (;W[gh];B[dc];W[cc]C[RIGHT]))\r\n  (;B[gh];W[gg];B[dc];W[cc]C[RIGHT]))\r\n(;W[dc];B[cc])\r\n(;W[gg];B[cc])\r\n(;W[gh];B[cc]))\r\n",
         "human": {
           "file": "problem-10.sgf",
           "status": "pending",
@@ -1757,10 +1955,18 @@
       "reviewerRank": null
     },
     "humanReviews": {
-      "updatedAt": null,
-      "reviewCount": 0,
-      "completedProblemReviews": 0,
-      "reviewers": []
+      "updatedAt": "2026-08-08T15:40:39.836858Z",
+      "reviewCount": 1,
+      "completedProblemReviews": 1,
+      "reviewers": [
+        {
+          "reviewId": "e05deeb5-aaa4-433c-bc61-49125e657fc7",
+          "reviewerName": "Adam",
+          "updatedAt": "2026-08-08T15:40:39.836858Z",
+          "completed": 1,
+          "total": 10
+        }
+      ]
     },
     "problems": [
       {
@@ -1849,7 +2055,21 @@
           },
           "notes": ""
         },
-        "reviews": []
+        "reviews": [
+          {
+            "reviewId": "e05deeb5-aaa4-433c-bc61-49125e657fc7",
+            "reviewerName": "Adam",
+            "file": "problem-01.sgf",
+            "status": "completed",
+            "valid": true,
+            "realistic": true,
+            "duplicate": true,
+            "wellPathed": true,
+            "estimatedDifficulty": null,
+            "quality": null,
+            "reviewedAt": "2026-08-08T15:40:39.832Z"
+          }
+        ]
       },
       {
         "file": "problem-02.sgf",
@@ -4298,7 +4518,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 20–30 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[dd][ec][ee][fb][ff][gb][gf][hb][hf][ic][ie][jd]AW[ed][fc][fe][gc][ge][hc][he][id](;B[gd](;W[fd];B[hd]C[RIGHT])(;W[hd];B[fd]C[RIGHT]))(;B[fd];W[gd])(;B[hd];W[gd]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[dd][ec][ee][fb][ff][gb][gf][hb][hf][ic][ie][jd]AW[ed][fc][fe][gc][ge][hc][he][id](;B[gd](;W[fd];B[hd]C[RIGHT])(;W[hd];B[fd]C[RIGHT]))(;B[fd];W[gd])(;B[hd];W[gd]))\r\n",
         "human": {
           "file": "problem-01.sgf",
           "status": "pending",
@@ -4379,7 +4599,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 20–30 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[jd][je][kc][kf][lb][lg][mb][mf][nc][ne][od]AW[kd][ke][lc][lf][mc][me][nd](;W[ld]C[RIGHT])(;W[md];B[ld])(;W[le];B[ld]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[jd][je][kc][kf][lb][lg][mb][mf][nc][ne][od]AW[kd][ke][lc][lf][mc][me][nd](;W[ld]C[RIGHT])(;W[md];B[ld])(;W[le];B[ld]))\r\n",
         "human": {
           "file": "problem-02.sgf",
           "status": "pending",
@@ -4460,7 +4680,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 10–19 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[bk][cj][cl][di][dm][ei][em][fi][fn][gj][gn][hk][hm][il]AW[ck][dj][dl][ej][el][fj][fm][gk][gm][hl](;W[fk]C[RIGHT])(;W[dk];B[fk])(;W[ek];B[fk])(;W[fl];B[fk])(;W[gl];B[fk]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[bk][cj][cl][di][dm][ei][em][fi][fn][gj][gn][hk][hm][il]AW[ck][dj][dl][ej][el][fj][fm][gk][gm][hl](;W[fk]C[RIGHT])(;W[dk];B[fk])(;W[ek];B[fk])(;W[fl];B[fk])(;W[gl];B[fk]))\r\n",
         "human": {
           "file": "problem-03.sgf",
           "status": "pending",
@@ -4541,7 +4761,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 10–19 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[il][jk][jm][kj][kn][li][ln][mj][mn][nk][nm][ol]AW[jl][kk][km][lj][lm][mk][mm][nl](;W[ll]C[RIGHT])(;W[lk];B[ll])(;W[kl];B[ll])(;W[ml];B[ll]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[il][jk][jm][kj][kn][li][ln][mj][mn][nk][nm][ol]AW[jl][kk][km][lj][lm][mk][mm][nl](;W[ll]C[RIGHT])(;W[lk];B[ll])(;W[kl];B[ll])(;W[ml];B[ll]))\r\n",
         "human": {
           "file": "problem-04.sgf",
           "status": "pending",
@@ -4622,7 +4842,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 5–9 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[de][ed][ef][fd][fg][ge][gh][hf][hg]AW[ce][dd][df][ec][eg][fc][fh][gd][gi][he][hh][if][ig](;B[ff]C[RIGHT])(;B[ee];W[ff])(;B[fe];W[ff])(;B[gf];W[ff])(;B[gg];W[ff]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[de][ed][ef][fd][fg][ge][gh][hf][hg]AW[ce][dd][df][ec][eg][fc][fh][gd][gi][he][hh][if][ig](;B[ff]C[RIGHT])(;B[ee];W[ff])(;B[fe];W[ff])(;B[gf];W[ff])(;B[gg];W[ff]))\r\n",
         "human": {
           "file": "problem-05.sgf",
           "status": "pending",
@@ -4703,7 +4923,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 5–9 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[kg][lf][lh][me][mi][nd][nj][oe][oi][pf][ph][qg]AW[lg][mf][mh][ne][ni][of][oh][pg](;W[ng]C[RIGHT])(;W[nf];B[ng])(;W[mg];B[ng])(;W[og];B[ng])(;W[nh];B[ng]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[kg][lf][lh][me][mi][nd][nj][oe][oi][pf][ph][qg]AW[lg][mf][mh][ne][ni][of][oh][pg](;W[ng]C[RIGHT])(;W[nf];B[ng])(;W[mg];B[ng])(;W[og];B[ng])(;W[nh];B[ng]))\r\n",
         "human": {
           "file": "problem-06.sgf",
           "status": "pending",
@@ -4784,7 +5004,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 1–4 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[bd][be][cc][cf][db][dg][ec][eg][fc][fh][gd][gi][he][hh][if][ig]AW[cd][ce][dc][df][ed][ef][fd][fg][ge][gh][hf][hg](;W[ee]C[RIGHT])(;W[dd];B[ee])(;W[de];B[ee])(;W[fe];B[ee])(;W[ff];B[ee])(;W[gf];B[ee]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[bd][be][cc][cf][db][dg][ec][eg][fc][fh][gd][gi][he][hh][if][ig]AW[cd][ce][dc][df][ed][ef][fd][fg][ge][gh][hf][hg](;W[ee]C[RIGHT])(;W[dd];B[ee])(;W[de];B[ee])(;W[fe];B[ee])(;W[ff];B[ee])(;W[gf];B[ee]))\r\n",
         "human": {
           "file": "problem-07.sgf",
           "status": "pending",
@@ -4865,7 +5085,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 1–4 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[jc][kb][kd][ke][lb][lf][mb][md][mf][nc][ne]AW[ic][jb][jd][je][ka][kf][la][lg][ma][mg][nb][nd][nf][oc][oe](;B[ld]C[RIGHT])(;B[kc];W[ld])(;B[lc];W[ld])(;B[mc];W[ld])(;B[le];W[ld])(;B[me];W[ld]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[jc][kb][kd][ke][lb][lf][mb][md][mf][nc][ne]AW[ic][jb][jd][je][ka][kf][la][lg][ma][mg][nb][nd][nf][oc][oe](;B[ld]C[RIGHT])(;B[kc];W[ld])(;B[lc];W[ld])(;B[mc];W[ld])(;B[le];W[ld])(;B[me];W[ld]))\r\n",
         "human": {
           "file": "problem-08.sgf",
           "status": "pending",
@@ -4946,7 +5166,7 @@
           "canonical construction and teaching value",
           "difficulty fit for about 1 dan"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[al][bk][bm][cj][cn][dj][do][ej][ep][fk][fp][gl][gp][hm][ho][in]AW[bl][ck][cm][dk][dm][dn][ek][eo][fl][fm][fo][gm][go][hn](;W[em](;B[dl](;W[cl]C[RIGHT])(;W[el]C[RIGHT]))(;B[fn](;W[en]C[RIGHT])(;W[gn]C[RIGHT])))(;W[cl];B[em])(;W[dl];B[em])(;W[el];B[em])(;W[en];B[em])(;W[fn];B[em])(;W[gn];B[em]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[al][bk][bm][cj][cn][dj][do][ej][ep][fk][fp][gl][gp][hm][ho][in]AW[bl][ck][cm][dk][dm][dn][ek][eo][fl][fm][fo][gm][go][hn](;W[em](;B[dl](;W[cl]C[RIGHT])(;W[el]C[RIGHT]))(;B[fn](;W[en]C[RIGHT])(;W[gn]C[RIGHT])))(;W[cl];B[em])(;W[dl];B[em])(;W[el];B[em])(;W[en];B[em])(;W[fn];B[em])(;W[gn];B[em]))\r\n",
         "human": {
           "file": "problem-09.sgf",
           "status": "pending",
@@ -5027,7 +5247,7 @@
           "canonical construction and teaching value",
           "difficulty fit for about 1 dan"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[jk][kj][kl][li][lm][ln][lo][mi][mp][ni][nq][oj][op][pk][pl][pm][pn][po]AW[kk][lj][ll][mj][ml][mm][mn][mo][nj][np][ok][ol][om][on][oo](;W[nl](;B[mk](;W[lk]C[RIGHT])(;W[nk]C[RIGHT]))(;B[nn](;W[nm]C[RIGHT])(;W[no]C[RIGHT])))(;W[lk];B[nl])(;W[mk];B[nl])(;W[nk];B[nl])(;W[nm];B[nl])(;W[nn];B[nl])(;W[no];B[nl]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[jk][kj][kl][li][lm][ln][lo][mi][mp][ni][nq][oj][op][pk][pl][pm][pn][po]AW[kk][lj][ll][mj][ml][mm][mn][mo][nj][np][ok][ol][om][on][oo](;W[nl](;B[mk](;W[lk]C[RIGHT])(;W[nk]C[RIGHT]))(;B[nn](;W[nm]C[RIGHT])(;W[no]C[RIGHT])))(;W[lk];B[nl])(;W[mk];B[nl])(;W[nk];B[nl])(;W[nm];B[nl])(;W[nn];B[nl])(;W[no];B[nl]))\r\n",
         "human": {
           "file": "problem-10.sgf",
           "status": "pending",
@@ -5223,7 +5443,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 20–30 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[ea][fa][ha][ka][la][eb][fb][gb][hb][ib][kb][lb][ec][fc][gc][hc][ic][jc][kc][lc]AW[ed][fd][gd][hd][id][jd][kd][ld][da][db][dc][ma][mb][mc](;W[ja]C[RIGHT])(;W[ia];B[ja])(;W[jb];B[ja]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[ea][fa][ha][ka][la][eb][fb][gb][hb][ib][kb][lb][ec][fc][gc][hc][ic][jc][kc][lc]AW[ed][fd][gd][hd][id][jd][kd][ld][da][db][dc][ma][mb][mc](;W[ja]C[RIGHT])(;W[ia];B[ja])(;W[jb];B[ja]))\r\n",
         "human": {
           "file": "problem-01.sgf",
           "status": "pending",
@@ -5304,7 +5524,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 20–30 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[ls][lr][ns][os][rs][ss][mr][nr][or][pr][rr][sr][qq][rq][pq]AW[ks][kr][lq][mq][nq][oq][pp][qp][rp][sq](;W[qs]C[RIGHT])(;W[ps];B[qs])(;W[qr];B[qs]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[ls][lr][ns][os][rs][ss][mr][nr][or][pr][rr][sr][qq][rq][pq]AW[ks][kr][lq][mq][nq][oq][pp][qp][rp][sq](;W[qs]C[RIGHT])(;W[ps];B[qs])(;W[qr];B[qs]))\r\n",
         "human": {
           "file": "problem-02.sgf",
           "status": "pending",
@@ -5385,7 +5605,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 10–19 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[fa][fb][fc][fd][ee][ae][be][ce][de]AW[aa][ba][ea][ab][cb][eb][ac][bc][cc][dc][ec][ad][bd][cd][dd][ed](;B[da]C[RIGHT])(;B[ca];W[da])(;B[db];W[da]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[fa][fb][fc][fd][ee][ae][be][ce][de]AW[aa][ba][ea][ab][cb][eb][ac][bc][cc][dc][ec][ad][bd][cd][dd][ed](;B[da]C[RIGHT])(;B[ca];W[da])(;B[db];W[da]))\r\n",
         "human": {
           "file": "problem-03.sgf",
           "status": "pending",
@@ -5466,7 +5686,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 10–19 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[pa][pb][pc][pd][pe][pf][qg][rg][sg]AW[qa][ra][sa][qb][rb][sb][qc][sc][qd][rd][qe][qf][rf][sf](;B[se]C[RIGHT])(;B[sd];W[se])(;B[re];W[se]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[pa][pb][pc][pd][pe][pf][qg][rg][sg]AW[qa][ra][sa][qb][rb][sb][qc][sc][qd][rd][qe][qf][rf][sf](;B[se]C[RIGHT])(;B[sd];W[se])(;B[re];W[se]))\r\n",
         "human": {
           "file": "problem-04.sgf",
           "status": "pending",
@@ -5547,7 +5767,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 5–9 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[eo][fo][go][ho][io][dp][jp][dq][dr][ds][jq][jr][js]AW[ep][fp][gp][hp][ip][eq][fq][hq][iq][er][fr][ir][es][fs][is](;B[gr]C[RIGHT])(;B[gq];W[gr])(;B[hr];W[gr])(;B[gs];W[gr])(;B[hs];W[gr]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[eo][fo][go][ho][io][dp][jp][dq][dr][ds][jq][jr][js]AW[ep][fp][gp][hp][ip][eq][fq][hq][iq][er][fr][ir][es][fs][is](;B[gr]C[RIGHT])(;B[gq];W[gr])(;B[hr];W[gr])(;B[gs];W[gr])(;B[hs];W[gr]))\r\n",
         "human": {
           "file": "problem-05.sgf",
           "status": "pending",
@@ -5628,7 +5848,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 5–9 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[ag][bg][cg][dg][bh][ch][dh][ci][di][cj][dj][ak][bk][ck][dk][al][bl][cl][dl]AW[eg][eh][ei][ej][ek][el][af][bf][cf][df][am][bm][cm][dm](;W[ai]C[RIGHT])(;W[ah];B[ai])(;W[aj];B[ai])(;W[bi];B[ai])(;W[bj];B[ai]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[ag][bg][cg][dg][bh][ch][dh][ci][di][cj][dj][ak][bk][ck][dk][al][bl][cl][dl]AW[eg][eh][ei][ej][ek][el][af][bf][cf][df][am][bm][cm][dm](;W[ai]C[RIGHT])(;W[ah];B[ai])(;W[aj];B[ai])(;W[bi];B[ai])(;W[bj];B[ai]))\r\n",
         "human": {
           "file": "problem-06.sgf",
           "status": "pending",
@@ -5709,7 +5929,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 1–4 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[ao][bo][cp][dp][eq][fr][fs]AW[ap][ar][as][bp][bq][br][bs][cq][dq][dr][er][es](;B[cs]C[RIGHT])(;B[cr];W[cs])(;B[ds];W[cs]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[ao][bo][cp][dp][eq][fr][fs]AW[ap][ar][as][bp][bq][br][bs][cq][dq][dr][er][es](;B[cs]C[RIGHT])(;B[cr];W[cs])(;B[ds];W[cs]))\r\n",
         "human": {
           "file": "problem-07.sgf",
           "status": "pending",
@@ -5790,7 +6010,7 @@
           "canonical construction and teaching value",
           "difficulty fit for 1–4 kyu"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[on][pn][qn][rn][sn][no][np][nq][nr][ns]AW[oo][po][qo][ro][so][op][pp][qp][rp][sp][oq][pq][qq][sq][or][pr][sr][os][ps][ss](;B[rr]C[RIGHT])(;B[rq];W[rr])(;B[qr];W[rr])(;B[qs];W[rr])(;B[rs];W[rr]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[on][pn][qn][rn][sn][no][np][nq][nr][ns]AW[oo][po][qo][ro][so][op][pp][qp][rp][sp][oq][pq][qq][sq][or][pr][sr][os][ps][ss](;B[rr]C[RIGHT])(;B[rq];W[rr])(;B[qr];W[rr])(;B[qs];W[rr])(;B[rs];W[rr]))\r\n",
         "human": {
           "file": "problem-08.sgf",
           "status": "pending",
@@ -5871,7 +6091,7 @@
           "canonical construction and teaching value",
           "difficulty fit for about 1 dan"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[oi][oj][ok][ol][om][on][oo][ph][qh][rh][sh][pp][qp][rp][sp]AW[pi][qi][ri][si][pj][qj][rj][pk][qk][rk][sk][pl][ql][rl][pm][qm][pn][qn][rn][sn][po][qo][ro][so](;B[sm]C[RIGHT])(;B[sl];W[sm])(;B[rm];W[sm]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[oi][oj][ok][ol][om][on][oo][ph][qh][rh][sh][pp][qp][rp][sp]AW[pi][qi][ri][si][pj][qj][rj][pk][qk][rk][sk][pl][ql][rl][pm][qm][pn][qn][rn][sn][po][qo][ro][so](;B[sm]C[RIGHT])(;B[sl];W[sm])(;B[rm];W[sm]))\r\n",
         "human": {
           "file": "problem-09.sgf",
           "status": "pending",
@@ -5952,7 +6172,7 @@
           "canonical construction and teaching value",
           "difficulty fit for about 1 dan"
         ],
-        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[fq][gq][hq][iq][jq][kq][lq][fr][gr][hr][ir][jr][lr][fs][hs][is][ls]AW[eq][er][es][mq][mr][ms][fp][gp][hp][ip][jp][kp][lp](;W[ks]C[RIGHT])(;W[js];B[ks])(;W[kr];B[ks]))\n",
+        "sgf": "(;SZ[19]FF[4]GM[1]CA[UTF-8]AB[fq][gq][hq][iq][jq][kq][lq][fr][gr][hr][ir][jr][lr][fs][hs][is][ls]AW[eq][er][es][mq][mr][ms][fp][gp][hp][ip][jp][kp][lp](;W[ks]C[RIGHT])(;W[js];B[ks])(;W[kr];B[ks]))\r\n",
         "human": {
           "file": "problem-10.sgf",
           "status": "pending",

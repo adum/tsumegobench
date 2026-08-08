@@ -2,6 +2,125 @@
   "$schema": "../../../schemas/human-reviews.schema.json",
   "schemaVersion": 1,
   "runId": "2026-08-08T020931Z-openrouter-qwen-qwen3-8-max-opencode",
-  "updatedAt": null,
-  "reviews": []
+  "updatedAt": "2026-08-08T15:40:39.836858Z",
+  "reviews": [
+    {
+      "reviewId": "e05deeb5-aaa4-433c-bc61-49125e657fc7",
+      "reviewerName": "Adam",
+      "createdAt": "2026-08-08T15:40:38.051Z",
+      "updatedAt": "2026-08-08T15:40:39.836858Z",
+      "problems": [
+        {
+          "file": "problem-01.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": true,
+          "wellPathed": true,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-08-08T15:40:39.832Z"
+        },
+        {
+          "file": "problem-02.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-03.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-04.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-05.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-06.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-07.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-08.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-09.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-10.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        }
+      ]
+    }
+  ]
 }

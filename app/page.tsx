@@ -4,6 +4,7 @@ import { ModelReleaseChart } from "./components/ModelReleaseChart";
 import { ModelScoreChart } from "./components/ModelScoreChart";
 import chartData from "./data/model-scores.generated.json";
 import runsData from "./data/runs.generated.json";
+import { displayRunStatus } from "@/lib/run-status";
 
 type IndexedRun = {
   runId: string;
@@ -18,6 +19,7 @@ type IndexedRun = {
     expectedProblems: number;
     structuralPassed: number;
     automatedGatePassed: number;
+    humanReviewPending: number;
   };
   humanReviews: {
     completedProblemReviews: number;
@@ -206,6 +208,7 @@ export default function Home() {
             <tbody>
               {recentRuns.map((run) => {
                 const model = metadataFor(run.model.provider, run.model.name);
+                const runStatus = displayRunStatus(run);
                 return (
                   <tr key={run.runId}>
                     <td>
@@ -227,7 +230,7 @@ export default function Home() {
                     <td>{run.summary.structuralPassed}/{run.summary.expectedProblems}</td>
                     <td>{run.summary.automatedGatePassed}/{run.summary.expectedProblems}</td>
                     <td>{run.humanReviews.completedProblemReviews}/{run.summary.expectedProblems}</td>
-                    <td><span className={`run-log-status ${run.status}`}>{run.status}</span></td>
+                    <td><span className={`run-log-status ${runStatus}`}>{runStatus}</span></td>
                   </tr>
                 );
               })}

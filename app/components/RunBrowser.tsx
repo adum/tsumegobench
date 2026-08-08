@@ -19,6 +19,10 @@ import {
 } from "@/lib/review-progress";
 import { formatDurationSeconds } from "@/lib/format-duration";
 import {
+  displayRunStatus,
+  indexedRunReviewProgress,
+} from "@/lib/run-status";
+import {
   collectRightNodes,
   getBoardSize,
   getMove,
@@ -274,34 +278,20 @@ function humanReviewProgressForRun(
   record: BenchmarkRun,
   liveReviewProgress: ReviewProgressSnapshot | null,
 ) {
-  const required = record.summary.humanReviewPending;
-  const indexedCompleted = Math.max(
-    0,
-    ...(record.humanReviews?.reviewers.map((reviewer) => reviewer.completed) ?? []),
-  );
+  const indexedProgress = indexedRunReviewProgress(record);
+  const required = indexedProgress.required;
   const liveCompleted = liveReviewProgress?.runId === record.runId
     ? Object.values(liveReviewProgress.problems).filter(
         (progress) => progress === "completed",
       ).length
     : 0;
-  const completed = Math.max(indexedCompleted, liveCompleted);
+  const completed = Math.max(indexedProgress.completed, liveCompleted);
 
   return {
     completed,
     remaining: Math.max(0, required - completed),
     required,
   };
-}
-
-function displayRunStatus(
-  record: BenchmarkRun,
-  reviewProgress: ReturnType<typeof humanReviewProgressForRun>,
-) {
-  return record.status === "needs_human_review" &&
-    reviewProgress.required > 0 &&
-    reviewProgress.remaining === 0
-    ? "reviewed"
-    : record.status;
 }
 
 export function runHasSgfFiles(record: {

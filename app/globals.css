@@ -3586,12 +3586,14 @@ body {
 }
 
 .run-log-status.completed,
-.run-log-status.passed {
+.run-log-status.passed,
+.run-log-status.reviewed {
   color: var(--green-dark);
 }
 
 .run-log-status.completed::before,
-.run-log-status.passed::before {
+.run-log-status.passed::before,
+.run-log-status.reviewed::before {
   background: var(--green);
 }
 

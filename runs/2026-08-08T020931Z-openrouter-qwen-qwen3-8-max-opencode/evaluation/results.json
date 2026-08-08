@@ -60,10 +60,17 @@
     "rejected": 0
   },
   "humanReviews": {
-    "updatedAt": null,
-    "reviewCount": 0,
-    "completedProblemReviews": 0,
-    "reviewers": []
+    "reviewCount": 1,
+    "completedProblemReviews": 1,
+    "reviewers": [
+      {
+        "reviewId": "e05deeb5-aaa4-433c-bc61-49125e657fc7",
+        "reviewerName": "Adam",
+        "updatedAt": "2026-08-08T15:40:39.836858Z",
+        "completed": 1,
+        "total": 10
+      }
+    ]
   },
   "problems": [
     {
@@ -151,7 +158,21 @@
         },
         "notes": ""
       },
-      "reviews": []
+      "reviews": [
+        {
+          "reviewId": "e05deeb5-aaa4-433c-bc61-49125e657fc7",
+          "reviewerName": "Adam",
+          "file": "problem-01.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": true,
+          "wellPathed": true,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-08-08T15:40:39.832Z"
+        }
+      ]
     },
     {
       "file": "problem-02.sgf",

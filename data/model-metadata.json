@@ -1,6 +1,21 @@
 {
   "schemaVersion": 1,
+  "source": {
+    "catalog": "data/model-release-catalog.json",
+    "upstream": "https://github.com/adum/puzzle-runner/blob/main/model_metadata.md",
+    "importedAt": "2026-08-08"
+  },
   "models": [
+    {
+      "id": "gpt-5.5",
+      "displayName": "GPT-5.5 (Codex)",
+      "family": "OpenAI",
+      "releaseDate": "2026-04-23",
+      "icon": "/provider-icons/openai.svg",
+      "aliases": [
+        { "provider": "openai", "name": "gpt-5.5" }
+      ]
+    },
     {
       "id": "deepseek-v4-flash",
       "displayName": "DeepSeek V4 Flash",
@@ -9,8 +24,29 @@
       "icon": "/provider-icons/deepseek.svg",
       "aliases": [
         { "provider": "openrouter", "name": "deepseek/deepseek-v4-flash" },
-        { "provider": "openrouter", "name": "openrouter/deepseek/deepseek-v4-flash" },
-        { "provider": "openrouter", "name": "openrouter/deepseek/deepseek-v4-flash-0731" }
+        { "provider": "openrouter", "name": "openrouter/deepseek/deepseek-v4-flash" }
+      ]
+    },
+    {
+      "id": "claude-opus-4.8",
+      "displayName": "Claude Opus 4.8",
+      "family": "Anthropic",
+      "releaseDate": "2026-05-28",
+      "icon": "/provider-icons/anthropic.svg",
+      "aliases": [
+        { "provider": "anthropic", "name": "opus-4.8" },
+        { "provider": "anthropic", "name": "claude-opus-4-8" }
+      ]
+    },
+    {
+      "id": "claude-fable-5",
+      "displayName": "Claude Fable 5",
+      "family": "Anthropic",
+      "releaseDate": "2026-06-09",
+      "icon": "/provider-icons/anthropic.svg",
+      "aliases": [
+        { "provider": "anthropic", "name": "fable-5" },
+        { "provider": "anthropic", "name": "claude-fable-5" }
       ]
     },
     {
@@ -44,6 +80,28 @@
       ]
     },
     {
+      "id": "kimi-k3",
+      "displayName": "Kimi K3",
+      "family": "Kimi",
+      "releaseDate": "2026-07-16",
+      "icon": "/provider-icons/kimi.svg",
+      "aliases": [
+        { "provider": "openrouter", "name": "moonshotai/kimi-k3" },
+        { "provider": "openrouter", "name": "openrouter/moonshotai/kimi-k3" }
+      ]
+    },
+    {
+      "id": "qwen3.8-max",
+      "displayName": "Qwen3.8-Max",
+      "family": "Qwen",
+      "releaseDate": "2026-07-19",
+      "icon": "/provider-icons/qwen.svg",
+      "aliases": [
+        { "provider": "openrouter", "name": "qwen/qwen3.8-max" },
+        { "provider": "openrouter", "name": "openrouter/qwen/qwen3.8-max" }
+      ]
+    },
+    {
       "id": "claude-opus-5",
       "displayName": "Claude Opus 5",
       "family": "Anthropic",
@@ -52,6 +110,28 @@
       "aliases": [
         { "provider": "anthropic", "name": "opus-5" },
         { "provider": "anthropic", "name": "claude-opus-5" }
+      ]
+    },
+    {
+      "id": "deepseek-v4-flash-0731",
+      "displayName": "DeepSeek V4 Flash 0731",
+      "family": "DeepSeek",
+      "releaseDate": "2026-07-31",
+      "icon": "/provider-icons/deepseek.svg",
+      "aliases": [
+        { "provider": "openrouter", "name": "deepseek/deepseek-v4-flash-0731" },
+        { "provider": "openrouter", "name": "openrouter/deepseek/deepseek-v4-flash-0731" }
+      ]
+    },
+    {
+      "id": "muse-spark-1.2",
+      "displayName": "Muse Spark 1.2",
+      "family": "Meta",
+      "releaseDate": "2026-08-05",
+      "icon": "/provider-icons/meta.svg",
+      "aliases": [
+        { "provider": "openrouter", "name": "meta/muse-spark-1.2" },
+        { "provider": "openrouter", "name": "openrouter/meta/muse-spark-1.2" }
       ]
     }
   ]

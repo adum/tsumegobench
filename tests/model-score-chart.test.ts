@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   buildModelScoreChartData,
   rankModelScoresForLegend,
+  topScoringModelsForLegend,
   type IndexedRunForChart,
   type ModelMetadataFile,
 } from "../lib/model-score-chart";
@@ -119,5 +120,26 @@ test("chart legend ranks models from best to worst with stable alphabetical ties
   assert.deepEqual(
     models.map((model) => model.displayName),
     ["Zero Zeta", "Winner", "Zero Alpha", "Runner-up"],
+  );
+});
+
+test("chart side table shows at most six models scoring at least one", () => {
+  const models = [
+    { displayName: "Seven", score: 7 },
+    { displayName: "Zero", score: 0 },
+    { displayName: "Three", score: 3 },
+    { displayName: "Eight", score: 8 },
+    { displayName: "One", score: 1 },
+    { displayName: "Six", score: 6 },
+    { displayName: "Two", score: 2 },
+    { displayName: "Five", score: 5 },
+    { displayName: "Four", score: 4 },
+  ];
+
+  assert.deepEqual(
+    topScoringModelsForLegend(models, { limit: 6, minimumScore: 1 }).map(
+      (model) => model.displayName,
+    ),
+    ["Eight", "Seven", "Six", "Five", "Four", "Three"],
   );
 });

@@ -1,0 +1,8 @@
+(;SZ[19]FF[4]GM[1]CA[UTF-8]AP[tsumego-bench]AW[dr][er][fr][gr][hr][ir][jr][kr][lr][ls][eq][iq]AB[gs][hs][is][ks][cr][cs][ds][dq][ep][fq][gq][hq][ip][jq][kq][lq][mr][ms]
+(;B[fs]
+(;W[es];B[js]C[RIGHT])
+(;W[js];B[es]C[RIGHT]))
+(;B[es]
+(;W[fs];B[js]C[RIGHT])
+(;W[js];B[fs]C[RIGHT]))
+(;B[js];W[fs]))

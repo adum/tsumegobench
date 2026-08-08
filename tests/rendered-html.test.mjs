@@ -8,6 +8,9 @@ const indexedRuns = JSON.parse(
 const modelMetadata = JSON.parse(
   await readFile(new URL("../data/model-metadata.json", import.meta.url), "utf8"),
 );
+const modelScores = JSON.parse(
+  await readFile(new URL("../app/data/model-scores.generated.json", import.meta.url), "utf8"),
+);
 const canonicalModelIds = new Map(
   modelMetadata.models.flatMap((model) =>
     model.aliases.map((alias) => [`${alias.provider}/${alias.name}`, model.id]),
@@ -42,6 +45,9 @@ const defaultIndexedRun = indexedRuns.find((run) =>
   run.problems.some((problem) => problem.validation.valid && problem.sgf)
 ) ?? indexedRuns[0];
 const selectedRunReviewState = indexedRunReviewState(defaultIndexedRun);
+const latestIndexedRun = [...indexedRuns]
+  .sort((left, right) => right.createdAt.localeCompare(left.createdAt))[0];
+const latestIndexedRunStatus = indexedRunReviewState(latestIndexedRun).status;
 
 async function render(path = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -84,6 +90,10 @@ test("server-renders a compact overview with route navigation", async () => {
   assert.match(html, /src="\/provider-icons\/(?:openai|anthropic|xai)\.svg"/);
   assert.match(html, /Score definition/);
   assert.match(html, /Latest benchmark activity/);
+  assert.match(
+    html,
+    new RegExp(`class="run-log-status ${latestIndexedRunStatus}">${latestIndexedRunStatus}<\\/span>`),
+  );
   assert.match(html, /Current finding/);
   assert.match(
     html,
@@ -92,6 +102,14 @@ test("server-renders a compact overview with route navigation", async () => {
   assert.doesNotMatch(html, /human-passing result/);
   assert.match(html, /All LLMs By Release Date/);
   assert.match(html, /Score out of 10/);
+  const topScorers = html.match(
+    /<ol class="model-chart-legend" aria-label="Top scoring models">([\s\S]*?)<\/ol>/,
+  );
+  assert.ok(topScorers, "the top-scorer side table should render");
+  assert.equal(
+    (topScorers[1].match(/<li>/g) ?? []).length,
+    Math.min(6, modelScores.models.filter((model) => model.score >= 1).length),
+  );
   assert.match(
     html,
     new RegExp(`Models evaluated<\\/dt><dd>${evaluatedModelCount}<\\/dd>`),

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import { rankModelScoresForLegend } from "@/lib/model-score-chart";
+import { topScoringModelsForLegend } from "@/lib/model-score-chart";
 import chartData from "../data/model-scores.generated.json";
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -26,7 +26,10 @@ function scoreLabel(score: number) {
 export function ModelReleaseChart() {
   const models = chartData.models;
   if (models.length === 0) return null;
-  const legendModels = rankModelScoresForLegend(models);
+  const legendModels = topScoringModelsForLegend(models, {
+    limit: 6,
+    minimumScore: 1,
+  });
 
   const releaseDates = models.map((model) => dateValue(model.releaseDate));
   const earliestRelease = Math.min(...releaseDates);
@@ -155,7 +158,7 @@ export function ModelReleaseChart() {
           <span className="model-chart-x-title">Model release date</span>
         </div>
 
-        <ol className="model-chart-legend" aria-label="Models in chart">
+        <ol className="model-chart-legend" aria-label="Top scoring models">
           {legendModels.map((model) => (
             <li key={model.id}>
               <Link href={`/runs?run=${encodeURIComponent(model.bestRunId)}`}>

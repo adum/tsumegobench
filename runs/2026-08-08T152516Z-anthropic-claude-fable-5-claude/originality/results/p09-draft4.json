@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p09-draft4",
+  "path": "outputs/problem-09.sgf",
+  "queryNumber": 28,
+  "queriesRemaining": 22,
+  "checkedAt": "2026-08-08T19:02:44.852Z",
+  "status": "review",
+  "candidateSha256": "f7d101ec428792d5c04df3117eb932724b38c4d25bdc35dc964bc7f17a0c2169",
+  "cachedRemote": false,
+  "local": {
+    "builtInSetupMatch": null,
+    "exactReferenceMatch": null,
+    "closestReferenceMatch": {
+      "id": 32711,
+      "percentage": 27.59,
+      "url": "https://www.goproblems.com/problems/32711"
+    },
+    "peerExactMatches": [],
+    "peerShapeMatches": []
+  },
+  "goProblems": {
+    "radius": 2,
+    "signatureMatches": [],
+    "topPercentage": 85,
+    "percentageMatches": [
+      {
+        "id": 41387,
+        "difficulty": "29 kyu?",
+        "createdAt": "2024-12-25",
+        "url": "https://www.goproblems.com/problems/41387",
+        "percentage": 85
+      },
+      {
+        "id": 53569,
+        "difficulty": "29 kyu?",
+        "createdAt": "2025-12-12",
+        "url": "https://www.goproblems.com/problems/53569",
+        "percentage": 78
+      },
+      {
+        "id": 18509,
+        "difficulty": "27 kyu",
+        "createdAt": "2014-12-07",
+        "url": "https://www.goproblems.com/problems/18509",
+        "percentage": 76
+      },
+      {
+        "id": 18354,
+        "difficulty": "5 kyu",
+        "createdAt": "2014-11-30",
+        "url": "https://www.goproblems.com/problems/18354",
+        "percentage": 73
+      },
+      {
+        "id": 44420,
+        "difficulty": "29 kyu?",
+        "createdAt": "2025-03-24",
+        "url": "https://www.goproblems.com/problems/44420",
+        "percentage": 73
+      },
+      {
+        "id": 55371,
+        "difficulty": "28 kyu?",
+        "createdAt": "2026-02-02",
+        "url": "https://www.goproblems.com/problems/55371",
+        "percentage": 71
+      },
+      {
+        "id": 45044,
+        "difficulty": "21 kyu?",
+        "createdAt": "2025-04-03",
+        "url": "https://www.goproblems.com/problems/45044",
+        "percentage": 69
+      },
+      {
+        "id": 46182,
+        "difficulty": "28 kyu?",
+        "createdAt": "2025-05-04",
+        "url": "https://www.goproblems.com/problems/46182",
+        "percentage": 69
+      },
+      {
+        "id": 38589,
+        "difficulty": "25 kyu",
+        "createdAt": "2024-10-22",
+        "url": "https://www.goproblems.com/problems/38589",
+        "percentage": 67
+      },
+      {
+        "id": 38921,
+        "difficulty": "20 kyu",
+        "createdAt": "2024-10-28",
+        "url": "https://www.goproblems.com/problems/38921",
+        "percentage": 67
+      },
+      {
+        "id": 47772,
+        "difficulty": "29 kyu?",
+        "createdAt": "2025-06-21",
+        "url": "https://www.goproblems.com/problems/47772",
+        "percentage": 67
+      },
+      {
+        "id": 56132,
+        "difficulty": "8 kyu?",
+        "createdAt": "2026-02-28",
+        "url": "https://www.goproblems.com/problems/56132",
+        "percentage": 67
+      },
+      {
+        "id": 24329,
+        "difficulty": "27 kyu?",
+        "createdAt": "2023-11-18",
+        "url": "https://www.goproblems.com/problems/24329",
+        "percentage": 65
+      },
+      {
+        "id": 46008,
+        "difficulty": "21 kyu?",
+        "createdAt": "2025-05-01",
+        "url": "https://www.goproblems.com/problems/46008",
+        "percentage": 65
+      },
+      {
+        "id": 46183,
+        "difficulty": "30 kyu",
+        "createdAt": "2025-05-04",
+        "url": "https://www.goproblems.com/problems/46183",
+        "percentage": 65
+      },
+      {
+        "id": 53531,
+        "difficulty": "29 kyu?",
+        "createdAt": "2025-12-11",
+        "url": "https://www.goproblems.com/problems/53531",
+        "percentage": 65
+      },
+      {
+        "id": 18862,
+        "difficulty": "19 kyu",
+        "createdAt": "2014-12-24",
+        "url": "https://www.goproblems.com/problems/18862",
+        "percentage": 63
+      },
+      {
+        "id": 5674,
+        "difficulty": "18 kyu",
+        "createdAt": "2004-12-10",
+        "url": "https://www.goproblems.com/problems/5674",
+        "percentage": 60
+      },
+      {
+        "id": 29872,
+        "difficulty": "23 kyu",
+        "createdAt": "2024-05-24",
+        "url": "https://www.goproblems.com/problems/29872",
+        "percentage": 60
+      },
+      {
+        "id": 44831,
+        "difficulty": "26 kyu?",
+        "createdAt": "2025-04-01",
+        "url": "https://www.goproblems.com/problems/44831",
+        "percentage": 59
+      }
+    ]
+  },
+  "errors": []
+}
