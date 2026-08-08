@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-03-final",
+  "path": "outputs/problem-03.sgf",
+  "queryNumber": 3,
+  "queriesRemaining": 47,
+  "checkedAt": "2026-08-07T22:26:37.433Z",
+  "status": "invalid",
+  "candidateSha256": "85a3779a4cd4e24a81097a90f3d6e6ba39670d89e53c63914516f8f25bdbeca3",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "setup-overlap",
+      "message": "Black and white are both set on ae."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[ab] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[aa] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[ab] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[ac] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[ab] plays on an occupied intersection."
+    }
+  ]
+}

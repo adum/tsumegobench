@@ -16,6 +16,10 @@ import {
   type SgfNode,
 } from "../lib/sgf";
 import { validateSgf, type ValidationIssue } from "../lib/validate-sgf";
+import {
+  reviewProblemIsComplete,
+  type ReviewProgressFields,
+} from "../lib/review-progress";
 
 type CheckStatus = "pass" | "fail" | "warning" | "not_run" | "needs_human_review";
 
@@ -524,7 +528,7 @@ const reviewerRecords = JSON.parse(await readFile(reviewsPath, "utf8")) as {
     reviewId: string;
     reviewerName: string;
     updatedAt: string;
-    problems: Array<Record<string, unknown> & { file: string; status: string }>;
+    problems: Array<ReviewProgressFields & { file: string }>;
   }>;
 };
 const results = {
@@ -548,14 +552,14 @@ const results = {
     reviewCount: reviewerRecords.reviews.length,
     completedProblemReviews: reviewerRecords.reviews.reduce(
       (total, review) =>
-        total + review.problems.filter((problem) => problem.status === "completed").length,
+        total + review.problems.filter(reviewProblemIsComplete).length,
       0,
     ),
     reviewers: reviewerRecords.reviews.map((review) => ({
       reviewId: review.reviewId,
       reviewerName: review.reviewerName,
       updatedAt: review.updatedAt,
-      completed: review.problems.filter((problem) => problem.status === "completed").length,
+      completed: review.problems.filter(reviewProblemIsComplete).length,
       total: review.problems.length,
     })),
   },
@@ -566,7 +570,7 @@ const results = {
     reviews: reviewerRecords.reviews.flatMap((review) => {
       const record = review.problems.find(
         (reviewedProblem) =>
-          reviewedProblem.file === problem.file && reviewedProblem.status === "completed",
+          reviewedProblem.file === problem.file && reviewProblemIsComplete(reviewedProblem),
       );
       return record
         ? [{ reviewId: review.reviewId, reviewerName: review.reviewerName, ...record }]

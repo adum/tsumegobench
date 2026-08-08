@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   findNextUnreviewedProblemFile,
+  markAllReviewProblemsInvalid,
   type ReviewProblem,
 } from "../app/components/HumanReviewPanel";
 import {
@@ -10,6 +11,7 @@ import {
   difficultyCappedHumanScore,
   isReviewMarkedBad,
   problemPassesHumanReview,
+  reviewProblemIsComplete,
   reviewedProblemDifficulty,
   reviewProblemProgress,
 } from "../lib/review-progress";
@@ -80,11 +82,73 @@ test("all four human review checkboxes can mark a problem bad", () => {
   assert.equal(isReviewMarkedBad({ ...approved, wellPathed: false }), true);
 });
 
+test("rejected problems complete without a rating while passing problems require one", () => {
+  const passingGates = reviewProblem("problem-01.sgf", {
+    valid: true,
+    realistic: true,
+    duplicate: false,
+    wellPathed: true,
+  });
+
+  assert.equal(reviewProblemIsComplete(passingGates), false);
+  assert.equal(
+    reviewProblemIsComplete({ ...passingGates, estimatedDifficulty: "5-9 kyu" }),
+    true,
+  );
+  assert.equal(reviewProblemIsComplete({ ...passingGates, valid: false }), true);
+  assert.equal(reviewProblemIsComplete({ ...passingGates, realistic: false }), true);
+  assert.equal(reviewProblemIsComplete({ ...passingGates, duplicate: true }), true);
+  assert.equal(reviewProblemIsComplete({ ...passingGates, wellPathed: false }), true);
+});
+
+test("bulk rejection marks every problem invalid and clears human ratings", () => {
+  const problems = [
+    reviewProblem("problem-01.sgf", {
+      status: "completed",
+      valid: true,
+      realistic: true,
+      duplicate: false,
+      wellPathed: true,
+      estimatedDifficulty: "5-9 kyu",
+      quality: 5,
+      reviewedAt: "2026-08-07T01:00:00Z",
+    }),
+    reviewProblem("problem-02.sgf"),
+  ];
+
+  const rejected = markAllReviewProblemsInvalid(problems, "2026-08-07T02:00:00Z");
+
+  assert.notEqual(rejected, problems);
+  assert.equal(problems[0].valid, true);
+  assert.deepEqual(
+    rejected.map(({ file, status, valid, estimatedDifficulty, quality, reviewedAt }) => ({
+      file,
+      status,
+      valid,
+      estimatedDifficulty,
+      quality,
+      reviewedAt,
+    })),
+    ["problem-01.sgf", "problem-02.sgf"].map((file) => ({
+      file,
+      status: "completed",
+      valid: false,
+      estimatedDifficulty: null,
+      quality: null,
+      reviewedAt: "2026-08-07T02:00:00Z",
+    })),
+  );
+});
+
 test("saved partial reviews remain visibly in progress", () => {
   const untouched = reviewProblem("problem-01.sgf");
   const started = reviewProblem("problem-01.sgf", { duplicate: false });
   const completed = reviewProblem("problem-01.sgf", {
-    status: "completed",
+    valid: true,
+    realistic: true,
+    duplicate: false,
+    wellPathed: true,
+    estimatedDifficulty: "5-9 kyu",
     quality: null,
   });
 
@@ -95,19 +159,20 @@ test("saved partial reviews remain visibly in progress", () => {
   assert.equal(aggregateReviewProgress([started, completed]), "completed");
 });
 
-test("human pass requires completed valid, well-pathed, non-duplicate reviews", () => {
+test("human pass requires every gate plus a difficulty rating", () => {
   const passing = reviewProblem("problem-01.sgf", {
-    status: "completed",
     valid: true,
-    realistic: false,
+    realistic: true,
     duplicate: false,
     wellPathed: true,
+    estimatedDifficulty: "5-9 kyu",
   });
 
   assert.equal(problemPassesHumanReview([]), false);
-  assert.equal(problemPassesHumanReview([{ ...passing, status: "pending" }]), false);
   assert.equal(problemPassesHumanReview([passing]), true);
+  assert.equal(problemPassesHumanReview([{ ...passing, estimatedDifficulty: null }]), false);
   assert.equal(problemPassesHumanReview([passing, { ...passing, valid: false }]), false);
+  assert.equal(problemPassesHumanReview([passing, { ...passing, realistic: false }]), false);
   assert.equal(problemPassesHumanReview([passing, { ...passing, wellPathed: false }]), false);
   assert.equal(problemPassesHumanReview([passing, { ...passing, duplicate: true }]), false);
 });
@@ -137,20 +202,20 @@ test("human score caps the two easiest ranges and leaves harder problems uncappe
     passingProblem(null),
   ]);
 
-  assert.equal(score.passingProblems, 13);
+  assert.equal(score.passingProblems, 12);
   assert.equal(score.creditedProblems, 8);
   assert.deepEqual(score.counts, {
     twentyToThirtyKyu: 5,
     tenToNineteenKyu: 3,
     fiveKyuOrHarder: 4,
-    unrated: 1,
+    unrated: 0,
   });
 });
 
 test("difficulty disagreements use the easiest completed human rating", () => {
   const base = reviewProblem("problem-01.sgf", {
-    status: "completed",
     valid: true,
+    realistic: true,
     duplicate: false,
     wellPathed: true,
   });
@@ -167,6 +232,6 @@ test("difficulty disagreements use the easiest completed human rating", () => {
       { ...base, estimatedDifficulty: "5-9 kyu" },
       { ...base, estimatedDifficulty: null },
     ]),
-    null,
+    "5-9 kyu",
   );
 });

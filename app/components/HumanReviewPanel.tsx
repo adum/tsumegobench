@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import {
   isReviewMarkedBad,
+  reviewPassesHumanGates,
+  reviewProblemIsComplete,
   reviewProblemProgress,
   type ReviewProblemProgress,
 } from "@/lib/review-progress";
@@ -46,6 +48,12 @@ interface ReviewDraft {
   wellPathed: boolean;
   estimatedDifficulty: string;
   quality: number | null;
+}
+
+function withoutUnneededRatings(draft: ReviewDraft): ReviewDraft {
+  return reviewPassesHumanGates(draft)
+    ? draft
+    : { ...draft, estimatedDifficulty: "", quality: null };
 }
 
 export interface ReviewProgressSnapshot {
@@ -94,6 +102,20 @@ function blankReviewProblem(file: string): ReviewProblem {
     quality: null,
     reviewedAt: null,
   };
+}
+
+export function markAllReviewProblemsInvalid(
+  problems: readonly ReviewProblem[],
+  reviewedAt: string,
+): ReviewProblem[] {
+  return problems.map((problem) => ({
+    ...problem,
+    status: "completed",
+    valid: false,
+    estimatedDifficulty: null,
+    quality: null,
+    reviewedAt,
+  }));
 }
 
 export function findNextUnreviewedProblemFile(
@@ -151,7 +173,13 @@ export function HumanReviewPanel({
     () => session?.reviews.find((review) => review.reviewId === activeReviewId) ?? null,
     [activeReviewId, session],
   );
-  const completed = activeReview?.problems.filter((problem) => problem.status === "completed").length ?? 0;
+  const completed = activeReview?.problems.filter(reviewProblemIsComplete).length ?? 0;
+  const difficultyRequired = reviewPassesHumanGates({
+    valid,
+    realistic,
+    duplicate,
+    wellPathed,
+  });
   const nextUnreviewedProblemFile = activeReview
     ? findNextUnreviewedProblemFile(
         activeReview.problems,
@@ -193,8 +221,16 @@ export function HumanReviewPanel({
       setRealistic(record?.realistic ?? true);
       setDuplicate(record?.duplicate ?? false);
       setWellPathed(record?.wellPathed ?? true);
-      setEstimatedDifficulty(record?.estimatedDifficulty ?? "");
-      setQuality(record?.quality ?? null);
+      setEstimatedDifficulty(
+        record && reviewPassesHumanGates(record)
+          ? record.estimatedDifficulty ?? ""
+          : "",
+      );
+      setQuality(
+        record && reviewPassesHumanGates(record)
+          ? record.quality ?? null
+          : null,
+      );
     }, 0);
     return () => window.clearTimeout(draftTimer);
   }, [activeReview, problemFile]);
@@ -254,7 +290,8 @@ export function HumanReviewPanel({
     setMessage("");
     try {
       const now = new Date().toISOString();
-      const reviewComplete = !draft.valid || Boolean(draft.estimatedDifficulty);
+      const normalizedDraft = withoutUnneededRatings(draft);
+      const reviewComplete = reviewProblemIsComplete(normalizedDraft);
       const nextReview: ReviewerRecord = {
         ...activeReview,
         updatedAt: now,
@@ -263,12 +300,12 @@ export function HumanReviewPanel({
             ? {
                 file: problem.file,
                 status: reviewComplete ? "completed" : "pending",
-                valid: draft.valid,
-                realistic: draft.realistic,
-                duplicate: draft.duplicate,
-                wellPathed: draft.wellPathed,
-                estimatedDifficulty: draft.valid ? draft.estimatedDifficulty || null : null,
-                quality: draft.quality,
+                valid: normalizedDraft.valid,
+                realistic: normalizedDraft.realistic,
+                duplicate: normalizedDraft.duplicate,
+                wellPathed: normalizedDraft.wellPathed,
+                estimatedDifficulty: normalizedDraft.estimatedDifficulty || null,
+                quality: normalizedDraft.quality,
                 reviewedAt: reviewComplete ? now : null,
               }
             : problem,
@@ -293,6 +330,40 @@ export function HumanReviewPanel({
 
   function nextPendingProblem() {
     if (nextUnreviewedProblemFile) onChooseProblem(nextUnreviewedProblemFile);
+  }
+
+  async function markEveryProblemInvalid() {
+    if (!activeReview) return;
+    const problemCount = activeReview.problems.length;
+    const confirmed = window.confirm(
+      `Mark all ${problemCount} problems invalid? This will clear any existing difficulty and quality ratings for this reviewer.`,
+    );
+    if (!confirmed) return;
+
+    setSaving(true);
+    setError("");
+    setMessage("");
+    try {
+      const now = new Date().toISOString();
+      const nextReview: ReviewerRecord = {
+        ...activeReview,
+        updatedAt: now,
+        problems: markAllReviewProblemsInvalid(activeReview.problems, now),
+      };
+      onReviewProgressChange(reviewProgressSnapshot(runId, nextReview));
+      const saved = await persist(nextReview);
+      setActiveReviewId(saved.reviewId);
+      setValid(false);
+      setEstimatedDifficulty("");
+      setQuality(null);
+      setMessage(`All ${problemCount} problems marked invalid.`);
+    } catch (reason) {
+      onReviewProgressChange(reviewProgressSnapshot(runId, activeReview));
+      setMessage("");
+      setError(reason instanceof Error ? reason.message : "The bulk review change could not be saved.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   if (!launch) return null;
@@ -325,7 +396,7 @@ export function HumanReviewPanel({
           {session.reviews.length > 0 && (
             <div className="existing-reviewers">
               {session.reviews.map((review) => {
-                const count = review.problems.filter((problem) => problem.status === "completed").length;
+                const count = review.problems.filter(reviewProblemIsComplete).length;
                 return (
                   <button type="button" key={review.reviewId} onClick={() => chooseReviewer(review.reviewId)}>
                     <strong>{review.reviewerName}</strong>
@@ -360,17 +431,18 @@ export function HumanReviewPanel({
                 disabled={saving}
                 onChange={(event) => {
                   const nextValid = event.target.checked;
-                  const nextDifficulty = nextValid ? estimatedDifficulty : "";
-                  setValid(nextValid);
-                  setEstimatedDifficulty(nextDifficulty);
-                  void autoSaveProblemReview({
+                  const nextDraft = withoutUnneededRatings({
                     valid: nextValid,
                     realistic,
                     duplicate,
                     wellPathed,
-                    estimatedDifficulty: nextDifficulty,
+                    estimatedDifficulty,
                     quality,
                   });
+                  setValid(nextValid);
+                  setEstimatedDifficulty(nextDraft.estimatedDifficulty);
+                  setQuality(nextDraft.quality);
+                  void autoSaveProblemReview(nextDraft);
                 }}
               />
               <span>Valid problem</span>
@@ -382,8 +454,7 @@ export function HumanReviewPanel({
                 disabled={saving}
                 onChange={(event) => {
                   const nextRealistic = event.target.checked;
-                  setRealistic(nextRealistic);
-                  void autoSaveProblemReview({
+                  const nextDraft = withoutUnneededRatings({
                     valid,
                     realistic: nextRealistic,
                     duplicate,
@@ -391,6 +462,10 @@ export function HumanReviewPanel({
                     estimatedDifficulty,
                     quality,
                   });
+                  setRealistic(nextRealistic);
+                  setEstimatedDifficulty(nextDraft.estimatedDifficulty);
+                  setQuality(nextDraft.quality);
+                  void autoSaveProblemReview(nextDraft);
                 }}
               />
               <span>Realistic position</span>
@@ -402,8 +477,7 @@ export function HumanReviewPanel({
                 disabled={saving}
                 onChange={(event) => {
                   const nextDuplicate = event.target.checked;
-                  setDuplicate(nextDuplicate);
-                  void autoSaveProblemReview({
+                  const nextDraft = withoutUnneededRatings({
                     valid,
                     realistic,
                     duplicate: nextDuplicate,
@@ -411,6 +485,10 @@ export function HumanReviewPanel({
                     estimatedDifficulty,
                     quality,
                   });
+                  setDuplicate(nextDuplicate);
+                  setEstimatedDifficulty(nextDraft.estimatedDifficulty);
+                  setQuality(nextDraft.quality);
+                  void autoSaveProblemReview(nextDraft);
                 }}
               />
               <span>Duplicate</span>
@@ -422,8 +500,7 @@ export function HumanReviewPanel({
                 disabled={saving}
                 onChange={(event) => {
                   const nextWellPathed = event.target.checked;
-                  setWellPathed(nextWellPathed);
-                  void autoSaveProblemReview({
+                  const nextDraft = withoutUnneededRatings({
                     valid,
                     realistic,
                     duplicate,
@@ -431,6 +508,10 @@ export function HumanReviewPanel({
                     estimatedDifficulty,
                     quality,
                   });
+                  setWellPathed(nextWellPathed);
+                  setEstimatedDifficulty(nextDraft.estimatedDifficulty);
+                  setQuality(nextDraft.quality);
+                  void autoSaveProblemReview(nextDraft);
                 }}
               />
               <span>Well pathed</span>
@@ -438,7 +519,7 @@ export function HumanReviewPanel({
           </div>
 
           <label className="review-difficulty">
-            <span>Estimated difficulty · required for score</span>
+            <span>Estimated difficulty · required only when all checks pass</span>
             <select
               value={estimatedDifficulty}
               onChange={(event) => {
@@ -453,15 +534,15 @@ export function HumanReviewPanel({
                   quality,
                 });
               }}
-              disabled={!valid || saving}
+              disabled={!difficultyRequired || saving}
             >
               <option value="">Select human-estimated range</option>
               {session.difficultyOptions.map((option) => <option key={option}>{option}</option>)}
             </select>
           </label>
 
-          <fieldset className="quality-rating">
-            <legend>Problem quality</legend>
+          <fieldset className="quality-rating" disabled={!difficultyRequired || saving}>
+            <legend>Problem quality · only when all checks pass</legend>
             <div role="radiogroup" aria-label="Problem quality from one to five stars">
               {[1, 2, 3, 4, 5].map((rating) => (
                 <button
@@ -479,7 +560,7 @@ export function HumanReviewPanel({
                       quality: rating,
                     });
                   }}
-                  disabled={saving}
+                  disabled={!difficultyRequired || saving}
                   role="radio"
                   aria-checked={quality === rating}
                   aria-label={`${rating} star${rating === 1 ? "" : "s"}`}
@@ -500,6 +581,14 @@ export function HumanReviewPanel({
               disabled={saving || !nextUnreviewedProblemFile}
             >
               Next pending
+            </button>
+            <button
+              type="button"
+              className="review-all-invalid"
+              onClick={() => void markEveryProblemInvalid()}
+              disabled={saving}
+            >
+              Mark all invalid
             </button>
             <button
               type="button"

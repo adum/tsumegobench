@@ -1,0 +1,23 @@
+All ten files are written and every final file has been queried. Honest summary of the results:
+
+**Files** (`outputs/problem-01.sgf` … `problem-10.sgf`), each a single SGF collection, `SZ[19]`, root `AB`/`AW` with no root move or comment, alternating single-move nodes, `C[RIGHT]` on accepted endpoints, five Black-to-play and five White-to-play problems:
+
+| file | side to play | idea |
+|---|---|---|
+| 01 | Black | edge six-space with two interior stones; capture leads to a dead bulky four |
+| 02 | White | first-line block against the spoiling point, then straight four |
+| 03 | White | vital point of a bulky four whose extra arm is a false point |
+| 04 | Black | five-space edge eye, two materially distinct killing points |
+| 05 | White | placement that kills two interior stones cleanly and yields two eyes |
+| 06 | Black | wedge into the wall gap; both white halves end eyeless |
+| 07 | Black | corner bulky-five vital point |
+| 08 | White | four-space eye with an enemy placement; two correct captures |
+| 09 | White | corner bulky-four vital point with a spoiled arm |
+| 10 | Black | corner six-space, two interior stones; seki-vs-kill distinction |
+
+**Originality results (final queries on the exact final files):**
+- `problem-10`: **clear** (79%).
+- `problem-05`: **review** (87%, no radius-2 signature match).
+- The other eight: **duplicate** — top full-corpus percentages 88–100%, and several also matched radius-2 signatures.
+
+So the originality requirement is met for only one of ten files. I used 24 of the 50 queries and iterated repeatedly (P01 four versions, P05 seven), but the GoProblems corpus is saturated for compact corner/edge eye-shape positions: every small canonical shape returned 92–100%, and only the larger position with two interior enemy stones and a capture-then-nakade resolution dropped below the threshold. Correctness of each tree was verified by hand (liberties, captures, legality, eye status); I could not run a solver, since no shell tool was available in this session.

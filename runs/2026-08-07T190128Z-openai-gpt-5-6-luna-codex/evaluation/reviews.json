@@ -1,7 +1,0 @@
-{
-  "$schema": "../../../schemas/human-reviews.schema.json",
-  "schemaVersion": 1,
-  "runId": "2026-08-07T190128Z-openai-gpt-5-6-luna-codex",
-  "updatedAt": null,
-  "reviews": []
-}

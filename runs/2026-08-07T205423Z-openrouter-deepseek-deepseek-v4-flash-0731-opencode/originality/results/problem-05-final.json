@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-05-final",
+  "path": "outputs/problem-05.sgf",
+  "queryNumber": 5,
+  "queriesRemaining": 45,
+  "checkedAt": "2026-08-07T22:26:38.287Z",
+  "status": "invalid",
+  "candidateSha256": "279298c5d300ce6902e3d87003af3cdf4cd1bf5b7f07ce61f3abaf82f1b99f48",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "off-board",
+      "message": "AB[ta] is outside the 19×19 board."
+    },
+    {
+      "code": "off-board",
+      "message": "AB[tb] is outside the 19×19 board."
+    },
+    {
+      "code": "off-board",
+      "message": "AB[tc] is outside the 19×19 board."
+    },
+    {
+      "code": "off-board",
+      "message": "AB[td] is outside the 19×19 board."
+    },
+    {
+      "code": "off-board",
+      "message": "AB[te] is outside the 19×19 board."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[ra] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[oa] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[ra] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[qb] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[ra] plays on an occupied intersection."
+    }
+  ]
+}

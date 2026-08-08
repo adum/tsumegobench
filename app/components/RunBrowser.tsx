@@ -13,8 +13,11 @@ import {
   aggregateReviewProgress,
   difficultyCappedHumanScore,
   isReviewMarkedBad,
+  reviewProblemIsComplete,
+  reviewProblemProgress,
   type ReviewProblemProgress,
 } from "@/lib/review-progress";
+import { formatDurationSeconds } from "@/lib/format-duration";
 import {
   collectRightNodes,
   getBoardSize,
@@ -134,6 +137,13 @@ interface BenchmarkRun {
     failedRunChecks: number;
   };
   runChecks?: RunCheck[];
+  humanReviews?: {
+    completedProblemReviews: number;
+    reviewers: Array<{
+      completed: number;
+      total: number;
+    }>;
+  };
   problems: GeneratedProblem[];
 }
 
@@ -260,6 +270,40 @@ function humanCreditedProblemCount(run: BenchmarkRun) {
   return difficultyCappedHumanScore(run.problems).creditedProblems;
 }
 
+function humanReviewProgressForRun(
+  record: BenchmarkRun,
+  liveReviewProgress: ReviewProgressSnapshot | null,
+) {
+  const required = record.summary.humanReviewPending;
+  const indexedCompleted = Math.max(
+    0,
+    ...(record.humanReviews?.reviewers.map((reviewer) => reviewer.completed) ?? []),
+  );
+  const liveCompleted = liveReviewProgress?.runId === record.runId
+    ? Object.values(liveReviewProgress.problems).filter(
+        (progress) => progress === "completed",
+      ).length
+    : 0;
+  const completed = Math.max(indexedCompleted, liveCompleted);
+
+  return {
+    completed,
+    remaining: Math.max(0, required - completed),
+    required,
+  };
+}
+
+function displayRunStatus(
+  record: BenchmarkRun,
+  reviewProgress: ReturnType<typeof humanReviewProgressForRun>,
+) {
+  return record.status === "needs_human_review" &&
+    reviewProgress.required > 0 &&
+    reviewProgress.remaining === 0
+    ? "reviewed"
+    : record.status;
+}
+
 export function runHasSgfFiles(record: {
   summary: { filesFound?: number };
   problems: Array<{ sgf: string | null }>;
@@ -344,12 +388,10 @@ export function RunBrowser() {
     (firstMove?.color === "B" ? "black" : firstMove?.color === "W" ? "white" : null);
   const playerName = playerColor === "black" ? "Black" : playerColor === "white" ? "White" : null;
   const indexedReviews = problem?.reviews ?? [];
-  const completedReviews = indexedReviews.filter(
-    (review) => review.status === "completed",
-  );
+  const completedReviews = indexedReviews.filter(reviewProblemIsComplete);
   const ratedReviews = completedReviews.filter((review) => review.quality !== null);
   const startedReviewCount = indexedReviews.filter(
-    (review) => review.status === "pending",
+    (review) => reviewProblemProgress(review) === "started",
   ).length;
   const automaticallyRejectedFiles = run?.problems
     .filter((record) => record.automatedGate === "fail")
@@ -429,6 +471,8 @@ export function RunBrowser() {
 
   if (!run || !problem) return null;
 
+  const selectedRunReviewProgress = humanReviewProgressForRun(run, liveReviewProgress);
+  const selectedRunDisplayStatus = displayRunStatus(run, selectedRunReviewProgress);
   const runHumanScore = difficultyCappedHumanScore(run.problems);
   const runHumanScoreTitle = [
     `${runHumanScore.counts.twentyToThirtyKyu} passing at 20-30 kyu (maximum 2 credited)`,
@@ -498,6 +542,8 @@ export function RunBrowser() {
               const automatedPassed = record.summary.automatedGatePassed;
               const totalProblems = record.summary.expectedProblems ?? record.problems.length;
               const showPassCounts = runHasSgfFiles(record);
+              const recordReviewProgress = humanReviewProgressForRun(record, liveReviewProgress);
+              const recordDisplayStatus = displayRunStatus(record, recordReviewProgress);
 
               return (
                 <button
@@ -509,7 +555,12 @@ export function RunBrowser() {
                 >
                   <span className="run-provider-cell">
                     <ProviderMark provider={record.model.provider} />
-                    <span className={`run-status-dot ${record.status}`} aria-hidden="true" />
+                    <span
+                      className={`run-status-dot ${recordDisplayStatus}`}
+                      role="img"
+                      aria-label={`Run status: ${statusLabel(recordDisplayStatus)}`}
+                      title={`Run status: ${statusLabel(recordDisplayStatus)}`}
+                    />
                   </span>
                   <span className="problem-list-copy">
                     <span className="problem-list-topline">
@@ -543,19 +594,21 @@ export function RunBrowser() {
             <div>
               <div className="record-kicker">
                 <span>{providerLabel(run.model.provider)} / {harnessLabel(run.harness.name)}</span>
-                <span className={`run-badge ${run.status}`}>{statusLabel(run.status)}</span>
+                <span className={`run-badge ${selectedRunDisplayStatus}`}>
+                  {statusLabel(selectedRunDisplayStatus)}
+                </span>
               </div>
               <h3 aria-label={run.model.name} title={run.model.name}>
                 {compactModelName(run.model.name)}
               </h3>
               <p>
-                {humanDate(run.createdAt)} · {run.model.reasoningEffort ?? "default effort"} · {run.harness.durationSeconds ?? 0}s
+                {humanDate(run.createdAt)} · {run.model.reasoningEffort ?? "default effort"} · {formatDurationSeconds(run.harness.durationSeconds)}
               </p>
             </div>
             <div className="run-summary" aria-label="Run summary">
               <span><strong>{run.summary.structuralPassed}</strong> structural</span>
               <span><strong>{run.summary.originalityPassed}</strong> original</span>
-              <span><strong>{run.summary.humanReviewPending}</strong> to review</span>
+              <span><strong>{selectedRunReviewProgress.remaining}</strong> to review</span>
               <span
                 title={runHumanScoreTitle}
               >

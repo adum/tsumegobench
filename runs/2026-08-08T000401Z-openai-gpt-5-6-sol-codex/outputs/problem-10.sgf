@@ -1,0 +1,50 @@
+(;FF[4]GM[1]CA[UTF-8]SZ[19]AB[aa][ba][ca][da][ea][fa][ga][ab][cb][gb][ac][gc][ad][gd][ae][ge][af][gf][ag][bg][cg][dg][eg][fg][gg]AW[db][eb][fb][ec][fc][bd][dd][ed][fd][be][ee][fe][bf][cf][df][ef][ff]
+(;B[cc]
+  (;W[bb];B[bc]
+    (;W[dc];B[cd]
+      (;W[ce];B[de]C[RIGHT])
+      (;W[de];B[ce]C[RIGHT]))
+    (;W[cd];B[dc]
+      (;W[ce];B[de]C[RIGHT])
+      (;W[de];B[ce]C[RIGHT]))
+    (;W[ce];B[dc]
+      (;W[cd];B[de]C[RIGHT])
+      (;W[de];B[cd]C[RIGHT]))
+    (;W[de];B[dc]
+      (;W[cd];B[ce]C[RIGHT])
+      (;W[ce];B[cd]C[RIGHT])))
+  (;W[bc];B[bb]
+    (;W[dc];B[cd]
+      (;W[ce];B[de]C[RIGHT])
+      (;W[de];B[ce]C[RIGHT]))
+    (;W[cd];B[dc]
+      (;W[ce];B[de]C[RIGHT])
+      (;W[de];B[ce]C[RIGHT]))
+    (;W[ce];B[dc]
+      (;W[cd];B[de]C[RIGHT])
+      (;W[de];B[cd]C[RIGHT]))
+    (;W[de];B[dc]
+      (;W[cd];B[ce]C[RIGHT])
+      (;W[ce];B[cd]C[RIGHT])))
+  (;W[dc];B[bc]
+    (;W[cd];B[ce];W[de];B[ce]C[RIGHT])
+    (;W[ce];B[cd]C[RIGHT])
+    (;W[de];B[cd]C[RIGHT]))
+  (;W[cd];B[bc]
+    (;W[dc];B[ce];W[de];B[ce]C[RIGHT])
+    (;W[ce];B[dc]C[RIGHT])
+    (;W[de];B[dc]C[RIGHT]))
+  (;W[ce];B[bc]
+    (;W[dc];B[cd]C[RIGHT])
+    (;W[cd];B[dc]C[RIGHT])
+    (;W[de];B[dc]C[RIGHT]))
+  (;W[de];B[bc]
+    (;W[dc];B[cd]C[RIGHT])
+    (;W[cd];B[dc]C[RIGHT])
+    (;W[ce];B[dc]C[RIGHT])))
+(;B[bb];W[cc])
+(;B[bc];W[cc])
+(;B[dc];W[cc])
+(;B[cd];W[cc])
+(;B[ce];W[cc])
+(;B[de];W[cc]))

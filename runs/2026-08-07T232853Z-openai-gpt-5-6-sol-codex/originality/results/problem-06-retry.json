@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-06-retry",
+  "path": "outputs/problem-06.sgf",
+  "queryNumber": 14,
+  "queriesRemaining": 36,
+  "checkedAt": "2026-08-07T23:33:16.125Z",
+  "status": "invalid",
+  "candidateSha256": "d9a388be71d385fa1f2cfb665927e1443fdd8f0410f654c91b73057148ae25bd",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "suicide-move",
+      "message": "W[pr] is suicide under ordinary Go rules."
+    }
+  ]
+}

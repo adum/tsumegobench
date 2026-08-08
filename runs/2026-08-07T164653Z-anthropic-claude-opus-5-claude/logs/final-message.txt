@@ -1,9 +1,0 @@
-All ten problem files are written and verified.
-
-**Files created** (`outputs/problem-01.sgf` … `problem-10.sgf`), each a single SGF collection with `SZ[19]`, root `AB`/`AW` setup, no root comment, strictly alternating single moves, and `C[RIGHT]` on every accepted endpoint.
-
-**Originality:** every file received a final `clear` from the supplied tool after the complete set existed (requests `final-01` … `final-10`; remote top-percentages 63–79, no radius-2 signature matches, no peer matches). No file was edited after its clear result. 37 of the 50 queries were used.
-
-**Coverage:** five Black-to-play and five White-to-play problems; positions spread across side arches and corners with differing eye-space shapes (P-, T-, L-, W-pentomino, bulky five, cross five) and both single- and two-stone interior placements, with refutation branches for the plausible level-appropriate mistakes.
-
-One caveat worth stating plainly: the difficulty spread is narrower than the target bands imply. The compact, fully-enclosed shapes that survived the duplicate gate cluster roughly in the 10–15 kyu range in real solving terms, so problems 07–10 are deeper (two interior stones, longer forced captures) but are not genuinely 1-dan material.

@@ -1,0 +1,7 @@
+All ten files are written and verified.
+
+**`outputs/problem-01.sgf` … `outputs/problem-10.sgf`** — 10 complete SGF collections, each a single `19×19` life-and-death problem with root `AB`/`AW` setup, no root comment, alternating moves, and `C[RIGHT]` on every accepted endpoint. Five are Black-to-play (01, 02, 06, 07, 10) and five White-to-play (03, 04, 05, 08, 09), spanning bulky-five vital points, blocking on the correct side against stones placed inside the eye space, eye-wall cut/connect tesuji, a capture-to-connect, and a ko for the second eye.
+
+Every file was checked with the supplied originality tool: 28 of the 50 queries were used, and the final query on each of the ten exact final files returned `clear` (results `final-01` … `final-10`). No file was edited after its final clear result.
+
+Two notes on the work: several early easy-band candidates came back `duplicate`/`review` — elementary shapes (straight three, cross five, plain edge eye spaces) are saturated on GoProblems — so problems 01 and 02 use less canonical eye-space orientations inside larger, realistic positions and may be rated harder than the 20–30 kyu target. A correctness audit before the final queries also found and fixed two real defects: capturable support groups in problems 01 and 03 that would have let the target group live by capturing elsewhere, and refutation branches in problems 06, 07 and 09 that ended before the failure was actually forced.

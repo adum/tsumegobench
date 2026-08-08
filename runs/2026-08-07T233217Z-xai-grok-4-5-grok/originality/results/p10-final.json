@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p10-final",
+  "path": "outputs/problem-10.sgf",
+  "queryNumber": null,
+  "queriesRemaining": 0,
+  "checkedAt": "2026-08-08T00:24:36.721Z",
+  "status": "quota_exceeded",
+  "candidateSha256": null,
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "query-limit-exceeded",
+      "message": "The originality query budget of 50 has been exhausted."
+    }
+  ]
+}

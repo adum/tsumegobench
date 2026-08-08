@@ -1,1 +1,0 @@
-Created exactly 10 SGF files in `outputs/`. All received final `clear` originality results.

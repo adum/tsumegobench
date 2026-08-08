@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-03-retry",
+  "path": "outputs/problem-03.sgf",
+  "queryNumber": 12,
+  "queriesRemaining": 38,
+  "checkedAt": "2026-08-07T23:33:14.444Z",
+  "status": "invalid",
+  "candidateSha256": "55a9fdde5357f982fcee5473dcd62e8f91cedf4c062cc5448c16e9349463f18c",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "W[fh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[eh] plays on an occupied intersection."
+    }
+  ]
+}

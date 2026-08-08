@@ -2,9 +2,9 @@
   "$schema": "../../schemas/run.schema.json",
   "schemaVersion": 1,
   "runId": "2026-08-07T205423Z-openrouter-deepseek-deepseek-v4-flash-0731-opencode",
-  "status": "running",
+  "status": "completed",
   "createdAt": "2026-08-07T20:54:25.697294Z",
-  "completedAt": null,
+  "completedAt": "2026-08-07T22:43:12.800334Z",
   "benchmark": {
     "commitSha": "7160020e7ac1164c631f7a8b79b80bced61ae2b1",
     "promptSha256": "537f2c5947c7e611bda43f2bdce494bd3e1b8be5a5b97c25aa07dd09c46ed5c0",
@@ -157,11 +157,19 @@
       "2026-08-07T205423Z-openrouter-deepseek-deepseek-v4-flash-0731-opencode",
       "--auto"
     ],
-    "exitCode": null,
-    "durationSeconds": null,
-    "threadId": null,
-    "usage": null,
-    "eventCount": 0,
+    "exitCode": 0,
+    "durationSeconds": 6515.886,
+    "threadId": "ses_021c165c7ffeHDVsl4RqBlQAZN",
+    "usage": {
+      "input_tokens": 583249,
+      "output_tokens": 56051,
+      "reasoning_tokens": 267941,
+      "cache_read_tokens": 9063872,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.273960666,
+      "steps": 82
+    },
+    "eventCount": 404,
     "unparsedLineCount": 0,
     "failureMessage": null,
     "retryPolicy": {
@@ -169,13 +177,46 @@
       "baseDelaySeconds": 15,
       "maximumDelaySeconds": 120
     },
-    "attempts": [],
+    "attempts": [
+      {
+        "number": 1,
+        "startedAt": "2026-08-07T20:54:26.859945Z",
+        "completedAt": "2026-08-07T22:01:09.852344Z",
+        "exitCode": 0,
+        "durationSeconds": 4002.918,
+        "timedOut": false,
+        "retryable": false,
+        "failureMessage": null,
+        "outputFileCount": 6,
+        "stdout": "logs/attempts/attempt-01/opencode-events.jsonl",
+        "stderr": "logs/attempts/attempt-01/opencode-stderr.txt",
+        "roundNumber": 1,
+        "attemptInRound": 1,
+        "outcome": "success"
+      },
+      {
+        "number": 2,
+        "startedAt": "2026-08-07T22:01:09.925447Z",
+        "completedAt": "2026-08-07T22:43:02.281143Z",
+        "exitCode": 0,
+        "durationSeconds": 2512.274,
+        "timedOut": false,
+        "retryable": false,
+        "failureMessage": null,
+        "outputFileCount": 10,
+        "stdout": "logs/attempts/attempt-02/opencode-events.jsonl",
+        "stderr": "logs/attempts/attempt-02/opencode-stderr.txt",
+        "roundNumber": 2,
+        "attemptInRound": 1,
+        "outcome": "success"
+      }
+    ],
     "roundPolicy": {
       "maxRounds": 20,
       "stopWhenExpectedOutputsExist": true
     },
-    "roundsCompleted": 0,
-    "roundStopReason": null,
+    "roundsCompleted": 2,
+    "roundStopReason": "outputs_complete",
     "outputTokenCeiling": 65536
   },
   "condition": {

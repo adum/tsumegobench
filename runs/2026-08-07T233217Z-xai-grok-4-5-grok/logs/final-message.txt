@@ -1,0 +1,5 @@
+All 10 requested SGF files are in `outputs/`:
+
+- `outputs/problem-01.sgf` … `outputs/problem-10.sgf`
+
+Each was checked with the originality tool; every current file has a `clear` result on its exact contents. Quota is fully used (50/50). At least two Black-to-play and two White-to-play problems are included (White: problems 02 and 08).

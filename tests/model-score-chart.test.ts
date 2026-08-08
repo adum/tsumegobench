@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   buildModelScoreChartData,
+  rankModelScoresForLegend,
   type IndexedRunForChart,
   type ModelMetadataFile,
 } from "../lib/model-score-chart";
@@ -101,4 +102,22 @@ test("chart caps passing problems in the two easiest difficulty ranges", () => {
 
   assert.equal(chart.models[0].passedProblems, 2);
   assert.equal(chart.models[0].score, 2);
+});
+
+test("chart legend ranks models from best to worst with stable alphabetical ties", () => {
+  const models = [
+    { displayName: "Zero Zeta", score: 0 },
+    { displayName: "Winner", score: 4 },
+    { displayName: "Zero Alpha", score: 0 },
+    { displayName: "Runner-up", score: 2 },
+  ];
+
+  assert.deepEqual(
+    rankModelScoresForLegend(models).map((model) => model.displayName),
+    ["Winner", "Runner-up", "Zero Alpha", "Zero Zeta"],
+  );
+  assert.deepEqual(
+    models.map((model) => model.displayName),
+    ["Zero Zeta", "Winner", "Zero Alpha", "Runner-up"],
+  );
 });

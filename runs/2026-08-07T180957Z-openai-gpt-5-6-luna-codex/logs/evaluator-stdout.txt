@@ -1,1 +1,0 @@
-{"runId":"2026-08-07T180957Z-openai-gpt-5-6-luna-codex","status":"needs_human_review","output":"runs\\2026-08-07T180957Z-openai-gpt-5-6-luna-codex\\evaluation\\automated.json","summary":{"expectedProblems":10,"filesFound":10,"structuralPassed":10,"originalityPassed":10,"automatedGatePassed":10,"failedProblems":0,"incompleteProblems":0,"humanReviewPending":10,"failedRunChecks":0}}

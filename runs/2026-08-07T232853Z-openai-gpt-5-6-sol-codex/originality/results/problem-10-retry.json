@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-10-retry",
+  "path": "outputs/problem-10.sgf",
+  "queryNumber": 17,
+  "queriesRemaining": 33,
+  "checkedAt": "2026-08-07T23:33:18.877Z",
+  "status": "clear",
+  "candidateSha256": "3a6bf037ce049b38058cec29f1e4da78af393875fe536ba5b0a9255474e70a86",
+  "cachedRemote": false,
+  "local": {
+    "builtInSetupMatch": null,
+    "exactReferenceMatch": null,
+    "closestReferenceMatch": {
+      "id": 28281,
+      "percentage": 35.14,
+      "url": "https://www.goproblems.com/problems/28281"
+    },
+    "peerExactMatches": [],
+    "peerShapeMatches": []
+  },
+  "goProblems": {
+    "radius": 2,
+    "signatureMatches": [],
+    "topPercentage": 0,
+    "percentageMatches": []
+  },
+  "errors": []
+}

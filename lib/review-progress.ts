@@ -46,10 +46,37 @@ export const HUMAN_DIFFICULTY_CREDIT_CAPS = {
   tenToNineteenKyu: 2,
 } as const;
 
+export function isReviewMarkedBad(problem: ReviewProgressFields): boolean {
+  return (
+    problem.valid === false ||
+    problem.realistic === false ||
+    problem.duplicate === true ||
+    problem.wellPathed === false
+  );
+}
+
+export function reviewPassesHumanGates(problem: ReviewProgressFields): boolean {
+  return (
+    problem.valid === true &&
+    problem.realistic === true &&
+    problem.duplicate === false &&
+    problem.wellPathed === true
+  );
+}
+
+export function reviewProblemIsComplete(problem: ReviewProgressFields): boolean {
+  if (isReviewMarkedBad(problem)) return true;
+  return (
+    reviewPassesHumanGates(problem) &&
+    typeof problem.estimatedDifficulty === "string" &&
+    DIFFICULTY_INDEX.has(problem.estimatedDifficulty)
+  );
+}
+
 export function reviewProblemProgress(
   problem: ReviewProgressFields,
 ): ReviewProblemProgress {
-  if (problem.status === "completed") return "completed";
+  if (reviewProblemIsComplete(problem)) return "completed";
   if (
     typeof problem.valid === "boolean" ||
     typeof problem.realistic === "boolean" ||
@@ -72,30 +99,14 @@ export function aggregateReviewProgress(
   return "untouched";
 }
 
-export function isReviewMarkedBad(problem: ReviewProgressFields): boolean {
-  return (
-    problem.valid === false ||
-    problem.realistic === false ||
-    problem.duplicate === true ||
-    problem.wellPathed === false
-  );
-}
-
 export function problemPassesHumanReview(
   reviews: readonly ReviewProgressFields[],
 ): boolean {
-  const completedReviews = reviews.filter(
-    (review) => review.status === "completed",
-  );
+  const completedReviews = reviews.filter(reviewProblemIsComplete);
 
   return (
     completedReviews.length > 0 &&
-    completedReviews.every(
-      (review) =>
-        review.valid === true &&
-        review.wellPathed === true &&
-        review.duplicate === false,
-    )
+    completedReviews.every(reviewPassesHumanGates)
   );
 }
 
@@ -104,9 +115,7 @@ export function reviewedProblemDifficulty(
 ): HumanDifficultyBand | null {
   if (!problemPassesHumanReview(reviews)) return null;
 
-  const completedReviews = reviews.filter(
-    (review) => review.status === "completed",
-  );
+  const completedReviews = reviews.filter(reviewProblemIsComplete);
   const difficultyIndexes = completedReviews.map((review) =>
     typeof review.estimatedDifficulty === "string"
       ? DIFFICULTY_INDEX.get(review.estimatedDifficulty)

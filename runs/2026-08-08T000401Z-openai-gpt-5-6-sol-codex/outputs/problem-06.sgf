@@ -1,0 +1,16 @@
+(;FF[4]GM[1]CA[UTF-8]SZ[19]AB[ba][bb][cb][eb][bc][cc][dc][ec][fc][bd][cd][dd][ed][fd]AW[aa][ga][ab][fb][gb][ac][gc][ad][gd][ae][be][ce][de][ee][fe][ge]
+(;W[da]
+  (;B[ca];W[ea]C[RIGHT])
+  (;B[db];W[ea]C[RIGHT])
+  (;B[fa];W[ca]
+    (;B[ea];W[db]C[RIGHT])
+    (;B[db];W[ea]C[RIGHT]))
+  (;B[ea];W[ca]
+    (;B[fa];W[db]C[RIGHT])
+    (;B[db];W[ca]
+      (;B[da];W[fa]C[RIGHT])
+      (;B[fa];W[da]C[RIGHT]))))
+(;W[ca];B[da])
+(;W[ea];B[da])
+(;W[fa];B[da])
+(;W[db];B[da]))

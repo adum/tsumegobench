@@ -371,6 +371,28 @@ def review_problem_files(run_dir: Path) -> list[str]:
     return files
 
 
+def review_passes_human_gates(problem: dict[str, Any]) -> bool:
+    return (
+        problem.get("valid") is True
+        and problem.get("realistic") is True
+        and problem.get("duplicate") is False
+        and problem.get("wellPathed") is True
+    )
+
+
+def review_problem_complete(problem: dict[str, Any]) -> bool:
+    rejected = (
+        problem.get("valid") is False
+        or problem.get("realistic") is False
+        or problem.get("duplicate") is True
+        or problem.get("wellPathed") is False
+    )
+    return rejected or (
+        review_passes_human_gates(problem)
+        and problem.get("estimatedDifficulty") in DIFFICULTY_BANDS
+    )
+
+
 def normalize_review(review: Any, expected_files: list[str], now: str | None = None) -> dict[str, Any]:
     if not isinstance(review, dict):
         raise ValueError("Review payload must be an object.")
@@ -415,12 +437,19 @@ def normalize_review(review: Any, expected_files: list[str], now: str | None = N
             raise ValueError(f"Quality for {file} must be between 1 and 5.")
         if difficulty is not None and difficulty not in DIFFICULTY_BANDS:
             raise ValueError(f"Invalid estimated difficulty for {file}.")
-        if valid is not True:
+        normalized_gates = {
+            "valid": valid,
+            "realistic": realistic,
+            "duplicate": duplicate,
+            "wellPathed": well_pathed,
+            "estimatedDifficulty": difficulty,
+        }
+        if not review_passes_human_gates(normalized_gates):
             difficulty = None
+            quality = None
 
-        complete = valid is False or (
-            valid is True and difficulty in DIFFICULTY_BANDS
-        )
+        normalized_gates["estimatedDifficulty"] = difficulty
+        complete = review_problem_complete(normalized_gates)
         status = "completed" if complete else "pending"
         if complete:
             reviewed_at = reviewed_at if isinstance(reviewed_at, str) and reviewed_at else timestamp
@@ -462,7 +491,7 @@ def update_review_results(run_dir: Path, store: dict[str, Any]) -> None:
     reviews = store.get("reviews", [])
     summaries = []
     for review in reviews:
-        completed = [problem for problem in review["problems"] if problem["status"] == "completed"]
+        completed = [problem for problem in review["problems"] if review_problem_complete(problem)]
         summaries.append(
             {
                 "reviewId": review["reviewId"],
@@ -486,7 +515,10 @@ def update_review_results(run_dir: Path, store: dict[str, Any]) -> None:
                 **next(record for record in review["problems"] if record["file"] == file),
             }
             for review in reviews
-            if any(record["file"] == file and record["status"] == "completed" for record in review["problems"])
+            if any(
+                record["file"] == file and review_problem_complete(record)
+                for record in review["problems"]
+            )
         ]
     write_json(results_path, results)
 
@@ -1368,9 +1400,31 @@ def is_model_selection_failure(message: str | None, raw_output: str = "") -> boo
     return any(pattern in evidence for pattern in patterns)
 
 
+def is_run_configuration_failure(message: str | None, raw_output: str = "") -> bool:
+    if is_model_selection_failure(message, raw_output):
+        return True
+    evidence = f"{message or ''}\n{raw_output}".lower()
+    unsupported_model_option = all(
+        pattern in evidence
+        for pattern in (
+            "unsupported value:",
+            "is not supported with",
+            "model",
+            "supported values are:",
+        )
+    )
+    explicit_effort_error = (
+        "reasoning effort" in evidence or "model_reasoning_effort" in evidence
+    ) and any(
+        pattern in evidence
+        for pattern in ("invalid", "not supported", "unsupported")
+    )
+    return unsupported_model_option or explicit_effort_error
+
+
 def is_transient_harness_failure(message: str | None, raw_output: str = "") -> bool:
     evidence = f"{message or ''}\n{raw_output}".lower()
-    if is_model_selection_failure(message, raw_output):
+    if is_run_configuration_failure(message, raw_output):
         return False
     patterns = (
         "reqwest error",
@@ -2213,13 +2267,13 @@ def _run_command(args: argparse.Namespace) -> int:
             attempt_final_message = attempt_events.pop("finalMessage", None)
             failure_message = attempt_events.get("failureMessage")
             raw_output = f"{stdout}\n{stderr}"
-            model_rejected = bool(
-                exit_code and is_model_selection_failure(failure_message, raw_output)
+            configuration_rejected = bool(
+                exit_code and is_run_configuration_failure(failure_message, raw_output)
             )
             retryable = bool(
                 exit_code
                 and not timed_out
-                and not model_rejected
+                and not configuration_rejected
                 and is_transient_harness_failure(failure_message, raw_output)
             )
             failure_detail = (
@@ -2299,8 +2353,8 @@ def _run_command(args: argparse.Namespace) -> int:
 
             if exit_code == 0:
                 attempt_record["outcome"] = "success"
-            elif model_rejected:
-                attempt_record["outcome"] = "model_rejected"
+            elif configuration_rejected:
+                attempt_record["outcome"] = "configuration_rejected"
             elif timed_out:
                 attempt_record["outcome"] = "timeout"
             elif retryable:
@@ -2438,13 +2492,18 @@ def _run_command(args: argparse.Namespace) -> int:
             f"after {format_elapsed(duration)} total "
             f"({format_elapsed(total_backoff_seconds)} in backoff)."
         )
-    if exit_code and is_model_selection_failure(failure_message, f"{stdout}\n{stderr}"):
+    if exit_code and is_run_configuration_failure(failure_message, f"{stdout}\n{stderr}"):
         discard_new_run(run_dir)
         detail = failure_message or f"{label} exited with status {exit_code}."
-        print(f"Model {args.model!r} was rejected by {label}: {detail}", file=sys.stderr)
         print(
-            "No retries were attempted because model-selection failures are permanent. "
-            "No run was saved, and evaluation was not started. Check the model ID and try again.",
+            f"Benchmark configuration for model {args.model!r} was rejected by {label}: "
+            f"{detail}",
+            file=sys.stderr,
+        )
+        print(
+            "No retries were attempted because model and reasoning-effort configuration "
+            "failures are permanent. No run was saved, and evaluation was not started. "
+            "Check --model and --reasoning-effort, then try again.",
             file=sys.stderr,
         )
         return 2

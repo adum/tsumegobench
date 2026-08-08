@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "requestId": "final-06",
+  "path": "outputs/problem-06.sgf",
+  "queryNumber": 24,
+  "queriesRemaining": 26,
+  "checkedAt": "2026-08-08T01:20:41.850Z",
+  "status": "clear",
+  "candidateSha256": "b3f9b3a5c46afed8366d475ee3368306523650bf9ed1d5da1ccfebff8e31dce4",
+  "cachedRemote": false,
+  "local": {
+    "builtInSetupMatch": null,
+    "exactReferenceMatch": null,
+    "closestReferenceMatch": {
+      "id": 17778,
+      "percentage": 23.88,
+      "url": "https://www.goproblems.com/problems/17778"
+    },
+    "peerExactMatches": [],
+    "peerShapeMatches": []
+  },
+  "goProblems": {
+    "radius": 2,
+    "signatureMatches": [],
+    "topPercentage": 38,
+    "percentageMatches": [
+      {
+        "id": 10709,
+        "difficulty": "1 kyu",
+        "createdAt": "2007-12-20",
+        "url": "https://www.goproblems.com/problems/10709",
+        "percentage": 38
+      },
+      {
+        "id": 39677,
+        "difficulty": "16 kyu",
+        "createdAt": "2024-11-08",
+        "url": "https://www.goproblems.com/problems/39677",
+        "percentage": 35
+      },
+      {
+        "id": 44678,
+        "difficulty": "27 kyu?",
+        "createdAt": "2025-03-29",
+        "url": "https://www.goproblems.com/problems/44678",
+        "percentage": 27
+      },
+      {
+        "id": 22730,
+        "difficulty": "14 kyu",
+        "createdAt": "2020-07-12",
+        "url": "https://www.goproblems.com/problems/22730",
+        "percentage": 26
+      },
+      {
+        "id": 35708,
+        "difficulty": "30 kyu",
+        "createdAt": "2024-08-27",
+        "url": "https://www.goproblems.com/problems/35708",
+        "percentage": 25
+      },
+      {
+        "id": 47505,
+        "difficulty": "18 kyu?",
+        "createdAt": "2025-06-12",
+        "url": "https://www.goproblems.com/problems/47505",
+        "percentage": 25
+      },
+      {
+        "id": 51087,
+        "difficulty": "5 kyu?",
+        "createdAt": "2025-10-01",
+        "url": "https://www.goproblems.com/problems/51087",
+        "percentage": 24
+      }
+    ]
+  },
+  "errors": []
+}

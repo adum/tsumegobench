@@ -2,6 +2,18 @@
   "schemaVersion": 1,
   "models": [
     {
+      "id": "deepseek-v4-flash",
+      "displayName": "DeepSeek V4 Flash",
+      "family": "DeepSeek",
+      "releaseDate": "2026-04-24",
+      "icon": "/provider-icons/deepseek.svg",
+      "aliases": [
+        { "provider": "openrouter", "name": "deepseek/deepseek-v4-flash" },
+        { "provider": "openrouter", "name": "openrouter/deepseek/deepseek-v4-flash" },
+        { "provider": "openrouter", "name": "openrouter/deepseek/deepseek-v4-flash-0731" }
+      ]
+    },
+    {
       "id": "grok-4.5",
       "displayName": "Grok 4.5",
       "family": "xAI",

@@ -1,7 +1,0 @@
-{
-  "$schema": "../../../schemas/human-reviews.schema.json",
-  "schemaVersion": 1,
-  "runId": "2026-08-07T191005Z-anthropic-claude-opus-5-claude",
-  "updatedAt": null,
-  "reviews": []
-}

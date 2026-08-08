@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p10-v6",
+  "path": "outputs/problem-10.sgf",
+  "queryNumber": 43,
+  "queriesRemaining": 7,
+  "checkedAt": "2026-08-08T00:21:14.352Z",
+  "status": "invalid",
+  "candidateSha256": "70479d42fd7a6f76091a87a320907d9f4b89b19f7e03727256848db0d7ebb689",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "B[lc] plays on an occupied intersection."
+    },
+    {
+      "code": "suicide-move",
+      "message": "W[lb] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "suicide-move",
+      "message": "W[lb] is suicide under ordinary Go rules."
+    }
+  ]
+}

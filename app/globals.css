@@ -1419,6 +1419,13 @@ input:focus-visible,
   color: #845313;
 }
 
+.run-status-dot.reviewed,
+.run-badge.reviewed {
+  border-color: var(--green);
+  background: var(--green-pale);
+  color: var(--green-dark);
+}
+
 .run-status-dot.failed,
 .run-badge.failed,
 .run-problem-tabs i.failed {
@@ -1833,6 +1840,14 @@ input:focus-visible,
   color: var(--amber);
 }
 
+.quality-rating:disabled {
+  opacity: 0.45;
+}
+
+.quality-rating button:disabled {
+  cursor: not-allowed;
+}
+
 .review-actions {
   flex-wrap: wrap;
 }
@@ -1854,6 +1869,11 @@ input:focus-visible,
   border-color: transparent;
   background: transparent;
   color: var(--ink-soft);
+}
+
+.review-actions .review-all-invalid {
+  border-color: var(--red);
+  color: var(--red-dark);
 }
 
 .review-error {

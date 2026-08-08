@@ -1,5 +1,0 @@
-All ten requested files were written:
-
-- `outputs/problem-01.sgf` … `outputs/problem-10.sgf`, each a single SGF collection on one line with `SZ[19]`, root `AB`/`AW` setup, no root comment, alternating single-move nodes, and `C[RIGHT]` on every accepted endpoint.
-- First-move colour: Black in problems 01, 03, 06, 08, 09, 10; White in 02, 04, 05, 07.
-- Every file received a final `clear` result from the originality tool (`final-01` … `final-10`), and no file was edited after its final clear.

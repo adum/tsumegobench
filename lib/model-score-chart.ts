@@ -59,6 +59,16 @@ export interface ModelScoreChartData {
   unmatchedModels: string[];
 }
 
+export function rankModelScoresForLegend<
+  T extends Pick<ModelScorePoint, "displayName" | "score">,
+>(models: readonly T[]): T[] {
+  return [...models].sort(
+    (left, right) =>
+      right.score - left.score ||
+      left.displayName.localeCompare(right.displayName),
+  );
+}
+
 function modelKey(provider: string, name: string) {
   return `${provider.trim().toLowerCase()}/${name.trim().toLowerCase()}`;
 }

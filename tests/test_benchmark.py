@@ -495,6 +495,52 @@ class BenchmarkRunnerTests(unittest.TestCase):
             evaluator.assert_not_called()
             indexer.assert_not_called()
 
+    def test_codex_model_effort_rejection_discards_run_before_evaluation(self):
+        args = benchmark.build_parser().parse_args(
+            [
+                "run",
+                "--model",
+                "gpt-5.5",
+                "--reasoning-effort",
+                "max",
+                "--run-id",
+                "codex-invalid-model-effort",
+                "--local-only",
+            ]
+        )
+        message = (
+            "Unsupported value: 'max' is not supported with the "
+            "'gpt-5.5-codex-1p-codexswic-ev3' model. Supported values are: "
+            "'none', 'low', 'medium', 'high', and 'xhigh'."
+        )
+        completed = subprocess.CompletedProcess(
+            [],
+            1,
+            stdout=json.dumps({"type": "error", "message": message}),
+            stderr="",
+        )
+
+        with tempfile.TemporaryDirectory() as temporary:
+            runs_root = Path(temporary)
+            with (
+                mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
+                mock.patch.object(benchmark, "cli_version", return_value="codex-cli 0.144.1"),
+                mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
+                mock.patch.object(benchmark.subprocess, "run", return_value=completed),
+                mock.patch.object(benchmark, "run_evaluator") as evaluator,
+                mock.patch.object(benchmark, "build_run_index") as indexer,
+            ):
+                console_error = io.StringIO()
+                with redirect_stdout(io.StringIO()), redirect_stderr(console_error):
+                    exit_code = benchmark.run_command(args)
+
+            self.assertEqual(exit_code, 2)
+            self.assertFalse((runs_root / "codex-invalid-model-effort").exists())
+            self.assertIn("Benchmark configuration", console_error.getvalue())
+            self.assertIn("Check --model and --reasoning-effort", console_error.getvalue())
+            evaluator.assert_not_called()
+            indexer.assert_not_called()
+
     def test_grok_model_rejection_discards_run_before_evaluation(self):
         args = benchmark.build_parser().parse_args(
             [
@@ -1511,6 +1557,22 @@ class BenchmarkRunnerTests(unittest.TestCase):
         )
         self.assertFalse(benchmark.is_model_selection_failure("The request timed out."))
 
+    def test_recognizes_model_effort_configuration_errors(self):
+        message = (
+            "Unsupported value: 'max' is not supported with the 'gpt-5.5' model. "
+            "Supported values are: 'none', 'low', 'medium', 'high', and 'xhigh'."
+        )
+
+        self.assertTrue(benchmark.is_run_configuration_failure(message))
+        self.assertTrue(
+            benchmark.is_run_configuration_failure(
+                "Invalid model_reasoning_effort for the selected model."
+            )
+        )
+        self.assertFalse(
+            benchmark.is_run_configuration_failure("The request timed out.")
+        )
+
     def test_recognizes_retryable_transport_and_service_errors(self):
         self.assertTrue(
             benchmark.is_transient_harness_failure(
@@ -1673,7 +1735,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
             ],
         )
 
-    def test_valid_review_requires_human_difficulty_to_complete(self):
+    def test_only_fully_passing_review_requires_human_difficulty_to_complete(self):
         files = [f"problem-{index:02d}.sgf" for index in range(1, 6)]
         problems = [
             {
@@ -1695,6 +1757,8 @@ class BenchmarkRunnerTests(unittest.TestCase):
                 "realistic": False,
                 "duplicate": True,
                 "wellPathed": True,
+                "estimatedDifficulty": "5-9 kyu",
+                "quality": 5,
             }
         )
         normalized = benchmark.normalize_review(
@@ -1717,11 +1781,54 @@ class BenchmarkRunnerTests(unittest.TestCase):
             "2026-08-05T12:00:00Z",
         )
         self.assertEqual(normalized["problems"][1]["status"], "pending")
-        problems[0].update({"valid": True, "realistic": True, "estimatedDifficulty": None})
-        valid_without_optional_fields = benchmark.normalize_review(
+        problems[0].update(
+            {
+                "valid": True,
+                "realistic": False,
+                "duplicate": False,
+                "wellPathed": True,
+                "estimatedDifficulty": None,
+            }
+        )
+        unrealistic = benchmark.normalize_review(
             {
                 "reviewId": "reviewer-two",
                 "reviewerName": "Second Reviewer",
+                "problems": problems,
+            },
+            files,
+        )
+
+        self.assertEqual(unrealistic["problems"][0]["status"], "completed")
+        self.assertIsNone(unrealistic["problems"][0]["estimatedDifficulty"])
+        self.assertIsNone(unrealistic["problems"][0]["quality"])
+        problems[0].update({"realistic": True, "duplicate": True})
+        duplicate = benchmark.normalize_review(
+            {
+                "reviewId": "reviewer-three",
+                "reviewerName": "Third Reviewer",
+                "problems": problems,
+            },
+            files,
+        )
+
+        self.assertEqual(duplicate["problems"][0]["status"], "completed")
+        problems[0].update({"duplicate": False, "wellPathed": False})
+        poorly_pathed = benchmark.normalize_review(
+            {
+                "reviewId": "reviewer-four",
+                "reviewerName": "Fourth Reviewer",
+                "problems": problems,
+            },
+            files,
+        )
+
+        self.assertEqual(poorly_pathed["problems"][0]["status"], "completed")
+        problems[0].update({"wellPathed": True, "quality": None})
+        valid_without_optional_fields = benchmark.normalize_review(
+            {
+                "reviewId": "reviewer-five",
+                "reviewerName": "Fifth Reviewer",
                 "problems": problems,
             },
             files,
@@ -1734,8 +1841,8 @@ class BenchmarkRunnerTests(unittest.TestCase):
         problems[0]["estimatedDifficulty"] = "4 dan or harder"
         valid_with_difficulty = benchmark.normalize_review(
             {
-                "reviewId": "reviewer-three",
-                "reviewerName": "Third Reviewer",
+                "reviewId": "reviewer-six",
+                "reviewerName": "Sixth Reviewer",
                 "problems": problems,
             },
             files,

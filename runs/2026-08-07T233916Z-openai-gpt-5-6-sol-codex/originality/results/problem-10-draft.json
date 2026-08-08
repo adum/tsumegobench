@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-10-draft",
+  "path": "outputs/problem-10.sgf",
+  "queryNumber": 10,
+  "queriesRemaining": 40,
+  "checkedAt": "2026-08-07T23:53:55.333Z",
+  "status": "invalid",
+  "candidateSha256": "ed42fcee8824171cb22f6989e3ef7006f765796387df722fb1884080d5452747",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "parse-error",
+      "message": "Unexpected content at character 921."
+    }
+  ]
+}

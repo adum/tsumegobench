@@ -1,6 +1,9 @@
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { reviewProblemProgress } from "../lib/review-progress";
+import {
+  reviewProblemIsComplete,
+  reviewProblemProgress,
+} from "../lib/review-progress";
 
 interface RunManifest {
   runId: string;
@@ -173,14 +176,14 @@ for (const entry of entries.filter((item) => item.isDirectory())) {
       reviewCount: reviewerRecords.length,
       completedProblemReviews: reviewerRecords.reduce(
         (total, review) =>
-          total + review.problems.filter((problem) => problem.status === "completed").length,
+          total + review.problems.filter(reviewProblemIsComplete).length,
         0,
       ),
       reviewers: reviewerRecords.map((review) => ({
         reviewId: review.reviewId,
         reviewerName: review.reviewerName,
         updatedAt: review.updatedAt,
-        completed: review.problems.filter((problem) => problem.status === "completed").length,
+        completed: review.problems.filter(reviewProblemIsComplete).length,
         total: review.problems.length,
       })),
     },

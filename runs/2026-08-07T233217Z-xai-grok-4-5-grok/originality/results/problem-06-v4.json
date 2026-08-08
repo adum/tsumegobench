@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-06-v4",
+  "path": "outputs/problem-06.sgf",
+  "queryNumber": 29,
+  "queriesRemaining": 21,
+  "checkedAt": "2026-08-08T00:18:02.900Z",
+  "status": "invalid",
+  "candidateSha256": "cd71290a42504c5adccd27875093009e6cd7d200e593e7741f02e416f2124a88",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "suicide-move",
+      "message": "W[br] is suicide under ordinary Go rules."
+    }
+  ]
+}

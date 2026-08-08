@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p09-v5",
+  "path": "outputs/problem-09.sgf",
+  "queryNumber": 37,
+  "queriesRemaining": 13,
+  "checkedAt": "2026-08-08T00:19:36.218Z",
+  "status": "invalid",
+  "candidateSha256": "5f409951d0c9874e83960b9285c9270a3f5aff82c641e7087aebe09db7326413",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "B[po] plays on an occupied intersection."
+    },
+    {
+      "code": "suicide-move",
+      "message": "W[ro] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "suicide-move",
+      "message": "W[ro] is suicide under ordinary Go rules."
+    }
+  ]
+}

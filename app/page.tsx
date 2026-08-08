@@ -48,6 +48,12 @@ function metadataFor(provider: string, name: string) {
 }
 
 const latestUpdate = recentRuns[0]?.createdAt;
+const evaluatedModelCount = new Set(
+  runs.map((run) => {
+    const metadata = metadataFor(run.model.provider, run.model.name);
+    return metadata?.id ?? `${run.model.provider}/${run.model.name}`;
+  }),
+).size;
 const totalRunSlots = runs.reduce(
   (total, run) => total + run.summary.expectedProblems,
   0,
@@ -122,7 +128,7 @@ export default function Home() {
       <dl className="benchmark-status-grid" aria-label="Benchmark status">
         <div>
           <dt>Models evaluated</dt>
-          <dd>{chartData.models.length}</dd>
+          <dd>{evaluatedModelCount}</dd>
         </div>
         <div>
           <dt>Runs indexed</dt>

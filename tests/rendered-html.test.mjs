@@ -1,5 +1,39 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
+
+const indexedRuns = JSON.parse(
+  await readFile(new URL("../app/data/runs.generated.json", import.meta.url), "utf8"),
+);
+const modelMetadata = JSON.parse(
+  await readFile(new URL("../data/model-metadata.json", import.meta.url), "utf8"),
+);
+const canonicalModelIds = new Map(
+  modelMetadata.models.flatMap((model) =>
+    model.aliases.map((alias) => [`${alias.provider}/${alias.name}`, model.id]),
+  ),
+);
+const evaluatedModelCount = new Set(
+  indexedRuns.map((run) =>
+    canonicalModelIds.get(`${run.model.provider}/${run.model.name}`) ??
+      `${run.model.provider}/${run.model.name}`,
+  ),
+).size;
+
+function indexedRunReviewState(run) {
+  const required = run.summary.humanReviewPending;
+  const completed = Math.max(
+    0,
+    ...(run.humanReviews?.reviewers.map((reviewer) => reviewer.completed) ?? []),
+  );
+  const remaining = Math.max(0, required - completed);
+  const status = run.status === "needs_human_review" && required > 0 && remaining === 0
+    ? "reviewed"
+    : run.status;
+  return { remaining, status };
+}
+
+const selectedRunReviewState = indexedRunReviewState(indexedRuns[0]);
 
 async function render(path = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -26,7 +60,7 @@ test("server-renders a compact overview with route navigation", async () => {
   const html = await htmlFor("/");
   assert.match(html, /AI Go Problem Creation Benchmark/);
   assert.match(html, /href="\/problems"/);
-  assert.match(html, /href="\/problems">Problems<\/a>/);
+  assert.match(html, /href="\/problems">Example Problems<\/a>/);
   assert.match(html, /href="\/runs"/);
   assert.match(html, /href="\/runs">Results<\/a>/);
   assert.match(html, /href="\/evaluation">Method<\/a>/);
@@ -37,13 +71,19 @@ test("server-renders a compact overview with route navigation", async () => {
   assert.match(html, /Human score/);
   assert.match(html, /class="model-results-table"/);
   assert.match(html, /GPT-5\.6 Luna/);
-  assert.match(html, /Claude Opus 5/);
+  assert.match(html, /DeepSeek V4 Flash/);
+  assert.match(html, /src="\/provider-icons\/deepseek\.svg"/);
   assert.match(html, /src="\/provider-icons\/(?:openai|anthropic|xai)\.svg"/);
   assert.match(html, /Score definition/);
   assert.match(html, /Latest benchmark activity/);
   assert.match(html, /Current finding/);
   assert.match(html, /All LLMs By Release Date/);
   assert.match(html, /Score out of 10/);
+  assert.match(
+    html,
+    new RegExp(`Models evaluated<\\/dt><dd>${evaluatedModelCount}<\\/dd>`),
+  );
+  assert.doesNotMatch(html, /Release metadata is still needed/);
   assert.match(html, /class="model-chart-point"/);
   assert.match(html, /href="\/runs\?run=/);
   const statusIndex = html.indexOf('class="benchmark-status-grid"');
@@ -112,6 +152,13 @@ test("server-renders generated runs on their own page with a to-move stone", asy
   assert.match(html, /class="run-provider-mark" aria-label="OpenAI model lab"/);
   assert.match(html, /src="\/provider-icons\/openai\.svg"/);
   assert.match(html, /class="run-effort">(?:default|low|high|max|xhigh) effort<\/span>/);
+  const selectedStatusLabel = selectedRunReviewState.status.replaceAll("_", " ");
+  assert.match(
+    html,
+    new RegExp(
+      `class="run-badge ${selectedRunReviewState.status}">${selectedStatusLabel}<\\/span>`,
+    ),
+  );
   assert.doesNotMatch(html, /Problem viewer/);
   const toMove = html.match(
     /class="to-move-stone (black|white)"[^>]*aria-label="(Black|White) to play"/,
@@ -139,6 +186,10 @@ test("server-renders generated runs on their own page with a to-move stone", asy
   assert.match(
     html,
     /class="run-summary"[^>]*>[\s\S]*structural[\s\S]*original[\s\S]*to review[\s\S]*human score[\s\S]*<\/div>/,
+  );
+  assert.match(
+    html,
+    new RegExp(`<strong>${selectedRunReviewState.remaining}<\\/strong> to review`),
   );
   assert.match(html, /class="problem-thumbnail(?: is-empty)?"/);
   assert.match(html, /class="run-problem-tab-copy"/);

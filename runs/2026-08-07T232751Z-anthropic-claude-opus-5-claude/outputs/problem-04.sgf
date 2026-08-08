@@ -1,0 +1,10 @@
+(;SZ[19]FF[4]GM[1]AB[aq][bq][cq][dq][eq][fq][fr][fs]AW[ar][br][cr][dr][er]
+(;B[bs]
+(;W[es];B[cs]C[RIGHT])
+(;W[ds];B[cs]C[RIGHT]))
+(;B[es]
+(;W[ds];B[bs]C[RIGHT])
+(;W[bs];B[ds]C[RIGHT])
+(;W[cs];B[ds]C[RIGHT]))
+(;B[cs];W[bs])
+(;B[ds];W[es]))

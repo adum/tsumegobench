@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-02-retry",
+  "path": "outputs/problem-02.sgf",
+  "queryNumber": 11,
+  "queriesRemaining": 39,
+  "checkedAt": "2026-08-07T23:33:13.995Z",
+  "status": "clear",
+  "candidateSha256": "2693a64d44b7cf213ab7859a5c566022d7e76195e3c11130b1cfb13af092fe81",
+  "cachedRemote": false,
+  "local": {
+    "builtInSetupMatch": null,
+    "exactReferenceMatch": null,
+    "closestReferenceMatch": {
+      "id": 18843,
+      "percentage": 57.14,
+      "url": "https://www.goproblems.com/problems/18843"
+    },
+    "peerExactMatches": [],
+    "peerShapeMatches": []
+  },
+  "goProblems": {
+    "radius": 2,
+    "signatureMatches": [],
+    "topPercentage": 48,
+    "percentageMatches": [
+      {
+        "id": 32647,
+        "difficulty": "10 kyu",
+        "createdAt": "2024-07-16",
+        "url": "https://www.goproblems.com/problems/32647",
+        "percentage": 48
+      },
+      {
+        "id": 26891,
+        "difficulty": "4 kyu?",
+        "createdAt": "2024-03-19",
+        "url": "https://www.goproblems.com/problems/26891",
+        "percentage": 29
+      }
+    ]
+  },
+  "errors": []
+}

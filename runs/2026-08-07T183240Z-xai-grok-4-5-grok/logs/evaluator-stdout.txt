@@ -1,1 +1,0 @@
-{"runId":"2026-08-07T183240Z-xai-grok-4-5-grok","status":"failed","output":"runs\\2026-08-07T183240Z-xai-grok-4-5-grok\\evaluation\\automated.json","summary":{"expectedProblems":10,"filesFound":10,"structuralPassed":10,"originalityPassed":10,"automatedGatePassed":10,"failedProblems":0,"incompleteProblems":0,"humanReviewPending":10,"failedRunChecks":1}}

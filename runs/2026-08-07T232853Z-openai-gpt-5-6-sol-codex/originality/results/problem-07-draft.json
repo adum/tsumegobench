@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-07-draft",
+  "path": "outputs/problem-07.sgf",
+  "queryNumber": 7,
+  "queriesRemaining": 43,
+  "checkedAt": "2026-08-07T23:32:12.573Z",
+  "status": "invalid",
+  "candidateSha256": "ec76fc4cd858884afad495736a15ce78c750c7f1158eee084a7d7cb0cdc3db00",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "dead-setup-group",
+      "message": "The initial White group containing AW[bf], AW[cf], AW[df] has no liberties and would already have been captured."
+    }
+  ]
+}

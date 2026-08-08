@@ -77,9 +77,10 @@ Windows and WSL, the runner automatically uses a compatible Windows Node runtime
 for Windows-installed dependencies. Set `TSUMEGO_NODE` only if you need to
 override that selection.
 
-If the selected CLI rejects an unknown, inaccessible, or unsupported model ID, the runner
-prints the rejection and exits immediately. It does not retain a run directory,
-evaluate empty outputs, or add the attempt to the web index.
+If the selected CLI rejects an unknown, inaccessible, or unsupported model ID—or rejects
+the requested reasoning effort for that model—the runner prints the rejection and exits
+immediately. It does not retain a run directory, evaluate empty outputs, or add the attempt
+to the web index.
 
 Add `--reasoning-effort high` (or `--effort high`) when you want to pin an effort setting exposed by the selected CLI. For OpenCode, the effort value is passed as the model's provider-specific `--variant`. The runner disables general model web and network tools, captures the selected CLI's event log automatically, and writes ten candidate SGFs under `runs/<run-id>/outputs/` by default. Use `--count <5-50>` only when you want an explicitly different benchmark condition. `--local-only` is a diagnostic mode that disables both the live originality tool and post-run GoProblems checks, so it cannot produce an originality-complete benchmark result.
 

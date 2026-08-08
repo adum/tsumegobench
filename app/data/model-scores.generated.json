@@ -6,6 +6,19 @@
   },
   "models": [
     {
+      "id": "deepseek-v4-flash",
+      "displayName": "DeepSeek V4 Flash",
+      "family": "DeepSeek",
+      "releaseDate": "2026-04-24",
+      "icon": "/provider-icons/deepseek.svg",
+      "score": 0,
+      "passedProblems": 0,
+      "problemCount": 10,
+      "runCount": 1,
+      "bestRunId": "2026-08-07T205423Z-openrouter-deepseek-deepseek-v4-flash-0731-opencode",
+      "bestRunCreatedAt": "2026-08-07T20:54:25.697294Z"
+    },
+    {
       "id": "grok-4.5",
       "displayName": "Grok 4.5",
       "family": "xAI",
@@ -14,9 +27,9 @@
       "score": 0,
       "passedProblems": 0,
       "problemCount": 10,
-      "runCount": 3,
-      "bestRunId": "2026-08-07T183240Z-xai-grok-4-5-grok",
-      "bestRunCreatedAt": "2026-08-07T18:32:41.679334Z"
+      "runCount": 1,
+      "bestRunId": "2026-08-07T233217Z-xai-grok-4-5-grok",
+      "bestRunCreatedAt": "2026-08-07T23:32:18.835092Z"
     },
     {
       "id": "gpt-5.6-luna",
@@ -27,9 +40,22 @@
       "score": 0,
       "passedProblems": 0,
       "problemCount": 10,
-      "runCount": 5,
+      "runCount": 1,
       "bestRunId": "2026-08-07T203317Z-openai-gpt-5-6-luna-codex",
       "bestRunCreatedAt": "2026-08-07T20:33:19.210866Z"
+    },
+    {
+      "id": "gpt-5.6-sol",
+      "displayName": "GPT-5.6 Sol",
+      "family": "OpenAI",
+      "releaseDate": "2026-07-09",
+      "icon": "/provider-icons/openai.svg",
+      "score": 1,
+      "passedProblems": 1,
+      "problemCount": 10,
+      "runCount": 3,
+      "bestRunId": "2026-08-07T233916Z-openai-gpt-5-6-sol-codex",
+      "bestRunCreatedAt": "2026-08-07T23:39:18.120532Z"
     },
     {
       "id": "claude-opus-5",
@@ -40,13 +66,10 @@
       "score": 2,
       "passedProblems": 2,
       "problemCount": 10,
-      "runCount": 3,
-      "bestRunId": "2026-08-07T164653Z-anthropic-claude-opus-5-claude",
-      "bestRunCreatedAt": "2026-08-07T16:46:54.940418Z"
+      "runCount": 2,
+      "bestRunId": "2026-08-07T233133Z-anthropic-claude-opus-5-claude",
+      "bestRunCreatedAt": "2026-08-07T23:31:34.427392Z"
     }
   ],
-  "unmatchedModels": [
-    "opencode/opencode/openrouter/deepseek/deepseek-v4-flash-0731",
-    "openrouter/openrouter/deepseek/deepseek-v4-flash-0731"
-  ]
+  "unmatchedModels": []
 }
