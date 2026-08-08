@@ -1,0 +1,1 @@
+I have a clear picture now. The existing `problem-01.sgf` returned `duplicate` (100% match with GoProblems #56314), so it must be redesigned too. Let me study the example SGFs to calibrate format and style.

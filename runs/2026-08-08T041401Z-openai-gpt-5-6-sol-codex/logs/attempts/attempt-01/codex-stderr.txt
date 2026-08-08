@@ -1,0 +1,2 @@
+2026-08-08T05:15:17.890816Z ERROR codex_core::tools::router: error=apply_patch verification failed: Failed to find expected lines in /mnt/c/Users/Adam/Documents/go problem creation/runs/2026-08-08T041401Z-openai-gpt-5-6-sol-codex/outputs/problem-09.sgf:
+                (;W[gl];B[hk]))

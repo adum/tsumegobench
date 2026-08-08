@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p06-new",
+  "path": "outputs/problem-06.sgf",
+  "queryNumber": 19,
+  "queriesRemaining": 31,
+  "checkedAt": "2026-08-08T02:20:19.046Z",
+  "status": "invalid",
+  "candidateSha256": "e87a71f82c8380b98df7426feeb1f7daae5e7b436460c7f2cabca299c4a6c436",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "B[aa] plays on an occupied intersection."
+    }
+  ]
+}

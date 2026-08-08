@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p07-2",
+  "path": "outputs/problem-07.sgf",
+  "queryNumber": 24,
+  "queriesRemaining": 26,
+  "checkedAt": "2026-08-08T02:22:21.207Z",
+  "status": "invalid",
+  "candidateSha256": "028e0b85178ad779ec911c7a9689808138f1d5e5b8e0bc2e603dccb6b7b85add",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "setup-overlap",
+      "message": "Black and white are both set on hk."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[gh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[ih] plays on an occupied intersection."
+    }
+  ]
+}

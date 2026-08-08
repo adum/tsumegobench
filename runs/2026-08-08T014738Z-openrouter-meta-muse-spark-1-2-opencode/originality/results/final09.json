@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "final09",
+  "path": "outputs/problem-09.sgf",
+  "queryNumber": 37,
+  "queriesRemaining": 13,
+  "checkedAt": "2026-08-08T02:26:31.999Z",
+  "status": "invalid",
+  "candidateSha256": "41c0c0f143423034178dc1eb5a13d41435034d627af74f84238336547c916633",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "setup-overlap",
+      "message": "Black and white are both set on rq."
+    }
+  ]
+}

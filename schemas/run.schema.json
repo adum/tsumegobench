@@ -103,7 +103,9 @@
           "required": ["maxRounds", "stopWhenExpectedOutputsExist"],
           "properties": {
             "maxRounds": { "type": "integer", "minimum": 1 },
-            "stopWhenExpectedOutputsExist": { "type": "boolean" }
+            "stopWhenExpectedOutputsExist": { "type": "boolean" },
+            "sameSession": { "type": "boolean" },
+            "staleRoundLimit": { "type": "integer", "minimum": 1 }
           }
         },
         "roundsCompleted": { "type": "integer", "minimum": 0 },
@@ -112,10 +114,15 @@
           "enum": [
             "outputs_complete",
             "max_rounds",
+            "stale",
             "harness_failed",
             "timeout",
             null
           ]
+        },
+        "rounds": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/continuationRound" }
         },
         "outputTokenCeiling": { "type": "integer", "minimum": 1 },
         "retryPolicy": {
@@ -151,6 +158,21 @@
               "number": { "type": "integer", "minimum": 1 },
               "roundNumber": { "type": "integer", "minimum": 1 },
               "attemptInRound": { "type": "integer", "minimum": 1 },
+              "input": { "type": "string" },
+              "processExitCode": { "type": "integer" },
+              "roundStopReason": {
+                "enum": [
+                  "outputs_complete",
+                  "max_rounds",
+                  "stale",
+                  "harness_failed",
+                  "timeout"
+                ]
+              },
+              "rounds": {
+                "type": "array",
+                "items": { "$ref": "#/$defs/continuationRound" }
+              },
               "startedAt": { "type": "string", "format": "date-time" },
               "completedAt": { "type": "string", "format": "date-time" },
               "exitCode": { "type": "integer" },
@@ -225,6 +247,7 @@
         "task": { "type": "string" },
         "stdout": { "type": "string" },
         "stderr": { "type": "string" },
+        "harnessInput": { "type": "string" },
         "attempts": { "type": "string" },
         "originalityToolGuide": { "type": "string" },
         "originalityToolSummary": { "type": "string" },
@@ -245,6 +268,42 @@
     }
   },
   "$defs": {
+    "continuationRound": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "number",
+        "attempt",
+        "startedAt",
+        "completedAt",
+        "durationSeconds",
+        "outputFileCountBefore",
+        "outputFileCountAfter",
+        "originalityQueriesBefore",
+        "originalityQueriesAfter",
+        "progressMade",
+        "consecutiveStaleRounds",
+        "resultSubtype",
+        "resultError",
+        "outputLimitBoundary"
+      ],
+      "properties": {
+        "number": { "type": "integer", "minimum": 1 },
+        "attempt": { "type": "integer", "minimum": 1 },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "durationSeconds": { "type": "number", "minimum": 0 },
+        "outputFileCountBefore": { "type": "integer", "minimum": 0 },
+        "outputFileCountAfter": { "type": "integer", "minimum": 0 },
+        "originalityQueriesBefore": { "type": ["integer", "null"], "minimum": 0 },
+        "originalityQueriesAfter": { "type": ["integer", "null"], "minimum": 0 },
+        "progressMade": { "type": "boolean" },
+        "consecutiveStaleRounds": { "type": "integer", "minimum": 0 },
+        "resultSubtype": { "type": ["string", "null"] },
+        "resultError": { "type": "boolean" },
+        "outputLimitBoundary": { "type": "boolean" }
+      }
+    },
     "sha256": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p07-1",
+  "path": "outputs/problem-07.sgf",
+  "queryNumber": 23,
+  "queriesRemaining": 27,
+  "checkedAt": "2026-08-08T02:22:12.196Z",
+  "status": "invalid",
+  "candidateSha256": "aacdc8242440ab8cae2e0d76dce2f0e70cd79792c2bc846f712dc910dfa7d98e",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "setup-overlap",
+      "message": "Black and white are both set on hi, hj, hk."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[hh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[gh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[hh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[ih] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[hh] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[hh] plays on an occupied intersection."
+    }
+  ]
+}

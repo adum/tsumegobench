@@ -19,6 +19,11 @@ const evaluatedModelCount = new Set(
       `${run.model.provider}/${run.model.name}`,
   ),
 ).size;
+const unmatchedModelCount = new Set(
+  indexedRuns
+    .filter((run) => !canonicalModelIds.has(`${run.model.provider}/${run.model.name}`))
+    .map((run) => `${run.model.provider}/${run.model.name}`),
+).size;
 
 function indexedRunReviewState(run) {
   const required = run.summary.humanReviewPending;
@@ -33,7 +38,10 @@ function indexedRunReviewState(run) {
   return { remaining, status };
 }
 
-const selectedRunReviewState = indexedRunReviewState(indexedRuns[0]);
+const defaultIndexedRun = indexedRuns.find((run) =>
+  run.problems.some((problem) => problem.validation.valid && problem.sgf)
+) ?? indexedRuns[0];
+const selectedRunReviewState = indexedRunReviewState(defaultIndexedRun);
 
 async function render(path = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -77,13 +85,22 @@ test("server-renders a compact overview with route navigation", async () => {
   assert.match(html, /Score definition/);
   assert.match(html, /Latest benchmark activity/);
   assert.match(html, /Current finding/);
+  assert.match(
+    html,
+    /models? (?:has|have) produced at least one problem that passed human review/,
+  );
+  assert.doesNotMatch(html, /human-passing result/);
   assert.match(html, /All LLMs By Release Date/);
   assert.match(html, /Score out of 10/);
   assert.match(
     html,
     new RegExp(`Models evaluated<\\/dt><dd>${evaluatedModelCount}<\\/dd>`),
   );
-  assert.doesNotMatch(html, /Release metadata is still needed/);
+  if (unmatchedModelCount > 0) {
+    assert.match(html, /Release metadata is still needed/);
+  } else {
+    assert.doesNotMatch(html, /Release metadata is still needed/);
+  }
   assert.match(html, /class="model-chart-point"/);
   assert.match(html, /href="\/runs\?run=/);
   const statusIndex = html.indexOf('class="benchmark-status-grid"');

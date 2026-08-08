@@ -53,7 +53,7 @@
       "score": 1,
       "passedProblems": 1,
       "problemCount": 10,
-      "runCount": 3,
+      "runCount": 4,
       "bestRunId": "2026-08-07T233916Z-openai-gpt-5-6-sol-codex",
       "bestRunCreatedAt": "2026-08-07T23:39:18.120532Z"
     },
@@ -71,5 +71,12 @@
       "bestRunCreatedAt": "2026-08-07T23:31:34.427392Z"
     }
   ],
-  "unmatchedModels": []
+  "unmatchedModels": [
+    "anthropic/claude-fable-5",
+    "anthropic/claude-opus-4-8",
+    "openai/gpt-5.5",
+    "openrouter/openrouter/meta/muse-spark-1.2",
+    "openrouter/openrouter/moonshotai/kimi-k3",
+    "openrouter/openrouter/qwen/qwen3.8-max"
+  ]
 }

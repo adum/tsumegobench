@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p05-check",
+  "path": "outputs/problem-05.sgf",
+  "queryNumber": 11,
+  "queriesRemaining": 39,
+  "checkedAt": "2026-08-08T02:17:56.296Z",
+  "status": "invalid",
+  "candidateSha256": "771bc2a6843aa77af27516c9cf49559261239962aaf61300f4540fd407e70de8",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "setup-overlap",
+      "message": "Black and white are both set on ll."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[kl] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[km] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[aa] plays on an occupied intersection."
+    }
+  ]
+}

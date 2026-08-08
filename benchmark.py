@@ -10,6 +10,7 @@ import http.server
 import json
 import math
 import os
+import queue
 import re
 import secrets
 import shutil
@@ -39,11 +40,14 @@ DEFAULT_RETRY_BASE_DELAY_SECONDS = 15
 DEFAULT_RETRY_MAX_DELAY_SECONDS = 120
 DEFAULT_DUPLICATE_QUERIES_PER_PROBLEM = 5
 DEFAULT_PROGRESS_INTERVAL_SECONDS = 60
+DEFAULT_CLAUDE_MAX_ROUNDS = 20
+DEFAULT_CLAUDE_STALE_ROUND_LIMIT = 3
+CLAUDE_OUTPUT_TOKEN_MAX = 128_000
 DEFAULT_OPENCODE_MAX_ROUNDS = 20
 OPENCODE_OUTPUT_TOKEN_MAX = 65_536
 DEFAULT_REVIEW_STARTUP_TIMEOUT_SECONDS = 120
 REVIEW_PROBE_REQUEST_TIMEOUT_SECONDS = 10
-MINIMUM_CLAUDE_VERSION = (2, 1, 169)
+MINIMUM_CLAUDE_VERSION = (2, 1, 217)
 MINIMUM_OPENCODE_VERSION = (1, 1, 1)
 GENERATION_DIFFICULTY_BANDS = (
     "20-30 kyu",
@@ -187,6 +191,102 @@ def missing_expected_sgf_names(run_dir: Path, count: int) -> list[str]:
 
 def expected_sgf_count(run_dir: Path, count: int) -> int:
     return count - len(missing_expected_sgf_names(run_dir, count))
+
+
+def originality_query_progress(run_dir: Path) -> tuple[int | None, int | None]:
+    summary_path = run_dir / "originality" / "summary.json"
+    try:
+        summary = read_json(summary_path) if summary_path.exists() else None
+    except (OSError, json.JSONDecodeError):
+        return None, None
+    if not isinstance(summary, dict):
+        return None, None
+    queries_used = summary.get("queriesUsed")
+    query_limit = summary.get("queryLimit")
+    return (
+        queries_used if isinstance(queries_used, int) else None,
+        query_limit if isinstance(query_limit, int) else None,
+    )
+
+
+def generation_progress_snapshot(run_dir: Path) -> tuple[tuple[tuple[str, int, int], ...], int | None]:
+    outputs = run_dir / "outputs"
+    files: list[tuple[str, int, int]] = []
+    for file in sorted(outputs.glob("*.sgf")):
+        try:
+            stat = file.stat()
+        except OSError:
+            continue
+        files.append((file.name, stat.st_size, stat.st_mtime_ns))
+    queries_used, _ = originality_query_progress(run_dir)
+    return tuple(files), queries_used
+
+
+def claude_stream_message(content: str) -> str:
+    return json.dumps(
+        {
+            "type": "user",
+            "message": {"role": "user", "content": content},
+            "parent_tool_use_id": None,
+        },
+        ensure_ascii=False,
+    )
+
+
+def claude_continuation_task(
+    run_dir: Path,
+    count: int,
+    round_number: int,
+    max_rounds: int = DEFAULT_CLAUDE_MAX_ROUNDS,
+    previous_result: dict[str, Any] | None = None,
+    consecutive_stale_rounds: int = 0,
+    stale_round_limit: int = DEFAULT_CLAUDE_STALE_ROUND_LIMIT,
+) -> str:
+    missing = missing_expected_sgf_names(run_dir, count)
+    present = [name for name in expected_output_names(count) if name not in missing]
+    queries_used, query_limit = originality_query_progress(run_dir)
+    query_status = (
+        f"{queries_used}/{query_limit} originality queries have been used"
+        if queries_used is not None and query_limit is not None
+        else "the shared originality-query status is available in `originality/summary.json`"
+    )
+    boundary_note = ""
+    if previous_result and is_claude_output_limit_result(previous_result):
+        boundary_note = (
+            " Your previous turn reached its output-token boundary; this is a continuation, "
+            "not a restart."
+        )
+    stale_warning = ""
+    if (
+        stale_round_limit > 0
+        and consecutive_stale_rounds >= stale_round_limit - 1
+    ):
+        stale_warning = (
+            "\n\nIMPORTANT - FINAL NO-PROGRESS TURN: The harness has observed "
+            f"{consecutive_stale_rounds} consecutive continuation turns without measurable "
+            "progress. If this turn does not create or revise an SGF file or advance the "
+            "originality-query count, the session will stop at the "
+            f"{stale_round_limit}-turn no-progress limit. Make concrete progress during this "
+            "turn and persist useful work to the run directory before returning control.\n"
+        )
+
+    present_list = ", ".join(f"`{name}`" for name in present) or "none"
+    missing_list = ", ".join(f"`{name}`" for name in missing) or "none"
+    return f"""# Continue the Tsumego Bench run
+
+This is continuation turn {round_number} of at most {max_rounds} in the same Claude session.{boundary_note} Keep and use all of the analysis and context you have already developed.
+{stale_warning}
+
+The benchmark does not assign one problem per turn. Choose the most efficient workflow yourself: you may research, construct, revise, originality-check, or finish any number of problems during this turn. Do not start over and do not discard good work already present.
+
+Current observable run state:
+- {len(present)}/{count} expected SGF files are present.
+- Present: {present_list}
+- Missing: {missing_list}
+- {query_status}; the budget is shared across all continuation turns.
+
+Continue following the complete original task in `inputs/task.md`. Inspect existing files before changing them, repair anything you determine is incomplete, write final SGFs as they become ready, and perform the required final originality checks. Return control only after making as much concrete progress as is useful in this turn.
+"""
 
 
 def opencode_round_task(
@@ -1131,7 +1231,7 @@ def claude_version_error(version: str) -> str | None:
     if installed < MINIMUM_CLAUDE_VERSION:
         required = ".".join(str(part) for part in MINIMUM_CLAUDE_VERSION)
         return (
-            f"Claude CLI {required} or newer is required for the benchmark's isolated mode; "
+            f"Claude CLI {required} or newer is required for the benchmark's isolated streaming mode; "
             f"found {'.'.join(str(part) for part in installed)}."
         )
     return None
@@ -1169,6 +1269,44 @@ def event_message(value: Any) -> str | None:
     return None
 
 
+def is_claude_output_limit_result(event: dict[str, Any]) -> bool:
+    if event.get("type") != "result":
+        return False
+    evidence = json.dumps(event, ensure_ascii=False).lower()
+    patterns = (
+        "max_tokens",
+        "maximum output token",
+        "max output token",
+        "output token maximum",
+        "output length limit",
+    )
+    return any(pattern in evidence for pattern in patterns) or (
+        "response exceeded" in evidence and "output token" in evidence
+    )
+
+
+def merge_numeric_usage(
+    target: dict[str, Any],
+    source: dict[str, Any],
+    preserve_numeric_keys: frozenset[str] = frozenset(),
+) -> None:
+    for key, value in source.items():
+        if isinstance(value, dict):
+            nested = target.setdefault(key, {})
+            if not isinstance(nested, dict):
+                nested = {}
+                target[key] = nested
+            merge_numeric_usage(nested, value, preserve_numeric_keys)
+        elif isinstance(value, (int, float)) and not isinstance(value, bool):
+            if key in preserve_numeric_keys:
+                target[key] = value
+            else:
+                existing = target.get(key, 0)
+                target[key] = existing + value if isinstance(existing, (int, float)) else value
+        else:
+            target[key] = value
+
+
 def parse_codex_events(stdout: str) -> dict[str, Any]:
     thread_id: str | None = None
     usage: dict[str, Any] | None = None
@@ -1202,7 +1340,8 @@ def parse_codex_events(stdout: str) -> dict[str, Any]:
 
 def parse_claude_events(stdout: str) -> dict[str, Any]:
     session_id: str | None = None
-    usage: dict[str, Any] | None = None
+    usage: dict[str, Any] = {}
+    has_usage = False
     parse_errors = 0
     event_count = 0
     failure_message: str | None = None
@@ -1222,26 +1361,33 @@ def parse_claude_events(stdout: str) -> dict[str, Any]:
             result = event.get("result")
             if isinstance(result, str):
                 final_message = result
-            usage_fields = {
-                key: event[key]
-                for key in (
-                    "usage",
-                    "modelUsage",
-                    "total_cost_usd",
-                    "duration_api_ms",
-                    "num_turns",
+            if isinstance(event.get("usage"), dict):
+                merge_numeric_usage(usage.setdefault("usage", {}), event["usage"])
+                has_usage = True
+            if isinstance(event.get("modelUsage"), dict):
+                merge_numeric_usage(
+                    usage.setdefault("modelUsage", {}),
+                    event["modelUsage"],
+                    frozenset({"contextWindow", "maxOutputTokens"}),
                 )
-                if event.get(key) is not None
-            }
-            usage = usage_fields or None
+                has_usage = True
+            for key in ("total_cost_usd", "duration_api_ms", "num_turns"):
+                value = event.get(key)
+                if isinstance(value, (int, float)) and not isinstance(value, bool):
+                    usage[key] = usage.get(key, 0) + value
+                    has_usage = True
             if event.get("is_error") or event.get("subtype") not in {None, "success"}:
                 failure_message = event_message(event) or final_message or failure_message
+            else:
+                # A prior output-length boundary is recoverable in streaming mode.
+                # A later successful result determines the session's final status.
+                failure_message = None
         elif event.get("type") == "error":
             failure_message = event_message(event) or failure_message
 
     return {
         "threadId": session_id,
-        "usage": usage,
+        "usage": usage if has_usage else None,
         "eventCount": event_count,
         "unparsedLineCount": parse_errors,
         "failureMessage": failure_message,
@@ -1474,6 +1620,288 @@ def compact_failure(message: str | None, stdout: str, stderr: str, exit_code: in
     return compact if len(compact) <= 500 else f"{compact[:497]}..."
 
 
+def run_claude_streaming_session(
+    args: argparse.Namespace,
+    command: list[str],
+    run_dir: Path,
+    task: str,
+    label: str,
+    timeout_seconds: float,
+    attempt_number: int,
+) -> dict[str, Any]:
+    started = time.monotonic()
+    deadline = started + timeout_seconds
+    reporter = start_progress_reporter(
+        run_dir,
+        label,
+        attempt_number,
+        args.max_attempts,
+        args.count,
+    )
+    stdout_lines: list[str] = []
+    stderr_lines: list[str] = []
+    input_lines: list[str] = []
+    output_queue: queue.Queue[str | None] = queue.Queue()
+    rounds: list[dict[str, Any]] = []
+    stale_rounds = 0
+    stop_reason: str | None = None
+    timed_out = False
+    timeout_message: str | None = None
+    helper_failure: str | None = None
+    last_result: dict[str, Any] | None = None
+    process: subprocess.Popen[str] | None = None
+    stdout_thread: threading.Thread | None = None
+    stderr_thread: threading.Thread | None = None
+
+    def read_stdout() -> None:
+        try:
+            if process is None or process.stdout is None:
+                return
+            for line in process.stdout:
+                stdout_lines.append(line)
+                output_queue.put(line)
+        finally:
+            output_queue.put(None)
+
+    def read_stderr() -> None:
+        if process is None or process.stderr is None:
+            return
+        for line in process.stderr:
+            stderr_lines.append(line)
+
+    def send_message(content: str) -> bool:
+        nonlocal helper_failure
+        payload = f"{claude_stream_message(content)}\n"
+        input_lines.append(payload)
+        try:
+            if process is None or process.stdin is None:
+                raise BrokenPipeError("Claude CLI stdin is unavailable")
+            process.stdin.write(payload)
+            process.stdin.flush()
+            return True
+        except (BrokenPipeError, OSError) as error:
+            helper_failure = f"Could not send a continuation to {label}: {error}"
+            return False
+
+    def wait_for_result() -> dict[str, Any] | None:
+        nonlocal timed_out, timeout_message, helper_failure
+        while True:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                timed_out = True
+                timeout_message = (
+                    f"{label} timed out after "
+                    f"{format_timeout(max(1, math.ceil(timeout_seconds)))}."
+                )
+                return None
+            try:
+                line = output_queue.get(timeout=min(0.5, remaining))
+            except queue.Empty:
+                if process is not None and process.poll() is not None:
+                    helper_failure = (
+                        f"{label} exited before returning a result for the current turn."
+                    )
+                    return None
+                continue
+            if line is None:
+                helper_failure = (
+                    f"{label} closed its output before returning a result for the current turn."
+                )
+                return None
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if isinstance(event, dict) and event.get("type") == "result":
+                return event
+
+    def stop_process(force: bool = False) -> int:
+        if process is None:
+            return 127
+        if force and process.poll() is None:
+            process.terminate()
+        elif process.stdin is not None and not process.stdin.closed:
+            try:
+                process.stdin.close()
+            except OSError:
+                pass
+        wait_seconds = max(0.1, min(30.0, deadline - time.monotonic()))
+        try:
+            return process.wait(timeout=wait_seconds)
+        except subprocess.TimeoutExpired:
+            if process.poll() is None:
+                process.terminate()
+            try:
+                return process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                return process.wait()
+
+    try:
+        process = subprocess.Popen(
+            command,
+            cwd=run_dir,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env=harness_environment(args, run_dir),
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            bufsize=1,
+        )
+        stdout_thread = threading.Thread(
+            target=read_stdout,
+            name="claude-stdout-reader",
+            daemon=True,
+        )
+        stderr_thread = threading.Thread(
+            target=read_stderr,
+            name="claude-stderr-reader",
+            daemon=True,
+        )
+        stdout_thread.start()
+        stderr_thread.start()
+
+        next_message = task
+        for round_number in range(1, DEFAULT_CLAUDE_MAX_ROUNDS + 1):
+            before = generation_progress_snapshot(run_dir)
+            round_started = time.monotonic()
+            round_started_at = utc_now()
+            if not send_message(next_message):
+                stop_reason = "harness_failed"
+                break
+
+            print(
+                f"Claude continuation turn {round_number}/{DEFAULT_CLAUDE_MAX_ROUNDS} started; "
+                f"{expected_sgf_count(run_dir, args.count)}/{args.count} expected SGFs present.",
+                flush=True,
+            )
+            result_event = wait_for_result()
+            if result_event is None:
+                stop_reason = "timeout" if timed_out else "harness_failed"
+                break
+            last_result = result_event
+
+            after = generation_progress_snapshot(run_dir)
+            made_progress = after != before
+            stale_rounds = 0 if made_progress else stale_rounds + 1
+            queries_before = before[1]
+            queries_after = after[1]
+            output_limit = is_claude_output_limit_result(result_event)
+            result_error = bool(
+                result_event.get("is_error")
+                or result_event.get("subtype") not in {None, "success"}
+            )
+            round_record = {
+                "number": round_number,
+                "attempt": attempt_number,
+                "startedAt": round_started_at,
+                "completedAt": utc_now(),
+                "durationSeconds": round(time.monotonic() - round_started, 3),
+                "outputFileCountBefore": len(before[0]),
+                "outputFileCountAfter": len(after[0]),
+                "originalityQueriesBefore": queries_before,
+                "originalityQueriesAfter": queries_after,
+                "progressMade": made_progress,
+                "consecutiveStaleRounds": stale_rounds,
+                "resultSubtype": result_event.get("subtype"),
+                "resultError": result_error,
+                "outputLimitBoundary": output_limit,
+            }
+            rounds.append(round_record)
+            present_count = expected_sgf_count(run_dir, args.count)
+            boundary = " (output-token boundary)" if output_limit else ""
+            progress_detail = (
+                "progress recorded"
+                if made_progress
+                else (
+                    "no file or query progress "
+                    f"({stale_rounds}/{DEFAULT_CLAUDE_STALE_ROUND_LIMIT} stale)"
+                )
+            )
+            print(
+                f"Claude continuation turn {round_number}/{DEFAULT_CLAUDE_MAX_ROUNDS} "
+                f"finished{boundary}; {present_count}/{args.count} expected SGFs are present; "
+                f"{progress_detail}.",
+                flush=True,
+            )
+
+            if present_count >= args.count:
+                stop_reason = "outputs_complete"
+                break
+            if result_error and not output_limit:
+                helper_failure = event_message(result_event) or str(result_event.get("result") or "")
+                stop_reason = "harness_failed"
+                break
+            if stale_rounds >= DEFAULT_CLAUDE_STALE_ROUND_LIMIT:
+                stop_reason = "stale"
+                break
+            if round_number >= DEFAULT_CLAUDE_MAX_ROUNDS:
+                stop_reason = "max_rounds"
+                break
+            next_message = claude_continuation_task(
+                run_dir,
+                args.count,
+                round_number + 1,
+                DEFAULT_CLAUDE_MAX_ROUNDS,
+                result_event,
+                consecutive_stale_rounds=stale_rounds,
+            )
+
+        process_exit_code = stop_process(force=timed_out)
+    except OSError as error:
+        helper_failure = f"Could not launch {label}: {error}"
+        process_exit_code = 127
+        stop_reason = "harness_failed"
+    finally:
+        stop_progress_reporter(reporter)
+        if process is not None and process.poll() is None:
+            process_exit_code = stop_process(force=True)
+        if stdout_thread is not None:
+            stdout_thread.join(timeout=2)
+        if stderr_thread is not None:
+            stderr_thread.join(timeout=2)
+        if process is not None:
+            for stream in (process.stdout, process.stderr):
+                if stream is not None and not stream.closed:
+                    stream.close()
+
+    if timeout_message:
+        stderr_lines.append(f"{timeout_message}\n")
+    elif helper_failure:
+        stderr_lines.append(f"{helper_failure.rstrip()}\n")
+
+    process_exit_code = int(process_exit_code)
+    exit_code = 124 if timed_out else process_exit_code
+    if (
+        exit_code
+        and stop_reason in {"outputs_complete", "max_rounds", "stale"}
+        and last_result is not None
+        and is_claude_output_limit_result(last_result)
+    ):
+        # The CLI reports an output boundary with a nonzero process status. In
+        # streaming mode that boundary is a continuation signal; if the runner's
+        # own completion policy has been satisfied, it is not a harness failure.
+        exit_code = 0
+    if stop_reason == "harness_failed" and exit_code == 0:
+        exit_code = 1
+
+    return {
+        "stdout": "".join(stdout_lines),
+        "stderr": "".join(stderr_lines),
+        "input": "".join(input_lines),
+        "exitCode": exit_code,
+        "processExitCode": process_exit_code,
+        "timedOut": timed_out,
+        "timeoutMessage": timeout_message,
+        "failureMessage": timeout_message or helper_failure,
+        "durationSeconds": round(time.monotonic() - started, 3),
+        "rounds": rounds,
+        "roundStopReason": stop_reason or "harness_failed",
+    }
+
+
 def run_harness_once(
     args: argparse.Namespace,
     command: list[str],
@@ -1483,6 +1911,17 @@ def run_harness_once(
     timeout_seconds: float,
     attempt_number: int,
 ) -> dict[str, Any]:
+    if args.harness == "claude":
+        return run_claude_streaming_session(
+            args,
+            command,
+            run_dir,
+            task,
+            label,
+            timeout_seconds,
+            attempt_number,
+        )
+
     started = time.monotonic()
     reporter = start_progress_reporter(
         run_dir,
@@ -1886,16 +2325,37 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
             "results": "evaluation/results.json",
         },
     }
-    if args.harness == "opencode":
+    if args.harness == "claude":
+        manifest["artifacts"]["harnessInput"] = "logs/claude-input.jsonl"
+    if args.harness in {"claude", "opencode"}:
+        max_rounds = (
+            DEFAULT_CLAUDE_MAX_ROUNDS
+            if args.harness == "claude"
+            else DEFAULT_OPENCODE_MAX_ROUNDS
+        )
+        round_policy: dict[str, Any] = {
+            "maxRounds": max_rounds,
+            "stopWhenExpectedOutputsExist": True,
+        }
+        output_ceiling = (
+            CLAUDE_OUTPUT_TOKEN_MAX
+            if args.harness == "claude"
+            else OPENCODE_OUTPUT_TOKEN_MAX
+        )
+        if args.harness == "claude":
+            round_policy.update(
+                {
+                    "sameSession": True,
+                    "staleRoundLimit": DEFAULT_CLAUDE_STALE_ROUND_LIMIT,
+                }
+            )
         manifest["harness"].update(
             {
-                "roundPolicy": {
-                    "maxRounds": DEFAULT_OPENCODE_MAX_ROUNDS,
-                    "stopWhenExpectedOutputsExist": True,
-                },
+                "roundPolicy": round_policy,
                 "roundsCompleted": 0,
                 "roundStopReason": None,
-                "outputTokenCeiling": OPENCODE_OUTPUT_TOKEN_MAX,
+                "rounds": [],
+                "outputTokenCeiling": output_ceiling,
             }
         )
     return manifest
@@ -1912,6 +2372,10 @@ def harness_executable(args: argparse.Namespace) -> str:
 
 
 def harness_environment(args: argparse.Namespace, run_dir: Path) -> dict[str, str] | None:
+    if args.harness == "claude":
+        environment = os.environ.copy()
+        environment["CLAUDE_CODE_MAX_OUTPUT_TOKENS"] = str(CLAUDE_OUTPUT_TOKEN_MAX)
+        return environment
     if args.harness != "opencode":
         return None
     config_file = run_dir / "inputs" / "opencode-config" / "opencode.json"
@@ -1943,7 +2407,7 @@ def build_harness_command(
             "--safe-mode",
             "--print",
             "--input-format",
-            "text",
+            "stream-json",
             "--output-format",
             "stream-json",
             "--verbose",
@@ -2125,6 +2589,17 @@ def _run_command(args: argparse.Namespace) -> int:
     print(f"Running {args.model} with {label}…")
     print(f"Reasoning effort: {args.reasoning_effort or 'CLI/model default'}")
     print(f"Execution timeout: {format_timeout(args.timeout)}")
+    if args.harness == "claude":
+        print(
+            "Claude continuation turns: up to "
+            f"{DEFAULT_CLAUDE_MAX_ROUNDS} in one live session, stopping when all "
+            f"{args.count} expected SGFs exist or after "
+            f"{DEFAULT_CLAUDE_STALE_ROUND_LIMIT} turns without file or query progress."
+        )
+        print(
+            "Claude per-response output ceiling: "
+            f"{CLAUDE_OUTPUT_TOKEN_MAX:,} tokens"
+        )
     if args.harness == "opencode":
         print(
             "OpenCode generation rounds: up to "
@@ -2184,7 +2659,10 @@ def _run_command(args: argparse.Namespace) -> int:
     invocation_number = 0
     accepted_stdout_chunks: list[str] = []
     accepted_stderr_chunks: list[str] = []
+    accepted_input_chunks: list[str] = []
     last_final_message: str | None = None
+    claude_round_records: list[dict[str, Any]] = []
+    claude_round_stop_reason: str | None = None
     event_parsers = {
         "codex": parse_codex_events,
         "claude": parse_claude_events,
@@ -2262,6 +2740,9 @@ def _run_command(args: argparse.Namespace) -> int:
             timed_out = result["timedOut"]
             timeout_message = result["timeoutMessage"]
             attempt_events = event_parsers[args.harness](stdout)
+            result_failure = result.get("failureMessage")
+            if isinstance(result_failure, str) and result_failure.strip():
+                attempt_events["failureMessage"] = result_failure.strip()
             if timeout_message and not attempt_events.get("failureMessage"):
                 attempt_events["failureMessage"] = timeout_message
             attempt_final_message = attempt_events.pop("finalMessage", None)
@@ -2288,6 +2769,14 @@ def _run_command(args: argparse.Namespace) -> int:
                 stdout,
                 stderr,
             )
+            attempt_input: str | None = None
+            attempt_input_path: str | None = None
+            if args.harness == "claude":
+                raw_input = result.get("input")
+                attempt_input = raw_input if isinstance(raw_input, str) else ""
+                input_path = attempt_dir / "claude-input.jsonl"
+                input_path.write_text(attempt_input, encoding="utf-8")
+                attempt_input_path = input_path.relative_to(run_dir).as_posix()
             output_file_count = generated_sgf_count(run_dir)
             attempt_record: dict[str, Any] = {
                 "number": invocation_number,
@@ -2302,6 +2791,20 @@ def _run_command(args: argparse.Namespace) -> int:
                 "stdout": attempt_stdout,
                 "stderr": attempt_stderr,
             }
+            if args.harness == "claude":
+                attempt_rounds = result.get("rounds")
+                if not isinstance(attempt_rounds, list):
+                    attempt_rounds = []
+                attempt_record.update(
+                    {
+                        "input": attempt_input_path,
+                        "processExitCode": result.get("processExitCode", exit_code),
+                        "roundStopReason": result.get("roundStopReason"),
+                        "rounds": attempt_rounds,
+                    }
+                )
+                claude_round_records.extend(attempt_rounds)
+                claude_round_stop_reason = result.get("roundStopReason")
             if args.harness == "opencode":
                 attempt_record.update(
                     {
@@ -2366,6 +2869,8 @@ def _run_command(args: argparse.Namespace) -> int:
 
             accepted_stdout_chunks.append(stdout)
             accepted_stderr_chunks.append(stderr)
+            if attempt_input:
+                accepted_input_chunks.append(attempt_input)
             if attempt_final_message:
                 last_final_message = attempt_final_message
             if exit_code == 0:
@@ -2408,14 +2913,32 @@ def _run_command(args: argparse.Namespace) -> int:
             }
         )
         write_json(manifest_path, manifest)
+    elif args.harness == "claude":
+        manifest["harness"].update(
+            {
+                "roundsCompleted": len(claude_round_records),
+                "roundStopReason": claude_round_stop_reason or "harness_failed",
+                "rounds": claude_round_records,
+            }
+        )
+        write_json(manifest_path, manifest)
 
     stdout = concatenate_harness_output(accepted_stdout_chunks)
     stderr = concatenate_harness_output(accepted_stderr_chunks)
     events = event_parsers[args.harness](stdout)
     parsed_final_message = events.pop("finalMessage", None)
     final_message = last_final_message or parsed_final_message
+    if (
+        args.harness == "claude"
+        and not exit_code
+        and claude_round_records
+        and claude_round_records[-1].get("outputLimitBoundary") is True
+    ):
+        events["failureMessage"] = None
     if timeout_message and not events.get("failureMessage"):
         events["failureMessage"] = timeout_message
+    if exit_code and attempt_records and attempt_records[-1].get("failureMessage"):
+        events["failureMessage"] = attempt_records[-1]["failureMessage"]
 
     if originality_broker is not None:
         broker_exit_code = stop_originality_broker(run_dir, originality_broker)
@@ -2450,6 +2973,12 @@ def _run_command(args: argparse.Namespace) -> int:
     )
     (run_dir / manifest["artifacts"]["stdout"]).write_text(stdout, encoding="utf-8")
     (run_dir / manifest["artifacts"]["stderr"]).write_text(stderr, encoding="utf-8")
+    harness_input_path = manifest["artifacts"].get("harnessInput")
+    if isinstance(harness_input_path, str):
+        (run_dir / harness_input_path).write_text(
+            concatenate_harness_output(accepted_input_chunks),
+            encoding="utf-8",
+        )
     final_message_path = run_dir / manifest["artifacts"]["finalMessage"]
     if final_message is not None or not final_message_path.exists():
         final_message_path.write_text(final_message or "", encoding="utf-8")
@@ -2485,6 +3014,29 @@ def _run_command(args: argparse.Namespace) -> int:
             print(
                 "Transient retries waited "
                 f"{format_elapsed(total_backoff_seconds)} total across the OpenCode rounds."
+            )
+    elif args.harness == "claude" and not exit_code:
+        final_claude_round_count = (
+            len(attempt_records[-1].get("rounds", [])) if attempt_records else 0
+        )
+        if claude_round_stop_reason == "outputs_complete":
+            print(
+                f"Claude created all {args.count} expected SGFs in "
+                f"{final_claude_round_count} continuation "
+                f"{'turn' if final_claude_round_count == 1 else 'turns'} within the successful session."
+            )
+        elif claude_round_stop_reason == "max_rounds":
+            print(
+                f"Claude reached the {DEFAULT_CLAUDE_MAX_ROUNDS}-turn cap with "
+                f"{expected_sgf_count(run_dir, args.count)}/{args.count} expected SGFs present.",
+                file=sys.stderr,
+            )
+        elif claude_round_stop_reason == "stale":
+            print(
+                "Claude stopped after "
+                f"{DEFAULT_CLAUDE_STALE_ROUND_LIMIT} consecutive continuation turns without "
+                "file or originality-query progress.",
+                file=sys.stderr,
             )
     elif not exit_code and len(attempt_records) > 1:
         print(
@@ -2816,7 +3368,8 @@ def build_parser() -> argparse.ArgumentParser:
         type=int,
         default=DEFAULT_MAX_HARNESS_ATTEMPTS,
         help=(
-            "Maximum CLI attempts per generation round for recognized transient failures "
+            "Maximum CLI attempts per harness invocation (or per OpenCode outer round) "
+            "for recognized transient failures "
             f"(default: {DEFAULT_MAX_HARNESS_ATTEMPTS})."
         ),
     )

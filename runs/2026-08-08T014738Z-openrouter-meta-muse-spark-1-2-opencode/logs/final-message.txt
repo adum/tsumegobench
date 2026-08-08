@@ -1,0 +1,14 @@
+All 10 requested SGF files have been written and each has received a `clear` originality result with remaining budget exhausted. Files are:
+
+- `outputs/problem-01.sgf` – B to play (`B[np]`)
+- `outputs/problem-02.sgf` – W to play (`W[kk]`)
+- `outputs/problem-03.sgf` – B to play (`B[fd]`)
+- `outputs/problem-04.sgf` – B to play (`B[oq]`)
+- `outputs/problem-05.sgf` – B to play (`B[lm]`)
+- `outputs/problem-06.sgf` – B to play (`B[mn]`)
+- `outputs/problem-07.sgf` – B to play (`B[hj]`)
+- `outputs/problem-08.sgf` – W to play (`W[fd]`)
+- `outputs/problem-09.sgf` – B to play (`B[ps]`)
+- `outputs/problem-10.sgf` – W to play (`W[ro]`)
+
+All contain `SZ[19]`, both `AB`/`AW`, no root `C`, exactly one `B`/`W` per node, alternating colors with consistent first player, and at least one `C[RIGHT]`. Final verification queries (`final01b`–`final10b` plus `final09b`/`final10b`) all returned `clear` (50/50 queries used). No further edits will be made.

@@ -60,13 +60,22 @@ Install and authenticate the selected CLI before running the benchmark. The runn
 `claude`, `grok`, or `opencode` on `PATH`; use `--codex` / `CODEX_CLI`, `--claude` /
 `CLAUDE_CLI`, `--grok` / `GROK_CLI`, or `--opencode` / `OPENCODE_CLI` to provide an explicit
 executable. Prefer a full, versioned model ID over a moving alias when reproducibility matters.
-OpenCode model names must use its exact `provider/model` form. Claude Code 2.1.169 or newer and
+OpenCode model names must use its exact `provider/model` form. Claude Code 2.1.217 or newer and
 OpenCode 1.1.1 or newer are required for the isolated modes used by the benchmark. The runner checks
 the version before creating a run; an obsolete or broken CLI exits without saving or evaluating
 anything. See
 Anthropic's [Claude Code installation guide](https://code.claude.com/docs/en/installation) or
 xAI's [Grok Build guide](https://docs.x.ai/build/overview), or the
 [OpenCode installation guide](https://opencode.ai/docs) for installation and authentication.
+
+Claude generation uses streaming JSON input to keep one CLI process and conversation alive across
+flexible continuation turns. The model receives the complete task first and may create or revise any
+number of problems in each turn; later turns receive only the current file and originality-query status,
+without being assigned a fixed batch. The session stops when all requested SGFs exist, after 20 turns,
+or after three consecutive turns without SGF or query progress. The runner sets
+`CLAUDE_CODE_MAX_OUTPUT_TOKENS=128000`; a response-length result becomes a continuation boundary rather
+than immediately failing the run. The exact input JSONL, output events, per-turn progress, aggregate
+usage, and process exit status are retained in the run artifacts and manifest.
 
 OpenCode generation uses fresh outer rounds against the same run directory. It stops as soon as all
 requested, correctly named SGF files exist, or after 20 completed OpenCode rounds. Later rounds receive
@@ -89,7 +98,7 @@ Add `--reasoning-effort high` (or `--effort high`) when you want to pin an effor
 
 When a run starts, the runner prints the selected reasoning effort. If the flag is omitted, it prints `CLI/model default`; the manifest records `null` because the benchmark did not request a specific level.
 
-Recognized transient transport, rate-limit, and service failures are retried up to five times within each CLI round, with exponential backoff of 15, 30, 60, and 120 seconds. Model-selection, authentication, launch, and other permanent failures still fail immediately. Every invocation is recorded under `harness.attempts` in `run.json`, with full per-attempt logs under `logs/attempts/`. Other harnesses archive partial SGFs from a failed retryable attempt before retrying; OpenCode deliberately preserves them because its retries and outer rounds share one workspace. The final terminal report lists every attempt, duration, exit status, SGF count, and the total time spent waiting. Use `--max-attempts`, `--retry-base-delay`, or `--retry-max-delay` to override the retry defaults; all rounds, attempts, and waits remain within `--timeout` (12 hours by default).
+Recognized transient transport, rate-limit, and service failures are retried up to five times per harness invocation (or per OpenCode outer round), with exponential backoff of 15, 30, 60, and 120 seconds. Claude continuation turns happen inside one invocation and do not consume retry attempts. Model-selection, authentication, launch, and other permanent failures still fail immediately. Every invocation is recorded under `harness.attempts` in `run.json`, with full per-attempt logs under `logs/attempts/`. Other harnesses archive partial SGFs from a failed retryable attempt before retrying; OpenCode deliberately preserves them because its retries and outer rounds share one workspace. The final terminal report lists every attempt, duration, exit status, SGF count, and the total time spent waiting. Use `--max-attempts`, `--retry-base-delay`, or `--retry-max-delay` to override the retry defaults; all rounds, attempts, and waits remain within `--timeout` (12 hours by default).
 
 Every normal run includes a file-based originality tool. The model receives five queries per requested problem by default—50 for the standard ten-problem run—and must spend one final query on each exact output. Built-in common setups are rejected locally from their initial stones alone, across board symmetries and color reversal, without an API call. Other queries require a structurally complete SGF with at least one `C[RIGHT]` solution endpoint; invalid queries return an error and still consume budget. The tool also checks other generated files, the local reference corpus, a radius-2 GoProblems solution signature, and an independent full-corpus percentage search. Use `--duplicate-query-limit` only when deliberately defining a different benchmark condition.
 

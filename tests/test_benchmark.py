@@ -1,6 +1,7 @@
 import json
 import io
 import subprocess
+import sys
 import tempfile
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
@@ -20,6 +21,9 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertEqual(args.max_attempts, 5)
         self.assertEqual(args.retry_base_delay, 15)
         self.assertEqual(args.retry_max_delay, 120)
+        self.assertEqual(benchmark.DEFAULT_CLAUDE_MAX_ROUNDS, 20)
+        self.assertEqual(benchmark.DEFAULT_CLAUDE_STALE_ROUND_LIMIT, 3)
+        self.assertEqual(benchmark.CLAUDE_OUTPUT_TOKEN_MAX, 128_000)
         self.assertEqual(benchmark.DEFAULT_OPENCODE_MAX_ROUNDS, 20)
         self.assertEqual(benchmark.OPENCODE_OUTPUT_TOKEN_MAX, 65_536)
         self.assertIsNone(args.duplicate_query_limit)
@@ -96,6 +100,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
         )
 
         command = benchmark.build_harness_command(args, Path("/tmp/run"), "/opt/claude")
+        environment = benchmark.harness_environment(args, Path("/tmp/run"))
 
         self.assertEqual(args.harness, "claude")
         self.assertEqual(args.reasoning_effort, "high")
@@ -103,14 +108,164 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertEqual(command[0], "/opt/claude")
         self.assertIn("--safe-mode", command)
         self.assertIn("--print", command)
-        self.assertIn("stream-json", command)
+        self.assertEqual(command[command.index("--input-format") + 1], "stream-json")
+        self.assertEqual(command[command.index("--output-format") + 1], "stream-json")
         self.assertIn("--no-session-persistence", command)
         self.assertIn("dontAsk", command)
         self.assertIn("Read,Write,Edit,Glob,Grep", command)
         self.assertIn("Bash,PowerShell,WebFetch,WebSearch,mcp__*", command)
         self.assertEqual(command[command.index("--model") + 1], "claude-sonnet-4-6")
         self.assertEqual(command[command.index("--effort") + 1], "high")
+        self.assertEqual(environment["CLAUDE_CODE_MAX_OUTPUT_TOKENS"], "128000")
         self.assertNotIn("exec", command)
+
+    def test_claude_streaming_session_continues_flexibly_after_output_boundary(self):
+        args = benchmark.build_parser().parse_args(
+            [
+                "run",
+                "--harness",
+                "claude",
+                "--model",
+                "claude-fable-5",
+                "--local-only",
+            ]
+        )
+        fake_cli = """import json
+import os
+from pathlib import Path
+import sys
+
+capture = Path("captured-inputs.jsonl")
+for turn, line in enumerate(sys.stdin, 1):
+    message = json.loads(line)
+    with capture.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps({"message": message, "limit": os.environ.get("CLAUDE_CODE_MAX_OUTPUT_TOKENS")}) + "\\n")
+    if turn == 1:
+        for index in range(1, 5):
+            Path("outputs", f"problem-{index:02d}.sgf").write_text("(;SZ[19])", encoding="utf-8")
+        result = {
+            "type": "result",
+            "subtype": "success",
+            "is_error": True,
+            "session_id": "stream-session",
+            "result": "Claude's response exceeded the 128000 output token maximum.",
+        }
+    else:
+        for index in range(5, 11):
+            Path("outputs", f"problem-{index:02d}.sgf").write_text("(;SZ[19])", encoding="utf-8")
+        result = {
+            "type": "result",
+            "subtype": "success",
+            "is_error": False,
+            "session_id": "stream-session",
+            "result": "Finished the benchmark.",
+        }
+    print(json.dumps(result), flush=True)
+"""
+
+        with tempfile.TemporaryDirectory() as temporary:
+            run_dir = Path(temporary)
+            (run_dir / "outputs").mkdir()
+            script = run_dir / "fake-claude.py"
+            script.write_text(fake_cli, encoding="utf-8")
+
+            with redirect_stdout(io.StringIO()):
+                result = benchmark.run_claude_streaming_session(
+                    args,
+                    [sys.executable, str(script)],
+                    run_dir,
+                    "Create the complete benchmark.",
+                    "Claude CLI",
+                    timeout_seconds=10,
+                    attempt_number=1,
+                )
+            inputs = [
+                json.loads(line)
+                for line in (run_dir / "captured-inputs.jsonl")
+                .read_text(encoding="utf-8")
+                .splitlines()
+            ]
+
+        self.assertEqual(result["exitCode"], 0)
+        self.assertEqual(result["roundStopReason"], "outputs_complete")
+        self.assertEqual(len(result["rounds"]), 2)
+        self.assertTrue(result["rounds"][0]["outputLimitBoundary"])
+        self.assertEqual(result["rounds"][0]["outputFileCountAfter"], 4)
+        self.assertEqual(result["rounds"][1]["outputFileCountAfter"], 10)
+        self.assertEqual(len(inputs), 2)
+        self.assertEqual(inputs[0]["limit"], "128000")
+        self.assertEqual(
+            inputs[0]["message"]["message"]["content"],
+            "Create the complete benchmark.",
+        )
+        continuation = inputs[1]["message"]["message"]["content"]
+        self.assertIn("same Claude session", continuation)
+        self.assertIn("may research, construct, revise", continuation)
+        self.assertIn("`problem-05.sgf`", continuation)
+        self.assertIn("does not assign one problem per turn", continuation.lower())
+
+    def test_claude_streaming_session_stops_after_three_stale_turns(self):
+        args = benchmark.build_parser().parse_args(
+            [
+                "run",
+                "--harness",
+                "claude",
+                "--model",
+                "claude-fable-5",
+                "--local-only",
+            ]
+        )
+        fake_cli = """import json
+from pathlib import Path
+import sys
+
+capture = Path("captured-stale-inputs.jsonl")
+for turn, line in enumerate(sys.stdin, 1):
+    message = json.loads(line)
+    with capture.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(message) + "\\n")
+    print(json.dumps({
+        "type": "result",
+        "subtype": "success",
+        "is_error": False,
+        "session_id": "stale-session",
+        "result": f"Planning turn {turn}.",
+    }), flush=True)
+"""
+
+        with tempfile.TemporaryDirectory() as temporary:
+            run_dir = Path(temporary)
+            (run_dir / "outputs").mkdir()
+            script = run_dir / "fake-stale-claude.py"
+            script.write_text(fake_cli, encoding="utf-8")
+            with redirect_stdout(io.StringIO()):
+                result = benchmark.run_claude_streaming_session(
+                    args,
+                    [sys.executable, str(script)],
+                    run_dir,
+                    "Create the complete benchmark.",
+                    "Claude CLI",
+                    timeout_seconds=10,
+                    attempt_number=1,
+                )
+            inputs = [
+                json.loads(line)
+                for line in (run_dir / "captured-stale-inputs.jsonl")
+                .read_text(encoding="utf-8")
+                .splitlines()
+            ]
+
+        self.assertEqual(result["exitCode"], 0)
+        self.assertEqual(result["roundStopReason"], "stale")
+        self.assertEqual(len(result["rounds"]), 3)
+        self.assertEqual(result["rounds"][-1]["consecutiveStaleRounds"], 3)
+        self.assertEqual(len(inputs), 3)
+        second_turn = inputs[1]["message"]["content"]
+        final_turn = inputs[2]["message"]["content"]
+        self.assertNotIn("FINAL NO-PROGRESS TURN", second_turn)
+        self.assertIn("FINAL NO-PROGRESS TURN", final_turn)
+        self.assertIn("2 consecutive continuation turns", final_turn)
+        self.assertIn("3-turn no-progress limit", final_turn)
 
     def test_grok_harness_parser_and_command_are_non_interactive_and_restricted(self):
         args = benchmark.build_parser().parse_args(
@@ -197,10 +352,10 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertEqual(config["permission"]["edit"], "allow")
         self.assertNotIn("bash", [key for key, value in config["permission"].items() if value == "allow"])
 
-    def test_claude_version_preflight_requires_safe_mode_release(self):
-        self.assertIsNone(benchmark.claude_version_error("2.1.169 (Claude Code)"))
+    def test_claude_version_preflight_requires_streaming_release(self):
+        self.assertIsNone(benchmark.claude_version_error("2.1.217 (Claude Code)"))
         self.assertIsNone(benchmark.claude_version_error("Claude Code v3.0.0"))
-        self.assertIn("2.1.169 or newer", benchmark.claude_version_error("0.2.40") or "")
+        self.assertIn("2.1.217 or newer", benchmark.claude_version_error("2.1.216") or "")
         self.assertIn("Could not determine", benchmark.claude_version_error("development") or "")
 
     def test_opencode_version_preflight_requires_isolated_permission_release(self):
@@ -332,6 +487,66 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertEqual(parsed["eventCount"], 2)
         self.assertEqual(parsed["unparsedLineCount"], 0)
         self.assertIsNone(parsed["failureMessage"])
+
+    def test_claude_usage_accumulates_across_continuation_results(self):
+        events = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "type": "result",
+                        "subtype": "success",
+                        "is_error": True,
+                        "session_id": "continued-session",
+                        "result": "Response exceeded the 128000 output token maximum.",
+                        "usage": {"input_tokens": 10, "output_tokens": 20},
+                        "modelUsage": {
+                            "claude-fable-5": {
+                                "inputTokens": 10,
+                                "outputTokens": 20,
+                                "costUSD": 0.5,
+                                "contextWindow": 1_000_000,
+                                "maxOutputTokens": 128_000,
+                            }
+                        },
+                        "total_cost_usd": 0.5,
+                        "num_turns": 2,
+                    }
+                ),
+                json.dumps(
+                    {
+                        "type": "result",
+                        "subtype": "success",
+                        "is_error": False,
+                        "session_id": "continued-session",
+                        "result": "Finished.",
+                        "usage": {"input_tokens": 30, "output_tokens": 40},
+                        "modelUsage": {
+                            "claude-fable-5": {
+                                "inputTokens": 30,
+                                "outputTokens": 40,
+                                "costUSD": 0.75,
+                                "contextWindow": 1_000_000,
+                                "maxOutputTokens": 128_000,
+                            }
+                        },
+                        "total_cost_usd": 0.75,
+                        "num_turns": 3,
+                    }
+                ),
+            ]
+        )
+
+        parsed = benchmark.parse_claude_events(events)
+
+        self.assertIsNone(parsed["failureMessage"])
+        self.assertEqual(parsed["finalMessage"], "Finished.")
+        self.assertEqual(parsed["usage"]["usage"]["input_tokens"], 40)
+        self.assertEqual(parsed["usage"]["usage"]["output_tokens"], 60)
+        self.assertEqual(parsed["usage"]["total_cost_usd"], 1.25)
+        self.assertEqual(parsed["usage"]["num_turns"], 5)
+        model_usage = parsed["usage"]["modelUsage"]["claude-fable-5"]
+        self.assertEqual(model_usage["costUSD"], 1.25)
+        self.assertEqual(model_usage["maxOutputTokens"], 128_000)
 
     def test_extracts_grok_session_result_usage_and_text(self):
         events = "\n".join(
@@ -475,15 +690,30 @@ class BenchmarkRunnerTests(unittest.TestCase):
                 "result": "Invalid model name: made-up-model",
             }
         )
-        completed = subprocess.CompletedProcess([], 1, stdout=stdout, stderr="")
+        streamed = {
+            "stdout": stdout,
+            "stderr": "",
+            "input": "{}\n",
+            "exitCode": 1,
+            "processExitCode": 1,
+            "timedOut": False,
+            "timeoutMessage": None,
+            "durationSeconds": 0.1,
+            "rounds": [],
+            "roundStopReason": "harness_failed",
+        }
 
         with tempfile.TemporaryDirectory() as temporary:
             runs_root = Path(temporary)
             with (
                 mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
-                mock.patch.object(benchmark, "cli_version", return_value="2.1.169"),
+                mock.patch.object(benchmark, "cli_version", return_value="2.1.217"),
                 mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
-                mock.patch.object(benchmark.subprocess, "run", return_value=completed),
+                mock.patch.object(
+                    benchmark,
+                    "run_claude_streaming_session",
+                    return_value=streamed,
+                ),
                 mock.patch.object(benchmark, "run_evaluator") as evaluator,
                 mock.patch.object(benchmark, "build_run_index") as indexer,
             ):
@@ -710,7 +940,18 @@ class BenchmarkRunnerTests(unittest.TestCase):
                 ),
             ]
         )
-        completed = subprocess.CompletedProcess([], 0, stdout=stdout, stderr="")
+        streamed = {
+            "stdout": stdout,
+            "stderr": "",
+            "input": "{}\n",
+            "exitCode": 0,
+            "processExitCode": 0,
+            "timedOut": False,
+            "timeoutMessage": None,
+            "durationSeconds": 0.1,
+            "rounds": [],
+            "roundStopReason": "outputs_complete",
+        }
 
         with tempfile.TemporaryDirectory() as temporary:
             runs_root = Path(temporary)
@@ -730,9 +971,13 @@ class BenchmarkRunnerTests(unittest.TestCase):
 
             with (
                 mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
-                mock.patch.object(benchmark, "cli_version", return_value="2.1.169"),
+                mock.patch.object(benchmark, "cli_version", return_value="2.1.217"),
                 mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
-                mock.patch.object(benchmark.subprocess, "run", return_value=completed),
+                mock.patch.object(
+                    benchmark,
+                    "run_claude_streaming_session",
+                    return_value=streamed,
+                ),
                 mock.patch.object(benchmark, "run_evaluator", side_effect=evaluate),
                 mock.patch.object(
                     benchmark,
@@ -755,11 +1000,22 @@ class BenchmarkRunnerTests(unittest.TestCase):
             self.assertEqual(manifest["model"]["provider"], "anthropic")
             self.assertEqual(manifest["harness"]["name"], "claude-cli")
             self.assertEqual(manifest["harness"]["threadId"], "session-success")
+            self.assertEqual(manifest["harness"]["outputTokenCeiling"], 128_000)
+            self.assertTrue(manifest["harness"]["roundPolicy"]["sameSession"])
+            self.assertEqual(manifest["harness"]["roundPolicy"]["maxRounds"], 20)
+            self.assertEqual(manifest["harness"]["roundPolicy"]["staleRoundLimit"], 3)
+            self.assertEqual(manifest["harness"]["roundStopReason"], "outputs_complete")
             self.assertEqual(manifest["artifacts"]["stdout"], "logs/claude-events.jsonl")
+            self.assertEqual(manifest["artifacts"]["harnessInput"], "logs/claude-input.jsonl")
             self.assertTrue((run_dir / "logs" / "claude-events.jsonl").exists())
+            self.assertEqual(
+                (run_dir / "logs" / "claude-input.jsonl").read_text(encoding="utf-8"),
+                "{}\n",
+            )
             self.assertEqual(final_message, "Created 10 problems.")
             self.assertIn("Reasoning effort: CLI/model default", console.getvalue())
             self.assertIn("Execution timeout: 12 hours (43,200 seconds)", console.getvalue())
+            self.assertIn("Claude per-response output ceiling: 128,000 tokens", console.getvalue())
             self.assertIn("Progress updates every 1 minute", console.getvalue())
             self.assertIn("Model phase finished in", console.getvalue())
             self.assertIn("Evaluation finished in", console.getvalue())
@@ -793,12 +1049,21 @@ class BenchmarkRunnerTests(unittest.TestCase):
             )
             + "\n"
         ).encode("utf-8")
-        timeout = subprocess.TimeoutExpired(
-            ["claude"],
-            1,
-            output=partial_stdout,
-            stderr=b"partial stderr: \xff\n",
-        )
+        streamed = {
+            "stdout": partial_stdout.decode("utf-8"),
+            "stderr": (
+                b"partial stderr: \xff\n".decode("utf-8", errors="replace")
+                + "Claude CLI timed out after 1 second.\n"
+            ),
+            "input": "{}\n",
+            "exitCode": 124,
+            "processExitCode": -15,
+            "timedOut": True,
+            "timeoutMessage": "Claude CLI timed out after 1 second.",
+            "durationSeconds": 1.0,
+            "rounds": [],
+            "roundStopReason": "timeout",
+        }
 
         with tempfile.TemporaryDirectory() as temporary:
             runs_root = Path(temporary)
@@ -820,7 +1085,11 @@ class BenchmarkRunnerTests(unittest.TestCase):
                 mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
                 mock.patch.object(benchmark, "cli_version", return_value="2.1.223"),
                 mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
-                mock.patch.object(benchmark.subprocess, "run", side_effect=timeout),
+                mock.patch.object(
+                    benchmark,
+                    "run_claude_streaming_session",
+                    return_value=streamed,
+                ),
                 mock.patch.object(benchmark, "run_evaluator", side_effect=evaluate) as evaluator,
                 mock.patch.object(
                     benchmark,

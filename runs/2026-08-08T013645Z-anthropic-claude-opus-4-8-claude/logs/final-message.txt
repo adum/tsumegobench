@@ -1,0 +1,7 @@
+All 10 required files are written and verified. The final state:
+
+- `outputs/problem-01.sgf` … `outputs/problem-10.sgf` — exactly 10 files, each a single complete SGF collection (`SZ[19]`, both `AB`/`AW`, no root comment, alternating single moves, `RIGHT`-marked endpoints, no pass moves).
+- Every final file was re-queried against the complete set in the final pass and each returned **`clear`** (no built-in, signature, peer, or ≥80% corpus match). 44 of 50 originality queries used; no file was edited after its final clear result.
+- Balance/variety satisfied: 7 Black-to-play (03, 04, 05, 07, 08, 09, 10) and 3 White-to-play (01, 02, 06), spread across all four corners and all four edges, using two verified life-and-death mechanisms (one-eye-plus-attacked-eyespace kills and bulky-five nakade kills), each a whole-group life-and-death with covered refutations.
+
+The 10 candidate problems have been created and verified.

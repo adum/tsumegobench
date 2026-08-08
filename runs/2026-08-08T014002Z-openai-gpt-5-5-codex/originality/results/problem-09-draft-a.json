@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-09-draft-a",
+  "path": "outputs/problem-09.sgf",
+  "queryNumber": 9,
+  "queriesRemaining": 41,
+  "checkedAt": "2026-08-08T01:56:04.001Z",
+  "status": "clear",
+  "candidateSha256": "ccbeff0b1a6770717bd8df53772f07b57914bb5cff53a2ce8476f41b058d3f57",
+  "cachedRemote": false,
+  "local": {
+    "builtInSetupMatch": null,
+    "exactReferenceMatch": null,
+    "closestReferenceMatch": {
+      "id": 8142,
+      "percentage": 19.05,
+      "url": "https://www.goproblems.com/problems/8142"
+    },
+    "peerExactMatches": [],
+    "peerShapeMatches": []
+  },
+  "goProblems": {
+    "radius": 2,
+    "signatureMatches": [],
+    "topPercentage": 53,
+    "percentageMatches": [
+      {
+        "id": 57158,
+        "difficulty": "16 kyu?",
+        "createdAt": "2026-03-26",
+        "url": "https://www.goproblems.com/problems/57158",
+        "percentage": 53
+      }
+    ]
+  },
+  "errors": []
+}

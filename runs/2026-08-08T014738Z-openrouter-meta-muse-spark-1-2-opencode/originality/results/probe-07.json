@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "requestId": "probe-07",
+  "path": "outputs/problem-03.sgf",
+  "queryNumber": 7,
+  "queriesRemaining": 43,
+  "checkedAt": "2026-08-08T02:17:11.292Z",
+  "status": "invalid",
+  "candidateSha256": "a05c89181fbda5e33cf00d999087b95d6ee2c9490e9732420f7ee25a4b70c469",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "dead-setup-group",
+      "message": "The initial White group containing AW[dd], AW[ed], AW[fd] has no liberties and would already have been captured."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[ee] plays on an occupied intersection."
+    }
+  ]
+}

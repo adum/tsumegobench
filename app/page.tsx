@@ -116,7 +116,7 @@ export default function Home() {
           <strong>
             {humanPassingModels === 0
               ? "No evaluated model has yet cleared every human-review gate."
-              : `${humanPassingModels} model${humanPassingModels === 1 ? "" : "s"} have recorded a human-passing result.`}
+              : `${humanPassingModels} ${humanPassingModels === 1 ? "model has" : "models have"} produced at least one problem that passed human review.`}
           </strong>
           <span>
             The strongest automated run advanced {bestAutomatedRun} of 10

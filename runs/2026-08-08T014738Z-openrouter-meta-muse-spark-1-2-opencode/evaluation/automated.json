@@ -1,0 +1,606 @@
+{
+  "$schema": "../../../schemas/automated-evaluation.schema.json",
+  "schemaVersion": 1,
+  "runId": "2026-08-08T014738Z-openrouter-meta-muse-spark-1-2-opencode",
+  "evaluatedAt": "2026-08-08T02:31:38.422Z",
+  "evaluator": {
+    "commitSha": "9333705efb9b8c264a93bb95d0d0491ce67b0aaa"
+  },
+  "configuration": {
+    "remoteDuplicateChecks": true,
+    "duplicateFailThreshold": 90,
+    "manualReviewThreshold": 80
+  },
+  "status": "needs_human_review",
+  "runChecks": [
+    {
+      "id": "expected-files",
+      "status": "pass",
+      "message": "All 10 expected SGF files are present."
+    },
+    {
+      "id": "unexpected-files",
+      "status": "pass",
+      "message": "The output directory contains only the 10 expected files."
+    },
+    {
+      "id": "input-integrity",
+      "status": "pass",
+      "message": "The model-visible input snapshot is unchanged."
+    },
+    {
+      "id": "player-color-range",
+      "status": "pass",
+      "message": "The set includes 7 Black-to-play and 3 White-to-play problems."
+    },
+    {
+      "id": "difficulty-range",
+      "status": "needs_human_review",
+      "message": "The 10 per-file difficulty targets span the benchmark range; a human reviewer must verify the actual difficulty."
+    },
+    {
+      "id": "originality-tool-final-coverage",
+      "status": "pass",
+      "message": "All 10 exact final output hashes received a clear originality result."
+    }
+  ],
+  "summary": {
+    "expectedProblems": 10,
+    "filesFound": 10,
+    "structuralPassed": 10,
+    "originalityPassed": 10,
+    "automatedGatePassed": 10,
+    "failedProblems": 0,
+    "incompleteProblems": 0,
+    "humanReviewPending": 10,
+    "failedRunChecks": 0
+  },
+  "problems": [
+    {
+      "file": "problem-01.sgf",
+      "targetDifficulty": "20–30 kyu",
+      "sha256": "b3a116ad19dabc15f3b43a9aa197a2099ff61298e84e65baf8903b070f8d2b1b",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n2"
+          },
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n3"
+          },
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n4"
+          }
+        ],
+        "stats": {
+          "nodeCount": 5,
+          "moveCount": 4,
+          "maxDepth": 1,
+          "variationPoints": 1,
+          "rightCount": 1,
+          "setupStoneCount": 21
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 32711,
+          "sourceUrl": "https://www.goproblems.com/problems/32711",
+          "percentage": 2.44
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 46,
+          "topMatchId": 46803,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 20–30 kyu"
+      ]
+    },
+    {
+      "file": "problem-02.sgf",
+      "targetDifficulty": "20–30 kyu",
+      "sha256": "19f57d462d7570662c9f772d8d5b71b90892675653b00b873d9c074cc8fbdb7b",
+      "playerColor": "white",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 8,
+          "moveCount": 7,
+          "maxDepth": 2,
+          "variationPoints": 1,
+          "rightCount": 1,
+          "setupStoneCount": 15
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 53750,
+          "sourceUrl": "https://www.goproblems.com/problems/53750",
+          "percentage": 2.7
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 64,
+          "topMatchId": 50452,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 20–30 kyu"
+      ]
+    },
+    {
+      "file": "problem-03.sgf",
+      "targetDifficulty": "10–19 kyu",
+      "sha256": "ae5567ece57084864f838b544ddd8fcf35469bf04b749fd25b388ae8091d7d49",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n2"
+          },
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n3"
+          },
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n4"
+          }
+        ],
+        "stats": {
+          "nodeCount": 5,
+          "moveCount": 4,
+          "maxDepth": 1,
+          "variationPoints": 1,
+          "rightCount": 1,
+          "setupStoneCount": 14
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 5844,
+          "sourceUrl": "https://www.goproblems.com/problems/5844",
+          "percentage": 2.38
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 43,
+          "topMatchId": 31390,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 10–19 kyu"
+      ]
+    },
+    {
+      "file": "problem-04.sgf",
+      "targetDifficulty": "10–19 kyu",
+      "sha256": "1fb26293a2c27d251ec680d3cbef33848e14518bdf590fb660e3ff86faed9937",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 8,
+          "moveCount": 7,
+          "maxDepth": 2,
+          "variationPoints": 1,
+          "rightCount": 1,
+          "setupStoneCount": 16
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 5844,
+          "sourceUrl": "https://www.goproblems.com/problems/5844",
+          "percentage": 2.27
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 51,
+          "topMatchId": 31570,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 10–19 kyu"
+      ]
+    },
+    {
+      "file": "problem-05.sgf",
+      "targetDifficulty": "5–9 kyu",
+      "sha256": "5a30acf0131fa9b65e5ad43bdf8a4bffadf1aa7aa0260c8b1429fccf6e1fb030",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n2"
+          },
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n3"
+          },
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n4"
+          }
+        ],
+        "stats": {
+          "nodeCount": 5,
+          "moveCount": 4,
+          "maxDepth": 1,
+          "variationPoints": 1,
+          "rightCount": 1,
+          "setupStoneCount": 26
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 38368,
+          "sourceUrl": "https://www.goproblems.com/problems/38368",
+          "percentage": 6.67
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 39,
+          "topMatchId": 55672,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 5–9 kyu"
+      ]
+    },
+    {
+      "file": "problem-06.sgf",
+      "targetDifficulty": "5–9 kyu",
+      "sha256": "0c4bbc9518302391b6f8309b45bb4d0c660d557c9db3f3820a9aa73e1b0a5423",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n2"
+          },
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n3"
+          },
+          {
+            "severity": "warning",
+            "code": "wrong-ending-color",
+            "message": "A refutation should normally end with the antagonist's move.",
+            "nodeId": "n4"
+          }
+        ],
+        "stats": {
+          "nodeCount": 5,
+          "moveCount": 4,
+          "maxDepth": 1,
+          "variationPoints": 1,
+          "rightCount": 1,
+          "setupStoneCount": 22
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 5844,
+          "sourceUrl": "https://www.goproblems.com/problems/5844",
+          "percentage": 2
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 47,
+          "topMatchId": 53705,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 5–9 kyu"
+      ]
+    },
+    {
+      "file": "problem-07.sgf",
+      "targetDifficulty": "1–4 kyu",
+      "sha256": "9a323b83c83167905ad40679cdfc5b5c0fcdb1ba6c1401eebff0b2803aa7db09",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 8,
+          "moveCount": 7,
+          "maxDepth": 2,
+          "variationPoints": 1,
+          "rightCount": 1,
+          "setupStoneCount": 21
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 53750,
+          "sourceUrl": "https://www.goproblems.com/problems/53750",
+          "percentage": 0
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 65,
+          "topMatchId": 32535,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 1–4 kyu"
+      ]
+    },
+    {
+      "file": "problem-08.sgf",
+      "targetDifficulty": "1–4 kyu",
+      "sha256": "118e719e8a5b2e6072ab0cd4108b2a7ce1df88a6db75aee01b514accff9def8b",
+      "playerColor": "white",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 8,
+          "moveCount": 7,
+          "maxDepth": 2,
+          "variationPoints": 1,
+          "rightCount": 1,
+          "setupStoneCount": 18
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 53750,
+          "sourceUrl": "https://www.goproblems.com/problems/53750",
+          "percentage": 2.5
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 49,
+          "topMatchId": 42239,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 1–4 kyu"
+      ]
+    },
+    {
+      "file": "problem-09.sgf",
+      "targetDifficulty": "about 1 dan",
+      "sha256": "b60d608dc5d26e6210c1d23a8bc63d8aa580fb6098e2ad003f9e680957bfa4ba",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 8,
+          "moveCount": 7,
+          "maxDepth": 2,
+          "variationPoints": 1,
+          "rightCount": 1,
+          "setupStoneCount": 16
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 53750,
+          "sourceUrl": "https://www.goproblems.com/problems/53750",
+          "percentage": 2.63
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 0,
+          "topMatchId": null,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for about 1 dan"
+      ]
+    },
+    {
+      "file": "problem-10.sgf",
+      "targetDifficulty": "about 1 dan",
+      "sha256": "5a2fb748b8e3d9db3427fc0183b74a7e1cb08a7218003b21ec186d58cbcc862c",
+      "playerColor": "white",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 8,
+          "moveCount": 7,
+          "maxDepth": 2,
+          "variationPoints": 1,
+          "rightCount": 1,
+          "setupStoneCount": 34
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 53750,
+          "sourceUrl": "https://www.goproblems.com/problems/53750",
+          "percentage": 16.33
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 35,
+          "topMatchId": 42239,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for about 1 dan"
+      ]
+    }
+  ]
+}
