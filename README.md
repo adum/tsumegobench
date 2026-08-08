@@ -6,6 +6,9 @@ Tsumego Bench is a small, reproducible benchmark for a narrow question:
 
 The repository combines a curated reference corpus, a strict SGF validator, local and GoProblems-powered duplicate detection, a controlled model prompt, a scoring rubric, and an interactive board/solution-tree reviewer.
 
+See the data:
+https://tsumego-bench.adum.chatgpt.site/
+
 ## What is in the project
 
 - `examples/canonical-life-and-death/` — 20 SGF reference problems, all explicitly on 19×19 boards, with four examples in each of five bands from 20–30 kyu through 1 dan. Every item was verified through the GoProblems API as canonical, standard, and life-and-death when synchronized. Source root instructions are removed so each position is presented only by its board shape and first-move color.
