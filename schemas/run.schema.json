@@ -125,6 +125,8 @@
           "items": { "$ref": "#/$defs/continuationRound" }
         },
         "outputTokenCeiling": { "type": "integer", "minimum": 1 },
+        "sessionLimitPauseCount": { "type": "integer", "minimum": 0 },
+        "sessionLimitPauseSeconds": { "type": "integer", "minimum": 0 },
         "retryPolicy": {
           "type": "object",
           "additionalProperties": false,
@@ -132,7 +134,10 @@
           "properties": {
             "maxAttempts": { "type": "integer", "minimum": 1 },
             "baseDelaySeconds": { "type": "integer", "minimum": 0 },
-            "maximumDelaySeconds": { "type": "integer", "minimum": 0 }
+            "maximumDelaySeconds": { "type": "integer", "minimum": 0 },
+            "pauseForSessionLimit": { "type": "boolean" },
+            "sessionResetGraceSeconds": { "type": "integer", "minimum": 0 },
+            "sessionLimitConsumesAttempt": { "type": "boolean" }
           }
         },
         "attempts": {
@@ -186,13 +191,17 @@
               "outcome": {
                 "enum": [
                   "success",
+                  "session_limit_pause",
                   "transient_failure",
                   "permanent_failure",
+                  "configuration_rejected",
                   "model_rejected",
                   "timeout"
                 ]
               },
               "retryDelaySeconds": { "type": "integer", "minimum": 0 },
+              "sessionLimitResumeAt": { "type": "string", "format": "date-time" },
+              "sessionLimitPauseSeconds": { "type": "integer", "minimum": 0 },
               "archivedOutputs": { "type": "string" },
               "retrySkippedReason": { "type": "string" }
             }

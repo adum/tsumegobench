@@ -75,7 +75,11 @@ without being assigned a fixed batch. The session stops when all requested SGFs 
 or after three consecutive turns without SGF or query progress. The runner sets
 `CLAUDE_CODE_MAX_OUTPUT_TOKENS=128000`; a response-length result becomes a continuation boundary rather
 than immediately failing the run. The exact input JSONL, output events, per-turn progress, aggregate
-usage, and process exit status are retained in the run artifacts and manifest.
+usage, and process exit status are retained in the run artifacts and manifest. If Claude reports that
+its session limit has been reached and provides a reset time, the runner preserves all SGFs and
+originality state, pauses until that time plus a one-minute grace period, and starts a fresh isolated
+Claude session with an explicit resume prompt. Session-limit pauses do not consume transient retry
+attempts, but they do remain inside the run's overall wall-clock timeout.
 
 OpenCode generation uses fresh outer rounds against the same run directory. It stops as soon as all
 requested, correctly named SGF files exist, or after 20 completed OpenCode rounds. Later rounds receive
@@ -98,7 +102,7 @@ Add `--reasoning-effort high` (or `--effort high`) when you want to pin an effor
 
 When a run starts, the runner prints the selected reasoning effort. If the flag is omitted, it prints `CLI/model default`; the manifest records `null` because the benchmark did not request a specific level.
 
-Recognized transient transport, rate-limit, and service failures are retried up to five times per harness invocation (or per OpenCode outer round), with exponential backoff of 15, 30, 60, and 120 seconds. Claude continuation turns happen inside one invocation and do not consume retry attempts. Model-selection, authentication, launch, and other permanent failures still fail immediately. Every invocation is recorded under `harness.attempts` in `run.json`, with full per-attempt logs under `logs/attempts/`. Other harnesses archive partial SGFs from a failed retryable attempt before retrying; OpenCode deliberately preserves them because its retries and outer rounds share one workspace. The final terminal report lists every attempt, duration, exit status, SGF count, and the total time spent waiting. Use `--max-attempts`, `--retry-base-delay`, or `--retry-max-delay` to override the retry defaults; all rounds, attempts, and waits remain within `--timeout` (12 hours by default).
+Recognized transient transport, rate-limit, and service failures are retried up to five times per harness invocation (or per OpenCode outer round), with exponential backoff of 15, 30, 60, and 120 seconds. Claude continuation turns happen inside one invocation and do not consume retry attempts. A Claude session-limit response is handled separately: the reported reset time controls the pause, partial files stay active, and resuming does not advance the transient-attempt counter. Model-selection, authentication, launch, and other permanent failures still fail immediately. Every invocation is recorded under `harness.attempts` in `run.json`, with full per-attempt logs under `logs/attempts/`. Other harnesses archive partial SGFs from a failed retryable attempt before retrying; OpenCode deliberately preserves them because its retries and outer rounds share one workspace. The final terminal report lists every attempt, duration, exit status, SGF count, and the total time spent waiting. Use `--max-attempts`, `--retry-base-delay`, or `--retry-max-delay` to override the retry defaults; all rounds, attempts, and waits remain within `--timeout` (12 hours by default).
 
 Every normal run includes a file-based originality tool. The model receives five queries per requested problem by default—50 for the standard ten-problem run—and must spend one final query on each exact output. Built-in common setups are rejected locally from their initial stones alone, across board symmetries and color reversal, without an API call. Other queries require a structurally complete SGF with at least one `C[RIGHT]` solution endpoint; invalid queries return an error and still consume budget. The tool also checks other generated files, the local reference corpus, a radius-2 GoProblems solution signature, and an independent full-corpus percentage search. Use `--duplicate-query-limit` only when deliberately defining a different benchmark condition.
 

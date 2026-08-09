@@ -5,6 +5,7 @@ import sys
 import tempfile
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
+from datetime import datetime, timezone
 from pathlib import Path
 from unittest import mock
 
@@ -23,6 +24,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertEqual(args.retry_max_delay, 120)
         self.assertEqual(benchmark.DEFAULT_CLAUDE_MAX_ROUNDS, 20)
         self.assertEqual(benchmark.DEFAULT_CLAUDE_STALE_ROUND_LIMIT, 3)
+        self.assertEqual(benchmark.DEFAULT_CLAUDE_SESSION_RESET_GRACE_SECONDS, 60)
         self.assertEqual(benchmark.CLAUDE_OUTPUT_TOKEN_MAX, 128_000)
         self.assertEqual(benchmark.DEFAULT_OPENCODE_MAX_ROUNDS, 20)
         self.assertEqual(benchmark.OPENCODE_OUTPUT_TOKEN_MAX, 65_536)
@@ -1024,6 +1026,166 @@ for turn, line in enumerate(sys.stdin, 1):
                 r"^Benchmark finished in .+\.$",
             )
 
+    def test_claude_session_limit_pauses_preserves_outputs_and_reuses_retry_slot(self):
+        args = benchmark.build_parser().parse_args(
+            [
+                "run",
+                "--harness",
+                "claude",
+                "--model",
+                "claude-fable-5",
+                "--run-id",
+                "claude-session-limit",
+                "--max-attempts",
+                "1",
+                "--local-only",
+            ]
+        )
+        limit_message = (
+            "You've hit your session limit · resets 8:50pm "
+            "(America/Los_Angeles)"
+        )
+        limited_stdout = json.dumps(
+            {
+                "type": "result",
+                "subtype": "error_during_execution",
+                "is_error": True,
+                "session_id": "session-limited",
+                "result": limit_message,
+            }
+        )
+        success_stdout = json.dumps(
+            {
+                "type": "result",
+                "subtype": "success",
+                "is_error": False,
+                "session_id": "session-resumed",
+                "result": "Created the remaining problems.",
+            }
+        )
+        invocation_tasks: list[str] = []
+
+        with tempfile.TemporaryDirectory() as temporary:
+            runs_root = Path(temporary)
+
+            def stream_session(
+                _args,
+                _command,
+                run_dir,
+                task,
+                _label,
+                _timeout_seconds,
+                _attempt_number,
+            ):
+                invocation_tasks.append(task)
+                if len(invocation_tasks) == 1:
+                    for index in range(1, 5):
+                        (run_dir / "outputs" / f"problem-{index:02d}.sgf").write_text(
+                            "(;SZ[19])", encoding="utf-8"
+                        )
+                    return {
+                        "stdout": limited_stdout,
+                        "stderr": "",
+                        "input": "limited input\n",
+                        "exitCode": 1,
+                        "processExitCode": 1,
+                        "timedOut": False,
+                        "timeoutMessage": None,
+                        "failureMessage": limit_message,
+                        "durationSeconds": 1.0,
+                        "rounds": [],
+                        "roundStopReason": "harness_failed",
+                    }
+                self.assertTrue((run_dir / "outputs" / "problem-01.sgf").exists())
+                for index in range(5, 11):
+                    (run_dir / "outputs" / f"problem-{index:02d}.sgf").write_text(
+                        "(;SZ[19])", encoding="utf-8"
+                    )
+                return {
+                    "stdout": success_stdout,
+                    "stderr": "",
+                    "input": "resumed input\n",
+                    "exitCode": 0,
+                    "processExitCode": 0,
+                    "timedOut": False,
+                    "timeoutMessage": None,
+                    "failureMessage": None,
+                    "durationSeconds": 1.0,
+                    "rounds": [],
+                    "roundStopReason": "outputs_complete",
+                }
+
+            def evaluate(run_dir, _local_only):
+                benchmark.write_json(
+                    run_dir / "evaluation" / "automated.json",
+                    {
+                        "summary": {
+                            "expectedProblems": 10,
+                            "structuralPassed": 10,
+                            "automatedGatePassed": 10,
+                        }
+                    },
+                )
+                return subprocess.CompletedProcess([], 0, stdout="", stderr="")
+
+            resume_at = datetime(2026, 8, 9, 3, 51, tzinfo=timezone.utc)
+            with (
+                mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
+                mock.patch.object(benchmark, "cli_version", return_value="2.1.217"),
+                mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
+                mock.patch.object(
+                    benchmark,
+                    "run_claude_streaming_session",
+                    side_effect=stream_session,
+                ),
+                mock.patch.object(
+                    benchmark,
+                    "claude_session_limit_reset_at",
+                    return_value=resume_at,
+                ),
+                mock.patch.object(
+                    benchmark,
+                    "claude_session_limit_pause_seconds",
+                    return_value=60,
+                ),
+                mock.patch.object(
+                    benchmark,
+                    "wait_for_claude_session_reset",
+                    return_value=60,
+                ) as waiter,
+                mock.patch.object(benchmark, "run_evaluator", side_effect=evaluate),
+                mock.patch.object(
+                    benchmark,
+                    "build_run_index",
+                    return_value=subprocess.CompletedProcess([], 0, stdout="", stderr=""),
+                ),
+            ):
+                console = io.StringIO()
+                with redirect_stdout(console), redirect_stderr(io.StringIO()):
+                    exit_code = benchmark.run_command(args)
+
+            run_dir = runs_root / "claude-session-limit"
+            manifest = benchmark.read_json(run_dir / "run.json")
+            attempts = manifest["harness"]["attempts"]
+
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(len(invocation_tasks), 2)
+        self.assertIn("Resume the Tsumego Bench run", invocation_tasks[1])
+        self.assertIn("4/10 expected SGF files are present", invocation_tasks[1])
+        self.assertEqual(len(attempts), 2)
+        self.assertEqual(attempts[0]["outcome"], "session_limit_pause")
+        self.assertEqual(attempts[0]["sessionLimitPauseSeconds"], 60)
+        self.assertNotIn("archivedOutputs", attempts[0])
+        self.assertEqual(attempts[1]["outcome"], "success")
+        self.assertEqual(manifest["harness"]["sessionLimitPauseCount"], 1)
+        self.assertEqual(manifest["harness"]["sessionLimitPauseSeconds"], 60)
+        self.assertFalse(
+            manifest["harness"]["retryPolicy"]["sessionLimitConsumesAttempt"]
+        )
+        waiter.assert_called_once()
+        self.assertIn("does not consume transient retry attempt 1/1", console.getvalue())
+        self.assertIn("Resuming model attempt 1/1", console.getvalue())
+
     def test_claude_timeout_decodes_partial_byte_logs_and_finishes_the_run(self):
         args = benchmark.build_parser().parse_args(
             [
@@ -1860,6 +2022,56 @@ for turn, line in enumerate(sys.stdin, 1):
         self.assertFalse(
             benchmark.is_transient_harness_failure("Authentication failed: invalid API key")
         )
+
+    def test_parses_claude_session_limit_reset_in_reported_timezone(self):
+        message = (
+            "You've hit your session limit · resets 8:50pm "
+            "(America/Los_Angeles)"
+        )
+        now = datetime(2026, 8, 9, 2, 0, tzinfo=timezone.utc)
+
+        reset_at = benchmark.claude_session_limit_reset_at(message, now=now)
+
+        self.assertIsNotNone(reset_at)
+        assert reset_at is not None
+        self.assertEqual((reset_at.year, reset_at.month, reset_at.day), (2026, 8, 8))
+        self.assertEqual((reset_at.hour, reset_at.minute), (20, 51))
+        self.assertEqual(reset_at.utcoffset().total_seconds(), -7 * 60 * 60)
+        self.assertEqual(
+            benchmark.claude_session_limit_pause_seconds(reset_at, now=now),
+            6_660,
+        )
+        self.assertTrue(benchmark.is_claude_session_limit_failure(message))
+        self.assertTrue(benchmark.is_transient_harness_failure(message))
+
+    def test_claude_session_limit_reset_rolls_to_next_day_when_needed(self):
+        message = (
+            "You've hit your session limit · resets 8:50pm "
+            "(America/Los_Angeles)"
+        )
+        now = datetime(2026, 8, 9, 5, 0, tzinfo=timezone.utc)
+
+        reset_at = benchmark.claude_session_limit_reset_at(message, now=now)
+
+        self.assertIsNotNone(reset_at)
+        assert reset_at is not None
+        self.assertEqual((reset_at.year, reset_at.month, reset_at.day), (2026, 8, 9))
+        self.assertEqual((reset_at.hour, reset_at.minute), (20, 51))
+
+    def test_claude_session_limit_wait_returns_immediately_after_reset(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            run_dir = Path(temporary)
+            (run_dir / "outputs").mkdir()
+            resume_at = datetime.now(timezone.utc)
+            with mock.patch.object(benchmark.time, "sleep") as sleep:
+                waited = benchmark.wait_for_claude_session_reset(
+                    run_dir,
+                    expected_count=10,
+                    resume_at=resume_at,
+                )
+
+        self.assertEqual(waited, 0)
+        sleep.assert_not_called()
 
     def test_review_defaults_to_the_newest_completed_evaluated_run(self):
         with tempfile.TemporaryDirectory() as temporary:

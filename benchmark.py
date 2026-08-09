@@ -24,9 +24,10 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import webbrowser
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -42,6 +43,7 @@ DEFAULT_DUPLICATE_QUERIES_PER_PROBLEM = 5
 DEFAULT_PROGRESS_INTERVAL_SECONDS = 60
 DEFAULT_CLAUDE_MAX_ROUNDS = 20
 DEFAULT_CLAUDE_STALE_ROUND_LIMIT = 3
+DEFAULT_CLAUDE_SESSION_RESET_GRACE_SECONDS = 60
 CLAUDE_OUTPUT_TOKEN_MAX = 128_000
 DEFAULT_OPENCODE_MAX_ROUNDS = 20
 OPENCODE_OUTPUT_TOKEN_MAX = 65_536
@@ -289,6 +291,28 @@ Continue following the complete original task in `inputs/task.md`. Inspect exist
 """
 
 
+def claude_session_resume_task(base_task: str, run_dir: Path, count: int) -> str:
+    missing = missing_expected_sgf_names(run_dir, count)
+    present = [name for name in expected_output_names(count) if name not in missing]
+    present_list = ", ".join(f"`outputs/{name}`" for name in present) or "none"
+    missing_list = ", ".join(f"`outputs/{name}`" for name in missing) or "none"
+    return f"""# Resume the Tsumego Bench run after a Claude session-limit reset
+
+The prior Claude session reached its usage limit. This is a fresh in-memory session in the same run directory. Continue the existing benchmark run instead of starting over: inspect and preserve good on-disk work, use `inputs/task.md` as the complete source of truth, and spend the shared originality-query budget carefully.
+
+Current observable run state:
+- {len(present)}/{count} expected SGF files are present.
+- Present: {present_list}
+- Missing: {missing_list}
+
+Complete the benchmark using the original task below.
+
+---
+
+{base_task}
+"""
+
+
 def opencode_round_task(
     base_task: str,
     run_dir: Path,
@@ -392,6 +416,125 @@ def retry_schedule(max_attempts: int, base_delay: int, maximum_delay: int) -> li
         retry_delay_seconds(attempt, base_delay, maximum_delay)
         for attempt in range(1, max_attempts)
     ]
+
+
+def is_claude_session_limit_failure(message: str | None, raw_output: str = "") -> bool:
+    evidence = f"{message or ''}\n{raw_output}".lower().replace("’", "'")
+    return "you've hit your session limit" in evidence and "reset" in evidence
+
+
+def claude_session_limit_reset_at(
+    message: str | None,
+    raw_output: str = "",
+    *,
+    now: datetime | None = None,
+) -> datetime | None:
+    evidence = f"{message or ''}\n{raw_output}".replace("’", "'")
+    if not is_claude_session_limit_failure(message, raw_output):
+        return None
+    match = re.search(
+        r"\bresets?\b[^\r\n]{0,80}?"
+        r"(?P<hour>\d{1,2})(?::(?P<minute>\d{2}))?\s*"
+        r"(?P<meridiem>a\.?m\.?|p\.?m\.?)"
+        r"(?:\s*\((?P<timezone>[A-Za-z0-9_+\-/]+)\))?",
+        evidence,
+        flags=re.IGNORECASE,
+    )
+    if match is None:
+        return None
+
+    hour = int(match.group("hour"))
+    minute = int(match.group("minute") or "0")
+    if not 1 <= hour <= 12 or not 0 <= minute <= 59:
+        return None
+    meridiem = match.group("meridiem").lower().replace(".", "")
+    hour = hour % 12 + (12 if meridiem == "pm" else 0)
+
+    reference = now or datetime.now(timezone.utc)
+    if reference.tzinfo is None:
+        reference = reference.replace(tzinfo=timezone.utc)
+    timezone_name = match.group("timezone")
+    if timezone_name:
+        try:
+            reset_timezone = ZoneInfo(timezone_name)
+        except ZoneInfoNotFoundError:
+            # Windows Python does not bundle the IANA timezone database. Claude
+            # reports the operator's timezone, so the process-local zone is the
+            # safest fallback when the named zone cannot be loaded.
+            reset_timezone = datetime.now().astimezone().tzinfo or timezone.utc
+    else:
+        reset_timezone = datetime.now().astimezone().tzinfo or timezone.utc
+
+    local_reference = reference.astimezone(reset_timezone)
+    reset_at = local_reference.replace(
+        hour=hour,
+        minute=minute,
+        second=0,
+        microsecond=0,
+    )
+    if reset_at <= local_reference:
+        # Claude reports minute precision. A response can arrive just after the
+        # displayed reset minute, so retry shortly instead of waiting a full day.
+        if local_reference - reset_at <= timedelta(minutes=15):
+            reset_at = local_reference
+        else:
+            reset_at += timedelta(days=1)
+    return reset_at + timedelta(seconds=DEFAULT_CLAUDE_SESSION_RESET_GRACE_SECONDS)
+
+
+def claude_session_limit_pause_seconds(
+    reset_at: datetime,
+    *,
+    now: datetime | None = None,
+) -> int:
+    reference = now or datetime.now(timezone.utc)
+    if reference.tzinfo is None:
+        reference = reference.replace(tzinfo=timezone.utc)
+    return max(
+        0,
+        math.ceil(
+            (
+                reset_at.astimezone(timezone.utc)
+                - reference.astimezone(timezone.utc)
+            ).total_seconds()
+        ),
+    )
+
+
+def format_claude_session_reset(reset_at: datetime) -> str:
+    hour = reset_at.hour % 12 or 12
+    meridiem = "AM" if reset_at.hour < 12 else "PM"
+    zone = reset_at.tzname() or "local time"
+    return (
+        f"{hour}:{reset_at.minute:02d} {meridiem} {zone} on "
+        f"{reset_at.strftime('%b')} {reset_at.day}, {reset_at.year}"
+    )
+
+
+def wait_for_claude_session_reset(
+    run_dir: Path,
+    expected_count: int,
+    resume_at: datetime,
+) -> int:
+    started = time.monotonic()
+    while True:
+        remaining = claude_session_limit_pause_seconds(resume_at)
+        if remaining <= 0:
+            break
+        step = min(DEFAULT_PROGRESS_INTERVAL_SECONDS, remaining)
+        time.sleep(step)
+        remaining = claude_session_limit_pause_seconds(resume_at)
+        if remaining <= 0:
+            continue
+        details = [
+            f"{format_elapsed(remaining)} remaining",
+            f"{expected_sgf_count(run_dir, expected_count)}/{expected_count} SGFs preserved",
+        ]
+        queries_used, query_limit = originality_query_progress(run_dir)
+        if queries_used is not None and query_limit is not None:
+            details.append(f"{queries_used}/{query_limit} originality queries used")
+        print(f"Waiting for Claude session reset: {'; '.join(details)}.", flush=True)
+    return max(0, round(time.monotonic() - started))
 
 
 def read_json(file: Path) -> dict[str, Any]:
@@ -1599,6 +1742,7 @@ def is_transient_harness_failure(message: str | None, raw_output: str = "") -> b
         "gateway timeout",
         "too many requests",
         "rate limit",
+        "you've hit your session limit",
         "overloaded_error",
         "server_error",
         "internal server error",
@@ -2327,6 +2471,19 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
     }
     if args.harness == "claude":
         manifest["artifacts"]["harnessInput"] = "logs/claude-input.jsonl"
+        manifest["harness"]["retryPolicy"].update(
+            {
+                "pauseForSessionLimit": True,
+                "sessionResetGraceSeconds": DEFAULT_CLAUDE_SESSION_RESET_GRACE_SECONDS,
+                "sessionLimitConsumesAttempt": False,
+            }
+        )
+        manifest["harness"].update(
+            {
+                "sessionLimitPauseCount": 0,
+                "sessionLimitPauseSeconds": 0,
+            }
+        )
     if args.harness in {"claude", "opencode"}:
         max_rounds = (
             DEFAULT_CLAUDE_MAX_ROUNDS
@@ -2600,6 +2757,11 @@ def _run_command(args: argparse.Namespace) -> int:
             "Claude per-response output ceiling: "
             f"{CLAUDE_OUTPUT_TOKEN_MAX:,} tokens"
         )
+        print(
+            "Claude session-limit policy: pause until the reported reset time plus "
+            f"{format_elapsed(DEFAULT_CLAUDE_SESSION_RESET_GRACE_SECONDS)}, preserve "
+            "partial SGFs, and resume without consuming a transient retry attempt."
+        )
     if args.harness == "opencode":
         print(
             "OpenCode generation rounds: up to "
@@ -2653,6 +2815,8 @@ def _run_command(args: argparse.Namespace) -> int:
     final_message: str | None = None
     attempt_records: list[dict[str, Any]] = []
     total_backoff_seconds = 0
+    total_session_pause_seconds = 0
+    session_limit_pause_count = 0
     max_rounds = DEFAULT_OPENCODE_MAX_ROUNDS if args.harness == "opencode" else 1
     rounds_completed = 0
     round_stop_reason: str | None = None
@@ -2697,7 +2861,9 @@ def _run_command(args: argparse.Namespace) -> int:
             )
 
         round_completed = False
-        for round_attempt in range(1, args.max_attempts + 1):
+        round_attempt = 1
+        resume_after_session_limit = False
+        while round_attempt <= args.max_attempts:
             remaining_timeout = args.timeout - (time.monotonic() - started)
             if remaining_timeout <= 0:
                 timed_out = True
@@ -2718,6 +2884,11 @@ def _run_command(args: argparse.Namespace) -> int:
                     f"Starting round attempt {round_attempt}/{args.max_attempts} "
                     f"for OpenCode round {round_number}/{max_rounds}…"
                 )
+            elif args.harness == "claude" and resume_after_session_limit:
+                attempt_description = (
+                    f"Resuming model attempt {round_attempt}/{args.max_attempts} after "
+                    "the Claude session reset…"
+                )
             else:
                 attempt_description = (
                     f"Starting model attempt {round_attempt}/{args.max_attempts}…"
@@ -2725,11 +2896,17 @@ def _run_command(args: argparse.Namespace) -> int:
             print(attempt_description, flush=True)
 
             attempt_started_at = utc_now()
+            invocation_task = (
+                claude_session_resume_task(round_task, run_dir, args.count)
+                if args.harness == "claude" and resume_after_session_limit
+                else round_task
+            )
+            resume_after_session_limit = False
             result = run_harness_once(
                 args,
                 command,
                 run_dir,
-                round_task,
+                invocation_task,
                 round_label,
                 remaining_timeout,
                 round_attempt,
@@ -2748,6 +2925,16 @@ def _run_command(args: argparse.Namespace) -> int:
             attempt_final_message = attempt_events.pop("finalMessage", None)
             failure_message = attempt_events.get("failureMessage")
             raw_output = f"{stdout}\n{stderr}"
+            claude_session_limited = bool(
+                exit_code
+                and args.harness == "claude"
+                and is_claude_session_limit_failure(failure_message, raw_output)
+            )
+            claude_session_resume_at = (
+                claude_session_limit_reset_at(failure_message, raw_output)
+                if claude_session_limited
+                else None
+            )
             configuration_rejected = bool(
                 exit_code and is_run_configuration_failure(failure_message, raw_output)
             )
@@ -2755,7 +2942,10 @@ def _run_command(args: argparse.Namespace) -> int:
                 exit_code
                 and not timed_out
                 and not configuration_rejected
-                and is_transient_harness_failure(failure_message, raw_output)
+                and (
+                    claude_session_limited
+                    or is_transient_harness_failure(failure_message, raw_output)
+                )
             )
             failure_detail = (
                 compact_failure(failure_message, stdout, stderr, exit_code)
@@ -2813,7 +3003,62 @@ def _run_command(args: argparse.Namespace) -> int:
                     }
                 )
 
-            can_retry = retryable and round_attempt < args.max_attempts
+            if claude_session_limited and claude_session_resume_at is not None:
+                pause_seconds = claude_session_limit_pause_seconds(claude_session_resume_at)
+                remaining_after_attempt = args.timeout - (time.monotonic() - started)
+                if pause_seconds < remaining_after_attempt:
+                    attempt_record.update(
+                        {
+                            "outcome": "session_limit_pause",
+                            "sessionLimitResumeAt": claude_session_resume_at.isoformat(),
+                            "sessionLimitPauseSeconds": pause_seconds,
+                        }
+                    )
+                    attempt_records.append(attempt_record)
+                    manifest["harness"]["attempts"] = attempt_records
+                    write_json(manifest_path, manifest)
+                    print(
+                        "Claude reached its session limit after "
+                        f"{format_elapsed(result['durationSeconds'])}; "
+                        f"{output_file_count}/{args.count} SGFs and the shared originality "
+                        "state will remain in place."
+                    )
+                    print(
+                        "Pausing until "
+                        f"{format_claude_session_reset(claude_session_resume_at)} "
+                        f"({format_elapsed(pause_seconds)}). This does not consume transient "
+                        f"retry attempt {round_attempt}/{args.max_attempts}."
+                    )
+                    waited = wait_for_claude_session_reset(
+                        run_dir,
+                        args.count,
+                        claude_session_resume_at,
+                    )
+                    total_session_pause_seconds += waited
+                    session_limit_pause_count += 1
+                    manifest["harness"].update(
+                        {
+                            "sessionLimitPauseCount": session_limit_pause_count,
+                            "sessionLimitPauseSeconds": total_session_pause_seconds,
+                        }
+                    )
+                    write_json(manifest_path, manifest)
+                    resume_after_session_limit = True
+                    continue
+                attempt_record["retrySkippedReason"] = (
+                    "The reported Claude session reset occurs after the remaining "
+                    "execution-time budget."
+                )
+            elif claude_session_limited:
+                attempt_record["retrySkippedReason"] = (
+                    "The Claude session-limit reset time could not be parsed."
+                )
+
+            can_retry = (
+                retryable
+                and not claude_session_limited
+                and round_attempt < args.max_attempts
+            )
             if can_retry:
                 delay = retry_delay_seconds(
                     round_attempt,
@@ -2849,6 +3094,7 @@ def _run_command(args: argparse.Namespace) -> int:
                     )
                     time.sleep(delay)
                     total_backoff_seconds += delay
+                    round_attempt += 1
                     continue
                 attempt_record["retrySkippedReason"] = (
                     "The remaining execution-time budget was too short for the next backoff delay."
@@ -2919,6 +3165,8 @@ def _run_command(args: argparse.Namespace) -> int:
                 "roundsCompleted": len(claude_round_records),
                 "roundStopReason": claude_round_stop_reason or "harness_failed",
                 "rounds": claude_round_records,
+                "sessionLimitPauseCount": session_limit_pause_count,
+                "sessionLimitPauseSeconds": total_session_pause_seconds,
             }
         )
         write_json(manifest_path, manifest)
@@ -2971,6 +3219,14 @@ def _run_command(args: argparse.Namespace) -> int:
         f"{expected_sgf_count(run_dir, args.count)}/{args.count} expected SGF files are present.",
         flush=True,
     )
+    if session_limit_pause_count:
+        print(
+            "Claude session-limit handling paused "
+            f"{format_elapsed(total_session_pause_seconds)} across "
+            f"{session_limit_pause_count} "
+            f"{'reset' if session_limit_pause_count == 1 else 'resets'}; "
+            "these pauses did not consume transient retry attempts."
+        )
     (run_dir / manifest["artifacts"]["stdout"]).write_text(stdout, encoding="utf-8")
     (run_dir / manifest["artifacts"]["stderr"]).write_text(stderr, encoding="utf-8")
     harness_input_path = manifest["artifacts"].get("harnessInput")
