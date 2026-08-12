@@ -45,6 +45,8 @@ DEFAULT_CLAUDE_MAX_ROUNDS = 20
 DEFAULT_CLAUDE_STALE_ROUND_LIMIT = 3
 DEFAULT_CLAUDE_SESSION_RESET_GRACE_SECONDS = 60
 CLAUDE_OUTPUT_TOKEN_MAX = 128_000
+DEFAULT_GROK_MAX_ROUNDS = 20
+DEFAULT_GROK_STALE_ROUND_LIMIT = 3
 DEFAULT_OPENCODE_MAX_ROUNDS = 20
 OPENCODE_OUTPUT_TOKEN_MAX = 65_536
 DEFAULT_REVIEW_STARTUP_TIMEOUT_SECONDS = 120
@@ -335,6 +337,55 @@ Read `inputs/task.md` again and follow the complete original task. There are cur
 {missing_list}
 
 The originality-query budget is shared across every round. Inspect `originality/summary.json` before making more requests. Preserve good existing outputs, repair any existing output you determine is incomplete, and do not merely describe future work. Write the remaining final SGFs now, perform the required final originality checks, and return control only after making as much concrete progress as possible in this round.
+"""
+
+
+def grok_round_task(
+    base_task: str,
+    run_dir: Path,
+    count: int,
+    round_number: int,
+    max_rounds: int = DEFAULT_GROK_MAX_ROUNDS,
+    consecutive_stale_rounds: int = 0,
+    stale_round_limit: int = DEFAULT_GROK_STALE_ROUND_LIMIT,
+) -> str:
+    if round_number == 1:
+        return base_task
+
+    missing = missing_expected_sgf_names(run_dir, count)
+    present = [name for name in expected_output_names(count) if name not in missing]
+    queries_used, query_limit = originality_query_progress(run_dir)
+    query_status = (
+        f"{queries_used}/{query_limit} originality queries have been used"
+        if queries_used is not None and query_limit is not None
+        else "the shared originality-query status is available in `originality/summary.json`"
+    )
+    stale_warning = ""
+    if stale_round_limit > 0 and consecutive_stale_rounds >= stale_round_limit - 1:
+        stale_warning = (
+            "\n\nIMPORTANT - FINAL NO-PROGRESS ROUND: The harness has observed "
+            f"{consecutive_stale_rounds} consecutive Grok rounds without measurable "
+            "SGF or originality-query progress. If this round also makes no progress, "
+            f"the run will stop at the {stale_round_limit}-round no-progress limit. "
+            "Persist concrete progress to the run directory before returning.\n"
+        )
+
+    present_list = ", ".join(f"`outputs/{name}`" for name in present) or "none"
+    missing_list = ", ".join(f"`outputs/{name}`" for name in missing) or "none"
+    return f"""# Continue the Tsumego Bench run
+
+This is Grok continuation round {round_number} of at most {max_rounds} in the same Grok session. Keep and use the analysis and context from the preceding rounds. Continue from the current run directory instead of starting over.
+{stale_warning}
+
+The benchmark does not assign one problem per round. Choose the most efficient workflow yourself: you may research, construct, revise, originality-check, or finish any number of problems during this round.
+
+Current observable run state:
+- {len(present)}/{count} expected SGF files are present.
+- Present: {present_list}
+- Missing: {missing_list}
+- {query_status}; the budget is shared across all continuation rounds.
+
+Read `inputs/task.md` again when you need the complete source of truth. Inspect and preserve good existing work, repair anything incomplete, write final SGFs as they become ready, and perform the required final originality checks. Do not merely print SGF text in your response: save each finished problem to its required file under `outputs/`. Return control only after making as much concrete progress as is useful in this round.
 """
 
 
@@ -1428,6 +1479,14 @@ def is_claude_output_limit_result(event: dict[str, Any]) -> bool:
     )
 
 
+def is_grok_output_limit_failure(message: str | None, raw_output: str = "") -> bool:
+    evidence = f"{message or ''}\n{raw_output}".lower()
+    return (
+        "max_tokens_truncation" in evidence
+        or "response truncated by max_tokens" in evidence
+    )
+
+
 def merge_numeric_usage(
     target: dict[str, Any],
     source: dict[str, Any],
@@ -1540,12 +1599,14 @@ def parse_claude_events(stdout: str) -> dict[str, Any]:
 
 def parse_grok_events(stdout: str) -> dict[str, Any]:
     session_id: str | None = None
-    usage: dict[str, Any] | None = None
+    usage: dict[str, Any] = {}
+    has_usage = False
     parse_errors = 0
     event_count = 0
     failure_message: str | None = None
     current_message_parts: list[str] = []
     final_message: str | None = None
+    result_subtype: str | None = None
 
     for line in stdout.splitlines():
         if not line.strip():
@@ -1564,33 +1625,39 @@ def parse_grok_events(stdout: str) -> dict[str, Any]:
             current_message_parts = []
         if event_type in {"end", "error"}:
             session_id = event.get("sessionId") or event.get("session_id") or session_id
-            usage_fields = {
-                key: event[key]
-                for key in (
-                    "usage",
-                    "modelUsage",
-                    "total_cost_usd",
-                    "total_cost_usd_ticks",
-                    "cost_is_partial",
-                    "usage_is_incomplete",
-                    "num_turns",
-                    "requestId",
-                )
-                if event.get(key) is not None
-            }
-            usage = usage_fields or usage
+            if isinstance(event.get("usage"), dict):
+                merge_numeric_usage(usage.setdefault("usage", {}), event["usage"])
+                has_usage = True
+            if isinstance(event.get("modelUsage"), dict):
+                merge_numeric_usage(usage.setdefault("modelUsage", {}), event["modelUsage"])
+                has_usage = True
+            for key in ("total_cost_usd", "total_cost_usd_ticks", "num_turns"):
+                value = event.get(key)
+                if isinstance(value, (int, float)) and not isinstance(value, bool):
+                    usage[key] = usage.get(key, 0) + value
+                    has_usage = True
+            for key in ("cost_is_partial", "usage_is_incomplete", "requestId"):
+                if event.get(key) is not None:
+                    usage[key] = event[key]
+                    has_usage = True
+            result_subtype = event.get("stopReason") or result_subtype
         if event_type == "error":
             failure_message = event_message(event) or failure_message
+            if is_grok_output_limit_failure(failure_message, json.dumps(event)):
+                result_subtype = "max_tokens_truncation"
+        elif event_type == "end":
+            failure_message = None
 
     if current_message_parts:
         final_message = "".join(current_message_parts).strip() or final_message
     return {
         "threadId": session_id,
-        "usage": usage,
+        "usage": usage if has_usage else None,
         "eventCount": event_count,
         "unparsedLineCount": parse_errors,
         "failureMessage": failure_message,
         "finalMessage": final_message,
+        "resultSubtype": result_subtype,
     }
 
 
@@ -2484,26 +2551,28 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
                 "sessionLimitPauseSeconds": 0,
             }
         )
-    if args.harness in {"claude", "opencode"}:
-        max_rounds = (
-            DEFAULT_CLAUDE_MAX_ROUNDS
-            if args.harness == "claude"
-            else DEFAULT_OPENCODE_MAX_ROUNDS
-        )
+    if args.harness in {"claude", "grok", "opencode"}:
+        max_rounds = {
+            "claude": DEFAULT_CLAUDE_MAX_ROUNDS,
+            "grok": DEFAULT_GROK_MAX_ROUNDS,
+            "opencode": DEFAULT_OPENCODE_MAX_ROUNDS,
+        }[args.harness]
         round_policy: dict[str, Any] = {
             "maxRounds": max_rounds,
             "stopWhenExpectedOutputsExist": True,
         }
-        output_ceiling = (
-            CLAUDE_OUTPUT_TOKEN_MAX
-            if args.harness == "claude"
-            else OPENCODE_OUTPUT_TOKEN_MAX
-        )
         if args.harness == "claude":
             round_policy.update(
                 {
                     "sameSession": True,
                     "staleRoundLimit": DEFAULT_CLAUDE_STALE_ROUND_LIMIT,
+                }
+            )
+        elif args.harness == "grok":
+            round_policy.update(
+                {
+                    "sameSession": True,
+                    "staleRoundLimit": DEFAULT_GROK_STALE_ROUND_LIMIT,
                 }
             )
         manifest["harness"].update(
@@ -2512,9 +2581,12 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
                 "roundsCompleted": 0,
                 "roundStopReason": None,
                 "rounds": [],
-                "outputTokenCeiling": output_ceiling,
             }
         )
+        if args.harness == "claude":
+            manifest["harness"]["outputTokenCeiling"] = CLAUDE_OUTPUT_TOKEN_MAX
+        elif args.harness == "opencode":
+            manifest["harness"]["outputTokenCeiling"] = OPENCODE_OUTPUT_TOKEN_MAX
     return manifest
 
 
@@ -2556,6 +2628,9 @@ def build_harness_command(
     args: argparse.Namespace,
     run_dir: Path,
     executable: str,
+    *,
+    grok_prompt_file: Path | None = None,
+    grok_continue: bool = False,
 ) -> list[str]:
     if args.harness == "claude":
         file_tools = "Read,Write,Edit,Glob,Grep"
@@ -2592,34 +2667,40 @@ def build_harness_command(
             "--no-auto-update",
             "--cwd",
             str(run_dir),
-            "--prompt-file",
-            str(run_dir / "inputs" / "task.md"),
-            "--verbatim",
-            "--output-format",
-            "streaming-json",
-            "--always-approve",
-            # Grok 1.0.0 under WSL can block its own inference transport under
-            # `strict`; `workspace` retains write confinement while the deny
-            # rules below block shell, web, and MCP access.
-            "--sandbox",
-            "workspace",
-            "--no-plan",
-            "--no-subagents",
-            "--no-memory",
-            "--disable-web-search",
-            "--disallowed-tools",
-            "run_terminal_cmd,web_search,web_fetch,Agent",
-            "--deny",
-            "Bash",
-            "--deny",
-            "WebFetch",
-            "--deny",
-            "WebSearch",
-            "--deny",
-            "MCPTool",
-            "--model",
-            args.model,
         ]
+        if grok_continue:
+            command.append("--continue")
+        command.extend(
+            [
+                "--prompt-file",
+                str(grok_prompt_file or run_dir / "inputs" / "task.md"),
+                "--verbatim",
+                "--output-format",
+                "streaming-json",
+                "--always-approve",
+                # Grok 1.0.0 under WSL can block its own inference transport under
+                # `strict`; `workspace` retains write confinement while the deny
+                # rules below block shell, web, and MCP access.
+                "--sandbox",
+                "workspace",
+                "--no-plan",
+                "--no-subagents",
+                "--no-memory",
+                "--disable-web-search",
+                "--disallowed-tools",
+                "run_terminal_cmd,web_search,web_fetch,Agent",
+                "--deny",
+                "Bash",
+                "--deny",
+                "WebFetch",
+                "--deny",
+                "WebSearch",
+                "--deny",
+                "MCPTool",
+                "--model",
+                args.model,
+            ]
+        )
         if args.reasoning_effort:
             command.extend(["--effort", args.reasoning_effort])
         return command
@@ -2771,6 +2852,17 @@ def _run_command(args: argparse.Namespace) -> int:
             "OpenCode per-call output ceiling: "
             f"{OPENCODE_OUTPUT_TOKEN_MAX:,} tokens"
         )
+    if args.harness == "grok":
+        print(
+            "Grok continuation rounds: up to "
+            f"{DEFAULT_GROK_MAX_ROUNDS} in the same saved session, stopping when all "
+            f"{args.count} expected SGFs exist or after "
+            f"{DEFAULT_GROK_STALE_ROUND_LIMIT} rounds without file or query progress."
+        )
+        print(
+            "Grok output-token truncation policy: preserve the run directory and resume "
+            "the saved session in the next round."
+        )
     originality_broker: dict[str, Any] | None = None
     if manifest["condition"]["duplicateToolEnabled"]:
         query_limit = manifest["condition"]["duplicateQueryLimit"]
@@ -2790,7 +2882,11 @@ def _run_command(args: argparse.Namespace) -> int:
         args.retry_max_delay,
     )
     if retry_delays:
-        retry_scope = " per OpenCode round" if args.harness == "opencode" else ""
+        retry_scope = (
+            " per generation round"
+            if args.harness in {"grok", "opencode"}
+            else ""
+        )
         print(
             f"Transient retry policy: up to {args.max_attempts} attempts{retry_scope}; "
             f"backoff delays {', '.join(f'{delay}s' for delay in retry_delays)} "
@@ -2817,7 +2913,10 @@ def _run_command(args: argparse.Namespace) -> int:
     total_backoff_seconds = 0
     total_session_pause_seconds = 0
     session_limit_pause_count = 0
-    max_rounds = DEFAULT_OPENCODE_MAX_ROUNDS if args.harness == "opencode" else 1
+    max_rounds = {
+        "grok": DEFAULT_GROK_MAX_ROUNDS,
+        "opencode": DEFAULT_OPENCODE_MAX_ROUNDS,
+    }.get(args.harness, 1)
     rounds_completed = 0
     round_stop_reason: str | None = None
     invocation_number = 0
@@ -2827,6 +2926,8 @@ def _run_command(args: argparse.Namespace) -> int:
     last_final_message: str | None = None
     claude_round_records: list[dict[str, Any]] = []
     claude_round_stop_reason: str | None = None
+    grok_round_records: list[dict[str, Any]] = []
+    grok_stale_rounds = 0
     event_parsers = {
         "codex": parse_codex_events,
         "claude": parse_claude_events,
@@ -2837,20 +2938,34 @@ def _run_command(args: argparse.Namespace) -> int:
     stop_model_phase = False
     for round_number in range(1, max_rounds + 1):
         if (
-            args.harness == "opencode"
+            args.harness in {"grok", "opencode"}
             and expected_sgf_count(run_dir, args.count) >= args.count
         ):
             round_stop_reason = "outputs_complete"
             break
 
-        round_task = (
-            opencode_round_task(task, run_dir, args.count, round_number, max_rounds)
-            if args.harness == "opencode"
-            else task
-        )
+        if args.harness == "opencode":
+            round_task = opencode_round_task(
+                task,
+                run_dir,
+                args.count,
+                round_number,
+                max_rounds,
+            )
+        elif args.harness == "grok":
+            round_task = grok_round_task(
+                task,
+                run_dir,
+                args.count,
+                round_number,
+                max_rounds,
+                grok_stale_rounds,
+            )
+        else:
+            round_task = task
         round_label = (
             f"{label} round {round_number}/{max_rounds}"
-            if args.harness == "opencode"
+            if args.harness in {"grok", "opencode"}
             else label
         )
         if args.harness == "opencode":
@@ -2859,6 +2974,20 @@ def _run_command(args: argparse.Namespace) -> int:
                 f"{expected_sgf_count(run_dir, args.count)}/{args.count} expected SGFs present.",
                 flush=True,
             )
+        elif args.harness == "grok":
+            print(
+                f"Starting Grok continuation round {round_number}/{max_rounds}; "
+                f"{expected_sgf_count(run_dir, args.count)}/{args.count} expected SGFs present.",
+                flush=True,
+            )
+
+        grok_round_before = (
+            generation_progress_snapshot(run_dir)
+            if args.harness == "grok"
+            else None
+        )
+        grok_round_started = time.monotonic()
+        grok_round_started_at = utc_now()
 
         round_completed = False
         round_attempt = 1
@@ -2884,6 +3013,11 @@ def _run_command(args: argparse.Namespace) -> int:
                     f"Starting round attempt {round_attempt}/{args.max_attempts} "
                     f"for OpenCode round {round_number}/{max_rounds}…"
                 )
+            elif args.harness == "grok":
+                attempt_description = (
+                    f"Starting round attempt {round_attempt}/{args.max_attempts} "
+                    f"for Grok continuation round {round_number}/{max_rounds}…"
+                )
             elif args.harness == "claude" and resume_after_session_limit:
                 attempt_description = (
                     f"Resuming model attempt {round_attempt}/{args.max_attempts} after "
@@ -2902,9 +3036,32 @@ def _run_command(args: argparse.Namespace) -> int:
                 else round_task
             )
             resume_after_session_limit = False
+            invocation_command = command
+            grok_input_path: str | None = None
+            if args.harness == "grok":
+                if round_number == 1:
+                    grok_prompt_file = run_dir / "inputs" / "task.md"
+                else:
+                    grok_attempt_dir = (
+                        run_dir
+                        / "logs"
+                        / "attempts"
+                        / f"attempt-{invocation_number:02d}"
+                    )
+                    grok_attempt_dir.mkdir(parents=True, exist_ok=True)
+                    grok_prompt_file = grok_attempt_dir / "grok-prompt.md"
+                    grok_prompt_file.write_text(round_task, encoding="utf-8")
+                grok_input_path = grok_prompt_file.relative_to(run_dir).as_posix()
+                invocation_command = build_harness_command(
+                    args,
+                    run_dir,
+                    executable,
+                    grok_prompt_file=grok_prompt_file,
+                    grok_continue=round_number > 1,
+                )
             result = run_harness_once(
                 args,
-                command,
+                invocation_command,
                 run_dir,
                 invocation_task,
                 round_label,
@@ -2935,6 +3092,11 @@ def _run_command(args: argparse.Namespace) -> int:
                 if claude_session_limited
                 else None
             )
+            grok_output_limited = bool(
+                exit_code
+                and args.harness == "grok"
+                and is_grok_output_limit_failure(failure_message, raw_output)
+            )
             configuration_rejected = bool(
                 exit_code and is_run_configuration_failure(failure_message, raw_output)
             )
@@ -2942,6 +3104,7 @@ def _run_command(args: argparse.Namespace) -> int:
                 exit_code
                 and not timed_out
                 and not configuration_rejected
+                and not grok_output_limited
                 and (
                     claude_session_limited
                     or is_transient_harness_failure(failure_message, raw_output)
@@ -2967,6 +3130,8 @@ def _run_command(args: argparse.Namespace) -> int:
                 input_path = attempt_dir / "claude-input.jsonl"
                 input_path.write_text(attempt_input, encoding="utf-8")
                 attempt_input_path = input_path.relative_to(run_dir).as_posix()
+            elif args.harness == "grok":
+                attempt_input_path = grok_input_path
             output_file_count = generated_sgf_count(run_dir)
             attempt_record: dict[str, Any] = {
                 "number": invocation_number,
@@ -2995,11 +3160,19 @@ def _run_command(args: argparse.Namespace) -> int:
                 )
                 claude_round_records.extend(attempt_rounds)
                 claude_round_stop_reason = result.get("roundStopReason")
-            if args.harness == "opencode":
+            if args.harness in {"grok", "opencode"}:
                 attempt_record.update(
                     {
                         "roundNumber": round_number,
                         "attemptInRound": round_attempt,
+                    }
+                )
+            if args.harness == "grok":
+                attempt_record.update(
+                    {
+                        "input": attempt_input_path,
+                        "processExitCode": exit_code,
+                        "outputLimitBoundary": grok_output_limited,
                     }
                 )
 
@@ -3069,9 +3242,9 @@ def _run_command(args: argparse.Namespace) -> int:
                 if delay < remaining_after_attempt:
                     attempt_record["outcome"] = "transient_failure"
                     attempt_record["retryDelaySeconds"] = delay
-                    # OpenCode rounds deliberately share their workspace. Preserve
-                    # partial SGFs so retries and later rounds can continue them.
-                    if args.harness != "opencode":
+                    # Outer generation rounds deliberately share their workspace.
+                    # Preserve partial SGFs so retries and later rounds can continue them.
+                    if args.harness not in {"grok", "opencode"}:
                         archived_outputs = archive_retry_outputs(run_dir, attempt_dir)
                         if archived_outputs:
                             attempt_record["archivedOutputs"] = archived_outputs
@@ -3080,7 +3253,7 @@ def _run_command(args: argparse.Namespace) -> int:
                     write_json(manifest_path, manifest)
                     prefix = (
                         f"Round {round_number}/{max_rounds} attempt"
-                        if args.harness == "opencode"
+                        if args.harness in {"grok", "opencode"}
                         else "Attempt"
                     )
                     print(
@@ -3100,7 +3273,9 @@ def _run_command(args: argparse.Namespace) -> int:
                     "The remaining execution-time budget was too short for the next backoff delay."
                 )
 
-            if exit_code == 0:
+            if grok_output_limited:
+                attempt_record["outcome"] = "output_limit_boundary"
+            elif exit_code == 0:
                 attempt_record["outcome"] = "success"
             elif configuration_rejected:
                 attempt_record["outcome"] = "configuration_rejected"
@@ -3119,10 +3294,10 @@ def _run_command(args: argparse.Namespace) -> int:
                 accepted_input_chunks.append(attempt_input)
             if attempt_final_message:
                 last_final_message = attempt_final_message
-            if exit_code == 0:
+            if exit_code == 0 or grok_output_limited:
                 round_completed = True
                 rounds_completed += 1
-                if args.harness == "opencode":
+                if args.harness in {"grok", "opencode"}:
                     manifest["harness"]["roundsCompleted"] = rounds_completed
             write_json(manifest_path, manifest)
             break
@@ -3132,11 +3307,58 @@ def _run_command(args: argparse.Namespace) -> int:
         if not round_completed:
             round_stop_reason = "timeout" if timed_out else "harness_failed"
             break
-        if args.harness != "opencode":
+        if args.harness not in {"grok", "opencode"}:
             round_stop_reason = "single_round"
             break
 
         present_count = expected_sgf_count(run_dir, args.count)
+        if args.harness == "grok":
+            grok_round_after = generation_progress_snapshot(run_dir)
+            grok_made_progress = grok_round_after != grok_round_before
+            grok_stale_rounds = 0 if grok_made_progress else grok_stale_rounds + 1
+            grok_round_record = {
+                "number": round_number,
+                "attempt": round_attempt,
+                "startedAt": grok_round_started_at,
+                "completedAt": utc_now(),
+                "durationSeconds": round(time.monotonic() - grok_round_started, 3),
+                "outputFileCountBefore": len(grok_round_before[0]),
+                "outputFileCountAfter": len(grok_round_after[0]),
+                "originalityQueriesBefore": grok_round_before[1],
+                "originalityQueriesAfter": grok_round_after[1],
+                "progressMade": grok_made_progress,
+                "consecutiveStaleRounds": grok_stale_rounds,
+                "resultSubtype": attempt_events.get("resultSubtype"),
+                "resultError": bool(exit_code),
+                "outputLimitBoundary": grok_output_limited,
+            }
+            grok_round_records.append(grok_round_record)
+            boundary = " (output-token boundary)" if grok_output_limited else ""
+            progress_detail = (
+                "progress recorded"
+                if grok_made_progress
+                else (
+                    "no file or query progress "
+                    f"({grok_stale_rounds}/{DEFAULT_GROK_STALE_ROUND_LIMIT} stale)"
+                )
+            )
+            print(
+                f"Grok continuation round {round_number}/{max_rounds} finished{boundary}; "
+                f"{present_count}/{args.count} expected SGFs are present; {progress_detail}.",
+                flush=True,
+            )
+            if present_count >= args.count:
+                round_stop_reason = "outputs_complete"
+                break
+            if grok_stale_rounds >= DEFAULT_GROK_STALE_ROUND_LIMIT:
+                round_stop_reason = "stale"
+                break
+            if round_number >= max_rounds:
+                round_stop_reason = "max_rounds"
+                break
+            print("Expected outputs are still missing; resuming the saved Grok session.")
+            continue
+
         print(
             f"OpenCode round {round_number}/{max_rounds} finished; "
             f"{present_count}/{args.count} expected SGFs are present.",
@@ -3150,7 +3372,7 @@ def _run_command(args: argparse.Namespace) -> int:
             break
         print("Expected outputs are still missing; starting a fresh OpenCode round.")
 
-    if args.harness == "opencode":
+    if args.harness in {"grok", "opencode"}:
         round_stop_reason = round_stop_reason or "max_rounds"
         manifest["harness"].update(
             {
@@ -3158,6 +3380,13 @@ def _run_command(args: argparse.Namespace) -> int:
                 "roundStopReason": round_stop_reason,
             }
         )
+        if args.harness == "grok":
+            manifest["harness"]["rounds"] = grok_round_records
+            if round_stop_reason in {"outputs_complete", "max_rounds", "stale"}:
+                # Grok reports an output-token boundary as process exit 1. Once
+                # the runner's continuation policy reaches its own terminal
+                # condition, that boundary is not a harness failure.
+                exit_code = 0
         write_json(manifest_path, manifest)
     elif args.harness == "claude":
         manifest["harness"].update(
@@ -3175,6 +3404,7 @@ def _run_command(args: argparse.Namespace) -> int:
     stderr = concatenate_harness_output(accepted_stderr_chunks)
     events = event_parsers[args.harness](stdout)
     parsed_final_message = events.pop("finalMessage", None)
+    events.pop("resultSubtype", None)
     final_message = last_final_message or parsed_final_message
     if (
         args.harness == "claude"
@@ -3182,6 +3412,8 @@ def _run_command(args: argparse.Namespace) -> int:
         and claude_round_records
         and claude_round_records[-1].get("outputLimitBoundary") is True
     ):
+        events["failureMessage"] = None
+    if args.harness == "grok" and not exit_code:
         events["failureMessage"] = None
     if timeout_message and not events.get("failureMessage"):
         events["failureMessage"] = timeout_message
@@ -3254,7 +3486,32 @@ def _run_command(args: argparse.Namespace) -> int:
     write_json(manifest_path, manifest)
 
     failure_message = manifest.get("harness", {}).get("failureMessage")
-    if args.harness == "opencode" and not exit_code:
+    if args.harness == "grok" and not exit_code:
+        if round_stop_reason == "outputs_complete":
+            print(
+                f"Grok created all {args.count} expected SGFs in "
+                f"{rounds_completed} "
+                f"{'round' if rounds_completed == 1 else 'rounds'}."
+            )
+        elif round_stop_reason == "max_rounds":
+            print(
+                f"Grok reached the {max_rounds}-round cap with "
+                f"{expected_sgf_count(run_dir, args.count)}/{args.count} expected SGFs present.",
+                file=sys.stderr,
+            )
+        elif round_stop_reason == "stale":
+            print(
+                "Grok stopped after "
+                f"{DEFAULT_GROK_STALE_ROUND_LIMIT} consecutive continuation rounds without "
+                "file or originality-query progress.",
+                file=sys.stderr,
+            )
+        if total_backoff_seconds:
+            print(
+                "Transient retries waited "
+                f"{format_elapsed(total_backoff_seconds)} total across the Grok rounds."
+            )
+    elif args.harness == "opencode" and not exit_code:
         if round_stop_reason == "outputs_complete":
             print(
                 f"OpenCode created all {args.count} expected SGFs in "
@@ -3624,7 +3881,7 @@ def build_parser() -> argparse.ArgumentParser:
         type=int,
         default=DEFAULT_MAX_HARNESS_ATTEMPTS,
         help=(
-            "Maximum CLI attempts per harness invocation (or per OpenCode outer round) "
+            "Maximum CLI attempts per harness invocation (or per Grok/OpenCode outer round) "
             "for recognized transient failures "
             f"(default: {DEFAULT_MAX_HARNESS_ATTEMPTS})."
         ),

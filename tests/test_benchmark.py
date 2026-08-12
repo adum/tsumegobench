@@ -26,6 +26,8 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertEqual(benchmark.DEFAULT_CLAUDE_STALE_ROUND_LIMIT, 3)
         self.assertEqual(benchmark.DEFAULT_CLAUDE_SESSION_RESET_GRACE_SECONDS, 60)
         self.assertEqual(benchmark.CLAUDE_OUTPUT_TOKEN_MAX, 128_000)
+        self.assertEqual(benchmark.DEFAULT_GROK_MAX_ROUNDS, 20)
+        self.assertEqual(benchmark.DEFAULT_GROK_STALE_ROUND_LIMIT, 3)
         self.assertEqual(benchmark.DEFAULT_OPENCODE_MAX_ROUNDS, 20)
         self.assertEqual(benchmark.OPENCODE_OUTPUT_TOKEN_MAX, 65_536)
         self.assertIsNone(args.duplicate_query_limit)
@@ -118,6 +120,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertIn("Bash,PowerShell,WebFetch,WebSearch,mcp__*", command)
         self.assertEqual(command[command.index("--model") + 1], "claude-sonnet-4-6")
         self.assertEqual(command[command.index("--effort") + 1], "high")
+
         self.assertEqual(environment["CLAUDE_CODE_MAX_OUTPUT_TOKENS"], "128000")
         self.assertNotIn("exec", command)
 
@@ -308,6 +311,20 @@ for turn, line in enumerate(sys.stdin, 1):
         self.assertIn("MCPTool", command)
         self.assertEqual(command[command.index("--model") + 1], "grok-4.5")
         self.assertEqual(command[command.index("--effort") + 1], "high")
+
+        continuation_prompt = run_dir / "logs" / "attempts" / "attempt-02" / "grok-prompt.md"
+        continuation = benchmark.build_harness_command(
+            args,
+            run_dir,
+            "/opt/grok",
+            grok_prompt_file=continuation_prompt,
+            grok_continue=True,
+        )
+        self.assertIn("--continue", continuation)
+        self.assertEqual(
+            continuation[continuation.index("--prompt-file") + 1],
+            str(continuation_prompt),
+        )
 
     def test_opencode_harness_parser_command_and_environment_are_restricted(self):
         args = benchmark.build_parser().parse_args(
@@ -1318,6 +1335,15 @@ for turn, line in enumerate(sys.stdin, 1):
         with tempfile.TemporaryDirectory() as temporary:
             runs_root = Path(temporary)
 
+            def invoke(*_arguments, **keywords):
+                output_dir = Path(keywords["cwd"]) / "outputs"
+                for index in range(1, 11):
+                    (output_dir / f"problem-{index:02d}.sgf").write_text(
+                        "(;SZ[19])",
+                        encoding="utf-8",
+                    )
+                return completed
+
             def evaluate(run_dir, _local_only):
                 benchmark.write_json(
                     run_dir / "evaluation" / "automated.json",
@@ -1335,7 +1361,7 @@ for turn, line in enumerate(sys.stdin, 1):
                 mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
                 mock.patch.object(benchmark, "cli_version", return_value="grok 0.2.121"),
                 mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
-                mock.patch.object(benchmark.subprocess, "run", return_value=completed) as process,
+                mock.patch.object(benchmark.subprocess, "run", side_effect=invoke) as process,
                 mock.patch.object(benchmark, "run_evaluator", side_effect=evaluate),
                 mock.patch.object(
                     benchmark,
@@ -1354,6 +1380,12 @@ for turn, line in enumerate(sys.stdin, 1):
             self.assertEqual(manifest["model"]["provider"], "xai")
             self.assertEqual(manifest["harness"]["name"], "grok-cli")
             self.assertEqual(manifest["harness"]["threadId"], "grok-session-success")
+            self.assertEqual(manifest["harness"]["roundsCompleted"], 1)
+            self.assertEqual(manifest["harness"]["roundStopReason"], "outputs_complete")
+            self.assertEqual(manifest["harness"]["roundPolicy"]["maxRounds"], 20)
+            self.assertEqual(manifest["harness"]["roundPolicy"]["staleRoundLimit"], 3)
+            self.assertTrue(manifest["harness"]["roundPolicy"]["sameSession"])
+            self.assertEqual(process.call_count, 1)
             self.assertEqual(manifest["artifacts"]["stdout"], "logs/grok-events.jsonl")
             self.assertEqual(
                 (run_dir / "logs" / "final-message.txt").read_text(encoding="utf-8"),
@@ -1411,6 +1443,12 @@ for turn, line in enumerate(sys.stdin, 1):
                     return subprocess.CompletedProcess(
                         [], 1, stdout=failed_stdout, stderr="transport failed"
                     )
+                output_dir = Path(keywords["cwd"]) / "outputs"
+                for index in range(2, 11):
+                    (output_dir / f"problem-{index:02d}.sgf").write_text(
+                        "(;SZ[19])",
+                        encoding="utf-8",
+                    )
                 return subprocess.CompletedProcess(
                     [], 0, stdout=successful_stdout, stderr=""
                 )
@@ -1458,19 +1496,237 @@ for turn, line in enumerate(sys.stdin, 1):
             self.assertEqual(attempts[0]["retryDelaySeconds"], 1)
             self.assertEqual(attempts[0]["outputFileCount"], 1)
             self.assertEqual(attempts[1]["outcome"], "success")
-            self.assertEqual(
-                attempts[0]["archivedOutputs"],
-                "logs/attempts/attempt-01/outputs",
-            )
-            self.assertTrue(
-                (run_dir / attempts[0]["archivedOutputs"] / "problem-01.sgf").exists()
-            )
-            self.assertFalse((run_dir / "outputs" / "problem-01.sgf").exists())
+            self.assertNotIn("archivedOutputs", attempts[0])
+            self.assertTrue((run_dir / "outputs" / "problem-01.sgf").exists())
             self.assertTrue((run_dir / attempts[0]["stdout"]).exists())
             self.assertTrue((run_dir / attempts[1]["stdout"]).exists())
-            self.assertIn("Attempt 1/3 failed", console.getvalue())
+            self.assertIn("Round 1/20 attempt 1/3 failed", console.getvalue())
             self.assertIn("Retrying in 1 second", console.getvalue())
-            self.assertIn("succeeded on attempt 2/3", console.getvalue())
+            self.assertIn("Grok created all 10 expected SGFs", console.getvalue())
+
+    def test_grok_output_limit_resumes_saved_session_until_outputs_are_complete(self):
+        args = benchmark.build_parser().parse_args(
+            [
+                "run",
+                "--harness",
+                "grok",
+                "--model",
+                "grok-4.6",
+                "--run-id",
+                "grok-output-limit",
+                "--local-only",
+            ]
+        )
+        boundary_message = (
+            'Internal error: {"message":"response truncated by max_tokens",'
+            '"error_kind":"max_tokens_truncation"}'
+        )
+        boundary_stdout = json.dumps(
+            {
+                "type": "error",
+                "message": boundary_message,
+                "usage": {"input_tokens": 100, "output_tokens": 200},
+                "num_turns": 8,
+            }
+        )
+        completed_stdout = "\n".join(
+            [
+                json.dumps({"type": "text", "data": "Finished the run."}),
+                json.dumps(
+                    {
+                        "type": "end",
+                        "stopReason": "end_turn",
+                        "sessionId": "grok-resumed-session",
+                        "usage": {"input_tokens": 30, "output_tokens": 40},
+                        "num_turns": 2,
+                    }
+                ),
+            ]
+        )
+
+        with tempfile.TemporaryDirectory() as temporary:
+            runs_root = Path(temporary)
+            commands = []
+            continuation_prompts = []
+
+            def invoke(command, **keywords):
+                commands.append(command)
+                output_dir = Path(keywords["cwd"]) / "outputs"
+                if len(commands) == 1:
+                    for index in range(1, 5):
+                        (output_dir / f"problem-{index:02d}.sgf").write_text(
+                            "(;SZ[19])",
+                            encoding="utf-8",
+                        )
+                    return subprocess.CompletedProcess(
+                        [],
+                        1,
+                        stdout=boundary_stdout,
+                        stderr="",
+                    )
+
+                prompt_path = Path(command[command.index("--prompt-file") + 1])
+                continuation_prompts.append(prompt_path.read_text(encoding="utf-8"))
+                for index in range(5, 11):
+                    (output_dir / f"problem-{index:02d}.sgf").write_text(
+                        "(;SZ[19])",
+                        encoding="utf-8",
+                    )
+                return subprocess.CompletedProcess(
+                    [],
+                    0,
+                    stdout=completed_stdout,
+                    stderr="",
+                )
+
+            def evaluate(run_dir, _local_only):
+                benchmark.write_json(
+                    run_dir / "evaluation" / "automated.json",
+                    {
+                        "summary": {
+                            "expectedProblems": 10,
+                            "structuralPassed": 10,
+                            "automatedGatePassed": 10,
+                        }
+                    },
+                )
+                return subprocess.CompletedProcess([], 0, stdout="", stderr="")
+
+            with (
+                mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
+                mock.patch.object(benchmark, "cli_version", return_value="grok 1.0.3"),
+                mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
+                mock.patch.object(benchmark.subprocess, "run", side_effect=invoke) as process,
+                mock.patch.object(benchmark, "run_evaluator", side_effect=evaluate),
+                mock.patch.object(
+                    benchmark,
+                    "build_run_index",
+                    return_value=subprocess.CompletedProcess([], 0, stdout="", stderr=""),
+                ),
+            ):
+                console = io.StringIO()
+                with redirect_stdout(console), redirect_stderr(io.StringIO()):
+                    exit_code = benchmark.run_command(args)
+
+            run_dir = runs_root / "grok-output-limit"
+            manifest = benchmark.read_json(run_dir / "run.json")
+            attempts = manifest["harness"]["attempts"]
+            rounds = manifest["harness"]["rounds"]
+
+            self.assertEqual(exit_code, 0)
+            self.assertEqual(process.call_count, 2)
+            self.assertNotIn("--continue", commands[0])
+            self.assertIn("--continue", commands[1])
+            self.assertEqual(manifest["harness"]["exitCode"], 0)
+            self.assertIsNone(manifest["harness"]["failureMessage"])
+            self.assertEqual(manifest["harness"]["roundsCompleted"], 2)
+            self.assertEqual(manifest["harness"]["roundStopReason"], "outputs_complete")
+            self.assertEqual(attempts[0]["outcome"], "output_limit_boundary")
+            self.assertTrue(attempts[0]["outputLimitBoundary"])
+            self.assertEqual(attempts[0]["processExitCode"], 1)
+            self.assertEqual(attempts[1]["outcome"], "success")
+            self.assertEqual([record["outputFileCountAfter"] for record in rounds], [4, 10])
+            self.assertTrue(rounds[0]["outputLimitBoundary"])
+            self.assertEqual(rounds[0]["resultSubtype"], "max_tokens_truncation")
+            self.assertEqual(manifest["harness"]["usage"]["usage"]["input_tokens"], 130)
+            self.assertEqual(manifest["harness"]["usage"]["num_turns"], 10)
+            self.assertEqual(len(continuation_prompts), 1)
+            self.assertIn("Grok continuation round 2 of at most 20", continuation_prompts[0])
+            self.assertIn("`outputs/problem-05.sgf`", continuation_prompts[0])
+            self.assertIn("save each finished problem", continuation_prompts[0])
+            self.assertIn("output-token boundary", console.getvalue())
+            self.assertIn("resuming the saved Grok session", console.getvalue())
+
+    def test_grok_stops_after_three_no_progress_rounds_and_warns_on_last_round(self):
+        args = benchmark.build_parser().parse_args(
+            [
+                "run",
+                "--harness",
+                "grok",
+                "--model",
+                "grok-4.6",
+                "--run-id",
+                "grok-stale",
+                "--local-only",
+            ]
+        )
+        completed_stdout = "\n".join(
+            [
+                json.dumps({"type": "text", "data": "No files yet."}),
+                json.dumps(
+                    {
+                        "type": "end",
+                        "stopReason": "end_turn",
+                        "sessionId": "grok-stale-session",
+                    }
+                ),
+            ]
+        )
+
+        with tempfile.TemporaryDirectory() as temporary:
+            runs_root = Path(temporary)
+            commands = []
+            continuation_prompts = []
+
+            def invoke(command, **_keywords):
+                commands.append(command)
+                if "--continue" in command:
+                    prompt_path = Path(command[command.index("--prompt-file") + 1])
+                    continuation_prompts.append(prompt_path.read_text(encoding="utf-8"))
+                return subprocess.CompletedProcess(
+                    [],
+                    0,
+                    stdout=completed_stdout,
+                    stderr="",
+                )
+
+            def evaluate(run_dir, _local_only):
+                benchmark.write_json(
+                    run_dir / "evaluation" / "automated.json",
+                    {
+                        "summary": {
+                            "expectedProblems": 10,
+                            "structuralPassed": 0,
+                            "automatedGatePassed": 0,
+                        }
+                    },
+                )
+                return subprocess.CompletedProcess([], 0, stdout="", stderr="")
+
+            with (
+                mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
+                mock.patch.object(benchmark, "cli_version", return_value="grok 1.0.3"),
+                mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
+                mock.patch.object(benchmark.subprocess, "run", side_effect=invoke) as process,
+                mock.patch.object(benchmark, "run_evaluator", side_effect=evaluate),
+                mock.patch.object(
+                    benchmark,
+                    "build_run_index",
+                    return_value=subprocess.CompletedProcess([], 0, stdout="", stderr=""),
+                ),
+            ):
+                console_error = io.StringIO()
+                with redirect_stdout(io.StringIO()), redirect_stderr(console_error):
+                    exit_code = benchmark.run_command(args)
+
+            manifest = benchmark.read_json(runs_root / "grok-stale" / "run.json")
+
+            self.assertEqual(exit_code, 0)
+            self.assertEqual(process.call_count, 3)
+            self.assertNotIn("--continue", commands[0])
+            self.assertTrue(all("--continue" in command for command in commands[1:]))
+            self.assertEqual(manifest["harness"]["roundsCompleted"], 3)
+            self.assertEqual(manifest["harness"]["roundStopReason"], "stale")
+            self.assertEqual(
+                [record["consecutiveStaleRounds"] for record in manifest["harness"]["rounds"]],
+                [1, 2, 3],
+            )
+            self.assertEqual(len(continuation_prompts), 2)
+            self.assertNotIn("FINAL NO-PROGRESS ROUND", continuation_prompts[0])
+            self.assertIn("FINAL NO-PROGRESS ROUND", continuation_prompts[1])
+            self.assertIn("2 consecutive Grok rounds", continuation_prompts[1])
+            self.assertIn("3-round no-progress limit", continuation_prompts[1])
+            self.assertIn("3 consecutive continuation rounds", console_error.getvalue())
 
     def test_grok_exhausted_transient_retries_report_every_attempt(self):
         args = benchmark.build_parser().parse_args(
