@@ -165,6 +165,7 @@
               "attemptInRound": { "type": "integer", "minimum": 1 },
               "input": { "type": "string" },
               "processExitCode": { "type": "integer" },
+              "outputLimitBoundary": { "type": "boolean" },
               "roundStopReason": {
                 "enum": [
                   "outputs_complete",
@@ -191,6 +192,7 @@
               "outcome": {
                 "enum": [
                   "success",
+                  "output_limit_boundary",
                   "session_limit_pause",
                   "transient_failure",
                   "permanent_failure",
