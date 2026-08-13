@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-06-draft3",
+  "path": "outputs/problem-06.sgf",
+  "queryNumber": 24,
+  "queriesRemaining": 26,
+  "checkedAt": "2026-08-12T22:50:19.746Z",
+  "status": "invalid",
+  "candidateSha256": "9a5ee280f997d6904335a915d69dd7338d0685cba9dc457411f21bfd1bdee080",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "W[os] plays on an occupied intersection."
+    }
+  ]
+}

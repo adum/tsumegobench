@@ -147,6 +147,19 @@
       "runCount": 1,
       "bestRunId": "2026-08-08T014738Z-openrouter-meta-muse-spark-1-2-opencode",
       "bestRunCreatedAt": "2026-08-08T01:47:40.432592Z"
+    },
+    {
+      "id": "grok-4.6",
+      "displayName": "Grok 4.6",
+      "family": "xAI",
+      "releaseDate": "2026-08-12",
+      "icon": "/provider-icons/xai.svg",
+      "score": 0,
+      "passedProblems": 0,
+      "problemCount": 10,
+      "runCount": 1,
+      "bestRunId": "2026-08-12T215117Z-xai-grok-4-6-grok",
+      "bestRunCreatedAt": "2026-08-12T21:51:19.704345Z"
     }
   ],
   "unmatchedModels": []

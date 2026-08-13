@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-08-draft3",
+  "path": "outputs/problem-08.sgf",
+  "queryNumber": 17,
+  "queriesRemaining": 33,
+  "checkedAt": "2026-08-12T22:43:32.650Z",
+  "status": "invalid",
+  "candidateSha256": "a8388861923345481f405243c13450ccce8b70fb40df12b5cde90be6fdc8f2fc",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "suicide-move",
+      "message": "B[ja] is suicide under ordinary Go rules."
+    }
+  ]
+}

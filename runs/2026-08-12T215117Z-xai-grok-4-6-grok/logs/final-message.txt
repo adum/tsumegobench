@@ -1,0 +1,14 @@
+The ten requested SGF files are in `outputs/`:
+
+- `outputs/problem-01.sgf`
+- `outputs/problem-02.sgf`
+- `outputs/problem-03.sgf`
+- `outputs/problem-04.sgf`
+- `outputs/problem-05.sgf`
+- `outputs/problem-06.sgf`
+- `outputs/problem-07.sgf`
+- `outputs/problem-08.sgf`
+- `outputs/problem-09.sgf`
+- `outputs/problem-10.sgf`
+
+Each exact final file was queried again after the set was complete and received a `clear` originality result. Those files were not edited after that check.

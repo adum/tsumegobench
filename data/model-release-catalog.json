@@ -71,6 +71,15 @@
       "openWeights": false,
       "source": "https://openrouter.ai/meta/muse-spark-1.2",
       "sourceNote": "Release date derived from the OpenRouter registry created timestamp because this version postdates the Puzzle Runner snapshot."
+    },
+    {
+      "family": "Grok",
+      "name": "Grok 4.6",
+      "releaseDate": "2026-08-12",
+      "origin": "America",
+      "openWeights": false,
+      "source": "https://openrouter.ai/x-ai/grok-4.6",
+      "sourceNote": "Release date derived from the first public API availability and successful benchmark run because this version postdates the Puzzle Runner snapshot."
     }
   ]
 }

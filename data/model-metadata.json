@@ -133,6 +133,16 @@
         { "provider": "openrouter", "name": "meta/muse-spark-1.2" },
         { "provider": "openrouter", "name": "openrouter/meta/muse-spark-1.2" }
       ]
+    },
+    {
+      "id": "grok-4.6",
+      "displayName": "Grok 4.6",
+      "family": "xAI",
+      "releaseDate": "2026-08-12",
+      "icon": "/provider-icons/xai.svg",
+      "aliases": [
+        { "provider": "xai", "name": "grok-4.6" }
+      ]
     }
   ]
 }
