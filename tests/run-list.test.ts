@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { compactModelName, runHasSgfFiles } from "../app/components/RunBrowser";
 
@@ -30,4 +31,15 @@ test("older indexes fall back to the embedded SGF contents", () => {
     runHasSgfFiles({ summary: {}, problems: [{ sgf: "(;SZ[19])" }] }),
     true,
   );
+});
+
+test("the server route provides one run-data snapshot to the client browser", async () => {
+  const [runBrowserSource, runsPageSource] = await Promise.all([
+    readFile(new URL("../app/components/RunBrowser.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/runs/page.tsx", import.meta.url), "utf8"),
+  ]);
+
+  assert.doesNotMatch(runBrowserSource, /runs\.generated\.json/);
+  assert.match(runsPageSource, /runs\.generated\.json/);
+  assert.match(runsPageSource, /<RunBrowser runs=/);
 });

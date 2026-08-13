@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import runData from "../data/runs.generated.json";
 import { GoBoard } from "./GoBoard";
 import {
   HumanReviewPanel,
@@ -96,7 +95,7 @@ interface GeneratedProblem {
   }>;
 }
 
-interface BenchmarkRun {
+export interface BenchmarkRun {
   runId: string;
   status: "failed" | "incomplete" | "needs_human_review";
   createdAt: string;
@@ -151,8 +150,6 @@ interface BenchmarkRun {
   problems: GeneratedProblem[];
 }
 
-const runs = runData as BenchmarkRun[];
-
 function humanDate(value: string) {
   const date = new Date(value);
   return Number.isNaN(date.getTime())
@@ -163,6 +160,7 @@ function humanDate(value: string) {
         day: "numeric",
         hour: "numeric",
         minute: "2-digit",
+        timeZone: "America/Los_Angeles",
       }).format(date);
 }
 
@@ -264,11 +262,9 @@ function defaultProblem(run: BenchmarkRun | undefined) {
   return run?.problems.find((problem) => problem.validation.valid && problem.sgf) ?? run?.problems[0];
 }
 
-function defaultRun() {
+function defaultRun(runs: readonly BenchmarkRun[]) {
   return runs.find((run) => run.problems.some((problem) => problem.validation.valid && problem.sgf)) ?? runs[0];
 }
-
-const fallbackRun = defaultRun();
 
 function humanCreditedProblemCount(run: BenchmarkRun) {
   return difficultyCappedHumanScore(run.problems).creditedProblems;
@@ -317,7 +313,8 @@ function rememberBrowserSelection(runId: string, problemFile: string) {
   );
 }
 
-export function RunBrowser() {
+export function RunBrowser({ runs }: { runs: readonly BenchmarkRun[] }) {
+  const fallbackRun = defaultRun(runs);
   const [selectedRunId, setSelectedRunId] = useState(fallbackRun?.runId ?? "");
   const run = runs.find((record) => record.runId === selectedRunId) ?? fallbackRun;
   const [selectedProblemFile, setSelectedProblemFile] = useState(defaultProblem(run)?.file ?? "");
@@ -427,7 +424,7 @@ export function RunBrowser() {
       setSelectedNodeId("n0");
     }, 0);
     return () => window.clearTimeout(selectionTimer);
-  }, []);
+  }, [fallbackRun, runs]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
