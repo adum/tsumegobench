@@ -45,6 +45,19 @@
       "bestRunCreatedAt": "2026-08-08T15:25:17.351170Z"
     },
     {
+      "id": "glm-5.2",
+      "displayName": "GLM-5.2",
+      "family": "Z.ai",
+      "releaseDate": "2026-06-16",
+      "icon": "/provider-icons/zai.png",
+      "score": 0,
+      "passedProblems": 0,
+      "problemCount": 10,
+      "runCount": 1,
+      "bestRunId": "2026-08-14T163232Z-openrouter-z-ai-glm-5-2-opencode",
+      "bestRunCreatedAt": "2026-08-14T16:32:35.579462Z"
+    },
+    {
       "id": "grok-4.5",
       "displayName": "Grok 4.5",
       "family": "xAI",

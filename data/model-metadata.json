@@ -50,6 +50,17 @@
       ]
     },
     {
+      "id": "glm-5.2",
+      "displayName": "GLM-5.2",
+      "family": "Z.ai",
+      "releaseDate": "2026-06-16",
+      "icon": "/provider-icons/zai.png",
+      "aliases": [
+        { "provider": "openrouter", "name": "z-ai/glm-5.2" },
+        { "provider": "openrouter", "name": "openrouter/z-ai/glm-5.2" }
+      ]
+    },
+    {
       "id": "grok-4.5",
       "displayName": "Grok 4.5",
       "family": "xAI",

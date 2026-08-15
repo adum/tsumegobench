@@ -180,6 +180,7 @@ function providerLabel(provider: string) {
   if (provider === "openai") return "OpenAI";
   if (provider === "anthropic") return "Anthropic";
   if (provider === "xai") return "xAI";
+  if (provider === "zai") return "Z.ai";
   if (provider === "opencode") return "OpenCode";
   return provider;
 }
@@ -188,6 +189,7 @@ const providerIconSources: Record<string, string> = {
   openai: "/provider-icons/openai.svg",
   anthropic: "/provider-icons/anthropic.svg",
   xai: "/provider-icons/xai.svg",
+  zai: "/provider-icons/zai.png",
   opencode: "/provider-icons/opencode.svg",
 };
 
@@ -195,8 +197,16 @@ function providerInitials(provider: string) {
   if (provider === "openai") return "OA";
   if (provider === "anthropic") return "A";
   if (provider === "xai") return "xAI";
+  if (provider === "zai") return "Z";
   if (provider === "opencode") return "OC";
   return provider.replace(/[^a-z0-9]/gi, "").slice(0, 2).toUpperCase() || "?";
+}
+
+function modelLab(provider: string, modelName: string) {
+  if (provider === "openrouter" && /(?:^|\/)z-ai\//.test(modelName)) {
+    return "zai";
+  }
+  return provider;
 }
 
 function ProviderMark({ provider }: { provider: string }) {
@@ -541,7 +551,7 @@ export function RunBrowser({ runs }: { runs: readonly BenchmarkRun[] }) {
                   aria-pressed={record.runId === run.runId}
                 >
                   <span className="run-provider-cell">
-                    <ProviderMark provider={record.model.provider} />
+                    <ProviderMark provider={modelLab(record.model.provider, record.model.name)} />
                     <span
                       className={`run-status-dot ${recordDisplayStatus}`}
                       role="img"
