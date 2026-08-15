@@ -5,6 +5,9 @@ import runsData from "../data/runs.generated.json";
 type ResultRun = {
   runId: string;
   createdAt: string;
+  model: {
+    reasoningEffort?: string | null;
+  };
   summary: {
     expectedProblems: number;
     structuralPassed: number;
@@ -23,6 +26,10 @@ function formatDate(value: string) {
 
 function scoreLabel(score: number) {
   return Number.isInteger(score) ? `${score}.0` : score.toFixed(1);
+}
+
+function effortLabel(effort?: string | null) {
+  return `${effort?.replaceAll("_", " ") ?? "default"} effort`;
 }
 
 export function ModelScoreChart() {
@@ -85,7 +92,12 @@ export function ModelScoreChart() {
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={model.icon} alt="" />
                       </span>
-                      <span><strong>{model.displayName}</strong><small>{model.family}</small></span>
+                      <span>
+                        <strong>{model.displayName}</strong>
+                        <small>
+                          {model.family} · {effortLabel(model.bestRun?.model.reasoningEffort)}
+                        </small>
+                      </span>
                     </Link>
                   </td>
                   <td className="model-result-score">

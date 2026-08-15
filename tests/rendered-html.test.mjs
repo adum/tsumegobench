@@ -86,6 +86,14 @@ test("server-renders a compact overview with route navigation", async () => {
   assert.match(html, /class="model-results-table"/);
   assert.match(html, /GPT-5\.6 Luna/);
   assert.match(html, /DeepSeek V4 Flash/);
+  const modelSummary = html.match(
+    /<table class="model-results-table">([\s\S]*?)<\/table>/,
+  );
+  assert.ok(modelSummary, "the model summary table should render");
+  assert.match(
+    modelSummary[1],
+    /Claude Fable 5[\s\S]*?Anthropic[\s\S]*?low effort/,
+  );
   assert.match(html, /src="\/provider-icons\/deepseek\.svg"/);
   assert.match(html, /src="\/provider-icons\/(?:openai|anthropic|xai)\.svg"/);
   assert.match(html, /Score definition/);
