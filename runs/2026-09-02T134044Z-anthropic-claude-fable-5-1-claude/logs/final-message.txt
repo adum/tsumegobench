@@ -1,0 +1,6 @@
+All ten final queries returned `clear`, and no file has been edited since its final result.
+
+The requested files were written:
+
+- `outputs/problem-01.sgf` through `outputs/problem-10.sgf`, each a single SGF collection on a 19×19 board with `AB`/`AW` setup, an alternating solution tree, and `C[RIGHT]` endpoints.
+- Every file received a final `clear` originality result (`originality/results/problem-0N-final.json`); 15 queries remain unused.

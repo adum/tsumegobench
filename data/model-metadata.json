@@ -50,6 +50,17 @@
       ]
     },
     {
+      "id": "claude-fable-5.1",
+      "displayName": "Claude Fable 5.1",
+      "family": "Anthropic",
+      "releaseDate": "2026-09-02",
+      "icon": "/provider-icons/anthropic.svg",
+      "aliases": [
+        { "provider": "anthropic", "name": "fable-5-1" },
+        { "provider": "anthropic", "name": "claude-fable-5-1" }
+      ]
+    },
+    {
       "id": "glm-5.2",
       "displayName": "GLM-5.2",
       "family": "Z.ai",

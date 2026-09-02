@@ -173,6 +173,19 @@
       "runCount": 1,
       "bestRunId": "2026-08-12T215117Z-xai-grok-4-6-grok",
       "bestRunCreatedAt": "2026-08-12T21:51:19.704345Z"
+    },
+    {
+      "id": "claude-fable-5.1",
+      "displayName": "Claude Fable 5.1",
+      "family": "Anthropic",
+      "releaseDate": "2026-09-02",
+      "icon": "/provider-icons/anthropic.svg",
+      "score": 2,
+      "passedProblems": 2,
+      "problemCount": 10,
+      "runCount": 1,
+      "bestRunId": "2026-09-02T134044Z-anthropic-claude-fable-5-1-claude",
+      "bestRunCreatedAt": "2026-09-02T13:40:44.306048Z"
     }
   ],
   "unmatchedModels": []
