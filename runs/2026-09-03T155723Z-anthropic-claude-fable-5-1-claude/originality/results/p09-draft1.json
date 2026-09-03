@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p09-draft1",
+  "path": "outputs/problem-09.sgf",
+  "queryNumber": 22,
+  "queriesRemaining": 28,
+  "checkedAt": "2026-09-03T18:02:47.675Z",
+  "status": "invalid",
+  "candidateSha256": "dfab99f3a0e2cc93cc894d2902710bf32dbda6ea8d49d5f22156d216dc16b25a",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "occupied-move",
+      "message": "B[db] plays on an occupied intersection."
+    },
+    {
+      "code": "suicide-move",
+      "message": "B[aa] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[db] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[db] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[db] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[db] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "W[db] plays on an occupied intersection."
+    },
+    {
+      "code": "occupied-move",
+      "message": "B[db] plays on an occupied intersection."
+    }
+  ]
+}

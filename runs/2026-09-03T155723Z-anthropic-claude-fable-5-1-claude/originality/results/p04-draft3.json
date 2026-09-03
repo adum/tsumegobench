@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p04-draft3",
+  "path": "outputs/problem-04.sgf",
+  "queryNumber": 10,
+  "queriesRemaining": 40,
+  "checkedAt": "2026-09-03T17:15:36.492Z",
+  "status": "invalid",
+  "candidateSha256": "7af59ad549f74862b312ccf7290248603e97052565e20e33807f9649b86e33cc",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "suicide-move",
+      "message": "B[ga] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "suicide-move",
+      "message": "B[gb] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "suicide-move",
+      "message": "B[ea] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "suicide-move",
+      "message": "B[gb] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "suicide-move",
+      "message": "B[ga] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "suicide-move",
+      "message": "B[ea] is suicide under ordinary Go rules."
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "requestId": "p04-probe1",
+  "path": "outputs/problem-04.sgf",
+  "queryNumber": 6,
+  "queriesRemaining": 44,
+  "checkedAt": "2026-09-03T17:01:06.560Z",
+  "status": "invalid",
+  "candidateSha256": "40ea14d7fe12a509838cb8aacab0d4fb439fe9fb2e444b8e3ce0ea797cb874a2",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "suicide-move",
+      "message": "W[ss] is suicide under ordinary Go rules."
+    },
+    {
+      "code": "suicide-move",
+      "message": "W[qs] is suicide under ordinary Go rules."
+    }
+  ]
+}

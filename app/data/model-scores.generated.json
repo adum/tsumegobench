@@ -183,9 +183,9 @@
       "score": 2,
       "passedProblems": 2,
       "problemCount": 10,
-      "runCount": 1,
-      "bestRunId": "2026-09-02T134044Z-anthropic-claude-fable-5-1-claude",
-      "bestRunCreatedAt": "2026-09-02T13:40:44.306048Z"
+      "runCount": 2,
+      "bestRunId": "2026-09-03T155723Z-anthropic-claude-fable-5-1-claude",
+      "bestRunCreatedAt": "2026-09-03T15:57:23.293354Z"
     }
   ],
   "unmatchedModels": []

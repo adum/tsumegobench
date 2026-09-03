@@ -1,0 +1,9 @@
+(;SZ[19]FF[4]GM[1]CA[UTF-8]AW[ob][oc][pa][pb][pc][qb][qc][rc][sc]AB[na][nb][nc][od][pd][qd][rd][sd][sb]
+(;B[ra]
+(;W[qa]
+(;B[rb];W[sa];B[rb]C[RIGHT])
+(;B[sa];W[rb];B[sa]C[RIGHT]))
+(;W[rb];B[sa];W[qa];B[sa]C[RIGHT]))
+(;B[rb];W[ra])
+(;B[sa];W[ra])
+(;B[qa];W[ra]))
