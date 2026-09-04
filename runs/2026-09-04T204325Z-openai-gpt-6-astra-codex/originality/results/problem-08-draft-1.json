@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "requestId": "problem-08-draft-1",
+  "path": "outputs/problem-08.sgf",
+  "queryNumber": 11,
+  "queriesRemaining": 39,
+  "checkedAt": "2026-09-04T20:53:21.307Z",
+  "status": "invalid",
+  "candidateSha256": "b6951adac0bf752db77e3bda9744fd9e9813d0e91e176dae92a378f41346ee51",
+  "cachedRemote": false,
+  "local": null,
+  "goProblems": null,
+  "errors": [
+    {
+      "code": "missing-right",
+      "message": "Duplicate checking requires at least one accepted solution path ending in C[RIGHT]."
+    }
+  ]
+}

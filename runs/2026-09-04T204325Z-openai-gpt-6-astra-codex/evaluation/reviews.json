@@ -1,0 +1,126 @@
+{
+  "$schema": "../../../schemas/human-reviews.schema.json",
+  "schemaVersion": 1,
+  "runId": "2026-09-04T204325Z-openai-gpt-6-astra-codex",
+  "updatedAt": "2026-09-04T21:39:11.295024Z",
+  "reviews": [
+    {
+      "reviewId": "d035da63-2ce1-4306-a4e4-24b543b28166",
+      "reviewerName": "Adam",
+      "createdAt": "2026-09-04T21:33:20.349Z",
+      "updatedAt": "2026-09-04T21:39:11.295024Z",
+      "problems": [
+        {
+          "file": "problem-01.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": null,
+          "reviewedAt": "2026-09-04T21:33:23.950Z"
+        },
+        {
+          "file": "problem-02.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-04T21:33:42.548Z"
+        },
+        {
+          "file": "problem-03.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-04T21:34:03.383Z"
+        },
+        {
+          "file": "problem-04.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-04T21:34:58.332Z"
+        },
+        {
+          "file": "problem-05.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-04T21:35:38.700Z"
+        },
+        {
+          "file": "problem-06.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-04T21:36:00.866Z"
+        },
+        {
+          "file": "problem-07.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-04T21:36:46.267Z"
+        },
+        {
+          "file": "problem-08.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-04T21:37:34.117Z"
+        },
+        {
+          "file": "problem-09.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-04T21:38:23.800Z"
+        },
+        {
+          "file": "problem-10.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-04T21:39:11.284Z"
+        }
+      ]
+    }
+  ]
+}

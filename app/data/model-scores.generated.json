@@ -186,6 +186,19 @@
       "runCount": 2,
       "bestRunId": "2026-09-03T155723Z-anthropic-claude-fable-5-1-claude",
       "bestRunCreatedAt": "2026-09-03T15:57:23.293354Z"
+    },
+    {
+      "id": "gpt-6-astra",
+      "displayName": "GPT-6 Astra",
+      "family": "OpenAI",
+      "releaseDate": "2026-09-04",
+      "icon": "/provider-icons/openai.svg",
+      "score": 1,
+      "passedProblems": 1,
+      "problemCount": 10,
+      "runCount": 1,
+      "bestRunId": "2026-09-04T204325Z-openai-gpt-6-astra-codex",
+      "bestRunCreatedAt": "2026-09-04T20:43:25.063308Z"
     }
   ],
   "unmatchedModels": []

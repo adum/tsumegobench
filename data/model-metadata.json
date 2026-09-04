@@ -102,6 +102,16 @@
       ]
     },
     {
+      "id": "gpt-6-astra",
+      "displayName": "GPT-6 Astra",
+      "family": "OpenAI",
+      "releaseDate": "2026-09-04",
+      "icon": "/provider-icons/openai.svg",
+      "aliases": [
+        { "provider": "openai", "name": "gpt-6-astra" }
+      ]
+    },
+    {
       "id": "kimi-k3",
       "displayName": "Kimi K3",
       "family": "Kimi",
