@@ -3423,9 +3423,12 @@ def _run_command(args: argparse.Namespace) -> int:
     if originality_broker is not None:
         broker_exit_code = stop_originality_broker(run_dir, originality_broker)
         if broker_exit_code:
-            broker_error = (run_dir / "logs" / "originality-broker-stderr.txt").read_text(
-                encoding="utf-8"
-            ).strip()
+            broker_stderr_path = run_dir / "logs" / "originality-broker-stderr.txt"
+            broker_error = (
+                broker_stderr_path.read_text(encoding="utf-8").strip()
+                if broker_stderr_path.exists()
+                else ""
+            )
             print(
                 f"Originality tool exited with status {broker_exit_code}"
                 f"{f': {broker_error}' if broker_error else '.'}",
