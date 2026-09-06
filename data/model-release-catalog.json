@@ -80,6 +80,22 @@
       "openWeights": false,
       "source": "https://openrouter.ai/x-ai/grok-4.6",
       "sourceNote": "Release date derived from the first public API availability and successful benchmark run because this version postdates the Puzzle Runner snapshot."
+    },
+    {
+      "family": "Claude",
+      "name": "Claude Fable 5.1",
+      "releaseDate": "2026-09-02",
+      "origin": "America",
+      "openWeights": false,
+      "sourceNote": "Locally maintained because this version postdates the imported Puzzle Runner snapshot."
+    },
+    {
+      "family": "ChatGPT / Codex",
+      "name": "GPT-6 Astra",
+      "releaseDate": "2026-09-04",
+      "origin": "America",
+      "openWeights": false,
+      "sourceNote": "Locally maintained because this version postdates the imported Puzzle Runner snapshot."
     }
   ]
 }
