@@ -1,0 +1,622 @@
+{
+  "name": "Canonical life-and-death reference corpus",
+  "description": "Twenty public GoProblems examples on explicit 19×19 boards, distributed evenly from 30 kyu through 1 dan and verified as canonical, standard, and life-and-death when synchronized. Root instructions are removed so the position and side to move stand on their own.",
+  "boardSize": 19,
+  "difficultyRange": "30 kyu to 1 dan",
+  "difficultyBands": {
+    "20-30 kyu": 4,
+    "10-19 kyu": 4,
+    "5-9 kyu": 4,
+    "1-4 kyu": 4,
+    "1 dan": 4
+  },
+  "source": "https://www.goproblems.com",
+  "sourceGuidance": [
+    "https://www.goproblems.com/article/problemtypes",
+    "https://www.goproblems.com/article/constructionbasics",
+    "https://www.goproblems.com/article/bestpractices"
+  ],
+  "count": 20,
+  "problems": [
+    {
+      "id": 53750,
+      "label": "Reference #53750",
+      "rank": "30 kyu",
+      "rankValue": 30,
+      "rankUnit": "kyu",
+      "elo": 532,
+      "playerColor": "white",
+      "genre": "life and death",
+      "author": "adum",
+      "source": "Not listed",
+      "createdAt": "2025-12-16T18:27:54+00:00",
+      "rating": {
+        "stars": 4,
+        "votes": 3,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 219,
+        "failed": 22,
+        "tries": 241,
+        "speedSolved": 90,
+        "speedPlay": 218
+      },
+      "avgSolveTimeSeconds": 13,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/53750",
+      "sgfFile": "examples/canonical-life-and-death/gp-53750.sgf"
+    },
+    {
+      "id": 18843,
+      "label": "Reference #18843",
+      "rank": "26 kyu",
+      "rankValue": 26,
+      "rankUnit": "kyu",
+      "elo": 814,
+      "playerColor": "black",
+      "genre": "life and death",
+      "author": "vougalar",
+      "source": "Encyclopedia of Life and Death",
+      "createdAt": "2014-12-24T14:23:31+00:00",
+      "rating": {
+        "stars": 3.9,
+        "votes": 10,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 3568,
+        "failed": 1906,
+        "tries": 5474,
+        "speedSolved": 73,
+        "speedPlay": 86
+      },
+      "avgSolveTimeSeconds": 25,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/18843",
+      "sgfFile": "examples/canonical-life-and-death/gp-18843.sgf"
+    },
+    {
+      "id": 5849,
+      "label": "Reference #5849",
+      "rank": "25 kyu",
+      "rankValue": 25,
+      "rankUnit": "kyu",
+      "elo": 854,
+      "playerColor": "black",
+      "genre": "life and death",
+      "author": "maba",
+      "source": "a game",
+      "createdAt": "2005-01-18T06:43:43+00:00",
+      "rating": {
+        "stars": 3.9,
+        "votes": 31,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 30428,
+        "failed": 12690,
+        "tries": 43118,
+        "speedSolved": 40,
+        "speedPlay": 101
+      },
+      "avgSolveTimeSeconds": 22,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/5849",
+      "sgfFile": "examples/canonical-life-and-death/gp-5849.sgf"
+    },
+    {
+      "id": 5973,
+      "label": "Reference #5973",
+      "rank": "21 kyu",
+      "rankValue": 21,
+      "rankUnit": "kyu",
+      "elo": 973,
+      "playerColor": "black",
+      "genre": "life and death",
+      "author": "maba",
+      "source": "a game",
+      "createdAt": "2005-02-17T06:12:23+00:00",
+      "rating": {
+        "stars": 4,
+        "votes": 31,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 14033,
+        "failed": 11513,
+        "tries": 25546,
+        "speedSolved": 6,
+        "speedPlay": 65
+      },
+      "avgSolveTimeSeconds": 33,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/5973",
+      "sgfFile": "examples/canonical-life-and-death/gp-5973.sgf"
+    },
+    {
+      "id": 39693,
+      "label": "Reference #39693",
+      "rank": "18 kyu",
+      "rankValue": 18,
+      "rankUnit": "kyu",
+      "elo": 1036,
+      "playerColor": "black",
+      "genre": "life and death",
+      "author": "seeker1987",
+      "source": "Not listed",
+      "createdAt": "2024-11-08T10:46:52+00:00",
+      "rating": {
+        "stars": 3,
+        "votes": 1,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 256,
+        "failed": 60,
+        "tries": 316,
+        "speedSolved": 13,
+        "speedPlay": 85
+      },
+      "avgSolveTimeSeconds": 203,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/39693",
+      "sgfFile": "examples/canonical-life-and-death/gp-39693.sgf"
+    },
+    {
+      "id": 5844,
+      "label": "Reference #5844",
+      "rank": "17 kyu",
+      "rankValue": 17,
+      "rankUnit": "kyu",
+      "elo": 1087,
+      "playerColor": "black",
+      "genre": "life and death",
+      "author": "chtito",
+      "source": "1001 Life and Death - 291",
+      "createdAt": "2005-01-17T13:27:35+00:00",
+      "rating": {
+        "stars": 4.6,
+        "votes": 30,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 6661,
+        "failed": 8541,
+        "tries": 15202,
+        "speedSolved": 15,
+        "speedPlay": 31
+      },
+      "avgSolveTimeSeconds": 36,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/5844",
+      "sgfFile": "examples/canonical-life-and-death/gp-5844.sgf"
+    },
+    {
+      "id": 5922,
+      "label": "Reference #5922",
+      "rank": "16 kyu",
+      "rankValue": 16,
+      "rankUnit": "kyu",
+      "elo": 1103,
+      "playerColor": "white",
+      "genre": "life and death",
+      "author": "Lok",
+      "source": "problem 5921",
+      "createdAt": "2005-02-09T11:10:30+00:00",
+      "rating": {
+        "stars": 3.9,
+        "votes": 25,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 5944,
+        "failed": 7652,
+        "tries": 13596,
+        "speedSolved": 11,
+        "speedPlay": 21
+      },
+      "avgSolveTimeSeconds": 39,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/5922",
+      "sgfFile": "examples/canonical-life-and-death/gp-5922.sgf"
+    },
+    {
+      "id": 10507,
+      "label": "Reference #10507",
+      "rank": "13 kyu",
+      "rankValue": 13,
+      "rankUnit": "kyu",
+      "elo": 1190,
+      "playerColor": "white",
+      "genre": "life and death",
+      "author": "Cyrael",
+      "source": "Educational Go",
+      "createdAt": "2007-10-18T05:54:18+00:00",
+      "rating": {
+        "stars": 4.2,
+        "votes": 22,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 1771,
+        "failed": 3122,
+        "tries": 4893,
+        "speedSolved": 2,
+        "speedPlay": 20
+      },
+      "avgSolveTimeSeconds": 44,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/10507",
+      "sgfFile": "examples/canonical-life-and-death/gp-10507.sgf"
+    },
+    {
+      "id": 10330,
+      "label": "Reference #10330",
+      "rank": "9 kyu",
+      "rankValue": 9,
+      "rankUnit": "kyu",
+      "elo": 1315,
+      "playerColor": "black",
+      "genre": "life and death",
+      "author": "marwin",
+      "source": "Chinese book",
+      "createdAt": "2007-09-07T06:52:11+00:00",
+      "rating": {
+        "stars": 4.5,
+        "votes": 33,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 1306,
+        "failed": 2035,
+        "tries": 3341,
+        "speedSolved": 2,
+        "speedPlay": 4
+      },
+      "avgSolveTimeSeconds": 70,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/10330",
+      "sgfFile": "examples/canonical-life-and-death/gp-10330.sgf"
+    },
+    {
+      "id": 16482,
+      "label": "Reference #16482",
+      "rank": "8 kyu",
+      "rankValue": 8,
+      "rankUnit": "kyu",
+      "elo": 1331,
+      "playerColor": "white",
+      "genre": "life and death",
+      "author": "santa c",
+      "source": "Not listed",
+      "createdAt": "2012-09-24T09:16:25+00:00",
+      "rating": {
+        "stars": 4.6,
+        "votes": 20,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 1097,
+        "failed": 1767,
+        "tries": 2864,
+        "speedSolved": 3,
+        "speedPlay": 6
+      },
+      "avgSolveTimeSeconds": 118,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/16482",
+      "sgfFile": "examples/canonical-life-and-death/gp-16482.sgf"
+    },
+    {
+      "id": 8142,
+      "label": "Reference #8142",
+      "rank": "8 kyu",
+      "rankValue": 8,
+      "rankUnit": "kyu",
+      "elo": 1331,
+      "playerColor": "white",
+      "genre": "life and death",
+      "author": "huhss",
+      "source": "newspaper",
+      "createdAt": "2006-02-21T02:10:03+00:00",
+      "rating": {
+        "stars": 4.4,
+        "votes": 20,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 1680,
+        "failed": 2646,
+        "tries": 4326,
+        "speedSolved": 1,
+        "speedPlay": 6
+      },
+      "avgSolveTimeSeconds": 77,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/8142",
+      "sgfFile": "examples/canonical-life-and-death/gp-8142.sgf"
+    },
+    {
+      "id": 19150,
+      "label": "Reference #19150",
+      "rank": "6 kyu",
+      "rankValue": 6,
+      "rankUnit": "kyu",
+      "elo": 1396,
+      "playerColor": "black",
+      "genre": "life and death",
+      "author": "nr42",
+      "source": "Weiqi Life and Death Drills - beginner",
+      "createdAt": "2015-03-03T10:38:52+00:00",
+      "rating": {
+        "stars": 4.5,
+        "votes": 12,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 492,
+        "failed": 983,
+        "tries": 1475,
+        "speedSolved": 3,
+        "speedPlay": 32
+      },
+      "avgSolveTimeSeconds": 56,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/19150",
+      "sgfFile": "examples/canonical-life-and-death/gp-19150.sgf"
+    },
+    {
+      "id": 36582,
+      "label": "Reference #36582",
+      "rank": "4 kyu",
+      "rankValue": 4,
+      "rankUnit": "kyu",
+      "elo": 1428,
+      "playerColor": "white",
+      "genre": "life and death",
+      "author": "Andjey44",
+      "source": "Not listed",
+      "createdAt": "2024-09-11T15:38:37+00:00",
+      "rating": {
+        "stars": 4.6,
+        "votes": 3,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 29,
+        "failed": 69,
+        "tries": 98,
+        "speedSolved": 2,
+        "speedPlay": 9
+      },
+      "avgSolveTimeSeconds": 37,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/36582",
+      "sgfFile": "examples/canonical-life-and-death/gp-36582.sgf"
+    },
+    {
+      "id": 32711,
+      "label": "Reference #32711",
+      "rank": "3 kyu",
+      "rankValue": 3,
+      "rankUnit": "kyu",
+      "elo": 1456,
+      "playerColor": "black",
+      "genre": "life and death",
+      "author": "seeker1987",
+      "source": "Not listed",
+      "createdAt": "2024-07-16T12:13:20+00:00",
+      "rating": {
+        "stars": 4.6,
+        "votes": 3,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 37,
+        "failed": 91,
+        "tries": 128,
+        "speedSolved": 3,
+        "speedPlay": 4
+      },
+      "avgSolveTimeSeconds": 24,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/32711",
+      "sgfFile": "examples/canonical-life-and-death/gp-32711.sgf"
+    },
+    {
+      "id": 28281,
+      "label": "Reference #28281",
+      "rank": "2 kyu",
+      "rankValue": 2,
+      "rankUnit": "kyu",
+      "elo": 1484,
+      "playerColor": "black",
+      "genre": "life and death",
+      "author": "seeker1987",
+      "source": "Not listed",
+      "createdAt": "2024-05-06T10:39:21+00:00",
+      "rating": {
+        "stars": 4.5,
+        "votes": 2,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 29,
+        "failed": 55,
+        "tries": 84,
+        "speedSolved": 2,
+        "speedPlay": 1
+      },
+      "avgSolveTimeSeconds": 952,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/28281",
+      "sgfFile": "examples/canonical-life-and-death/gp-28281.sgf"
+    },
+    {
+      "id": 721,
+      "label": "Reference #721",
+      "rank": "1 kyu",
+      "rankValue": 1,
+      "rankUnit": "kyu",
+      "elo": 1539,
+      "playerColor": "black",
+      "genre": "life and death",
+      "author": "unkx80",
+      "source": "Not listed",
+      "createdAt": "2001-06-13T20:35:41+00:00",
+      "rating": {
+        "stars": 4.7,
+        "votes": 11,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 927,
+        "failed": 4037,
+        "tries": 4964,
+        "speedSolved": 1,
+        "speedPlay": 1
+      },
+      "avgSolveTimeSeconds": 57,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/721",
+      "sgfFile": "examples/canonical-life-and-death/gp-721.sgf"
+    },
+    {
+      "id": 17778,
+      "label": "Reference #17778",
+      "rank": "1 dan",
+      "rankValue": 1,
+      "rankUnit": "dan",
+      "elo": 1563,
+      "playerColor": "black",
+      "genre": "life and death",
+      "author": "mountain root",
+      "source": "Not listed",
+      "createdAt": "2014-06-12T01:49:04+00:00",
+      "rating": {
+        "stars": 4.8,
+        "votes": 20,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 304,
+        "failed": 746,
+        "tries": 1050,
+        "speedSolved": 4,
+        "speedPlay": 5
+      },
+      "avgSolveTimeSeconds": 115,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/17778",
+      "sgfFile": "examples/canonical-life-and-death/gp-17778.sgf"
+    },
+    {
+      "id": 20284,
+      "label": "Reference #20284",
+      "rank": "1 dan",
+      "rankValue": 1,
+      "rankUnit": "dan",
+      "elo": 1548,
+      "playerColor": "white",
+      "genre": "life and death",
+      "author": "vougalar",
+      "source": "Yi Ch'ang-ho's Selected Life and Death Go Problems",
+      "createdAt": "2015-09-20T14:12:44+00:00",
+      "rating": {
+        "stars": 4.6,
+        "votes": 6,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 172,
+        "failed": 257,
+        "tries": 429,
+        "speedSolved": 1,
+        "speedPlay": 2
+      },
+      "avgSolveTimeSeconds": 86,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/20284",
+      "sgfFile": "examples/canonical-life-and-death/gp-20284.sgf"
+    },
+    {
+      "id": 38368,
+      "label": "Reference #38368",
+      "rank": "1 dan",
+      "rankValue": 1,
+      "rankUnit": "dan",
+      "elo": 1540,
+      "playerColor": "white",
+      "genre": "life and death",
+      "author": "seeker1987",
+      "source": "Not listed",
+      "createdAt": "2024-10-18T08:05:58+00:00",
+      "rating": {
+        "stars": 4,
+        "votes": 1,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 10,
+        "failed": 27,
+        "tries": 37,
+        "speedSolved": 1,
+        "speedPlay": 5
+      },
+      "avgSolveTimeSeconds": 18,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/38368",
+      "sgfFile": "examples/canonical-life-and-death/gp-38368.sgf"
+    },
+    {
+      "id": 1311,
+      "label": "Reference #1311",
+      "rank": "1 dan",
+      "rankValue": 1,
+      "rankUnit": "dan",
+      "elo": 1557,
+      "playerColor": "black",
+      "genre": "life and death",
+      "author": "gecko",
+      "source": "Not listed",
+      "createdAt": "2002-02-02T03:36:41+00:00",
+      "rating": {
+        "stars": 4.4,
+        "votes": 7,
+        "currentUserVote": null
+      },
+      "attempts": {
+        "solved": 708,
+        "failed": 3550,
+        "tries": 4258,
+        "speedSolved": 4,
+        "speedPlay": 7
+      },
+      "avgSolveTimeSeconds": 57,
+      "canonical": true,
+      "standard": true,
+      "sourceUrl": "https://www.goproblems.com/problems/1311",
+      "sgfFile": "examples/canonical-life-and-death/gp-1311.sgf"
+    }
+  ]
+}

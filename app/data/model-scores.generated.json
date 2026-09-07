@@ -193,12 +193,12 @@
       "family": "OpenAI",
       "releaseDate": "2026-09-04",
       "icon": "/provider-icons/openai.svg",
-      "score": 1,
-      "passedProblems": 1,
+      "score": 2,
+      "passedProblems": 2,
       "problemCount": 10,
-      "runCount": 1,
-      "bestRunId": "2026-09-04T204325Z-openai-gpt-6-astra-codex",
-      "bestRunCreatedAt": "2026-09-04T20:43:25.063308Z"
+      "runCount": 2,
+      "bestRunId": "2026-09-07T081751Z-openai-gpt-6-astra-codex",
+      "bestRunCreatedAt": "2026-09-07T08:17:51.797171Z"
     }
   ],
   "unmatchedModels": []
