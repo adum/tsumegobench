@@ -64,6 +64,15 @@
   ],
   "localAdditions": [
     {
+      "family": "Claude",
+      "name": "Claude Opus 5.5",
+      "releaseDate": "2026-09-22",
+      "origin": "America",
+      "openWeights": false,
+      "source": "https://www.anthropic.com/claude-opus-5-5",
+      "sourceNote": "Anthropic's official launch announcement, dated September 22, 2026."
+    },
+    {
       "family": "Meta",
       "name": "Muse Spark 1.2",
       "releaseDate": "2026-08-05",

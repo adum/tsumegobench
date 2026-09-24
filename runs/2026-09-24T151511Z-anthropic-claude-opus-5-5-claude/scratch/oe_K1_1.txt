@@ -1,0 +1,20 @@
+FOUND depth 1 wins ['bd'] nodes 31 7 busy 14 wrong 7
+   a b c d e f g h
+a  . . X X X O . .
+b  . O . X X O . .
+c  O . O X X O . .
+d  . . . X X O . .
+e  X X X X O . . .
+f  O O O O . . . .
+g  . . . . . . . .
+TREE (bd (aa ba R)(ba bc (aa cb (ab (ad R)(cd R))(ad ab R))(ab cb (aa (ad R)(cd R))(ad aa R))))(aa ba)(ba bd)(ab ba)(cb ba)(bc bd)(ad ba)
+FOUND depth 1 wins ['bc'] nodes 22 5 busy 14 wrong 5
+   a b c d e f g h
+a  O O . . X O . .
+b  . . O O X O . .
+c  O . X O X O . .
+d  . X X X X O . .
+e  X X X X O . . .
+f  O O O O . . . .
+g  . . . . . . . .
+TREE (bc (ca da (ab)(bb ab R))(da bb (ca ab R)(ab ca R)))(ca bb)(da bc)(ab da)(bb bc)(ad da)

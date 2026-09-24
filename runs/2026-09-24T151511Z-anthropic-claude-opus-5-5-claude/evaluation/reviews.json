@@ -1,0 +1,126 @@
+{
+  "$schema": "../../../schemas/human-reviews.schema.json",
+  "schemaVersion": 1,
+  "runId": "2026-09-24T151511Z-anthropic-claude-opus-5-5-claude",
+  "updatedAt": "2026-09-24T23:19:52.226278Z",
+  "reviews": [
+    {
+      "reviewId": "b111dff8-0cbd-4a99-a40a-9e4b0102dcd1",
+      "reviewerName": "Adam",
+      "createdAt": "2026-09-24T23:16:40.923Z",
+      "updatedAt": "2026-09-24T23:19:52.226278Z",
+      "problems": [
+        {
+          "file": "problem-01.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "10-19 kyu",
+          "quality": 3,
+          "reviewedAt": "2026-09-24T23:17:55.407Z"
+        },
+        {
+          "file": "problem-02.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-24T23:18:13.806Z"
+        },
+        {
+          "file": "problem-03.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-24T23:18:56.489Z"
+        },
+        {
+          "file": "problem-04.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-24T23:19:29.307Z"
+        },
+        {
+          "file": "problem-05.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-09-24T23:19:52.222Z"
+        },
+        {
+          "file": "problem-06.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-07.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-08.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-09.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        },
+        {
+          "file": "problem-10.sgf",
+          "status": "pending",
+          "valid": null,
+          "realistic": null,
+          "duplicate": null,
+          "wellPathed": null,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": null
+        }
+      ]
+    }
+  ]
+}

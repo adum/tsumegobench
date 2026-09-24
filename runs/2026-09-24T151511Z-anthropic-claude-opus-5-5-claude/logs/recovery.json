@@ -1,0 +1,15 @@
+{
+  "recoveredAt": "2026-09-24T23:11:56.709629Z",
+  "reason": "Operator stopped generation after runaway Python helpers. Recovered partial run for human review.",
+  "originalityAuditSource": "Eight broker responses in originality/results, protected from model writes by the snapshotted Claude sandbox policy. Original private audit was not retained.",
+  "outputSha256": {
+    "problem-01.sgf": "3ba11f16d59f82b90823e4f7fe2b1df3438383f4bd87e8760c0719d31c8eb5df",
+    "problem-02.sgf": "6fec99577c660b29f1545d5e0bae1207f1a70a8540b5a53697eff1eaeefb6918",
+    "problem-03.sgf": "0ab21a3ebf3d238ce5e0162742dfccb7c53c12c33f70127a116eb19fcd34ae74",
+    "problem-04.sgf": "c4a743ec26ba88de393646e65e1e51c576306baa9f0b02d32c531c787c593f57",
+    "problem-05.sgf": "f73e80cda0b86eee1063ff7165ceab35011dc39f635a9863d8e6d567ab613593",
+    "problem-07.sgf": "ed23174e4d1fe95d8eff4969427f06b9fc47f9958e0eecd54f1400bcb0a533fc"
+  },
+  "orphanedPythonWorkersStopped": 49,
+  "originalExitCodeKnown": false
+}

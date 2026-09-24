@@ -1,0 +1,8 @@
+FOUND depth 13 wins ['fa'] XXX.
+   a b c d e f g h i j k
+a  . O . . . . . . O . .
+b  . O X X X . X X O . .
+c  . O X X . X X O . . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+f  . . . . . . . . . . .

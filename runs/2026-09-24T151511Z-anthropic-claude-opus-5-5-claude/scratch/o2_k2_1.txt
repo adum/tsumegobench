@@ -1,0 +1,81 @@
+FOUND depth 11 wins ['da', 'ae'] .OXX.O
+   a b c d e f g
+a  . . . . O . .
+b  O . X X O . .
+c  . X X O O . .
+d  . X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 9 wins ['ab', 'bb'] ..X.XO
+   a b c d e f g
+a  . . . . O . .
+b  . . X X O . .
+c  . . X O O . .
+d  X X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 13 wins ['ab', 'cb'] ...X.O
+   a b c d e f g
+a  . . . . O . .
+b  . . . X O . .
+c  . X X O O . .
+d  . X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 9 wins ['ab'] ...XXO
+   a b c d e f g
+a  . . . . O . .
+b  . . . X O . .
+c  . X X O O . .
+d  X X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 13 wins ['ba'] XOXXXO
+   a b c d e f g
+a  . . . X O . .
+b  O . X X O . .
+c  . X X O O . .
+d  X X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 11 wins ['ba', 'cb'] XO.XX.
+   a b c d e f g
+a  . . . X O . .
+b  O . . X O . .
+c  . X X O O . .
+d  X X O . . . .
+e  . X O . . . .
+f  . O . . . . .
+g  . . . . . . .
+FOUND depth 13 wins ['ab', 'bc'] ..X..O
+   a b c d e f g
+a  . . . . O . .
+b  . . X X O . .
+c  . . X O O . .
+d  . X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 9 wins ['cb'] XO.X.O
+   a b c d e f g
+a  . . . X O . .
+b  O . . X O . .
+c  . X X O O . .
+d  . X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 11 wins ['bb', 'af'] .OX.X.
+   a b c d e f g
+a  . . . . O . .
+b  O . X X O . .
+c  . . X O O . .
+d  X X O . . . .
+e  . X O . . . .
+f  . O . . . . .
+g  . . . . . . .

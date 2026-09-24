@@ -7,6 +7,17 @@
   },
   "models": [
     {
+      "id": "claude-opus-5.5",
+      "displayName": "Claude Opus 5.5",
+      "family": "Anthropic",
+      "releaseDate": "2026-09-22",
+      "icon": "/provider-icons/anthropic.svg",
+      "aliases": [
+        { "provider": "anthropic", "name": "claude-opus-5-5" },
+        { "provider": "anthropic", "name": "opus-5.5" }
+      ]
+    },
+    {
       "id": "gpt-5.5",
       "displayName": "GPT-5.5 (Codex)",
       "family": "OpenAI",

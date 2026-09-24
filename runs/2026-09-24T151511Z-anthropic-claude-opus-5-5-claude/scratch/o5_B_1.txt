@@ -1,0 +1,20 @@
+TREE 13 2 (bc R)(aa da)(ba bc)(da bc)(ea ba)(ab bc)(eb bc)
+FOUND depth 5 wins ['bc'] O.OOOO.
+   a b c d e f g h i
+a  . . O . . X O . .
+b  . O X X . X O . .
+c  . . X O X O O . .
+d  O X O O O . . . .
+e  . X O . . . . . .
+f  O . O . . . . . .
+g  . . . . . . . . .
+TREE 22 5 (ab R)(bc (aa ba R)(ba aa (da ab R)(ab eb R)))(aa ab)(ba ab)(da ab)(eb bc)(ac ba)(ae ab)
+FOUND depth 5 wins ['ab', 'bc'] XOOXXOO
+   a b c d e f g h i
+a  . . X . O X O . .
+b  . O X X . X O . .
+c  . . X X X O O . .
+d  X X O O O . . . .
+e  . X O . . . . . .
+f  O O O . . . . . .
+g  . . . . . . . . .

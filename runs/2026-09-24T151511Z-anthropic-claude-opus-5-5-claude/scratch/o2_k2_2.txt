@@ -1,0 +1,108 @@
+FOUND depth 17 wins ['ab'] ..X.XO
+   a b c d e f g
+a  . . . . O . .
+b  . . X X O . .
+c  . . X O O . .
+d  X X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 23 wins ['ba', 'bc'] X.X..O
+   a b c d e f g
+a  . . . X O . .
+b  . . X X O . .
+c  . . X O O . .
+d  . X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 23 wins ['ab'] ..XXXO
+   a b c d e f g
+a  . . . . O . .
+b  . . X X O . .
+c  . X X O O . .
+d  X X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 21 wins ['ba'] XOXXXO
+   a b c d e f g
+a  . . . X O . .
+b  O . X X O . .
+c  . X X O O . .
+d  X X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 19 wins ['cb'] X..X..
+   a b c d e f g
+a  . . . X O . .
+b  . . . X O . .
+c  . X X O O . .
+d  . X O . . . .
+e  . X O . . . .
+f  . O . . . . .
+g  . . . . . . .
+FOUND depth 23 wins ['ab'] X.X.XO
+   a b c d e f g
+a  . . . X O . .
+b  . . X X O . .
+c  . . X O O . .
+d  X X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 17 wins ['cb'] XO.X..
+   a b c d e f g
+a  . . . X O . .
+b  O . . X O . .
+c  . X X O O . .
+d  . X O . . . .
+e  . X O . . . .
+f  . O . . . . .
+g  . . . . . . .
+FOUND depth 17 wins ['cb'] X..XX.
+   a b c d e f g
+a  . . . X O . .
+b  . . . X O . .
+c  . X X O O . .
+d  X X O . . . .
+e  . X O . . . .
+f  . O . . . . .
+g  . . . . . . .
+FOUND depth 23 wins ['af'] XOX.X.
+   a b c d e f g
+a  . . . X O . .
+b  O . X X O . .
+c  . . X O O . .
+d  X X O . . . .
+e  . X O . . . .
+f  . O . . . . .
+g  . . . . . . .
+FOUND depth 23 wins ['ba', 'cb'] X..X.O
+   a b c d e f g
+a  . . . X O . .
+b  . . . X O . .
+c  . X X O O . .
+d  . X O . . . .
+e  . X O . . . .
+f  O O . . . . .
+g  . . . . . . .
+FOUND depth 23 wins ['da', 'af'] .OXXX.
+   a b c d e f g
+a  . . . . O . .
+b  O . X X O . .
+c  . X X O O . .
+d  X X O . . . .
+e  . X O . . . .
+f  . O . . . . .
+g  . . . . . . .
+FOUND depth 13 wins ['bc'] XOX...
+   a b c d e f g
+a  . . . X O . .
+b  O . X X O . .
+c  . . X O O . .
+d  . X O . . . .
+e  . X O . . . .
+f  . O . . . . .
+g  . . . . . . .

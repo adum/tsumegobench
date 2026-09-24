@@ -1,0 +1,216 @@
+TREE 23 5 (ha (ca da (ga gb R)(gb ga R))(da ca (ga gb R)(gb ga R)))(ca ga)(da ga)(ea ca)(ga ca)(gb ca)
+FOUND depth 7 wins ['ha'] .OO.
+   a b c d e f g h i j k
+a  . X . . . O . . X . .
+b  . X O O O O . O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 13 3 (ha (ca da R)(da ca R))(ca ha)(da ha)(ea ca)(ga ca)
+FOUND depth 7 wins ['ha'] .OOO
+   a b c d e f g h i j k
+a  . X . . . O . . X . .
+b  . X O O O O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 17 5 (ha (ca ea (ga gb R)(gb ga R))(ga gb R))(ca ga)(ea ga)(ga ha)(gb ha)
+FOUND depth 7 wins ['ha'] OOX.
+   a b c d e f g h i j k
+a  . X . O . O . . X . .
+b  . X O O X O . O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 13 2 (ea R)(ca ea)(da ca)(ga ca)(ha da)(eb ca)(gb da)
+FOUND depth 9 wins ['ea'] .X..
+   a b c d e f g h i j k
+a  . X . . . X . . X . .
+b  . X O O . O . O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 11 2 (ea R)(ca ea)(fa ca)(ga ea)(ha ea)(eb ca)
+FOUND depth 9 wins ['ea'] X..O
+   a b c d e f g h i j k
+a  . X . X . . . . X . .
+b  . X O O . O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 11 2 (ea R)(ca ea)(da ea)(ga ea)(ha da)(eb ca)
+FOUND depth 9 wins ['ea'] .X.O
+   a b c d e f g h i j k
+a  . X . . . X . . X . .
+b  . X O O . O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 12 3 (ea (ca ga R)(ga (ca R)(ha R)))(ca ea)(ga ea)(ha ea)
+FOUND depth 5 wins ['ea'] XXXO
+   a b c d e f g h i j k
+a  . X . X . X . . X . .
+b  . X O O X O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 24 5 (ea (ca (ga R)(ha R))(fa ca (ga ha R)(ha ga R)))(ha (ca (ea R)(fa R))(ea fa R))(ca ea)(fa ha)(ga ea)(eb ca)
+FOUND depth 9 wins ['ea', 'ha'] O..O
+   a b c d e f g h i j k
+a  . X . O . . . . X . .
+b  . X O O . O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 9 2 (ea R)(ca ea)(da ea)(ga ea)(ha ea)
+FOUND depth 13 wins ['ea'] .XXO
+   a b c d e f g h i j k
+a  . X . . . X . . X . .
+b  . X O O X O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 22 5 (ea (ca (ga R)(ha R))(fa ca (ga ha R)(ha ga R)))(ha (ca (ea R)(fa R))(ea fa R))(ca ea)(fa ha)(ga ea)
+FOUND depth 7 wins ['ea', 'ha'] O.XO
+   a b c d e f g h i j k
+a  . X . O . . . . X . .
+b  . X O O X O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 24 5 (ea R)(ha (ca da (ea fa R)(fa ea R))(da ca (ea fa R)(fa ea R)))(ca ea)(da ea)(fa ha)(ga ea)(eb ca)
+FOUND depth 11 wins ['ea', 'ha'] ...O
+   a b c d e f g h i j k
+a  . X . . . . . . X . .
+b  . X O O . O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 9 2 (ha R)(ca ha)(ea ha)(ga ca)(eb ha)
+FOUND depth 7 wins ['ha'] OO.O
+   a b c d e f g h i j k
+a  . X . O . O . . X . .
+b  . X O O . O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 7 2 (ha R)(ca ha)(ea ca)(ga ca)
+FOUND depth 5 wins ['ha'] OOOO
+   a b c d e f g h i j k
+a  . X . O . O . . X . .
+b  . X O O O O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 14 3 (ha (ca (ga R)(gb R))(ga gb R))(ca ga)(ea ca)(ga ha)(gb ha)
+FOUND depth 5 wins ['ha'] OOO.
+   a b c d e f g h i j k
+a  . X . O . O . . X . .
+b  . X O O O O . O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 39 9 (ea R)(ha (ca da (ea (fa (ga gb R)(gb ga R))(ga (fa eb (ea fa R)(fa ea R))(eb fa R)))(fa ea (ga gb R)(gb ga R)))(da ca R))(ca ea)(da ea)(fa ga)(ga ea)(eb ca)(gb ea)
+FOUND depth 11 wins ['ea', 'ha'] ....
+   a b c d e f g h i j k
+a  . X . . . . . . X . .
+b  . X O O . O . O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 12 2 (ea R)(ha R)(ca ea)(da fa)(fa ga)(ga ha)(gb ea)
+FOUND depth 11 wins ['ea', 'ha'] ..X.
+   a b c d e f g h i j k
+a  . X . . . . . . X . .
+b  . X O O X O . O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 7 2 (ha R)(ca ha)(ea ha)(ga ca)
+FOUND depth 5 wins ['ha'] OOXO
+   a b c d e f g h i j k
+a  . X . O . O . . X . .
+b  . X O O X O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 23 5 (ha (ca ea (ga gb R)(gb ga R))(ea ca (ga gb R)(gb ga R)))(ca ga)(ea ga)(ga ha)(eb ga)(gb ha)
+FOUND depth 9 wins ['ha'] OO..
+   a b c d e f g h i j k
+a  . X . O . O . . X . .
+b  . X O O . O . O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 26 5 (ha (ca ea (fa (ga R)(gb R))(ga gb R))(ea fa (ca ga R)(ga gb R)))(ca ea)(ea ga)(fa ga)(ga fa)(eb ca)(gb ea)
+FOUND depth 9 wins ['ha'] O...
+   a b c d e f g h i j k
+a  . X . O . . . . X . .
+b  . X O O . O . O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 33 7 (ha (ca ea (fa (ga R)(gb R))(ga gb R))(ea (fa (ca ea (ga gb R)(gb ga R))(ea ca (ga gb R)(gb ga R)))(ga R)))(ca ea)(ea ga)(fa ga)(ga ha)(gb ea)
+FOUND depth 9 wins ['ha'] O.X.
+   a b c d e f g h i j k
+a  . X . O . . . . X . .
+b  . X O O X O . O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 17 5 (ca (ea fa (da (ea R)(ha R))(ea ha R))(fa ea R))(ea R)(fa ca)(ga ea)(ha ea)
+FOUND depth 7 wins ['ca', 'ea'] X.XO
+   a b c d e f g h i j k
+a  . X . X . . . . X . .
+b  . X O O X O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 23 5 (ea R)(ha (ca ea (da ga R)(ga gb R))(da ea (ca ga R)(ga (ca R)(gb R))))(ca ea)(da ca)(ga ca)(gb ea)
+FOUND depth 9 wins ['ea', 'ha'] .XX.
+   a b c d e f g h i j k
+a  . X . . . X . . X . .
+b  . X O O X O . O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 11 3 (ea (ca (ga R)(ha R))(ga ha R))(ga R)(ca ea)(ha ea)
+FOUND depth 5 wins ['ea', 'ga'] OXXO
+   a b c d e f g h i j k
+a  . X . O . X . . X . .
+b  . X O O X O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 13 2 (ea R)(ca ea)(fa ca)(ga ca)(ha ea)(eb ca)(gb ea)
+FOUND depth 9 wins ['ea'] X...
+   a b c d e f g h i j k
+a  . X . X . . . . X . .
+b  . X O O . O . O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 14 3 (ea (ca (ga R)(ha R))(ga ha R))(ca ea)(ga ea)(ha ea)(eb ca)
+FOUND depth 7 wins ['ea'] OX.O
+   a b c d e f g h i j k
+a  . X . O . X . . X . .
+b  . X O O . O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 22 5 (ea R)(ha (ca da (ea fa R)(fa ea R))(da ca (ea fa R)(fa ea R)))(ca ea)(da ea)(fa ha)(ga ea)
+FOUND depth 9 wins ['ea', 'ha'] ..XO
+   a b c d e f g h i j k
+a  . X . . . . . . X . .
+b  . X O O X O O O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .
+TREE 7 2 (ca R)(ea ca)(ga ca)(ha ca)
+FOUND depth 5 wins ['ca'] XOXX
+   a b c d e f g h i j k
+a  . X . X . O . . X . .
+b  . X O O X O X O X . .
+c  . X X O O O O X X . .
+d  . . . X X X X . . . .
+e  . . . . . . . . . . .

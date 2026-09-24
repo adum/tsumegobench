@@ -1,0 +1,18 @@
+FOUND depth 13 wins ['bb', 'cb'] O..X
+   a b c d e f g h
+a  . O . . X O . .
+b  . . . X X O . .
+c  . . . X O . . .
+d  X X X O . . . .
+e  . X O . . . . .
+f  O O . . . . . .
+g  . . . . . . . .
+FOUND depth 15 wins ['bb'] ....
+   a b c d e f g h
+a  . . . . X O . .
+b  . . . X X O . .
+c  . . . X O . . .
+d  . X X O . . . .
+e  . X O . . . . .
+f  O O . . . . . .
+g  . . . . . . . .

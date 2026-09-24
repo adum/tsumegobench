@@ -1,0 +1,9 @@
+FOUND depth 1 wins ['cb'] nodes 21 5 busy 15 wrong 6
+   a b c d e f g h i j
+a  O . . X X . O X . .
+b  O O . . X . O X . .
+c  O . X X O O O X . .
+d  O O O O O O X . . .
+e  X X X X X X . . . .
+f  . . . . . . . . . .
+TREE (cb (ca ba (fa ca R)(fb ca R))(ba ca R))(ba fa)(ca cb)(fa ba)(db ba)(fb ba)(bc ba)

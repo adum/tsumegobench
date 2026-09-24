@@ -1,5 +1,6 @@
 import json
 import io
+import os
 import subprocess
 import sys
 import tempfile
@@ -315,6 +316,57 @@ for turn, line in enumerate(sys.stdin, 1):
         self.assertIn("FINAL NO-PROGRESS TURN", final_turn)
         self.assertIn("2 consecutive continuation turns", final_turn)
         self.assertIn("3-turn no-progress limit", final_turn)
+
+    @unittest.skipIf(os.name == "nt", "Claude sandbox requires POSIX")
+    def test_claude_interrupt_retains_live_logs_and_stops_detached_helper(self):
+        args = benchmark.build_parser().parse_args(["run", "--harness", "claude", "--model", "test"])
+        fake_cli = '''import os, signal, subprocess, sys, time
+from pathlib import Path
+sys.stdin.readline()
+worker = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)"], start_new_session=True)
+Path("worker.pid").write_text(str(worker.pid))
+Path("outputs/problem-01.sgf").write_text("(;SZ[19])")
+print('{"type":"assistant","message":"working"}', flush=True)
+log = Path("logs/attempts/attempt-01/claude-events.jsonl")
+deadline = time.monotonic() + 5
+while (not log.exists() or not log.stat().st_size) and time.monotonic() < deadline:
+    time.sleep(.01)
+Path("live-log-observed").write_text(str(log.stat().st_size))
+os.kill(os.getppid(), signal.SIGINT)
+time.sleep(60)
+'''
+        with tempfile.TemporaryDirectory() as temporary:
+            run_dir = Path(temporary)
+            (run_dir / "outputs").mkdir()
+            script = run_dir / "fake-interrupted.py"
+            script.write_text(fake_cli)
+            with redirect_stdout(io.StringIO()):
+                result = benchmark.run_claude_streaming_session(
+                    args, [sys.executable, str(script)], run_dir, "task", "Claude CLI", 10, 1,
+                )
+            worker_pid = int((run_dir / "worker.pid").read_text())
+            state = subprocess.run(["ps", "-o", "stat=", "-p", str(worker_pid)],
+                                   capture_output=True, text=True).stdout.strip()
+            self.assertTrue(not state or state.startswith("Z"), state)
+            self.assertEqual(result["exitCode"], 130)
+            self.assertTrue(result["interrupted"])
+            self.assertIn("interrupted", result["failureMessage"])
+            self.assertGreater(int((run_dir / "live-log-observed").read_text()), 0)
+            self.assertTrue((run_dir / "outputs/problem-01.sgf").exists())
+            self.assertIn("working", result["stdout"])
+
+    @unittest.skipIf(os.name == "nt", "POSIX orphan discovery")
+    def test_orphan_cleanup_is_limited_to_the_same_user_and_exact_run_directory(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            uid = os.getuid()
+            listing = f"101 1 {uid}\n102 1 {uid}\n103 50 {uid}\n104 1 {uid + 1}\n"
+            directories = f"p101\nn{root}/scratch\np102\nn{root}-other/scratch\np103\nn{root}\np104\nn{root}\n"
+            with mock.patch.object(benchmark.sys, "platform", "darwin"), \
+                 mock.patch.object(benchmark.subprocess, "check_output", return_value=listing), \
+                 mock.patch.object(benchmark.subprocess, "run", return_value=
+                                   subprocess.CompletedProcess([], 0, directories, "")):
+                self.assertEqual(benchmark.orphaned_run_workers(root), {101})
 
     def test_grok_harness_parser_and_command_are_non_interactive_and_restricted(self):
         args = benchmark.build_parser().parse_args(
@@ -2420,6 +2472,60 @@ for turn, line in enumerate(sys.stdin, 1):
         self.assertIsNone(args.run_id)
         self.assertTrue(args.no_open)
 
+    def test_review_selects_partial_output_ahead_of_an_older_completed_run(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            benchmark.write_json(root / "old/run.json", {
+                "runId": "old", "createdAt": "2026-08-05T10:00:00Z",
+                "completedAt": "2026-08-05T12:00:00Z", "status": "completed",
+            })
+            benchmark.write_json(root / "old/evaluation/automated.json", {"problems": []})
+            partial = root / "partial"
+            benchmark.write_json(partial / "run.json", {
+                "runId": "partial", "createdAt": "2026-09-24T10:00:00Z",
+                "completedAt": None, "status": "running",
+            })
+            (partial / "outputs").mkdir()
+            (partial / "outputs/problem-01.sgf").write_text("(;SZ[19])")
+            self.assertEqual(benchmark.reviewable_run(runs_root=root), partial.resolve())
+            self.assertEqual(benchmark.reviewable_run("partial", runs_root=root), partial.resolve())
+
+    def test_review_evaluates_partial_files_without_changing_lifecycle_or_reviews(self):
+        for remote in (True, False):
+            with self.subTest(remote=remote), tempfile.TemporaryDirectory() as temporary:
+                run_dir = Path(temporary)
+                manifest = {
+                    "runId": "partial", "status": "running", "completedAt": None,
+                    "condition": {"remoteDuplicateEvaluation": remote},
+                    "artifacts": {"outputs": benchmark.expected_output_names(10)},
+                }
+                benchmark.write_json(run_dir / "run.json", manifest)
+                benchmark.write_json(run_dir / "evaluation/reviews.json", {"reviews": ["existing"]})
+                before = (run_dir / "evaluation/reviews.json").read_bytes()
+                with mock.patch.object(benchmark, "run_evaluator", return_value=
+                        subprocess.CompletedProcess([], 0, "evaluated", "")) as evaluate:
+                    with redirect_stdout(io.StringIO()):
+                        benchmark.prepare_review_evaluation(run_dir, manifest)
+                    evaluate.assert_called_once_with(run_dir, local_only=not remote)
+                    benchmark.write_json(run_dir / "evaluation/automated.json", {"problems": []})
+                    benchmark.prepare_review_evaluation(run_dir, manifest)
+                    self.assertEqual(evaluate.call_count, 1)
+                self.assertEqual(benchmark.read_json(run_dir / "run.json"), manifest)
+                self.assertEqual((run_dir / "evaluation/reviews.json").read_bytes(), before)
+
+    def test_evaluate_does_not_call_an_interrupted_run_successful(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            run_dir = Path(temporary)
+            manifest = {"status": "harness_failed", "completedAt": None, "harness": {"exitCode": None}}
+            benchmark.write_json(run_dir / "run.json", manifest)
+            success = subprocess.CompletedProcess([], 0, "ok", "")
+            with mock.patch.object(benchmark, "run_evaluator", return_value=success), \
+                 mock.patch.object(benchmark, "build_run_index", return_value=success), \
+                 redirect_stdout(io.StringIO()):
+                args = benchmark.build_parser().parse_args(["evaluate", str(run_dir)])
+                self.assertEqual(benchmark.evaluate_command(args), 0)
+            self.assertEqual(benchmark.read_json(run_dir / "run.json"), manifest)
+
     def test_review_site_readiness_tolerates_a_slow_first_response(self):
         process = mock.Mock()
         process.poll.return_value = None
@@ -2499,6 +2605,7 @@ for turn, line in enumerate(sys.stdin, 1):
             ["node", "dev-server.js"],
             cwd=benchmark.PROJECT_ROOT,
             stdin=subprocess.DEVNULL,
+            start_new_session=benchmark.os.name != "nt",
         )
 
     def test_review_url_uses_windows_url_handler_without_parsing_query_string(self):

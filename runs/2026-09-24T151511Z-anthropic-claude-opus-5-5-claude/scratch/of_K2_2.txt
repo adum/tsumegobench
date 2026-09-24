@@ -1,0 +1,10 @@
+FOUND depth 1 wins ['bc'] nodes 32 7 busy 15 wrong 4
+   a b c d e f g h
+a  O . O O O X . .
+b  . X X O O X . .
+c  . . . O O X . .
+d  O O O O O X . .
+e  O O O O X . . .
+f  X X X X . . . .
+g  . . . . . . . .
+TREE (bc (ba ab ac ab (aa cc R)(cc aa R))(ab ba (ac cc (ab bb R)(bb ab R))(cc ac (ab (bb R)(cb R))(bb cb R))))(ba bc)(ab bc)(ac ba)(cc ba)

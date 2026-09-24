@@ -199,6 +199,19 @@
       "runCount": 2,
       "bestRunId": "2026-09-07T081751Z-openai-gpt-6-astra-codex",
       "bestRunCreatedAt": "2026-09-07T08:17:51.797171Z"
+    },
+    {
+      "id": "claude-opus-5.5",
+      "displayName": "Claude Opus 5.5",
+      "family": "Anthropic",
+      "releaseDate": "2026-09-22",
+      "icon": "/provider-icons/anthropic.svg",
+      "score": 1,
+      "passedProblems": 1,
+      "problemCount": 10,
+      "runCount": 1,
+      "bestRunId": "2026-09-24T151511Z-anthropic-claude-opus-5-5-claude",
+      "bestRunCreatedAt": "2026-09-24T15:15:11.671253Z"
     }
   ],
   "unmatchedModels": []

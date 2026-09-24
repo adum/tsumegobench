@@ -1,0 +1,20 @@
+REJECT-ko
+FOUND depth 1 wins ['bc'] nodes 21 5 busy 16 wrong 5
+   a b c d e f g h i j
+a  . X X X . O X O . .
+b  . X . O X . X O . .
+c  O . O O O X X O . .
+d  X X X X X X O . . .
+e  O O O O O O . . . .
+f  . . . . . . . . . .
+TREE (bc (aa (ea (fb ea R)(ab (cb R)(fb R)))(fb R))(ea fb R))(aa ea)(ea ab)(ab aa)(cb aa)(fb ea)
+REJECT-ko
+FOUND depth 1 wins ['db'] nodes 21 5 busy 12 wrong 7
+   a b c d e f g h i j
+a  X . O . O . X O . .
+b  X O . . O . X O . .
+c  X O . X . X X O . .
+d  X X X X X X O . . .
+e  O O O O O O . . . .
+f  . . . . . . . . . .
+TREE (db (ba cb R)(cb cc (ba cb R)(fa ba R)))(ba cb)(da ba)(fa ba)(cb db)(fb ba)(cc ba)

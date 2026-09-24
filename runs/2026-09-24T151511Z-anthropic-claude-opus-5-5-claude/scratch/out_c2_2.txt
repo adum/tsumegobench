@@ -1,0 +1,10 @@
+FOUND depth 27 wins ['ab', 'db'] .X.O.OO
+   a b c d e f g h i
+a  . . . . . . O . .
+b  . X . . X O O . .
+c  . . X X O O . . .
+d  . X O O . . . . .
+e  . X O . . . . . .
+f  O O O . . . . . .
+g  . . . . . . . . .
+h  . . . . . . . . .

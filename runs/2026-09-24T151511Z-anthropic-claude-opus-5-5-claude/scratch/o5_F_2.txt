@@ -1,0 +1,330 @@
+TREE 32 9 (ab (aa (cb R)(ad (ba ab R)(da ab (ba cb R)(cb (ba R)(ae (ac ag R)(dc ag R))))))(ba cb R))(cb R)(aa ab)(ba cb)(da ba)(dc ab)(ad cb)(ag cb)
+FOUND depth 9 wins ['ab', 'cb'] XXOX.X.
+   a b c d e f g h
+a  . . X . O X . .
+b  . X . O O X . .
+c  X O O . X . . .
+d  . O X X . . . .
+e  X O X . . . . .
+f  O X X . . . . .
+g  . X . . . . . .
+h  . . . . . . . .
+TREE 36 7 (da (aa ba (ab ae R)(cb ab R))(ba (ab (aa (cb R)(ae R))(cb aa R))(ae (aa ab R)(ab ac (aa cb R)(cb aa R)))))(ab R)(aa ba)(ba ab)(cb ab)(ac ba)(ad aa)(ae ac)
+FOUND depth 15 wins ['da', 'ab'] OXX.O.X
+   a b c d e f g h
+a  . . O . O X . .
+b  . X . O X X . .
+c  . O O O X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 34 7 (ba (aa ab R)(da bb (aa ab (cb ag R)(ag cb R))(ab aa (cb ag R)(ag cb R))))(cb (aa ba R)(ba ag R))(aa ba)(da ba)(ab ba)(bb ba)(ad aa)(ag cb)
+FOUND depth 11 wins ['ba', 'cb'] X.OOXX.
+   a b c d e f g h
+a  . . X . O X . .
+b  . . . O O X . .
+c  O O O X X . . .
+d  . O X X . . . .
+e  X O X . . . . .
+f  O X X . . . . .
+g  . X . . . . . .
+h  . . . . . . . .
+TREE 18 3 (ba R)(da (aa ba R)(ba ag R))(aa ba)(ab ba)(bb ba)(cb ba)(ad aa)(ag da)
+FOUND depth 13 wins ['ba', 'da'] X.XOOX.
+   a b c d e f g h
+a  . . X . O X . .
+b  . . . O X X . .
+c  O O O O X . . .
+d  . O X X . . . .
+e  X O X . . . . .
+f  O X X . . . . .
+g  . X . . . . . .
+h  . . . . . . . .
+TREE 13 2 (cb R)(aa cb)(ba cb)(ca cb)(da cb)(ab cb)(ad ca)
+FOUND depth 7 wins ['cb'] .XXOXXO
+   a b c d e f g h
+a  . . . . O X . .
+b  . X . O X X . .
+c  O O O X X . . .
+d  . O X X . . . .
+e  X O X . . . . .
+f  O X X . . . . .
+g  O X . . . . . .
+h  . . . . . . . .
+TREE 48 9 (ba R)(da (aa ba R)(ba aa (ab bb (aa (cb R)(ae dc cb R))(cb (aa R)(dc (ad aa R)(ae aa R))))(bb ae (ab (cb dc aa R)(dc (aa cb R)(cb aa R)))(cb (ab R)(dc ab aa R)))))(aa da)(ab ba)(bb da)(cb ba)(dc aa)(ad aa)
+FOUND depth 11 wins ['ba', 'da'] X.XO..X
+   a b c d e f g h
+a  . . X . O X . .
+b  . . . O X X . .
+c  O O O . X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 43 9 (ab (aa ba R)(ba cb (aa da (ac bb R)(ad ae R))(da aa (ea bb (ac (ad R)(ae R))(ad ae R))(ac bb R))))(ae (aa ba (da ab R)(ab ac R))(ba cb R))(aa ab)(ba ab)(da ba)(bb ba)(cb ab)(ac ba)
+FOUND depth 15 wins ['ab', 'ae'] O.X.X.X
+   a b c d e f g h
+a  . . O . O X . .
+b  . . . O X X . .
+c  . O O X X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 46 9 (ba (aa ca (ab cb R)(cb ab R))(ca da (aa (ab (ba (cb (aa ba R)(ba ae R))(ae eb cb R))(cb ba R))(cb R))(ab cb R)))(cb (aa ba R)(ba ca (aa ab R)(ab aa R)))(aa ba)(ca cb)(da ba)(ab ba)(eb ca)(ad aa)
+FOUND depth 5 wins ['ba', 'cb'] .X.OX.X
+   a b c d e f g h
+a  . . . . O X . .
+b  . X . O . X . .
+c  O O O X X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 17 3 (cb (aa da R)(ba da R))(aa da)(ba cb)(da cb)(ab cb)(dc da)(ad da)
+FOUND depth 7 wins ['cb'] XXXO.XO
+   a b c d e f g h
+a  . . X . O X . .
+b  . X . O X X . .
+c  O O O . X . . .
+d  . O X X . . . .
+e  X O X . . . . .
+f  O X X . . . . .
+g  O X . . . . . .
+h  . . . . . . . .
+TREE 22 5 (ba R)(cb (aa ba R)(ba ag (aa ca R)(ca da R)))(aa ba)(ca ba)(da cb)(ab ba)(dc ba)(ad ba)
+FOUND depth 11 wins ['ba', 'cb'] .XXO.X.
+   a b c d e f g h
+a  . . . . O X . .
+b  . X . O X X . .
+c  O O O . X . . .
+d  . O X X . . . .
+e  X O X . . . . .
+f  O X X . . . . .
+g  . X . . . . . .
+h  . . . . . . . .
+TREE 38 7 (ba (aa da (ab bb R)(bb cb R))(da ab (ea bb R)(bb cb R)))(ab (aa ba R)(ba da (aa bb (dc cb R)(ad cb R))(bb cb R)))(aa ba)(da cb)(bb ba)(cb ba)(dc ba)(ad ba)
+FOUND depth 9 wins ['ba', 'ab'] X.XX..X
+   a b c d e f g h
+a  . . X . O X . .
+b  . . . O X X . .
+c  X O O . X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 13 2 (cb R)(aa ba)(ba cb)(da cb)(ab cb)(eb ab)(dc aa)
+FOUND depth 5 wins ['cb'] XX.X.OX
+   a b c d e f g h
+a  . . X . O X . .
+b  . X . O . X . .
+c  X O O . X . . .
+d  . O X X . . . .
+e  O O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 36 7 (da R)(cb (aa (ab (da ba (ea (ad R)(ae R))(ac ad R))(ac ba R))(ae (ba da (ab ac R)(ac ab R))(da ba R)))(ba aa R))(aa da)(ba ab)(ab ba)(ac ba)(ad da)(ae ba)
+FOUND depth 13 wins ['da', 'cb'] OOX.X.X
+   a b c d e f g h
+a  . . O . O X . .
+b  . O . O X X . .
+c  . O O X X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 16 3 (ba R)(cb (aa ba R)(ba da R))(aa ba)(da cb)(ab ba)(bb ba)(ad aa)
+FOUND depth 9 wins ['ba', 'cb'] X.XOXXO
+   a b c d e f g h
+a  . . X . O X . .
+b  . . . O X X . .
+c  O O O X X . . .
+d  . O X X . . . .
+e  X O X . . . . .
+f  O X X . . . . .
+g  O X . . . . . .
+h  . . . . . . . .
+TREE 13 2 (cb R)(aa cb)(ba cb)(ca cb)(da aa)(ab cb)(ad ca)
+FOUND depth 9 wins ['cb'] .XOOXX.
+   a b c d e f g h
+a  . . . . O X . .
+b  . X . O O X . .
+c  O O O X X . . .
+d  . O X X . . . .
+e  X O X . . . . .
+f  O X X . . . . .
+g  . X . . . . . .
+h  . . . . . . . .
+TREE 13 2 (cb R)(aa ba)(ba cb)(da ba)(ab cb)(ac aa)(ad ba)
+FOUND depth 5 wins ['cb'] XXO.X.X
+   a b c d e f g h
+a  . . X . O X . .
+b  . X . O O X . .
+c  . O O X X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 40 11 (ab (aa ba R)(ba aa (da cb R)(cb (da R)(dc (ac ab (aa da (ab ad R)(ad ab R))(da (aa R)(ad ae aa R)))(ad ae ac ab R)))))(cb R)(aa ab)(ba cb)(da ba)(ac cb)(dc ab)(ad ab)
+FOUND depth 9 wins ['ab', 'cb'] XXO...X
+   a b c d e f g h
+a  . . X . O X . .
+b  . X . O O X . .
+c  . O O . X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 17 3 (ab (aa ba R)(ba da R))(aa da)(ba aa)(da cb)(cb da)(ac da)(dc da)
+FOUND depth 11 wins ['ab'] XXX....
+   a b c d e f g h
+a  . . X . O X . .
+b  . X . O X X . .
+c  . O O . X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  . X . . . . . .
+h  . . . . . . . .
+TREE 60 7 (ab (aa ba R)(ba cb (aa ca (da (bb R)(ad R))(bb ab R))(ca da (aa (bb R)(ad R))(bb aa R))))(cb (aa ba (ca da (ab (bb R)(ad R))(bb ab R))(da ab R))(ba da (aa (ab R)(bb R))(ca (ab (aa (bb R)(ad R))(bb aa R))(bb (aa ab R)(ab aa R)))))(aa ba)(ba ab)(ca aa)(da cb)(bb ca)(ad ba)
+FOUND depth 9 wins ['ab', 'cb'] ..XXXOX
+   a b c d e f g h
+a  . . . . O X . .
+b  . . . O X X . .
+c  X O O X X . . .
+d  . O X X . . . .
+e  O O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 16 3 (da R)(cb (aa ae R)(ba aa R))(aa da)(ba ae)(ab ba)(ad ba)(ae ba)
+FOUND depth 11 wins ['da', 'cb'] OOXOX.X
+   a b c d e f g h
+a  . . O . O X . .
+b  . O . O X X . .
+c  O O O X X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 16 3 (ba R)(cb (aa ba R)(ba da R))(aa ba)(da cb)(ab ba)(bb ba)(ad aa)
+FOUND depth 5 wins ['ba', 'cb'] X.XOXOX
+   a b c d e f g h
+a  . . X . O X . .
+b  . . . O X X . .
+c  O O O X X . . .
+d  . O X X . . . .
+e  O O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 61 13 (ab (aa ba R)(ba da (aa ca (ac ae (ab)(cb ab R))(ad (cb (aa ba R)(ba ae R))(ae ac ab R)))(ca aa (ac ab (aa cb (ab ad (aa ba R)(ba ab R))(ad ab R))(cb (aa R)(ad ae aa R)))(ad (cb (ba ae R)(ca ba R))(ae ac ab R)))))(aa ba)(ba ab)(ca aa)(da ab)(cb ba)(ac ba)
+FOUND depth 11 wins ['ab'] .XX.O.X
+   a b c d e f g h
+a  . . . . O X . .
+b  . X . O X X . .
+c  . O O O X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 17 3 (cb (aa ba R)(ba ca R))(aa ba)(ba cb)(ca cb)(da ab)(ab cb)(ad ba)
+FOUND depth 7 wins ['cb'] .XXXX..
+   a b c d e f g h
+a  . . . . O X . .
+b  . X . O X X . .
+c  X O O X X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  . X . . . . . .
+h  . . . . . . . .
+TREE 13 2 (cb R)(aa cb)(ba cb)(da cb)(ab cb)(eb cb)(ad da)
+FOUND depth 7 wins ['cb'] XX.OXXO
+   a b c d e f g h
+a  . . X . O X . .
+b  . X . O . X . .
+c  O O O X X . . .
+d  . O X X . . . .
+e  X O X . . . . .
+f  O X X . . . . .
+g  O X . . . . . .
+h  . . . . . . . .
+TREE 21 5 (ag (aa da R)(ba aa (da eb R)(ab da R)))(aa eb)(ba ag)(da ag)(ab ag)(cb ag)(eb ag)
+FOUND depth 17 wins ['ag'] XX.OOX.
+   a b c d e f g h
+a  . . X . O X . .
+b  . X . O . X . .
+c  O O O O X . . .
+d  . O X X . . . .
+e  X O X . . . . .
+f  O X X . . . . .
+g  . X . . . . . .
+h  . . . . . . . .
+TREE 36 7 (ba (aa ab R)(da bb (aa ab (cb ae R)(ad (cb R)(ae R)))(ab aa (cb ae R)(ad (cb R)(ae R)))))(cb (aa ba R)(ba ae R))(aa ba)(da ba)(ab ba)(bb ba)(ad aa)(ae cb)
+FOUND depth 7 wins ['ba', 'cb'] X.OOX.X
+   a b c d e f g h
+a  . . X . O X . .
+b  . . . O O X . .
+c  O O O X X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 35 7 (ba (aa ab R)(da (ab (ea (cb R)(ae cb db R))(cb db (ea (cb R)(ae R))(bb cb R)))(cb (aa ab R)(ea (ab R)(ae R)))))(aa ba)(da ba)(ab ba)(cb ae)(ad aa)(ae cb)
+FOUND depth 9 wins ['ba'] OXXOX.X
+   a b c d e f g h
+a  . . O . O X . .
+b  . X . O X X . .
+c  O O O X X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 13 2 (ag R)(aa ag)(ba ag)(da ag)(ab ag)(cb ag)(ad ag)
+FOUND depth 5 wins ['ag'] XXXXXO.
+   a b c d e f g h
+a  . . X . O X . .
+b  . X . O X X . .
+c  X O O X X . . .
+d  . O X X . . . .
+e  O O X . . . . .
+f  O X X . . . . .
+g  . X . . . . . .
+h  . . . . . . . .
+TREE 13 2 (ab R)(aa ba)(ba ab)(ca aa)(da ab)(cb ab)(ac ba)
+FOUND depth 11 wins ['ab'] .XX...X
+   a b c d e f g h
+a  . . . . O X . .
+b  . X . O X X . .
+c  . O O . X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 13 2 (ae R)(aa ae)(ba ae)(da ae)(ab ae)(cb ae)(ad aa)
+FOUND depth 7 wins ['ae'] XXOOO.X
+   a b c d e f g h
+a  . . X . O X . .
+b  . X . O O X . .
+c  O O O O X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .

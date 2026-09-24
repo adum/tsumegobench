@@ -1,0 +1,11 @@
+TREE 36 9 (bc (aa ba R)(ba aa (ca ab (ac ab (aa cb R)(cb (aa R)(dc R)))(dc cb R))(ab ag (aa ca dc cb R)(ca cb R))))(aa ca)(ba cb)(ca ba)(ab cb)(cb bc)(dc ab)
+FOUND depth 5 wins ['bc'] XOOO.XOX.
+   a b c d e f g h
+a  . . . X O O . .
+b  . O . X X O . .
+c  O . X . O . . .
+d  X X O O . . . .
+e  X X O . . . . .
+f  . X O . . . . .
+g  . O . . . . . .
+h  . . . . . . . .

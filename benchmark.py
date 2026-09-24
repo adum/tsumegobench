@@ -14,6 +14,7 @@ import queue
 import re
 import secrets
 import shutil
+import signal
 import socket
 import subprocess
 import sys
@@ -69,7 +70,6 @@ DIFFICULTY_BANDS = (
 MINIMUM_NODE_MAJOR = 22
 _TYPESCRIPT_NODE: str | None = None
 REVIEW_STORE_NAME = "reviews.json"
-TERMINAL_RUN_STATUSES = {"completed", "harness_failed", "evaluation_failed"}
 
 
 def expected_output_names(count: int) -> list[str]:
@@ -633,26 +633,40 @@ def reviewable_run(value: str | None = None, runs_root: Path | None = None) -> P
     else:
         candidates = [entry.resolve() for entry in root.iterdir() if entry.is_dir()] if root.exists() else []
 
-    completed: list[tuple[str, Path]] = []
+    reviewable: list[tuple[str, Path]] = []
     for candidate in candidates:
         manifest_path = candidate / "run.json"
         automated_path = candidate / "evaluation" / "automated.json"
-        if not manifest_path.exists() or not automated_path.exists():
+        if not manifest_path.exists():
             continue
         try:
             manifest = read_json(manifest_path)
         except (OSError, json.JSONDecodeError):
             continue
-        if manifest.get("status") not in TERMINAL_RUN_STATUSES or not manifest.get("completedAt"):
+        if not automated_path.exists() and not generated_sgf_count(candidate):
             continue
-        completed.append((str(manifest["completedAt"]), candidate))
+        reviewable.append((str(manifest.get("createdAt") or manifest.get("completedAt") or ""), candidate))
 
-    if not completed:
+    if not reviewable:
         if value:
-            raise ValueError(f"Run {value!r} has not completed evaluation and cannot be reviewed yet.")
-        raise ValueError("No completed benchmark run is available for human review.")
-    completed.sort(key=lambda item: item[0], reverse=True)
-    return completed[0][1]
+            raise ValueError(f"Run {value!r} has no SGF outputs or evaluation to review yet.")
+        raise ValueError("No benchmark run has SGF outputs or an evaluation to review yet.")
+    reviewable.sort(key=lambda item: item[0], reverse=True)
+    return reviewable[0][1]
+
+
+def prepare_review_evaluation(run_dir: Path, manifest: dict[str, Any]) -> None:
+    if (run_dir / "evaluation" / "automated.json").exists():
+        return
+    print(f"Evaluating saved outputs for {manifest['runId']} before review...", flush=True)
+    local_only = manifest.get("condition", {}).get("remoteDuplicateEvaluation") is False
+    result = run_evaluator(run_dir, local_only=local_only)
+    if result.returncode:
+        raise ValueError(result.stderr.strip() or "The evaluator failed.")
+    # Evaluation is a snapshot, not evidence that generation completed. Keep the
+    # original lifecycle status and expected output list, including missing files.
+    if result.stdout.strip():
+        print(result.stdout.strip(), flush=True)
 
 
 def review_problem_files(run_dir: Path) -> list[str]:
@@ -1907,6 +1921,98 @@ def compact_failure(message: str | None, stdout: str, stderr: str, exit_code: in
     return compact if len(compact) <= 500 else f"{compact[:497]}..."
 
 
+def orphaned_run_workers(run_dir: Path) -> set[int]:
+    """Find detached helpers left in this run's directory by shell tools."""
+    if os.name == "nt":
+        return set()
+    try:
+        listing = subprocess.check_output(
+            ["ps", "-axo", "pid=,ppid=,uid="], text=True, timeout=5,
+        )
+        candidates = {
+            int(pid) for pid, parent, uid in (row.split() for row in listing.splitlines())
+            if int(parent) == 1 and int(uid) == os.getuid() and int(pid) != os.getpid()
+        }
+        directories: dict[int, Path] = {}
+        if sys.platform == "darwin" and candidates:
+            result = subprocess.run(
+                ["lsof", "-a", "-p", ",".join(map(str, candidates)), "-d", "cwd", "-Fn"],
+                capture_output=True, text=True, timeout=5, check=False,
+            )
+            pid = None
+            for line in result.stdout.splitlines():
+                if line.startswith("p"):
+                    pid = int(line[1:])
+                elif line.startswith("n") and pid in candidates:
+                    directories[pid] = Path(line[1:])
+        else:
+            for pid in candidates:
+                try:
+                    directories[pid] = Path(os.readlink(f"/proc/{pid}/cwd"))
+                except OSError:
+                    pass
+        root = run_dir.resolve()
+        return {pid for pid, directory in directories.items()
+                if directory == root or root in directory.parents}
+    except (OSError, ValueError, subprocess.TimeoutExpired):
+        return set()
+
+
+def terminate_process_tree(process: subprocess.Popen[Any], run_dir: Path | None = None) -> None:
+    """Stop a child launched in its own session, including detached shell helpers."""
+    if os.name == "nt":
+        if process.poll() is None:
+            subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                           capture_output=True, check=False)
+        return
+    descendants = {process.pid} if process.poll() is None else set()
+    try:
+        listing = subprocess.check_output(["ps", "-axo", "pid=,ppid="], text=True, timeout=5)
+        parents = {int(pid): int(parent) for pid, parent in
+                   (row.split() for row in listing.splitlines())}
+        while True:
+            expanded = descendants | {pid for pid, parent in parents.items() if parent in descendants}
+            if expanded == descendants:
+                break
+            descendants = expanded
+    except (OSError, ValueError, subprocess.TimeoutExpired):
+        pass
+    if run_dir is not None:
+        descendants |= orphaned_run_workers(run_dir)
+    # Bash jobs may start their own process groups, so signal descendants as well
+    # as the session group. Orphans are restricted to this user's run directory.
+    try:
+        os.killpg(process.pid, signal.SIGTERM)
+    except ProcessLookupError:
+        pass
+    for pid in descendants:
+        try:
+            os.kill(pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+    try:
+        process.wait(timeout=3)
+    except subprocess.TimeoutExpired:
+        pass
+    # Allow helpers to exit and close inherited stdout/stderr pipes before joining
+    # the log-reader threads. Reap the main process before considering escalation.
+    deadline = time.monotonic() + 1
+    while descendants and time.monotonic() < deadline:
+        for pid in list(descendants):
+            try:
+                os.kill(pid, 0)
+            except ProcessLookupError:
+                descendants.remove(pid)
+        if descendants:
+            time.sleep(0.05)
+    for pid in descendants:
+        try:
+            os.kill(pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    process.wait(timeout=5)
+
+
 def run_claude_streaming_session(
     args: argparse.Namespace,
     command: list[str],
@@ -1939,27 +2045,36 @@ def run_claude_streaming_session(
     process: subprocess.Popen[str] | None = None
     stdout_thread: threading.Thread | None = None
     stderr_thread: threading.Thread | None = None
+    interrupted = False
+    log_dir = run_dir / "logs" / "attempts" / f"attempt-{attempt_number:02d}"
+    log_dir.mkdir(parents=True, exist_ok=True)
 
     def read_stdout() -> None:
         try:
             if process is None or process.stdout is None:
                 return
-            for line in process.stdout:
-                stdout_lines.append(line)
-                output_queue.put(line)
+            with (log_dir / "claude-events.jsonl").open("w", encoding="utf-8", buffering=1) as log:
+                for line in process.stdout:
+                    log.write(line)
+                    stdout_lines.append(line)
+                    output_queue.put(line)
         finally:
             output_queue.put(None)
 
     def read_stderr() -> None:
         if process is None or process.stderr is None:
             return
-        for line in process.stderr:
-            stderr_lines.append(line)
+        with (log_dir / "claude-stderr.txt").open("w", encoding="utf-8", buffering=1) as log:
+            for line in process.stderr:
+                log.write(line)
+                stderr_lines.append(line)
 
     def send_message(content: str) -> bool:
         nonlocal helper_failure
         payload = f"{claude_stream_message(content)}\n"
         input_lines.append(payload)
+        with (log_dir / "claude-input.jsonl").open("a", encoding="utf-8") as log:
+            log.write(payload)
         try:
             if process is None or process.stdin is None:
                 raise BrokenPipeError("Claude CLI stdin is unavailable")
@@ -2006,7 +2121,7 @@ def run_claude_streaming_session(
         if process is None:
             return 127
         if force and process.poll() is None:
-            process.terminate()
+            terminate_process_tree(process, run_dir)
         elif process.stdin is not None and not process.stdin.closed:
             try:
                 process.stdin.close()
@@ -2016,13 +2131,8 @@ def run_claude_streaming_session(
         try:
             return process.wait(timeout=wait_seconds)
         except subprocess.TimeoutExpired:
-            if process.poll() is None:
-                process.terminate()
-            try:
-                return process.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                return process.wait()
+            terminate_process_tree(process, run_dir)
+            return process.wait()
 
     try:
         process = subprocess.Popen(
@@ -2036,6 +2146,7 @@ def run_claude_streaming_session(
             encoding="utf-8",
             errors="replace",
             bufsize=1,
+            start_new_session=os.name != "nt",
         )
         stdout_thread = threading.Thread(
             target=read_stdout,
@@ -2137,6 +2248,12 @@ def run_claude_streaming_session(
             )
 
         process_exit_code = stop_process(force=timed_out)
+    except KeyboardInterrupt:
+        interrupted = True
+        helper_failure = "Claude generation interrupted by the operator; saved outputs were retained."
+        stop_reason = "harness_failed"
+        process_exit_code = stop_process(force=True)
+        print("\nClaude stopped. Evaluating saved outputs for review...", flush=True)
     except OSError as error:
         helper_failure = f"Could not launch {label}: {error}"
         process_exit_code = 127
@@ -2145,14 +2262,19 @@ def run_claude_streaming_session(
         stop_progress_reporter(reporter)
         if process is not None and process.poll() is None:
             process_exit_code = stop_process(force=True)
+        if process is not None:
+            terminate_process_tree(process, run_dir)
         if stdout_thread is not None:
             stdout_thread.join(timeout=2)
         if stderr_thread is not None:
             stderr_thread.join(timeout=2)
         if process is not None:
-            for stream in (process.stdout, process.stderr):
+            for stream in (process.stdin, process.stdout, process.stderr):
                 if stream is not None and not stream.closed:
-                    stream.close()
+                    try:
+                        stream.close()
+                    except OSError:
+                        pass
 
     if timeout_message:
         stderr_lines.append(f"{timeout_message}\n")
@@ -2160,7 +2282,7 @@ def run_claude_streaming_session(
         stderr_lines.append(f"{helper_failure.rstrip()}\n")
 
     process_exit_code = int(process_exit_code)
-    exit_code = 124 if timed_out else process_exit_code
+    exit_code = 130 if interrupted else 124 if timed_out else process_exit_code
     if (
         exit_code
         and stop_reason in {"outputs_complete", "max_rounds", "stale"}
@@ -2181,6 +2303,7 @@ def run_claude_streaming_session(
         "exitCode": exit_code,
         "processExitCode": process_exit_code,
         "timedOut": timed_out,
+        "interrupted": interrupted,
         "timeoutMessage": timeout_message,
         "failureMessage": timeout_message or helper_failure,
         "durationSeconds": round(time.monotonic() - started, 3),
@@ -2304,6 +2427,7 @@ def discard_new_run(run_dir: Path) -> None:
 
 
 def run_evaluator(run_dir: Path, local_only: bool) -> subprocess.CompletedProcess[str]:
+    (run_dir / "logs").mkdir(parents=True, exist_ok=True)
     try:
         executable = typescript_node()
     except RuntimeError as error:
@@ -2508,7 +2632,8 @@ def launch_review_site(command: list[str]) -> subprocess.Popen[Any]:
     # The dev server must not inherit the operator's terminal input. Vite can
     # otherwise enable raw mode after startup, preventing Python from receiving
     # the Ctrl+C that is supposed to end the review session.
-    return subprocess.Popen(command, cwd=PROJECT_ROOT, stdin=subprocess.DEVNULL)
+    return subprocess.Popen(command, cwd=PROJECT_ROOT, stdin=subprocess.DEVNULL,
+                            start_new_session=os.name != "nt")
 
 
 def open_review_url(url: str) -> bool:
@@ -3154,7 +3279,7 @@ def _run_command(args: argparse.Namespace) -> int:
                 invocation_task,
                 round_label,
                 remaining_timeout,
-                round_attempt,
+                invocation_number if args.harness == "claude" else round_attempt,
             )
             stdout = result["stdout"]
             stderr = result["stderr"]
@@ -3191,6 +3316,7 @@ def _run_command(args: argparse.Namespace) -> int:
             retryable = bool(
                 exit_code
                 and not timed_out
+                and not result.get("interrupted")
                 and not configuration_rejected
                 and not grok_output_limited
                 and (
@@ -3784,10 +3910,10 @@ def evaluate_command(args: argparse.Namespace) -> int:
         print(result.stderr.strip() or "The evaluator failed.", file=sys.stderr)
         return result.returncode
     manifest = read_json(run_dir / "run.json")
-    manifest["status"] = (
-        "harness_failed" if manifest.get("harness", {}).get("exitCode") else "completed"
-    )
-    manifest["completedAt"] = manifest.get("completedAt") or utc_now()
+    exit_code = manifest.get("harness", {}).get("exitCode")
+    if exit_code is not None:
+        manifest["status"] = "harness_failed" if exit_code else "completed"
+        manifest["completedAt"] = manifest.get("completedAt") or utc_now()
     write_json(run_dir / "run.json", manifest)
     indexed = build_run_index()
     if indexed.returncode:
@@ -3809,6 +3935,7 @@ def review_command(args: argparse.Namespace) -> int:
         run_dir = reviewable_run(args.run_id)
         manifest = read_json(run_dir / "run.json")
         run_id = str(manifest["runId"])
+        prepare_review_evaluation(run_dir, manifest)
         review_problem_files(run_dir)
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
         print(f"error: {error}", file=sys.stderr)
@@ -3881,10 +4008,10 @@ def review_command(args: argparse.Namespace) -> int:
             }
         )
         review_url = f"{site_root}/runs?{query}"
-        print(f"Reviewing {run_id}")
+        print(f"Reviewing {run_id}", flush=True)
         print(f"Review UI: {review_url}")
         print("Review changes are saved into the run automatically.")
-        print("Press Ctrl+C when the review session is finished.")
+        print("Press Ctrl+C when the review session is finished.", flush=True)
         if not args.no_open and not open_review_url(review_url):
             print("The browser could not be opened automatically; use the Review UI URL above.")
 
@@ -3901,12 +4028,8 @@ def review_command(args: argparse.Namespace) -> int:
     finally:
         api_server.shutdown()
         api_server.server_close()
-        if process and process.poll() is None:
-            process.terminate()
-            try:
-                process.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                process.kill()
+        if process is not None:
+            terminate_process_tree(process)
         restore_terminal_state(terminal_state)
 
 
@@ -4020,12 +4143,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     review = subparsers.add_parser(
         "review",
-        help="Open a local human-review session for the newest completed run.",
+        help="Open a local human-review session, including saved output from interrupted runs.",
     )
     review.add_argument(
         "run_id",
         nargs="?",
-        help="Optional run ID. Defaults to the most recently completed evaluated run.",
+        help="Optional run ID. Defaults to the newest run with SGF outputs or an evaluation.",
     )
     review.add_argument("--port", type=int, help="Optional local web port.")
     review.add_argument(

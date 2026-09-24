@@ -1,0 +1,63 @@
+TREE 35 11 (dc (cb ab (aa ba (da (aa ad ab (ba (aa R)(ac R))(aa ba R))(ad R))(ad da R))(da aa R))(ba ab (cb da R)(aa da R)))(aa ba)(ba da)(da ba)(ab da)(ad ba)
+FOUND depth 19 wins ['dc'] OOXX.OX
+   a b c d e f g h
+a  . . O . O X . .
+b  . O . O X X . .
+c  X O O . X . . .
+d  . O X X . . . .
+e  O O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 29 9 (cb (ag ae R)(ab ag (ba aa R)(dc aa (ad ab (da ae R)(ae da R))(da ad R))))(aa cb)(ba ab)(da ba)(ab cb)(dc cb)(ad ba)
+FOUND depth 15 wins ['cb'] XXOX...
+   a b c d e f g h
+a  . . X . O X . .
+b  . X . O O X . .
+c  X O O . X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  . X . . . . . .
+h  . . . . . . . .
+TREE 13 2 (cb R)(aa ba)(ba cb)(da cb)(ab cb)(bb cb)(ad ba)
+FOUND depth 11 wins ['cb'] X.OXXOX
+   a b c d e f g h
+a  . . X . O X . .
+b  . . . O O X . .
+c  X O O X X . . .
+d  . O X X . . . .
+e  O O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 33 9 (cb (ba da (bb ae R)(db bb R))(bb da (ba ae R)(db eb (ba ae R)(aa ca (ba ae R)(ab ba R)))))(aa ba)(ba ca)(ca ba)(da ca)(ab ba)(bb cb)
+FOUND depth 17 wins ['cb'] ..OOX.X
+   a b c d e f g h
+a  . . . . O X . .
+b  . . . O O X . .
+c  O O O X X . . .
+d  . O X X . . . .
+e  . O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+TREE 9 2 (cb R)(aa cb)(ba cb)(da cb)(ab cb)
+FOUND depth 9 wins ['cb'] XXOOXOX
+   a b c d e f g h
+a  . . X . O X . .
+b  . X . O O X . .
+c  O O O X X . . .
+d  . O X X . . . .
+e  O O X . . . . .
+f  O X X . . . . .
+g  X X . . . . . .
+h  . . . . . . . .
+Traceback (most recent call last):
+  File "/Users/adammiller/code/tsumegobench/runs/2026-09-24T151511Z-anthropic-claude-opus-5-5-claude/scratch/fr5.py", line 56, in <module>
+    run(fr,tm,att,keys,box,mind=mind,maxwin=2,show_n=30,maxnodes=70)
+  File "/Users/adammiller/code/tsumegobench/runs/2026-09-24T151511Z-anthropic-claude-opus-5-5-claude/scratch/find2.py", line 23, in run
+    return run0(frame,*a,maxnodes=maxnodes,**k)
+  File "/Users/adammiller/code/tsumegobench/runs/2026-09-24T151511Z-anthropic-claude-opus-5-5-claude/scratch/find2.py", line 45, in run0
+    depth=max(s.dist(play(b,P(w),tomove)[0],3-tomove) for w in wins)+1
+TypeError: '>' not supported between instances of 'NoneType' and 'int'

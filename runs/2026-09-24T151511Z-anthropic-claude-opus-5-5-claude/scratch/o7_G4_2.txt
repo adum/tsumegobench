@@ -1,0 +1,160 @@
+FOUND depth 23 wins ['ca'] nodes 39 9
+   a b c d e f g h i j k
+a  . O . . . . X . O . .
+b  . O X . . . . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (ca (da ea (db fb (ha (fa R)(eb R))(fa eb (gb eb R)(ha gb R)))(fa db (eb da R)(fb (da R)(ha R))))(ea fb (da eb R)(eb da R)))(da ca)(ea ca)(fa ca)(ha ca)(db ca)(eb fb)
+FOUND depth 11 wins ['ha'] nodes 25 5
+   a b c d e f g h i j k
+a  . O . . X O . . O . .
+b  . O X . . . O X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (ha (fb ga (ca db R)(da ca R))(ca fb (db ga R)(eb ga R)))(ca fb)(da ca)(ga ha)(db fb)(eb db)(fb eb)
+FOUND depth 11 wins ['ca'] nodes 22 5
+   a b c d e f g h i j k
+a  . O . . O X . . O . .
+b  . O X . . X . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (ca (da db (ga (da R)(ha R))(ha da R))(ga da R))(da ca)(ga da)(ha da)(db ca)(eb ca)(gb ca)
+FOUND depth 23 wins ['ha'] nodes 38 9
+   a b c d e f g h i j k
+a  . O . X . . . . O . .
+b  . O X . . . . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (ha (ga fa (gb eb (ca (ea R)(fb R))(ea fb (db fb R)(ca db R)))(ca gb (eb ea R)(fb ga R)))(fa eb (ga fb R)(fb ga R)))(ca ea)(ea fa)(fa ha)(ga fa)(db ca)(eb fb)
+FOUND depth 23 wins ['eb'] nodes 17 3
+   a b c d e f g h i j k
+a  . O . X . . X . O . .
+b  . O X . . . X X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (eb (ca ea R)(ea fb R))(ca ea)(ea eb)(fa ea)(ha ea)(db ea)(fb eb)
+FOUND depth 21 wins ['fb'] nodes 29 7
+   a b c d e f g h i j k
+a  . O . X O . X . O . .
+b  . O X X . . . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (fb (ha ca (fa eb gb eb R)(eb fa gb fa R))(fa eb (gb eb R)(ca ha gb eb R)))(ca fa)(fa fb)(ha fa)(eb fb)(gb ca)
+FOUND depth 9 wins ['ca'] nodes 11 2
+   a b c d e f g h i j k
+a  . O . O . X X . O . .
+b  . O X O . . . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (ca R)(ea ca)(ha ca)(eb ca)(fb ca)(gb ca)
+FOUND depth 13 wins ['ha'] nodes 17 3
+   a b c d e f g h i j k
+a  . O . . X . O . O . .
+b  . O X . . X . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (ha (ca db R)(da ca R))(ca ha)(da ca)(fa ca)(db ha)(eb ca)(gb ca)
+FOUND depth 15 wins ['fa'] nodes 13 2
+   a b c d e f g h i j k
+a  . O . . . . . . O . .
+b  . O X X X . X X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (fa R)(ca fa)(da ca)(ea fa)(ga fa)(ha fa)(fb ca)
+FOUND depth 13 wins ['ha'] nodes 34 7
+   a b c d e f g h i j k
+a  . O . X . . . . O . .
+b  . O X . . . O X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (ha (fa ga (fb eb R)(ca ea (eb fb R)(fb eb R)))(fb ga (fa eb R)(ca ea (fa eb R)(db (fa R)(eb R)))))(ca fa)(ea fa)(fa ha)(ga ha)(db fa)(eb ha)
+FOUND depth 13 wins ['ca'] nodes 13 2
+   a b c d e f g h i j k
+a  . O . O . . X . O . .
+b  . O X . . . . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (ca R)(ea ca)(fa ca)(ha ca)(db ca)(eb ca)(fb ca)
+FOUND depth 21 wins ['eb'] nodes 22 5
+   a b c d e f g h i j k
+a  . O . . O X . . O . .
+b  . O X . . . X X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (eb (ca ha R)(da (ca (ha db R)(db ha R))(ha R)))(ca eb)(da ca)(ga da)(ha eb)(db ca)(fb ca)
+FOUND depth 11 wins ['ha'] nodes 23 5
+   a b c d e f g h i j k
+a  . O . X . O . . O . .
+b  . O X . X . . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (ha (ca ea (ga gb R)(fb ga R))(ea ca (ga gb R)(fb ga R)))(ca ga)(ea ga)(ga ha)(fb ea)(gb ha)
+FOUND depth 11 wins ['ca'] nodes 15 3
+   a b c d e f g h i j k
+a  . O . O X X . . O . .
+b  . O X . X . . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (ca (ha gb R)(ga ha R))(ga ca)(ha ca)(db ca)(fb ca)(gb ca)
+FOUND depth 11 wins ['ha'] nodes 11 2
+   a b c d e f g h i j k
+a  . O . X X O O . O . .
+b  . O X . . . . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (ha R)(ca ha)(db ha)(eb ha)(fb ha)(gb ha)
+FOUND depth 31 wins ['eb'] nodes 37 11
+   a b c d e f g h i j k
+a  . O . X . X . . O . .
+b  . O X . . O . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (eb (ha ea (gb ga (ca (db R)(fa db fa (ea fb R)(ga ea R)))(db ca R))(ca (ga R)(gb (ga db R)(db ga R))))(ea ha R))(ca ea)(ea eb)(ga ha)(ha eb)(db ca)(gb ga)
+FOUND depth 15 wins ['da'] nodes 15 3
+   a b c d e f g h i j k
+a  . O . . . . X . O . .
+b  . O X . X X X X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (da (ca ea R)(ea ca R))(ca da)(ea da)(fa ca)(ha ca)(db ca)
+FOUND depth 23 wins ['fa'] nodes 13 2
+   a b c d e f g h i j k
+a  . O . X . . . . O . .
+b  . O X X X . . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (fa R)(ca fa)(ea fa)(ga fa)(ha fa)(fb fa)(gb fa)
+FOUND depth 15 wins ['fb'] nodes 27 7
+   a b c d e f g h i j k
+a  . O . . X X . . O . .
+b  . O X . O . O X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (fb (ga ca (db fb R)(da ha db fb R))(db ca (ga fb R)(da ha ga fb R)))(ca fb)(da ca)(ga ha)(ha ga)(db ca)
+FOUND depth 13 wins ['ca'] nodes 38 7
+   a b c d e f g h i j k
+a  . O . . . X . . O . .
+b  . O X O . . . X O . .
+c  . O X X X X X X O . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+TREE (ca (da ea (eb da (ha gb R)(ga ha R))(ga ha (eb da R)(fb da R)))(eb da (ha gb R)(ea ga (ha gb R)(fb (ha R)(gb R)))))(da ca)(ea ca)(ga da)(ha eb)(eb fb)(fb eb)

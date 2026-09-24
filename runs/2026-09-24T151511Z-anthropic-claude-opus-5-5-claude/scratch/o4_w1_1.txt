@@ -1,0 +1,87 @@
+FOUND depth 13 wins ['cc'] X....XX.XO.O.
+   a b c d e f g h
+a  X . . . O X . .
+b  . X X . O X . .
+c  X O . O O X . .
+d  O . O O X . . .
+e  O O O X . . . .
+f  X X X . . . . .
+g  . . . . . . . .
+FOUND depth 9 wins ['bc'] ..XXXXO.O...X
+   a b c d e f g h
+a  . . X X O X . .
+b  X X O . O X . .
+c  O . . O O X . .
+d  . X O O X . . .
+e  O O O X . . . .
+f  X X X . . . . .
+g  . . . . . . . .
+FOUND depth 9 wins ['bc'] XX.OXOXO...O.
+   a b c d e f g h
+a  X X . O O X . .
+b  X O X O O X . .
+c  . . . O O X . .
+d  O . O O X . . .
+e  O O O X . . . .
+f  X X X . . . . .
+g  . . . . . . . .
+FOUND depth 11 wins ['bc'] .OX.XOX.X.OX.
+   a b c d e f g h
+a  . O X . O X . .
+b  X O X . O X . .
+c  X . O O O X . .
+d  X . O O X . . .
+e  O O O X . . . .
+f  X X X . . . . .
+g  . . . . . . . .
+FOUND depth 9 wins ['ac'] OX..OX....XO.
+   a b c d e f g h
+a  O X . . O X . .
+b  O X . . O X . .
+c  . . X O O X . .
+d  O . O O X . . .
+e  O O O X . . . .
+f  X X X . . . . .
+g  . . . . . . . .
+FOUND depth 17 wins ['ac'] ....OX...X.O.
+   a b c d e f g h
+a  . . . . O X . .
+b  O X . . O X . .
+c  . X . O O X . .
+d  O . O O X . . .
+e  O O O X . . . .
+f  X X X . . . . .
+g  . . . . . . . .
+FOUND depth 19 wins ['cb'] OOX.OO..OO.OO
+   a b c d e f g h
+a  O O X . O X . .
+b  O O . . O X . .
+c  O O . O O X . .
+d  O O O O X . . .
+e  O O O X . . . .
+f  X X X . . . . .
+g  . . . . . . . .
+FOUND depth 11 wins ['cb'] .XO.X.....OXO
+   a b c d e f g h
+a  . X O . O X . .
+b  X . . . O X . .
+c  . . O O O X . .
+d  X O O O X . . .
+e  O O O X . . . .
+f  X X X . . . . .
+g  . . . . . . . .
+FOUND depth 11 wins ['ca'] .O.OOX.OXX.X.
+   a b c d e f g h
+a  . O . O O X . .
+b  O X . O O X . .
+c  X X . O O X . .
+d  X . O O X . . .
+e  O O O X . . . .
+f  X X X . . . . .
+g  . . . . . . . .
+Traceback (most recent call last):
+  File "/Users/adammiller/code/tsumegobench/runs/2026-09-24T151511Z-anthropic-claude-opus-5-5-claude/scratch/fr4.py", line 24, in <module>
+    run(fr,tm,att,keys,box,mind=mind,maxwin=1,show_n=30,limit=4000,seed=seed)
+  File "/Users/adammiller/code/tsumegobench/runs/2026-09-24T151511Z-anthropic-claude-opus-5-5-claude/scratch/find2.py", line 43, in run
+    depth=max(s.dist(play(b,P(w),tomove)[0],3-tomove) for w in wins)+1
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'

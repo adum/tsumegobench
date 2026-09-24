@@ -1,0 +1,24 @@
+FOUND depth 11 wins ['ca', 'fa'] XXX.
+   a b c d e f g h i j k
+a  . O . . . . . . O . .
+b  . O X X X . X X O . .
+c  . O X X . X X O . . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+f  . . . . . . . . . . .
+FOUND depth 13 wins ['fa'] .XX.
+   a b c d e f g h i j k
+a  . O . . . . . . O . .
+b  . O . X X . X X O . .
+c  . O X X . X X O . . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+f  . . . . . . . . . . .
+FOUND depth 9 wins ['fa'] XXXO
+   a b c d e f g h i j k
+a  . O . . . . . . O . .
+b  . O X X X . X X O . .
+c  . O X X O X X O . . .
+d  . . O O O O O O . . .
+e  . . . . . . . . . . .
+f  . . . . . . . . . . .

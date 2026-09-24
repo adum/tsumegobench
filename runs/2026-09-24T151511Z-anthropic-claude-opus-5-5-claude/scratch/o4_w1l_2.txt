@@ -1,0 +1,24 @@
+FOUND depth 7 wins ['ca'] .O.OOXX.XX..O
+   a b c d e f g h
+a  . O . O O X . .
+b  O X X . O X . .
+c  X X . O O X . .
+d  . O O O X . . .
+e  O O O X . . . .
+f  X X X . . . . .
+g  . . . . . . . .
+FOUND depth 5 wins ['cb'] X.X.XX.XX.O.X
+   a b c d e f g h
+a  X . X . O X . .
+b  X X . X O X . .
+c  X . O O O X . .
+d  . X O O X . . .
+e  O O O X . . . .
+f  X X X . . . . .
+g  . . . . . . . .
+Traceback (most recent call last):
+  File "/Users/adammiller/code/tsumegobench/runs/2026-09-24T151511Z-anthropic-claude-opus-5-5-claude/scratch/fr4.py", line 24, in <module>
+    run(fr,tm,att,keys,box,mind=mind,maxwin=1,show_n=30,limit=4000,seed=seed)
+  File "/Users/adammiller/code/tsumegobench/runs/2026-09-24T151511Z-anthropic-claude-opus-5-5-claude/scratch/find2.py", line 45, in run
+    depth=min(s.dist(play(b,P(m),tomove)[0],3-tomove) or 99 for m in res if m not in wins)
+ValueError: min() arg is an empty sequence

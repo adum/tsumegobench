@@ -1,0 +1,11 @@
+TREE 13 2 (cb R)(aa da)(ba cb)(ca ba)(da cb)(ab da)(cd da)
+FOUND depth 5 wins ['cb'] .OXXOX..X
+   a b c d e f g h
+a  . . . . O O . .
+b  . X . X X O . .
+c  X . X O O . . .
+d  X X . O . . . .
+e  . X O . . . . .
+f  . X O . . . . .
+g  X O . . . . . .
+h  . . . . . . . .

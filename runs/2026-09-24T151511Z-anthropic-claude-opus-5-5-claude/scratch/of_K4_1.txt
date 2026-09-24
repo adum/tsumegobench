@@ -1,0 +1,130 @@
+FOUND depth 1 wins ['cb'] nodes 31 7 busy 14 wrong 4
+   a b c d e f g h i
+a  X . X O . O X . .
+b  . . . O O O X . .
+c  . X X X O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (cb (ba ac (ab ea R)(bb (ea R)(ab (ba ea R)(bb ea R))))(ab ac (ba ea R)(bb (ba (ab ea R)(bb ea R))(ea R))))(ba ab)(ab ba)(bb cb)(ac cb)
+REJECT-ko
+FOUND depth 1 wins ['cc'] nodes 19 5 busy 19 wrong 5
+   a b c d e f g h i
+a  X X . X . O X . .
+b  X . O X O O X . .
+c  . . . X O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (cc (bc bb R)(ca ac (bb bc R)(bc bb R)))(ca bb)(ea ca)(bb cc)(ac bb)(bc cc)
+FOUND depth 1 wins ['bb'] nodes 25 5 busy 9 wrong 7
+   a b c d e f g h i
+a  . X . X O O X . .
+b  O . . X . O X . .
+c  O . . . O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (bb (ca aa (cb cc R)(bc cb R))(cb cc (bc dc R)(dc bc R)))(aa bb)(ca aa)(cb bb)(eb bb)(bc bb)(cc bb)
+FOUND depth 1 wins ['bb'] nodes 20 5 busy 11 wrong 5
+   a b c d e f g h i
+a  . X X O O O X . .
+b  X . . X . O X . .
+c  . O . X O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (bb (cb cc R)(cc (cb R)(ac (cb eb R)(eb cb R))))(aa bb)(cb bb)(eb bb)(ac bb)(cc bb)
+FOUND depth 1 wins ['cc'] nodes 25 5 busy 18 wrong 6
+   a b c d e f g h i
+a  . . X . O O X . .
+b  . O . . O O X . .
+c  X X . X O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (cc (aa da (ba db R)(ab db R))(ba da (aa db R)(ab db R)))(aa ab)(ba ab)(da cb)(ab cb)(cb cc)(db cc)
+FOUND depth 1 wins ['cb'] nodes 17 5 busy 15 wrong 4
+   a b c d e f g h i
+a  X . X X X O X . .
+b  X . . O . O X . .
+c  O X . O O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (cb (ba bb R)(bb ba (eb cc R)(cc eb R)))(ba cb)(bb cb)(eb bb)(cc bb)
+FOUND depth 1 wins ['bc'] nodes 25 7 busy 13 wrong 6
+   a b c d e f g h i
+a  X . X O O O X . .
+b  . . . . O O X . .
+c  X . . X O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (bc (ba cb R)(cb cc (ba db (ca bb R)(ab ca R))(ab db R)))(ba ab)(ab ba)(bb cb)(cb bc)(db cb)(cc bc)
+FOUND depth 1 wins ['db'] nodes 25 5 busy 13 wrong 7
+   a b c d e f g h i
+a  O . . O . O X . .
+b  . X X . X O X . .
+c  O . . . O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (db (ba ea (ca ab R)(ab ca R))(ca ea (ba ab R)(ab ba R)))(ba ea)(ca ea)(ea db)(ab db)(bc ba)(cc ba)
+FOUND depth 1 wins ['db'] nodes 25 7 busy 13 wrong 8
+   a b c d e f g h i
+a  . X . . O O X . .
+b  . X . . . O X . .
+c  O . . X O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (db (aa da R)(ca da (aa ab R)(ab aa (cb cc R)(bc cb R))))(aa ca)(ca da)(da cb)(ab cb)(cb da)(eb ca)
+FOUND depth 1 wins ['bc'] nodes 25 7 busy 14 wrong 5
+   a b c d e f g h i
+a  O . . O . O X . .
+b  . . X . O O X . .
+c  X . X O O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (bc (ba (ca R)(db R))(ca db (ba ea R)(ea (ba R)(bb (ba ab R)(ab ba R)))))(ba ca)(ca bc)(ab ba)(bb ba)(db bc)
+FOUND depth 1 wins ['db'] nodes 21 5 busy 15 wrong 6
+   a b c d e f g h i
+a  . X X . . O X . .
+b  X X O . . O X . .
+c  . X O . O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (db (da ea (eb da R)(ac eb R))(ea da R))(aa da)(da db)(ea db)(eb da)(ac da)(dc da)
+FOUND depth 1 wins ['bc'] nodes 38 7 busy 14 wrong 6
+   a b c d e f g h i
+a  . X O O O O X . .
+b  . . . X . O X . .
+c  X . X . O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (bc (bb cb (aa ab (eb ba R)(dc ba R))(ab aa R))(aa ab (bb cb R)(cb (bb (eb dc R)(dc eb R))(dc (bb eb R)(eb bb R)))))(aa ab)(ab bb)(bb bc)(cb bc)(eb aa)(dc ab)
+REJECT-ko
+REJECT-ko
+REJECT-ko
+FOUND depth 1 wins ['bb'] nodes 22 5 busy 10 wrong 5
+   a b c d e f g h i
+a  . O O . X O X . .
+b  X . . . X O X . .
+c  X O . X O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (bb (aa (cb R)(cc R))(da (db (aa (cb R)(cc R))(cb cc R))(cc R)))(aa da)(da aa)(cb da)(db aa)(cc bb)
+FOUND depth 1 wins ['db'] nodes 17 5 busy 15 wrong 4
+   a b c d e f g h i
+a  X X . X X O X . .
+b  O X . . . O X . .
+c  O X . O O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (db (ca cb R)(cb ca (eb cc R)(cc eb R)))(ca db)(cb db)(eb cb)(cc db)

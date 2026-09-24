@@ -1,0 +1,158 @@
+FOUND depth 9 wins ['bb'] X..XOX.OOO.X.O
+   a b c d e f g h i
+a  X . . X O X O . .
+b  X . O O O X O . .
+c  . X . O X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 15 wins ['db'] ..O..O.O.XXOX.
+   a b c d e f g h i
+a  . . O . . X O . .
+b  O . O . X X O . .
+c  X O X . X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['ab'] XXOOX..OOXXO..
+   a b c d e f g h i
+a  X X O O X X O . .
+b  . . O O X X O . .
+c  X O . . X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 13 wins ['cb'] XOO...X..XXO..
+   a b c d e f g h i
+a  X O O . . X O . .
+b  . X . . X X O . .
+c  X O . . X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['ac'] ..OO.X.OOO.O..
+   a b c d e f g h i
+a  . . O O . X O . .
+b  X . O O O X O . .
+c  . O . . X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['bb'] .O.O.O..O..X.O
+   a b c d e f g h i
+a  . O . O . X O . .
+b  O . . O . X O . .
+c  . X . O X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['db'] .OO.XOO...XO..
+   a b c d e f g h i
+a  . O O . X X O . .
+b  O O . . . X O . .
+c  X O . . X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['dc'] OOXO..OXXOXXO.
+   a b c d e f g h i
+a  O O X O . X O . .
+b  . O X X O X O . .
+c  X X O . X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['cc'] .OX.O.OX.X.O.O
+   a b c d e f g h i
+a  . O X . O X O . .
+b  . O X . X X O . .
+c  . O . O X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['bb'] XXOOOO.XO.X...
+   a b c d e f g h i
+a  X X O O O X O . .
+b  O . X O . X O . .
+c  X . . . X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 11 wins ['cc'] ..OO.XOXO..X.O
+   a b c d e f g h i
+a  . . O O . X O . .
+b  X O X O . X O . .
+c  . X . O X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 11 wins ['db'] ....X.O...XOO.
+   a b c d e f g h i
+a  . . . . X X O . .
+b  . O . . . X O . .
+c  X O O . X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['bb'] O.O.X..OOX.XX.
+   a b c d e f g h i
+a  O . O . X X O . .
+b  . . O O X X O . .
+c  . X X . X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['ac'] .X.O.XOO.X.O.O
+   a b c d e f g h i
+a  . X . O . X O . .
+b  X O O . X X O . .
+c  . O . O X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['bb'] .XOOO...X.O.XX
+   a b c d e f g h i
+a  . X O O O X O . .
+b  . . . X . X O . .
+c  O . X X X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['db'] X...XXOX.OO.OO
+   a b c d e f g h i
+a  X . . . X X O . .
+b  X O X . O X O . .
+c  O . O O X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 13 wins ['bb'] X.XOX..O.X.XO.
+   a b c d e f g h i
+a  X . X O X X O . .
+b  . . O . X X O . .
+c  . X O . X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['cb'] XX.XXXX.XXXXOO
+   a b c d e f g h i
+a  X X . X X X O . .
+b  X X . X X X O . .
+c  X X O O X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+FOUND depth 9 wins ['bb'] OXO.O...O.X.O.
+   a b c d e f g h i
+a  O X O . O X O . .
+b  . . . O . X O . .
+c  X . O . X X O . .
+d  X X X X X O . . .
+e  O O O O O . . . .
+f  . . . . . . . . .
+Traceback (most recent call last):
+  File "/Users/adammiller/code/tsumegobench/runs/2026-09-24T151511Z-anthropic-claude-opus-5-5-claude/scratch/fr4.py", line 24, in <module>
+    run(fr,tm,att,keys,box,mind=mind,maxwin=1,show_n=30,limit=4000,seed=seed)
+  File "/Users/adammiller/code/tsumegobench/runs/2026-09-24T151511Z-anthropic-claude-opus-5-5-claude/scratch/find2.py", line 43, in run
+    depth=max(s.dist(play(b,P(w),tomove)[0],3-tomove) for w in wins)+1
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'

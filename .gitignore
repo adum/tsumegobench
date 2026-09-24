@@ -42,6 +42,11 @@ next-env.d.ts
 __pycache__/
 *.py[cod]
 
+# Model helper build products and transient process IDs
+/runs/*/scratch/*.so
+/runs/*/scratch/*.o
+/runs/*/scratch/pids.txt
+
 /dist/
 /.wrangler/
 /outputs/

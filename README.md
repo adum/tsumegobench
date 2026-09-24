@@ -166,11 +166,15 @@ Launch the local review UI with:
 python3 benchmark.py review
 ```
 
-The command selects the most recently completed evaluated run, opens a local browser session, and saves every checkbox, difficulty, and star change automatically. A rejected problem is complete as soon as it is marked invalid; a valid problem needs a human-estimated difficulty before its review is complete and it can receive score credit. The 1–5 quality rating remains optional. Pass a run ID only when reviewing an older run:
+The command selects the newest run with saved SGFs or an evaluation, including interrupted runs. If evaluation has not happened yet, it evaluates the saved files before opening the browser, using the run's original remote/local duplicate-check setting. Missing problems stay in the original score denominator and receive no credit. Reviewing partial output does not mark generation as completed. Stop generation before reviewing to keep the evaluated files stable; use `benchmark.py evaluate runs/<run-id>` again if you later change them.
+
+The browser saves every checkbox, difficulty, and star change automatically. A rejected problem is complete as soon as it is marked invalid; a valid problem needs a human-estimated difficulty before its review is complete and it can receive score credit. The 1–5 quality rating remains optional. Pass a run ID to select a particular run:
 
 ```bash
 python3 benchmark.py review 2026-08-05T225707Z-openai-gpt-5-6-luna-codex
 ```
+
+During Claude generation, Ctrl+C stops the CLI and its helper processes, then evaluates the saved output for review. Attempt logs are flushed to disk while Claude runs. Cleanup also checks for detached helpers still working inside that run directory. A forced kill of the runner cannot execute cleanup; the filesystem/network sandbox is not a RAM or CPU limit.
 
 For each problem, the initial review can record whether it is valid, whether the position is realistic, whether the reviewer considers it a duplicate, whether its solution and refutation paths are well formed, an estimated difficulty band for valid problems, and a 1–5 quality rating. Reviewer records are independent, so a second reviewer can assess the same run without overwriting the first review. The structured records live in `evaluation/reviews.json`; the hosted site remains read-only.
 
@@ -191,7 +195,7 @@ Models without release metadata are listed by the script and omitted from the ch
 1. Invoke `python benchmark.py run --model <openai-model-id>` for Codex, add `--harness claude` for Claude CLI, add `--harness grok` for Grok CLI, or use `--harness opencode --model <provider>/<model-id>` for OpenCode CLI.
 2. The runner snapshots the controlled inputs and asks the selected model to write ten SGFs directly into the run directory.
 3. It preserves the selected CLI's event log and runs structural and duplicate checks automatically.
-4. Run `python3 benchmark.py review`; it defaults to the run that just completed.
+4. Run `python3 benchmark.py review`; it defaults to the newest run with saved output, even if generation was interrupted.
 5. Have one or more competent Go players submit the basic validity, realism, duplicate, path quality, difficulty, and overall quality review in the browser.
 6. Check in the resulting `evaluation/reviews.json` with the rest of the run. Use `docs/evaluation-rubric.md` when a deeper 100-point review is needed.
 

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/tsumego-bench/originality-request.schema.json",
+  "title": "Tsumego Bench originality query",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["requestId", "path"],
+  "properties": {
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "path": {
+      "type": "string",
+      "pattern": "^outputs/problem-[0-9]{2}\\.sgf$"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+P01
+MISMATCH ['ba', 'bb'] right False good True
+MISMATCH ['cb', 'bb'] right False good True
+ref paths checked, mismatches: 2
+476.26657581329346
+P02
+ref paths checked, mismatches: 0
+0.4461345672607422
+P03
+ref paths checked, mismatches: 0
+165.39762687683105
+P04
+MISMATCH ['eb', 'hb', 'ha'] right True good False
+MISMATCH ['eb', 'fb', 'hb'] right True good False
+MISMATCH ['eb', 'db', 'ha'] right True good False
+ref paths checked, mismatches: 3
+42.72850489616394

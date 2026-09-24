@@ -1,0 +1,63 @@
+FOUND depth 1 wins ['cb'] nodes 24 5 busy 14 wrong 5
+   a b c d e f g h i
+a  . . X O O O X . .
+b  X X . . O O X . .
+c  . X . O O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (cb (aa ba R)(ba (ac (aa cc R)(cc aa R))(cc (aa ac R)(ac aa R))))(aa ba)(ba cb)(db ba)(ac cb)(cc cb)
+FOUND depth 1 wins ['bb'] nodes 31 11 busy 11 wrong 4
+   a b c d e f g h i
+a  . X . . . O X . .
+b  X . X X O O X . .
+c  O O O . O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (bb (aa ca R)(ca aa (da ab (ea dc (ba ca R)(ca da (ba (cb R)(db R))(cb (ba R)(db R))))(dc ea R))(ea da R)))(ca ea)(da bb)(ea da)(dc ca)
+FOUND depth 1 wins ['cb'] nodes 20 5 busy 14 wrong 5
+   a b c d e f g h i
+a  . . . X O O X . .
+b  X X . . O O X . .
+c  X . O O O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (cb (aa ba R)(ba ca (aa (db R)(bc R))(bc aa R)))(aa ba)(ba cb)(ca cb)(db ba)(bc ba)
+FOUND depth 1 wins ['eb'] nodes 19 5 busy 15 wrong 3
+   a b c d e f g h i
+a  . X X . X O X . .
+b  O X . X . O X . .
+c  O O . X O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (eb (aa da (cb cc R)(cc cb R))(da cc (aa cb R)(cb aa R)))(aa cb)(cb eb)(cc aa)
+FOUND depth 1 wins ['cc'] nodes 27 7 busy 19 wrong 5
+   a b c d e f g h i
+a  O . . O O O X . .
+b  O . X . O O X . .
+c  X X . . O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (cc (ba (bb R)(db (ca bb R)(bb (aa (ca ab R)(ab))(ab (aa)(ca aa R)))))(ca bb R))(ba ca)(ca ba)(bb ba)(db ca)(dc ba)
+FOUND depth 1 wins ['cb'] nodes 19 5 busy 14 wrong 5
+   a b c d e f g h i
+a  . X . X O O X . .
+b  . X . . O O X . .
+c  . O X X O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (cb (aa ab (ca db R)(db ca R))(ca db R))(aa cb)(ca ab)(ab cb)(db cb)(ac ca)
+FOUND depth 1 wins ['cc'] nodes 18 5 busy 19 wrong 5
+   a b c d e f g h i
+a  O X X . . O X . .
+b  O X . X X O X . .
+c  O . . . O O X . .
+d  O O O O O X . . .
+e  X X X X X . . . .
+f  . . . . . . . . .
+TREE (cc (da ea R)(ea cb (da)(bc da R)))(da ea)(ea cc)(cb cc)(bc ea)(dc ea)
