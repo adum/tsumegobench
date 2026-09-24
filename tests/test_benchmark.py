@@ -111,18 +111,62 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertEqual(benchmark.harness_executable(args), "/opt/claude")
         self.assertEqual(command[0], "/opt/claude")
         self.assertIn("--safe-mode", command)
+        self.assertIn("--restricted", command)
         self.assertIn("--print", command)
         self.assertEqual(command[command.index("--input-format") + 1], "stream-json")
         self.assertEqual(command[command.index("--output-format") + 1], "stream-json")
         self.assertIn("--no-session-persistence", command)
         self.assertIn("dontAsk", command)
-        self.assertIn("Read,Write,Edit,Glob,Grep", command)
-        self.assertIn("Bash,PowerShell,WebFetch,WebSearch,mcp__*", command)
+        self.assertEqual(command[command.index("--tools") + 1], "Read,Write,Edit,Glob,Grep,Bash")
+        self.assertEqual(command[command.index("--allowedTools") + 1], "Read,Write,Edit,Glob,Grep,Bash")
+        self.assertIn("PowerShell,WebFetch,WebSearch,mcp__*", command)
+        self.assertNotIn("--dangerously-skip-permissions", command)
+        settings = json.loads(command[command.index("--settings") + 1])
+        self.assertTrue(settings["permissions"]["blockReadsOutsideWorkingDirectories"])
+        sandbox = settings["sandbox"]
+        self.assertTrue(sandbox["enabled"])
+        self.assertTrue(sandbox["failIfUnavailable"])
+        self.assertFalse(sandbox["allowUnsandboxedCommands"])
+        self.assertEqual(sandbox["excludedCommands"], [])
+        self.assertFalse(sandbox["filesystem"]["disabled"])
+        self.assertEqual(sandbox["filesystem"]["allowWrite"], [])
+        self.assertIn(str(Path("/tmp/run/inputs").resolve()), sandbox["filesystem"]["denyWrite"])
+        self.assertEqual(sandbox["network"]["allowedDomains"], [])
+        self.assertEqual(sandbox["network"]["deniedDomains"], ["*"])
+        self.assertTrue(sandbox["network"]["strictAllowlist"])
+        self.assertFalse(sandbox["network"]["allowAllUnixSockets"])
+        self.assertFalse(sandbox["network"]["allowLocalBinding"])
         self.assertEqual(command[command.index("--model") + 1], "claude-sonnet-4-6")
         self.assertEqual(command[command.index("--effort") + 1], "high")
 
         self.assertEqual(environment["CLAUDE_CODE_MAX_OUTPUT_TOKENS"], "128000")
+        self.assertEqual(environment["CLAUDE_CODE_SUBPROCESS_ENV_SCRUB"], "1")
         self.assertNotIn("exec", command)
+
+    def test_claude_inputs_snapshot_the_launched_policy_and_protect_runner_files(self):
+        args = benchmark.build_parser().parse_args(["run", "--harness", "claude", "--model", "test"])
+        with tempfile.TemporaryDirectory(prefix="tsumego sandbox ") as temporary:
+            run_dir = Path(temporary)
+            records = benchmark.copy_inputs(run_dir, 10, "claude")
+            policy_path = run_dir / "inputs" / "claude-settings.json"
+            policy = benchmark.read_json(policy_path)
+            command = benchmark.build_harness_command(args, run_dir, "claude")
+            self.assertEqual(policy, json.loads(command[command.index("--settings") + 1]))
+            self.assertIn(
+                {"path": "inputs/claude-settings.json", "sha256": benchmark.sha256_file(policy_path)},
+                records,
+            )
+            self.assertTrue((run_dir / "scratch").is_dir())
+            self.assertIn("execute local code", (run_dir / "inputs/task.md").read_text())
+            for name in ("inputs", "logs", "evaluation", "run.json", "originality/results",
+                         "originality/summary.json", "originality/ready.json", "originality/stop"):
+                absolute = (run_dir / name).resolve()
+                self.assertIn(str(absolute), policy["sandbox"]["filesystem"]["denyWrite"])
+                self.assertIn(f"Edit(/{absolute.as_posix()})", policy["permissions"]["deny"])
+                self.assertIn(f"Edit(/{absolute.as_posix()}/**)", policy["permissions"]["deny"])
+            # Even replacing the snapshot cannot relax the inline launch policy.
+            benchmark.write_json(policy_path, {"sandbox": {"enabled": False}})
+            self.assertEqual(command, benchmark.build_harness_command(args, run_dir, "claude"))
 
     def test_claude_streaming_session_continues_flexibly_after_output_boundary(self):
         args = benchmark.build_parser().parse_args(
@@ -371,11 +415,19 @@ for turn, line in enumerate(sys.stdin, 1):
         self.assertEqual(config["permission"]["edit"], "allow")
         self.assertNotIn("bash", [key for key, value in config["permission"].items() if value == "allow"])
 
-    def test_claude_version_preflight_requires_streaming_release(self):
-        self.assertIsNone(benchmark.claude_version_error("2.1.217 (Claude Code)"))
+    def test_claude_version_preflight_requires_restricted_sandbox_release(self):
+        self.assertIsNone(benchmark.claude_version_error("2.1.257 (Claude Code)"))
         self.assertIsNone(benchmark.claude_version_error("Claude Code v3.0.0"))
-        self.assertIn("2.1.217 or newer", benchmark.claude_version_error("2.1.216") or "")
+        self.assertIn("2.1.257 or newer", benchmark.claude_version_error("2.1.256") or "")
         self.assertIn("Could not determine", benchmark.claude_version_error("development") or "")
+
+    def test_claude_sandbox_rejects_native_windows_and_windows_cli_in_wsl(self):
+        for platform in ("win32", "linux"):
+            with self.subTest(platform=platform), mock.patch.object(benchmark.sys, "platform", platform):
+                self.assertIn("WSL2", benchmark.claude_sandbox_platform_error("claude.exe") or "")
+        for platform in ("darwin", "linux"):
+            with self.subTest(platform=platform), mock.patch.object(benchmark.sys, "platform", platform):
+                self.assertIsNone(benchmark.claude_sandbox_platform_error("/usr/local/bin/claude"))
 
     def test_opencode_version_preflight_requires_isolated_permission_release(self):
         self.assertIsNone(benchmark.opencode_version_error("opencode 1.1.1"))
@@ -726,7 +778,7 @@ for turn, line in enumerate(sys.stdin, 1):
             runs_root = Path(temporary)
             with (
                 mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
-                mock.patch.object(benchmark, "cli_version", return_value="2.1.217"),
+                mock.patch.object(benchmark, "cli_version", return_value="2.1.257"),
                 mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
                 mock.patch.object(
                     benchmark,
@@ -990,7 +1042,7 @@ for turn, line in enumerate(sys.stdin, 1):
 
             with (
                 mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
-                mock.patch.object(benchmark, "cli_version", return_value="2.1.217"),
+                mock.patch.object(benchmark, "cli_version", return_value="2.1.257"),
                 mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
                 mock.patch.object(
                     benchmark,
@@ -1020,6 +1072,12 @@ for turn, line in enumerate(sys.stdin, 1):
             self.assertEqual(manifest["harness"]["name"], "claude-cli")
             self.assertEqual(manifest["harness"]["threadId"], "session-success")
             self.assertEqual(manifest["harness"]["outputTokenCeiling"], 128_000)
+            self.assertTrue(manifest["condition"]["codeExecutionEnabled"])
+            self.assertEqual(manifest["artifacts"]["harnessSettings"], "inputs/claude-settings.json")
+            self.assertIn(
+                "inputs/claude-settings.json",
+                [record["path"] for record in manifest["benchmark"]["inputFiles"]],
+            )
             self.assertTrue(manifest["harness"]["roundPolicy"]["sameSession"])
             self.assertEqual(manifest["harness"]["roundPolicy"]["maxRounds"], 20)
             self.assertEqual(manifest["harness"]["roundPolicy"]["staleRoundLimit"], 3)
@@ -1148,7 +1206,7 @@ for turn, line in enumerate(sys.stdin, 1):
             resume_at = datetime(2026, 8, 9, 3, 51, tzinfo=timezone.utc)
             with (
                 mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
-                mock.patch.object(benchmark, "cli_version", return_value="2.1.217"),
+                mock.patch.object(benchmark, "cli_version", return_value="2.1.257"),
                 mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
                 mock.patch.object(
                     benchmark,
@@ -1262,7 +1320,7 @@ for turn, line in enumerate(sys.stdin, 1):
 
             with (
                 mock.patch.object(benchmark, "RUNS_ROOT", runs_root),
-                mock.patch.object(benchmark, "cli_version", return_value="2.1.223"),
+                mock.patch.object(benchmark, "cli_version", return_value="2.1.257"),
                 mock.patch.object(benchmark, "git_commit", return_value="test-commit"),
                 mock.patch.object(
                     benchmark,

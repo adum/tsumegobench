@@ -51,7 +51,8 @@ DEFAULT_OPENCODE_MAX_ROUNDS = 20
 OPENCODE_OUTPUT_TOKEN_MAX = 65_536
 DEFAULT_REVIEW_STARTUP_TIMEOUT_SECONDS = 120
 REVIEW_PROBE_REQUEST_TIMEOUT_SECONDS = 10
-MINIMUM_CLAUDE_VERSION = (2, 1, 217)
+# --restricted arrived in 2.1.248; workspace read isolation in 2.1.257.
+MINIMUM_CLAUDE_VERSION = (2, 1, 257)
 MINIMUM_OPENCODE_VERSION = (1, 1, 1)
 GENERATION_DIFFICULTY_BANDS = (
     "20-30 kyu",
@@ -1319,6 +1320,59 @@ def opencode_config() -> dict[str, Any]:
     }
 
 
+def claude_sandbox_settings(run_dir: Path) -> dict[str, Any]:
+    """Session-owned policy, passed inline so model edits cannot change it."""
+    run_dir = run_dir.resolve()
+    protected = [
+        run_dir / name
+        for name in (
+            "inputs", "logs", "evaluation", "run.json",
+            "originality/results", "originality/summary.json",
+            "originality/ready.json", "originality/stop",
+        )
+    ]
+    # Edit deny rules cover Write too. Sandbox paths use ordinary absolute
+    # paths; Read/Edit permission rules use // for an absolute path.
+    deny_edits = [
+        f"Edit(/{path.as_posix()}{suffix})"
+        for path in protected
+        for suffix in ("", "/**")
+    ]
+    return {
+        "permissions": {
+            "blockReadsOutsideWorkingDirectories": True,
+            "additionalDirectories": [],
+            "deny": deny_edits,
+        },
+        "sandbox": {
+            "enabled": True,
+            "failIfUnavailable": True,
+            "autoAllowBashIfSandboxed": True,
+            "allowUnsandboxedCommands": False,
+            "excludedCommands": [],
+            "enableWeakerNestedSandbox": False,
+            "enableWeakerNetworkIsolation": False,
+            "filesystem": {
+                "disabled": False,
+                "allowWrite": [],
+                "denyWrite": [str(path) for path in protected],
+                # Also hide the evaluator and other runs when the checkout
+                # lives outside the home/mount roots blocked by Claude.
+                "denyRead": [str(PROJECT_ROOT)],
+                "allowRead": [str(run_dir)],
+            },
+            "network": {
+                "allowedDomains": [],
+                "deniedDomains": ["*"],
+                "strictAllowlist": True,
+                "allowUnixSockets": [],
+                "allowAllUnixSockets": False,
+                "allowLocalBinding": False,
+            },
+        },
+    }
+
+
 def copy_inputs(
     run_dir: Path,
     problem_count: int,
@@ -1379,6 +1433,18 @@ This is a controlled benchmark run. Work only inside the current run directory.
 Do not ask the operator questions and do not wait for repair feedback.
 """
     (inputs / "task.md").write_text(task, encoding="utf-8")
+    if harness == "claude":
+        (run_dir / "scratch").mkdir(exist_ok=True)
+        with (inputs / "task.md").open("a", encoding="utf-8") as handle:
+            handle.write(
+                "\nYou may use Bash to execute local code (for example Python) to construct "
+                "and verify your problems. Put helper scripts and scratch files under "
+                "`scratch/`, keeping `outputs/` limited to the requested SGFs. Shell "
+                "commands run in a filesystem and network sandbox; use installed "
+                "runtimes and libraries, with no network access. Inputs and "
+                "runner-owned records are read-only.\n"
+            )
+        write_json(inputs / "claude-settings.json", claude_sandbox_settings(run_dir))
     if harness == "opencode":
         config_dir = inputs / "opencode-config"
         config_dir.mkdir()
@@ -1425,8 +1491,18 @@ def claude_version_error(version: str) -> str | None:
     if installed < MINIMUM_CLAUDE_VERSION:
         required = ".".join(str(part) for part in MINIMUM_CLAUDE_VERSION)
         return (
-            f"Claude CLI {required} or newer is required for the benchmark's isolated streaming mode; "
+            f"Claude CLI {required} or newer is required for the benchmark's restricted sandbox mode; "
             f"found {'.'.join(str(part) for part in installed)}."
+        )
+    return None
+
+
+def claude_sandbox_platform_error(executable: str) -> str | None:
+    if sys.platform not in {"darwin", "linux"} or executable.lower().endswith(".exe"):
+        return (
+            "Claude code execution requires the native macOS or Linux/WSL2 CLI and its "
+            "OS sandbox. On Windows, run benchmark.py and the Linux Claude CLI inside "
+            "WSL2; the Windows .exe cannot provide this sandbox."
         )
     return None
 
@@ -2537,6 +2613,8 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
         },
     }
     if args.harness == "claude":
+        manifest["condition"]["codeExecutionEnabled"] = True
+        manifest["artifacts"]["harnessSettings"] = "inputs/claude-settings.json"
         manifest["artifacts"]["harnessInput"] = "logs/claude-input.jsonl"
         manifest["harness"]["retryPolicy"].update(
             {
@@ -2604,6 +2682,8 @@ def harness_environment(args: argparse.Namespace, run_dir: Path) -> dict[str, st
     if args.harness == "claude":
         environment = os.environ.copy()
         environment["CLAUDE_CODE_MAX_OUTPUT_TOKENS"] = str(CLAUDE_OUTPUT_TOKEN_MAX)
+        # Keep authentication available to the CLI, not to generated programs.
+        environment["CLAUDE_CODE_SUBPROCESS_ENV_SCRUB"] = "1"
         return environment
     if args.harness != "opencode":
         return None
@@ -2633,10 +2713,13 @@ def build_harness_command(
     grok_continue: bool = False,
 ) -> list[str]:
     if args.harness == "claude":
-        file_tools = "Read,Write,Edit,Glob,Grep"
+        allowed_tools = "Read,Write,Edit,Glob,Grep,Bash"
         command = [
             executable,
             "--safe-mode",
+            "--restricted",
+            "--settings",
+            json.dumps(claude_sandbox_settings(run_dir), separators=(",", ":")),
             "--print",
             "--input-format",
             "stream-json",
@@ -2649,11 +2732,11 @@ def build_harness_command(
             "--permission-mode",
             "dontAsk",
             "--tools",
-            file_tools,
+            allowed_tools,
             "--allowedTools",
-            file_tools,
+            allowed_tools,
             "--disallowedTools",
-            "Bash,PowerShell,WebFetch,WebSearch,mcp__*",
+            "PowerShell,WebFetch,WebSearch,mcp__*",
             "--model",
             args.model,
         ]
@@ -2780,11 +2863,11 @@ def _run_command(args: argparse.Namespace) -> int:
         print("No run was saved, and evaluation was not started.", file=sys.stderr)
         return 2
     if args.harness == "claude":
-        version_error = claude_version_error(version)
+        version_error = claude_version_error(version) or claude_sandbox_platform_error(executable)
         if version_error:
             print(f"error: {version_error}", file=sys.stderr)
             print(
-                "Upgrade Claude CLI and try again. No run was saved, and evaluation was not started.",
+                "Use a supported Claude CLI and try again. No run was saved, and evaluation was not started.",
                 file=sys.stderr,
             )
             return 2
@@ -2828,6 +2911,11 @@ def _run_command(args: argparse.Namespace) -> int:
     print(f"Reasoning effort: {args.reasoning_effort or 'CLI/model default'}")
     print(f"Execution timeout: {format_timeout(args.timeout)}")
     if args.harness == "claude":
+        print(
+            "Claude code execution: required OS sandbox; run-directory writes and "
+            "session temporary files only, protected inputs/records, no subprocess "
+            "network access or unsandboxed retries."
+        )
         print(
             "Claude continuation turns: up to "
             f"{DEFAULT_CLAUDE_MAX_ROUNDS} in one live session, stopping when all "

@@ -60,13 +60,34 @@ Install and authenticate the selected CLI before running the benchmark. The runn
 `claude`, `grok`, or `opencode` on `PATH`; use `--codex` / `CODEX_CLI`, `--claude` /
 `CLAUDE_CLI`, `--grok` / `GROK_CLI`, or `--opencode` / `OPENCODE_CLI` to provide an explicit
 executable. Prefer a full, versioned model ID over a moving alias when reproducibility matters.
-OpenCode model names must use its exact `provider/model` form. Claude Code 2.1.217 or newer and
+OpenCode model names must use its exact `provider/model` form. Claude Code 2.1.257 or newer and
 OpenCode 1.1.1 or newer are required for the isolated modes used by the benchmark. The runner checks
 the version before creating a run; an obsolete or broken CLI exits without saving or evaluating
 anything. See
 Anthropic's [Claude Code installation guide](https://code.claude.com/docs/en/installation) or
 xAI's [Grok Build guide](https://docs.x.ai/build/overview), or the
 [OpenCode installation guide](https://opencode.ai/docs) for installation and authentication.
+
+Claude can execute local code through Bash in a required
+[OS sandbox](https://code.claude.com/docs/en/sandboxing). Shell writes are limited to the run
+directory and Claude's session temporary directory; inputs, logs, evaluation records, the run
+manifest, and originality results are protected from both shell and file-tool edits. Helper
+programs belong in `scratch/`, leaving `outputs/` for the submitted SGFs. Restricted mode confines
+file tools to the run directory and ignores user/project settings; safe mode disables customizations.
+Sandbox read restrictions also hide personal files and the rest of this checkout while leaving
+system runtimes available. Subprocess network access and unsandboxed retries are disabled, and
+Claude refuses to start if the sandbox is unavailable. The originality broker runs separately and
+retains its existing GoProblems access. Claude's credential-scrubbing option keeps provider
+credentials out of generated programs' environments.
+
+This requires macOS, Linux, or WSL2; native Windows Claude executables are rejected. macOS uses
+Seatbelt. Linux/WSL2 require `bubblewrap` and `socat`; install the sandbox runtime's optional seccomp
+filter as described in Anthropic's sandbox documentation to also block Unix sockets (including WSL
+Windows interop). This is Claude's command sandbox, not a separate virtual machine.
+
+New Claude runs record `condition.codeExecutionEnabled: true` and a hashed
+`inputs/claude-settings.json` policy snapshot. The runner passes the policy inline to the CLI so
+editing the snapshot cannot relax it. Earlier runs retain their original file-only conditions.
 
 Claude generation uses streaming JSON input to keep one CLI process and conversation alive across
 flexible continuation turns. The model receives the complete task first and may create or revise any
