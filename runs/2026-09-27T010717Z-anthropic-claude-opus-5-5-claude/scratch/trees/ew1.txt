@@ -1,0 +1,4 @@
+(;W[db](;B[eb];W[ec](;B[fb];W[cd]C[RIGHT])(;B[cd];W[fb]C[RIGHT]))(;B[ec];W[eb]C[RIGHT]))
+(;W[ec];B[db];W[eb];B[ea];W[da];B[ca];W[dc];B[ea]C[Ko])
+(;W[eb];B[db];W[cd];B[ea];W[da];B[ca];W[fb];B[ea]C[Ko])
+(;W[dc];B[eb])(;W[cd];B[eb])(;W[fb];B[eb])(;W[ea];B[db])

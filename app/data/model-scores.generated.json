@@ -206,12 +206,12 @@
       "family": "Anthropic",
       "releaseDate": "2026-09-22",
       "icon": "/provider-icons/anthropic.svg",
-      "score": 1,
-      "passedProblems": 1,
+      "score": 4,
+      "passedProblems": 4,
       "problemCount": 10,
-      "runCount": 1,
-      "bestRunId": "2026-09-24T151511Z-anthropic-claude-opus-5-5-claude",
-      "bestRunCreatedAt": "2026-09-24T15:15:11.671253Z"
+      "runCount": 2,
+      "bestRunId": "2026-09-27T010717Z-anthropic-claude-opus-5-5-claude",
+      "bestRunCreatedAt": "2026-09-27T01:07:17.337939Z"
     }
   ],
   "unmatchedModels": []

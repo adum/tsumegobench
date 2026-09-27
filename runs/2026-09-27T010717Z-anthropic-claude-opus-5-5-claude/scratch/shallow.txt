@@ -1,0 +1,1386 @@
+161
+#0 B to live tdepth=1 tnodes=1 key=fb
+   a b c d e f g h
+ a . . . X . X O ,
+ b X X X * . X O ,
+ c O O O O X X O ,
+ d , , O O O O O ,
+ e , , , , , , , ,
+  B[db] RIGHT
+#1 B to kill tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a X * . O X ,
+ b O . O O X ,
+ c O O O X X ,
+ d X X X X , ,
+ e , , , , , ,
+  B[ba] RIGHT
+#2 W to live tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . O O O X ,
+ b * X X O X ,
+ c O . O O X ,
+ d O O O X X ,
+ e X X X X , ,
+ f , , , , , ,
+  W[ab] RIGHT
+#3 W to live tdepth=1 tnodes=1 key=bd
+   a b c d e f g
+ a . . . . X X ,
+ b X * . O . X ,
+ c O . O O X X ,
+ d O O O X X , ,
+ e X X X X , , ,
+ f , , , , , , ,
+  W[bb] RIGHT
+#4 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . * . X X ,
+ b O . O O X ,
+ c O O O X X ,
+ d X X X X , ,
+ e , , , , , ,
+  W[ba] RIGHT
+#5 B to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . * . X O ,
+ b X . X O O ,
+ c X X X O O ,
+ d O O O O , ,
+ e , , , , , ,
+  B[ba] RIGHT
+#6 B to live tdepth=1 tnodes=1 key=ad
+   a b c d e f
+ a O . . X O ,
+ b O * . . O ,
+ c X . X X O ,
+ d X X X O O ,
+ e O O O O , ,
+ f , , , , , ,
+  B[bb] RIGHT
+#7 B to kill tdepth=1 tnodes=1 key=ab
+   a b c d e f g
+ a . X X . O X ,
+ b O X . . O X ,
+ c O O O * O X ,
+ d X X X X X X ,
+ e , , , , , , ,
+  B[dc] RIGHT
+#8 B to kill tdepth=1 tnodes=1 key=bd
+   a b c d e f g
+ a O . X . O X ,
+ b . * X O . X ,
+ c O . O X X X ,
+ d O O O X , , ,
+ e X X X X , , ,
+ f , , , , , , ,
+  B[bb] RIGHT
+#9 B to live tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . . X O O ,
+ b . . . X O ,
+ c . * O X O ,
+ d . . X X O ,
+ e X X O O O ,
+ f O O O , , ,
+ g , , , , , ,
+  B[bc] RIGHT
+#10 W to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a . . O X ,
+ b * X O X ,
+ c . O O X ,
+ d O O X X ,
+ e X X X , ,
+ f , , , , ,
+  W[ab] RIGHT
+#11 W to live tdepth=1 tnodes=1 key=ac
+   a b c d e f
+ a . * . O X ,
+ b . X O O X ,
+ c O O O X X ,
+ d X X X X , ,
+ e , , , , , ,
+  W[ba] RIGHT
+#12 B to live tdepth=1 tnodes=1 key=ab
+   a b c d
+ a . * O ,
+ b X X O ,
+ c . X O ,
+ d . X O ,
+ e X X O ,
+ f O O O ,
+ g , , , ,
+  B[ba] RIGHT
+#13 B to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a . . X O ,
+ b * . X O ,
+ c . X X O ,
+ d X X O O ,
+ e O O O , ,
+ f , , , , ,
+  B[ab] RIGHT
+#14 B to live tdepth=1 tnodes=1 key=cb
+   a b c d e
+ a . * X O ,
+ b X O X O ,
+ c . . X O ,
+ d O X X O ,
+ e O O O O ,
+ f , , , , ,
+  B[ba] RIGHT
+#15 W to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a X . O X ,
+ b * O O X ,
+ c . O X X ,
+ d O O X , ,
+ e X X X , ,
+ f , , , , ,
+  W[ab] RIGHT
+#16 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f g h
+ a . * O . X X X ,
+ b O . O . O O X ,
+ c O O O X X X X ,
+ d X X X X , , , ,
+ e , , , , , , , ,
+  W[ba] RIGHT
+#17 W to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a . . O X ,
+ b * . O X ,
+ c . O O X ,
+ d O O X X ,
+ e X X X , ,
+ f , , , , ,
+  W[ab] RIGHT
+#18 W to kill tdepth=1 tnodes=1 key=ea
+   a b c d e f g h
+ a . . . O X X O ,
+ b . X . . . X O ,
+ c X X X * X X O ,
+ d O O O O O O O ,
+ e , , , , , , , ,
+  W[dc] RIGHT
+#19 B to live tdepth=1 tnodes=1 key=ac
+   a b c d e f
+ a X . O * O ,
+ b . . X X O ,
+ c X X X O O ,
+ d O O O O , ,
+ e , , , , , ,
+  B[da] RIGHT
+#20 B to live tdepth=1 tnodes=1 key=cc
+   a b c d e f
+ a . * O X O ,
+ b X X O X O ,
+ c O . X X O ,
+ d O O O O O ,
+ e , , , , , ,
+  B[ba] RIGHT
+#21 W to kill tdepth=1 tnodes=1 key=cb
+   a b c d e
+ a X . X O ,
+ b . * X O ,
+ c X . X O ,
+ d X . X O ,
+ e O O O O ,
+ f , , , , ,
+  W[bb] RIGHT
+#22 W to kill tdepth=1 tnodes=1 key=ce
+   a b c d e
+ a . . X O ,
+ b . . X O ,
+ c . . X O ,
+ d X . * O ,
+ e X X X O ,
+ f O O O O ,
+ g , , , , ,
+  W[cd] RIGHT
+#23 B to live tdepth=1 tnodes=1 key=ea
+   a b c d e f g
+ a . * O . X O ,
+ b X O X X X O ,
+ c O X X X O O ,
+ d O O O O O , ,
+ e , , , , , , ,
+  B[ba] RIGHT
+#24 B to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . * . O O ,
+ b X O X . O ,
+ c X . X O O ,
+ d X X X O , ,
+ e O O O O , ,
+ f , , , , , ,
+  B[ba] RIGHT
+#25 B to kill tdepth=1 tnodes=1 key=ab
+   a b c d e f g h
+ a . . . . . O X ,
+ b O O . * O O X ,
+ c X O O X . X X ,
+ d X X X X X X , ,
+ e , , , , , , , ,
+  B[db] RIGHT
+#26 W to kill tdepth=1 tnodes=1 key=ea
+   a b c d e f g
+ a . . O . X O ,
+ b . * X X X O ,
+ c X X O O O O ,
+ d O O O O , , ,
+ e , , , , , , ,
+  W[bb] RIGHT
+#27 B to kill tdepth=1 tnodes=1 key=ce
+   a b c d e
+ a X O O X ,
+ b * . O X ,
+ c . O O X ,
+ d . . O X ,
+ e O X O X ,
+ f X X X X ,
+ g , , , , ,
+  B[ab] RIGHT
+#28 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . X O O X ,
+ b O * . O X ,
+ c O O O O X ,
+ d X X X X X ,
+ e , , , , , ,
+  W[bb] RIGHT
+#29 B to live tdepth=1 tnodes=1 key=ac
+   a b c d e f
+ a X O X X O ,
+ b . * . X O ,
+ c X X X X O ,
+ d O O O O O ,
+ e , , , , , ,
+  B[bb] RIGHT
+#30 B to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a O . X O ,
+ b * X X O ,
+ c . X O O ,
+ d X X O , ,
+ e O O O , ,
+ f , , , , ,
+  B[ab] RIGHT
+#31 B to live tdepth=1 tnodes=1 key=cd
+   a b c d e
+ a . . X O ,
+ b O * X O ,
+ c X . X O ,
+ d X X X O ,
+ e O O O O ,
+ f , , , , ,
+  B[bb] RIGHT
+#32 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . X O O X ,
+ b O * X O X ,
+ c O O O O X ,
+ d X X X X X ,
+ e , , , , , ,
+  W[bb] RIGHT
+#33 B to live tdepth=1 tnodes=1 key=ac
+   a b c d e f
+ a . * . X O ,
+ b . . X X O ,
+ c X X X O O ,
+ d O O O O , ,
+ e , , , , , ,
+  B[ba] RIGHT
+#34 B to live tdepth=1 tnodes=1 key=ab
+   a b c d e f g
+ a . O * . X O ,
+ b X . . X X O ,
+ c X X X X O O ,
+ d X X X O O , ,
+ e O O O O , , ,
+ f , , , , , , ,
+  B[ca] RIGHT
+#35 W to kill tdepth=1 tnodes=1 key=ae
+   a b c d e f
+ a . . . O O ,
+ b . . X O O ,
+ c . * O X O ,
+ d . X X X O ,
+ e X X O O O ,
+ f O O O , , ,
+ g , , , , , ,
+  W[bc] RIGHT
+#36 B to live tdepth=1 tnodes=1 key=ab
+   a b c d e
+ a . O X O ,
+ b X * X O ,
+ c X . X O ,
+ d X X X O ,
+ e O O O O ,
+ f , , , , ,
+  B[bb] RIGHT
+#37 W to kill tdepth=1 tnodes=1 key=ea
+   a b c d e f g h
+ a . . . O X X O ,
+ b . . . . . X O ,
+ c X X X X * X O ,
+ d O O O O O O O ,
+ e , , , , , , , ,
+  W[ec] RIGHT
+#38 B to kill tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a . . O O X ,
+ b . * . O X ,
+ c . O X O X ,
+ d . O X X X ,
+ e O O X , , ,
+ f X X X , , ,
+ g , , , , , ,
+  B[bb] RIGHT
+#39 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . * X O X ,
+ b O X O . X ,
+ c O O O X X ,
+ d X X X X , ,
+ e , , , , , ,
+  W[ba] RIGHT
+#40 W to kill tdepth=1 tnodes=1 key=cb
+   a b c d e
+ a O X O O ,
+ b . X X O ,
+ c X . X O ,
+ d O * O O ,
+ e X X X O ,
+ f O O O O ,
+ g , , , , ,
+  W[bd] RIGHT
+#41 W to kill tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a . X X O ,
+ b * O X O ,
+ c . X X O ,
+ d X X O O ,
+ e O O O , ,
+ f , , , , ,
+  W[ab] RIGHT
+#42 W to live tdepth=1 tnodes=1 key=ea
+   a b c d e f g
+ a . * . O O X ,
+ b . . O O O X ,
+ c O O . X X X ,
+ d X X X X , , ,
+ e , , , , , , ,
+  W[ba] RIGHT
+#43 W to live tdepth=1 tnodes=1 key=ba
+   a b c d e f
+ a . O O O X ,
+ b * X . O X ,
+ c O O O O X ,
+ d X X X X X ,
+ e , , , , , ,
+  W[ab] RIGHT
+#44 W to live tdepth=1 tnodes=1 key=bc
+   a b c d e
+ a . O O X ,
+ b * X O X ,
+ c . O O X ,
+ d O . X X ,
+ e X X X , ,
+ f , , , , ,
+  W[ab] RIGHT
+#45 B to kill tdepth=1 tnodes=1 key=gc
+   a b c d e f g h i j
+ a . . . . . * . O X ,
+ b O X X . O . O O X ,
+ c X X O O O O O X X ,
+ d , X X X X X X X , ,
+ e , , , , , , , , , ,
+  B[fa] RIGHT
+#46 B to live tdepth=1 tnodes=1 key=cb
+   a b c d e f
+ a . X O O O ,
+ b . O X X O ,
+ c X * . X O ,
+ d X X X X O ,
+ e O O O O O ,
+ f , , , , , ,
+  B[bc] RIGHT
+#47 B to live tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . . X X O ,
+ b O * . X O ,
+ c O . X X O ,
+ d X X X O O ,
+ e O O O O , ,
+ f , , , , , ,
+  B[bb] RIGHT
+#48 B to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . * . X O ,
+ b X . . X O ,
+ c X X X O O ,
+ d O O O O , ,
+ e , , , , , ,
+  B[ba] RIGHT
+#49 B to live tdepth=1 tnodes=1 key=ac
+   a b c d e f g
+ a . . O * O O ,
+ b . X X X X O ,
+ c X X O O O O ,
+ d O O O , , , ,
+ e , , , , , , ,
+  B[da] RIGHT
+#50 B to kill tdepth=1 tnodes=1 key=ca
+   a b c d e f g
+ a . X O . * X ,
+ b . . O O O X ,
+ c O O O X X X ,
+ d X X X X , , ,
+ e , , , , , , ,
+  B[ea] RIGHT
+#51 W to live tdepth=1 tnodes=1 key=ac
+   a b c d e f
+ a . * X O X ,
+ b . . . O X ,
+ c O O O O X ,
+ d X X X X X ,
+ e , , , , , ,
+  W[ba] RIGHT
+#52 B to kill tdepth=1 tnodes=1 key=ce
+   a b c d e
+ a . . O X ,
+ b . O O X ,
+ c . O X X ,
+ d X * O X ,
+ e O O O X ,
+ f X X X X ,
+ g , , , , ,
+  B[bd] RIGHT
+#53 B to kill tdepth=1 tnodes=1 key=ac
+   a b c d e f
+ a . * X O X ,
+ b X O O O X ,
+ c O O X X X ,
+ d X X X , , ,
+ e , , , , , ,
+  B[ba] RIGHT
+#54 W to kill tdepth=1 tnodes=1 key=ac
+   a b c d e
+ a * . X O ,
+ b . X X O ,
+ c X X X O ,
+ d O O O O ,
+ e , , , , ,
+  W[aa] RIGHT
+#55 B to live tdepth=1 tnodes=1 key=ba
+   a b c d e f
+ a . X . * O ,
+ b . X X X O ,
+ c X X O O O ,
+ d O O O , , ,
+ e , , , , , ,
+  B[da] RIGHT
+#56 B to live tdepth=1 tnodes=1 key=ab
+   a b c d e f g
+ a . * . O . O ,
+ b X . X O X O ,
+ c X X X O O O ,
+ d O O O O , , ,
+ e , , , , , , ,
+  B[ba] RIGHT
+#57 B to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . . X O O ,
+ b X . * O O ,
+ c X . O X O ,
+ d X X X X O ,
+ e O O O O O ,
+ f , , , , , ,
+  B[cb] RIGHT
+#58 W to live tdepth=1 tnodes=1 key=ce
+   a b c d e f
+ a . X . O X ,
+ b . . O O X ,
+ c . . O X X ,
+ d O . * X , ,
+ e O O O X , ,
+ f X X X X , ,
+ g , , , , , ,
+  W[cd] RIGHT
+#59 B to live tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a . * O X O ,
+ b X . . X O ,
+ c . X X X O ,
+ d O O O O O ,
+ e , , , , , ,
+  B[ba] RIGHT
+#60 W to kill tdepth=1 tnodes=1 key=ea
+   a b c d e f g
+ a . . . X X O ,
+ b . X * X . O ,
+ c . X O X O O ,
+ d X X O O O , ,
+ e O O O , , , ,
+ f , , , , , , ,
+  W[cb] RIGHT
+#61 B to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . * X X O ,
+ b X O X . O ,
+ c X X X X O ,
+ d O O O O O ,
+ e , , , , , ,
+  B[ba] RIGHT
+#62 B to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a . X X O ,
+ b * X X O ,
+ c . X . O ,
+ d X X O O ,
+ e O O O , ,
+ f , , , , ,
+  B[ab] RIGHT
+#63 B to kill tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . O O O X ,
+ b * X X O X ,
+ c O . O O X ,
+ d O O O X X ,
+ e X X X X , ,
+ f , , , , , ,
+  B[ab] RIGHT
+#64 B to live tdepth=1 tnodes=1 key=ea
+   a b c d e f g
+ a . O * . X O ,
+ b X . . X X O ,
+ c O X X X O O ,
+ d O O O O O , ,
+ e , , , , , , ,
+  B[ca] RIGHT
+#65 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f g
+ a . X X . O X ,
+ b O X . . O X ,
+ c O O O * O X ,
+ d X X X X X X ,
+ e , , , , , , ,
+  W[dc] RIGHT
+#66 W to live tdepth=1 tnodes=1 key=bd
+   a b c d e f g
+ a O . X . O X ,
+ b . * X O . X ,
+ c O . O X X X ,
+ d O O O X , , ,
+ e X X X X , , ,
+ f , , , , , , ,
+  W[bb] RIGHT
+#67 B to kill tdepth=1 tnodes=1 key=fb
+   a b c d e f g h
+ a . . . O . O X ,
+ b . . * . . O X ,
+ c O O X O O O X ,
+ d X X X X X X X ,
+ e , , , , , , , ,
+  B[cb] RIGHT
+#68 B to kill tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . * . O X ,
+ b O X O O X ,
+ c O O O X X ,
+ d X X X X , ,
+ e , , , , , ,
+  B[ba] RIGHT
+#69 B to live tdepth=1 tnodes=1 key=ac
+   a b c d e f
+ a * O O X O ,
+ b . X X . O ,
+ c X X O O O ,
+ d O O O , , ,
+ e , , , , , ,
+  B[aa] RIGHT
+#70 B to kill tdepth=1 tnodes=1 key=bc
+   a b c d e f g
+ a X . . . O X ,
+ b . . * X O X ,
+ c O O . O X X ,
+ d X O O O X , ,
+ e X X X X X , ,
+ f , , , , , , ,
+  B[cb] RIGHT
+#71 W to live tdepth=1 tnodes=1 key=cd
+   a b c d e
+ a . X O X ,
+ b . * O X ,
+ c O . O X ,
+ d O O O X ,
+ e X X X X ,
+ f , , , , ,
+  W[bb] RIGHT
+#72 W to kill tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a O X X O ,
+ b * . X O ,
+ c O X X O ,
+ d . X O O ,
+ e O O O , ,
+ f , , , , ,
+  W[ab] RIGHT
+#73 W to live tdepth=1 tnodes=1 key=ac
+   a b c d e f
+ a . . O O X ,
+ b X * . O X ,
+ c O O O O X ,
+ d X X X X X ,
+ e , , , , , ,
+  W[bb] RIGHT
+#74 B to live tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a O * O X O ,
+ b X . X X O ,
+ c O X X O O ,
+ d O O O O , ,
+ e , , , , , ,
+  B[ba] RIGHT
+#75 B to kill tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a . * O X ,
+ b O . O X ,
+ c X O O X ,
+ d X O X X ,
+ e X X X , ,
+ f , , , , ,
+  B[ba] RIGHT
+#76 B to live tdepth=1 tnodes=1 key=bc
+   a b c d
+ a O X O ,
+ b * X O ,
+ c O X O ,
+ d . X O ,
+ e X X O ,
+ f O O O ,
+ g , , , ,
+  B[ab] RIGHT
+#77 W to kill tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . . X X O ,
+ b . * . X O ,
+ c X . . X O ,
+ d . X X O O ,
+ e O O O O , ,
+ f , , , , , ,
+  W[bb] RIGHT
+#78 W to kill tdepth=1 tnodes=1 key=ea
+   a b c d e f g
+ a . O X X X O ,
+ b * O . . X O ,
+ c X X X X X O ,
+ d O O O O O O ,
+ e , , , , , , ,
+  W[ab] RIGHT
+#79 B to kill tdepth=1 tnodes=1 key=db
+   a b c d e f g
+ a . . O . X X ,
+ b . * . O X X ,
+ c . . O O O X ,
+ d O O X X X X ,
+ e X X X X , , ,
+ f , , , , , , ,
+  B[bb] RIGHT
+#80 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f g h
+ a . . . . . O X ,
+ b O O . * O O X ,
+ c X O O X . X X ,
+ d X X X X X X , ,
+ e , , , , , , , ,
+  W[db] RIGHT
+#81 B to live tdepth=1 tnodes=1 key=ea
+   a b c d e f g
+ a . * O . X O ,
+ b . . X X X O ,
+ c X X O O O O ,
+ d O O O O , , ,
+ e , , , , , , ,
+  B[ba] RIGHT
+#82 W to live tdepth=1 tnodes=1 key=ce
+   a b c d e
+ a X O O X ,
+ b * . O X ,
+ c . O O X ,
+ d . . O X ,
+ e O X O X ,
+ f X X X X ,
+ g , , , , ,
+  W[ab] RIGHT
+#83 W to kill tdepth=1 tnodes=1 key=ab
+   a b c d e f g
+ a . * O . X O ,
+ b X X X X X O ,
+ c O O O O O O ,
+ d , , , , , , ,
+  W[ba] RIGHT
+#84 B to kill tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . * O O X ,
+ b O . O O X ,
+ c O O O X X ,
+ d X X X X X ,
+ e , , , , , ,
+  B[ba] RIGHT
+#85 B to live tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a O * O X O ,
+ b X . . X O ,
+ c . X X X O ,
+ d O O O O O ,
+ e , , , , , ,
+  B[ba] RIGHT
+#86 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . * . O X ,
+ b O . . O X ,
+ c O O O X X ,
+ d X X X X , ,
+ e , , , , , ,
+  W[ba] RIGHT
+#87 B to live tdepth=1 tnodes=1 key=ac
+   a b c d e f
+ a O * . X O ,
+ b . . X X O ,
+ c X X X O O ,
+ d O O O O , ,
+ e , , , , , ,
+  B[ba] RIGHT
+#88 W to kill tdepth=1 tnodes=1 key=bc
+   a b c d e f g
+ a . . X . O O ,
+ b . * O . X O ,
+ c . X X X O O ,
+ d X X O O O O ,
+ e O O O , , , ,
+ f , , , , , , ,
+  W[bb] RIGHT
+#89 B to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a O . X O ,
+ b * X . O ,
+ c . X O O ,
+ d X X O , ,
+ e O O O , ,
+ f , , , , ,
+  B[ab] RIGHT
+#90 B to kill tdepth=1 tnodes=1 key=cb
+   a b c d e f g h
+ a . . . X . O X ,
+ b . * O O O O X ,
+ c O O X X X X X ,
+ d X X X , , , , ,
+ e , , , , , , , ,
+  B[bb] RIGHT
+#91 B to live tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a O X X X O ,
+ b . * . X O ,
+ c . O X X O ,
+ d X X O O O ,
+ e O O O , , ,
+ f , , , , , ,
+  B[bb] RIGHT
+#92 B to live tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . O X X O ,
+ b . * . X O ,
+ c X . X X O ,
+ d X X X O O ,
+ e O O O O , ,
+ f , , , , , ,
+  B[bb] RIGHT
+#93 B to live tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a O * . X O ,
+ b X . X X O ,
+ c . X X O O ,
+ d O O O O , ,
+ e , , , , , ,
+  B[ba] RIGHT
+#94 B to kill tdepth=1 tnodes=1 key=bd
+   a b c d e f g
+ a . O O . O X ,
+ b X . X . O X ,
+ c O . * O O X ,
+ d O O O X X X ,
+ e X X X X , , ,
+ f , , , , , , ,
+  B[cc] RIGHT
+#95 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a X * . O X ,
+ b O . O O X ,
+ c O O O X X ,
+ d X X X X , ,
+ e , , , , , ,
+  W[ba] RIGHT
+#96 W to live tdepth=1 tnodes=1 key=cb
+   a b c d e f
+ a . . O O X ,
+ b * . O O X ,
+ c . O . O X ,
+ d O O X X X ,
+ e X X X , , ,
+ f , , , , , ,
+  W[ab] RIGHT
+#97 B to kill tdepth=1 tnodes=1 key=ea
+   a b c d e f g
+ a . . O O O X ,
+ b . * X . O X ,
+ c O . O O . X ,
+ d X X X X X X ,
+ e , , , , , , ,
+  B[bb] RIGHT
+#98 B to kill tdepth=1 tnodes=1 key=ba
+   a b c d e f
+ a . O O O X ,
+ b * X . O X ,
+ c O O O O X ,
+ d X X X X X ,
+ e , , , , , ,
+  B[ab] RIGHT
+#99 B to live tdepth=1 tnodes=1 key=cd
+   a b c d e
+ a . . X O ,
+ b * . X O ,
+ c O . X O ,
+ d X X X O ,
+ e O O O O ,
+ f , , , , ,
+  B[ab] RIGHT
+#100 W to kill tdepth=1 tnodes=1 key=cb
+   a b c d e f
+ a . X O O O ,
+ b * O X X O ,
+ c X . . X O ,
+ d X X X X O ,
+ e O O O O O ,
+ f , , , , , ,
+  W[ab] RIGHT
+#101 W to kill tdepth=1 tnodes=1 key=bd
+   a b c d e f g
+ a . . O . O O ,
+ b . * . X X O ,
+ c X . X X O O ,
+ d X X X O O , ,
+ e O O O O , , ,
+ f , , , , , , ,
+  W[bb] RIGHT
+#102 W to kill tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . . X X O ,
+ b O * . X O ,
+ c O . X X O ,
+ d X X X O O ,
+ e O O O O , ,
+ f , , , , , ,
+  W[bb] RIGHT
+#103 B to live tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a . X . O O ,
+ b * . X X O ,
+ c . X X O O ,
+ d . X O O , ,
+ e O O O , , ,
+ f , , , , , ,
+  B[ab] RIGHT
+#104 W to live tdepth=1 tnodes=1 key=ac
+   a b c d e f
+ a . * . O X ,
+ b . . O O X ,
+ c O O O X X ,
+ d O O X X , ,
+ e X X X , , ,
+ f , , , , , ,
+  W[ba] RIGHT
+#105 W to live tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . . . O X ,
+ b . . . O X ,
+ c O * . O X ,
+ d X . O O X ,
+ e X X X X X ,
+ f , , , , , ,
+  W[bc] RIGHT
+#106 B to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a O X O O ,
+ b * . X O ,
+ c X X X O ,
+ d X X O O ,
+ e O O O , ,
+ f , , , , ,
+  B[ab] RIGHT
+#107 W to live tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . O O O X ,
+ b O . * O X ,
+ c O O X O X ,
+ d X X X X X ,
+ e , , , , , ,
+  W[cb] RIGHT
+#108 B to live tdepth=1 tnodes=1 key=ad
+   a b c d e f
+ a . . X . O ,
+ b O * . X O ,
+ c X . . X O ,
+ d X X X O O ,
+ e O O O O , ,
+ f , , , , , ,
+  B[bb] RIGHT
+#109 B to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a . . X O ,
+ b * O X O ,
+ c . X X O ,
+ d X X O O ,
+ e O O O , ,
+ f , , , , ,
+  B[ab] RIGHT
+#110 B to kill tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . . O O X ,
+ b . * . O X ,
+ c . X O O X ,
+ d O . O X X ,
+ e X X X X , ,
+ f , , , , , ,
+  B[bb] RIGHT
+#111 W to kill tdepth=1 tnodes=1 key=bc
+   a b c d e f g h
+ a . . O . . X O ,
+ b O * X . X X O ,
+ c X X X X O O O ,
+ d O O O O O , , ,
+ e , , , , , , , ,
+  W[bb] RIGHT
+#112 W to kill tdepth=1 tnodes=1 key=ab
+   a b c d e f g
+ a . * . O . O ,
+ b X . X O X O ,
+ c X X X O O O ,
+ d O O O O , , ,
+ e , , , , , , ,
+  W[ba] RIGHT
+#113 W to live tdepth=1 tnodes=1 key=ac
+   a b c d e f
+ a . * . O X ,
+ b . . O O X ,
+ c O O O X X ,
+ d X X X X , ,
+ e , , , , , ,
+  W[ba] RIGHT
+#114 B to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a O * . X O ,
+ b X . X X O ,
+ c X X X O O ,
+ d O O O O , ,
+ e , , , , , ,
+  B[ba] RIGHT
+#115 W to kill tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a . * O X O ,
+ b X . . X O ,
+ c . X X X O ,
+ d O O O O O ,
+ e , , , , , ,
+  W[ba] RIGHT
+#116 W to live tdepth=1 tnodes=1 key=hb
+   a b c d e f g h i j
+ a . . . . . . . O X ,
+ b . O O O * O O O X ,
+ c X X X O X O X X X ,
+ d , , X X X X X , , ,
+ e , , , , , , , , , ,
+  W[eb] RIGHT
+#117 W to kill tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . * X X O ,
+ b X O X . O ,
+ c X X X X O ,
+ d O O O O O ,
+ e , , , , , ,
+  W[ba] RIGHT
+#118 B to live tdepth=1 tnodes=1 key=ea
+   a b c d e f g
+ a . X . . X O ,
+ b * . X X X O ,
+ c O X X O O O ,
+ d O O O O , , ,
+ e , , , , , , ,
+  B[ab] RIGHT
+#119 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a O . * O X ,
+ b O O . O X ,
+ c X O O O X ,
+ d X X X X X ,
+ e , , , , , ,
+  W[ca] RIGHT
+#120 W to live tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a . * X O X ,
+ b O . O O X ,
+ c X O O X X ,
+ d X X X X , ,
+ e , , , , , ,
+  W[ba] RIGHT
+#121 B to live tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a X . O * O ,
+ b . X X X O ,
+ c . X O O O ,
+ d X X O , , ,
+ e O O O , , ,
+ f , , , , , ,
+  B[da] RIGHT
+#122 B to kill tdepth=1 tnodes=1 key=gc
+   a b c d e f g h i j
+ a . . . X . . X O X ,
+ b O O O * O . . O X ,
+ c X X X X O O O . X ,
+ d , , , X X X X X X ,
+ e , , , , , , , , , ,
+  B[db] RIGHT
+#123 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . * . O X ,
+ b O X X O X ,
+ c O O O O X ,
+ d X X X X X ,
+ e , , , , , ,
+  W[ba] RIGHT
+#124 B to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a O X O O ,
+ b * . X O ,
+ c . X X O ,
+ d X X O O ,
+ e O O O , ,
+ f , , , , ,
+  B[ab] RIGHT
+#125 W to kill tdepth=1 tnodes=1 key=cd
+   a b c d e f
+ a O . X . O ,
+ b . * O X O ,
+ c . . X O O ,
+ d X X X O , ,
+ e O O O O , ,
+ f , , , , , ,
+  W[bb] RIGHT
+#126 B to kill tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a O . . X X ,
+ b . * . O X ,
+ c O . . O X ,
+ d O O O O X ,
+ e X X X X X ,
+ f , , , , , ,
+  B[bb] RIGHT
+#127 B to live tdepth=1 tnodes=1 key=ce
+   a b c d e f
+ a . . O X O ,
+ b . * . X O ,
+ c O X . X O ,
+ d O X O X O ,
+ e O X X X O ,
+ f O O O O O ,
+ g , , , , , ,
+  B[bb] RIGHT
+#128 B to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a . X X O ,
+ b * O X O ,
+ c . X X O ,
+ d X X O O ,
+ e O O O , ,
+ f , , , , ,
+  B[ab] RIGHT
+#129 B to kill tdepth=1 tnodes=1 key=bd
+   a b c d e f g
+ a . . . . X X ,
+ b X * . O . X ,
+ c O . O O X X ,
+ d O O O X X , ,
+ e X X X X , , ,
+ f , , , , , , ,
+  B[bb] RIGHT
+#130 W to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a . X O X ,
+ b * . O X ,
+ c . O O X ,
+ d O O X X ,
+ e X X X , ,
+ f , , , , ,
+  W[ab] RIGHT
+#131 B to live tdepth=1 tnodes=1 key=cd
+   a b c d e
+ a . * O O ,
+ b X . X O ,
+ c X . X O ,
+ d X X X O ,
+ e O O O O ,
+ f , , , , ,
+  B[ba] RIGHT
+#132 W to live tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a . . O O X ,
+ b * . O O X ,
+ c . O O O X ,
+ d O O X X X ,
+ e X X X , , ,
+ f , , , , , ,
+  W[ab] RIGHT
+#133 B to live tdepth=1 tnodes=1 key=bc
+   a b c d e f g h
+ a . . . . . X O ,
+ b . . O * X X O ,
+ c X X X X O O O ,
+ d O O O O O O , ,
+ e , , , , , , , ,
+  B[db] RIGHT
+#134 W to kill tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . O . X O ,
+ b . * . X O ,
+ c X . X X O ,
+ d X . . O O ,
+ e O O O O , ,
+ f , , , , , ,
+  W[bb] RIGHT
+#135 W to live tdepth=1 tnodes=1 key=gc
+   a b c d e f g h i j
+ a . . . . . * . O X ,
+ b O X X . O . O O X ,
+ c X X O O O O O X X ,
+ d , X X X X X X X , ,
+ e , , , , , , , , , ,
+  W[fa] RIGHT
+#136 B to live tdepth=1 tnodes=1 key=cd
+   a b c d e
+ a . . X O ,
+ b * . X O ,
+ c . X X O ,
+ d X X X O ,
+ e O O O O ,
+ f , , , , ,
+  B[ab] RIGHT
+#137 B to kill tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a X . O X ,
+ b * O O X ,
+ c . O X X ,
+ d O O X , ,
+ e X X X , ,
+ f , , , , ,
+  B[ab] RIGHT
+#138 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . X * O X ,
+ b O O X O X ,
+ c X O O O X ,
+ d X X X X X ,
+ e , , , , , ,
+  W[ca] RIGHT
+#139 W to live tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . . O O X ,
+ b . . . O X ,
+ c . * X O X ,
+ d . X O O X ,
+ e . O X X X ,
+ f X X X , , ,
+ g , , , , , ,
+  W[bc] RIGHT
+#140 B to live tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . O * . O ,
+ b X X . X O ,
+ c O X X X O ,
+ d O O O O O ,
+ e , , , , , ,
+  B[ca] RIGHT
+#141 W to live tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a O X * X ,
+ b . O O X ,
+ c . O X X ,
+ d O O X , ,
+ e X X X , ,
+ f , , , , ,
+  W[ca] RIGHT
+#142 W to live tdepth=1 tnodes=1 key=ce
+   a b c d e
+ a . . O X ,
+ b . O O X ,
+ c . O X X ,
+ d X * O X ,
+ e O O O X ,
+ f X X X X ,
+ g , , , , ,
+  W[bd] RIGHT
+#143 B to live tdepth=1 tnodes=1 key=ac
+   a b c d e
+ a * . X O ,
+ b . X X O ,
+ c X X X O ,
+ d O O O O ,
+ e , , , , ,
+  B[aa] RIGHT
+#144 W to live tdepth=1 tnodes=1 key=ae
+   a b c d e
+ a . O X X ,
+ b * O X X ,
+ c X . O X ,
+ d . O O X ,
+ e O O X X ,
+ f X X X , ,
+ g , , , , ,
+  W[ab] RIGHT
+#145 W to kill tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . * . O O ,
+ b X O X . O ,
+ c X . X O O ,
+ d X X X O , ,
+ e O O O O , ,
+ f , , , , , ,
+  W[ba] RIGHT
+#146 B to live tdepth=1 tnodes=1 key=bc
+   a b c d e f g
+ a O . X X . O ,
+ b * X . . X O ,
+ c O X X X X O ,
+ d O O O O O O ,
+ e , , , , , , ,
+  B[ab] RIGHT
+#147 B to kill tdepth=1 tnodes=1 key=ab
+   a b c d e f
+ a . X O O X ,
+ b O * . O X ,
+ c O O O O X ,
+ d X X X X X ,
+ e , , , , , ,
+  B[bb] RIGHT
+#148 W to kill tdepth=1 tnodes=1 key=bd
+   a b c d e
+ a O . X O ,
+ b * X X O ,
+ c . X O O ,
+ d X X O , ,
+ e O O O , ,
+ f , , , , ,
+  W[ab] RIGHT
+#149 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f g
+ a . X * . O X ,
+ b O . . O O X ,
+ c O O O O X X ,
+ d X X X X X , ,
+ e , , , , , , ,
+  W[ca] RIGHT
+#150 W to kill tdepth=1 tnodes=1 key=ab
+   a b c d e
+ a . O X O ,
+ b X * X O ,
+ c X . X O ,
+ d X X X O ,
+ e O O O O ,
+ f , , , , ,
+  W[bb] RIGHT
+#151 W to live tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a . O O O X ,
+ b X * . O X ,
+ c . . O O X ,
+ d O O O X X ,
+ e X X X X , ,
+ f , , , , , ,
+  W[bb] RIGHT
+#152 W to kill tdepth=1 tnodes=1 key=db
+   a b c d e f
+ a O . . X O ,
+ b . * . X O ,
+ c X . X X O ,
+ d X . . X O ,
+ e O O O O O ,
+ f , , , , , ,
+  W[bb] RIGHT
+#153 W to live tdepth=1 tnodes=1 key=cb
+   a b c d e f
+ a . * . O X ,
+ b . X O O X ,
+ c O . O X X ,
+ d O O O X , ,
+ e X X X X , ,
+ f , , , , , ,
+  W[ba] RIGHT
+#154 B to live tdepth=1 tnodes=1 key=ac
+   a b c d e f
+ a . * . X O ,
+ b O . X X O ,
+ c X X X O O ,
+ d O O O O , ,
+ e , , , , , ,
+  B[ba] RIGHT
+#155 B to live tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a . * . X O ,
+ b X O X X O ,
+ c O X X O O ,
+ d O O O O , ,
+ e , , , , , ,
+  B[ba] RIGHT
+#156 B to live tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a . X X X O ,
+ b O * . X O ,
+ c . X X X O ,
+ d X X O O O ,
+ e O O O , , ,
+ f , , , , , ,
+  B[bb] RIGHT
+#157 B to live tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a . X X X O ,
+ b O X . X O ,
+ c * X X X O ,
+ d O O O O O ,
+ e , , , , , ,
+  B[ac] RIGHT
+#158 B to live tdepth=1 tnodes=1 key=ac
+   a b c d e f g
+ a . O * . X O ,
+ b O . X X X O ,
+ c X X X O O O ,
+ d O O O O , , ,
+ e , , , , , , ,
+  B[ca] RIGHT
+#159 W to live tdepth=1 tnodes=1 key=ab
+   a b c d e f g h i
+ a . X . . . . O X ,
+ b O O O . X * O X ,
+ c X X O O O O X X ,
+ d , X X X X X X X ,
+ e , , , , , , , , ,
+  W[fb] RIGHT
+#160 W to live tdepth=1 tnodes=1 key=bc
+   a b c d e f
+ a . . O O X ,
+ b X * . O X ,
+ c . O O O X ,
+ d O O X X X ,
+ e X X X , , ,
+ f , , , , , ,
+  W[bb] RIGHT

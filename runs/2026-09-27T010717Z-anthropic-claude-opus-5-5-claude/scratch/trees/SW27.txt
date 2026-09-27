@@ -1,0 +1,2 @@
+(;W[ec](;B[fa];W[gb](;B[fb];W[gc]C[RIGHT])(;B[gc];W[fb]C[RIGHT])(;B[ea];W[ga]C[RIGHT]))(;B[fb](;W[fa](;B[ga];W[gc];B[ea];W[fa];B[ea];W[fc]C[RIGHT])(;B[fc];W[ea](;B[ga];W[gc]C[RIGHT])(;B[gc];W[ga]C[RIGHT]))(;B[gc];W[ga]C[RIGHT]))(;W[gc];B[fc];W[ea](;B[fa];W[gb]C[RIGHT])(;B[gb];W[fa]C[RIGHT])))(;B[gc](;W[fa](;B[ga];W[fb]C[RIGHT])(;B[fb];W[ga]C[RIGHT]))(;W[fb](;B[fa];W[gb]C[RIGHT])(;B[gb];W[fa]C[RIGHT])))(;B[gb];W[fa]C[RIGHT]))
+(;W[fa];B[ec])(;W[fb];B[ec])(;W[gb];B[ec])(;W[gc];B[ec])(;W[ea];B[ec])(;W[fc];B[ec])

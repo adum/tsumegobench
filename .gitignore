@@ -46,6 +46,7 @@ __pycache__/
 /runs/*/scratch/*.so
 /runs/*/scratch/*.o
 /runs/*/scratch/pids.txt
+/runs/*/scratch/tsolve
 
 /dist/
 /.wrangler/

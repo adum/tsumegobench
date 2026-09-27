@@ -1,0 +1,2233 @@
+101
+#0 B to kill tdepth=13 tnodes=41 key=db
+   a b c d e f
+ a . . . O X ,
+ b . * . O X ,
+ c . . O O X ,
+ d O O X X X ,
+ e X X X X , ,
+ f , , , , , ,
+  B[bb]
+    W[bc]
+      B[ab]
+        W[ba]
+          B[ac]
+            W[ca]
+              B[aa]
+                W[cb]
+                  B[ab]
+                    W[bb]
+                      B[ac]
+                        W[aa]
+                          B[ab] RIGHT
+                          B[ac] RIGHT
+                      B[aa]
+                        W[ac]
+                          B[ab] RIGHT
+                          B[aa] RIGHT
+                    W[ac]
+                      B[bb]
+                        W[aa]
+                          B[bb] RIGHT
+                          B[ab] RIGHT
+                      B[aa]
+                        W[bb]
+                          B[ab] RIGHT
+                          B[aa] RIGHT
+                    W[aa]
+                      B[bb]
+                        W[ac]
+                          B[bb] RIGHT
+                          B[ab] RIGHT
+                      B[ac]
+                        W[bb]
+                          B[ab] RIGHT
+                          B[ac] RIGHT
+        W[cb]
+          B[ac] RIGHT
+          B[ba] RIGHT
+    W[ab]
+      B[bc] RIGHT
+#1 B to kill tdepth=13 tnodes=79 key=bc
+   a b c d e f g
+ a . . O O X X ,
+ b . * . O X X ,
+ c . O . . O X ,
+ d O O O X X X ,
+ e X X X X X X ,
+ f , , , , , , ,
+  B[bb]
+    W[cb]
+      B[cc]
+        W[dc]
+          B[ba] RIGHT
+      B[ab]
+        W[dc]
+          B[ac] RIGHT
+          B[ba] RIGHT
+    W[ba]
+      B[cc] RIGHT
+      B[ab]
+        W[dc]
+          B[aa]
+            W[cc]
+              B[ac]
+                W[cb]
+                  B[ab]
+                    W[bb]
+                      B[ac]
+                        W[aa]
+                          B[ab] RIGHT
+                          B[ac] RIGHT
+                      B[aa]
+                        W[ac]
+                          B[ab] RIGHT
+                          B[aa] RIGHT
+                    W[ac]
+                      B[bb]
+                        W[aa]
+                          B[bb] RIGHT
+                          B[ab] RIGHT
+                      B[aa]
+                        W[bb]
+                          B[ab] RIGHT
+                          B[aa] RIGHT
+                    W[aa]
+                      B[bb]
+                        W[ac]
+                          B[bb] RIGHT
+                          B[ab] RIGHT
+                      B[ac]
+                        W[bb]
+                          B[ab] RIGHT
+                          B[ac] RIGHT
+          B[ac]
+            W[cc]
+              B[aa]
+                W[cb]
+                  B[ab]
+                    W[bb]
+                      B[ac]
+                        W[aa]
+                          B[ab] RIGHT
+                          B[ac] RIGHT
+                      B[aa]
+                        W[ac]
+                          B[ab] RIGHT
+                          B[aa] RIGHT
+                    W[ac]
+                      B[bb]
+                        W[aa]
+                          B[bb] RIGHT
+                          B[ab] RIGHT
+                      B[aa]
+                        W[bb]
+                          B[ab] RIGHT
+                          B[aa] RIGHT
+                    W[aa]
+                      B[bb]
+                        W[ac]
+                          B[bb] RIGHT
+                          B[ab] RIGHT
+                      B[ac]
+                        W[bb]
+                          B[ab] RIGHT
+                          B[ac] RIGHT
+    W[ab]
+      B[cc] RIGHT
+#2 B to kill tdepth=13 tnodes=455 key=ac
+   a b c d e f g
+ a . . . . . X ,
+ b . * . O O X ,
+ c O O O O X X ,
+ d X X X X X , ,
+ e , , , , , , ,
+  B[bb]
+    W[ab]
+      B[ba]
+        W[ea]
+          B[ca]
+            W[cb]
+              B[aa]
+                W[da]
+                  B[ba]
+                    W[bb]
+                      B[ca]
+                        W[aa]
+                          B[ba] RIGHT
+                          B[ca] RIGHT
+                      B[aa]
+                        W[ca]
+                          B[ba] RIGHT
+                          B[aa] RIGHT
+                    W[ca]
+                      B[bb]
+                        W[aa]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[aa]
+                        W[bb]
+                          B[ba] RIGHT
+                          B[aa] RIGHT
+                    W[aa]
+                      B[bb]
+                        W[ca]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[ca]
+                        W[bb]
+                          B[ba] RIGHT
+                          B[ca] RIGHT
+            W[aa]
+              B[cb] RIGHT
+            W[da]
+              B[cb] RIGHT
+              B[aa]
+                W[cb]
+                  B[ba]
+                    W[bb]
+                      B[ca]
+                        W[aa]
+                          B[ba] RIGHT
+                          B[ca] RIGHT
+                      B[aa]
+                        W[ca]
+                          B[ba] RIGHT
+                          B[aa] RIGHT
+                    W[ca]
+                      B[bb]
+                        W[aa]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[aa]
+                        W[bb]
+                          B[ba] RIGHT
+                          B[aa] RIGHT
+                    W[aa]
+                      B[bb]
+                        W[ca]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[ca]
+                        W[bb]
+                          B[ba] RIGHT
+                          B[ca] RIGHT
+        W[cb]
+          B[ea]
+            W[da]
+              B[aa]
+                W[ca]
+                  B[ba] RIGHT
+              B[ca]
+                W[aa]
+                  B[ba] RIGHT
+            W[aa]
+              B[da]
+                W[ca]
+                  B[bb] RIGHT
+                  B[ba] RIGHT
+              B[ca]
+                W[da]
+                  B[ba] RIGHT
+            W[ca]
+              B[da]
+                W[aa]
+                  B[bb] RIGHT
+                  B[ba] RIGHT
+          B[ca]
+            W[ea]
+              B[aa]
+                W[da]
+                  B[ba]
+                    W[bb]
+                      B[ca]
+                        W[aa]
+                          B[ba] RIGHT
+                          B[ca] RIGHT
+                      B[aa]
+                        W[ca]
+                          B[ba] RIGHT
+                          B[aa] RIGHT
+                    W[ca]
+                      B[bb]
+                        W[aa]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[aa]
+                        W[bb]
+                          B[ba] RIGHT
+                          B[aa] RIGHT
+                    W[aa]
+                      B[bb]
+                        W[ca]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[ca]
+                        W[bb]
+                          B[ba] RIGHT
+                          B[ca] RIGHT
+            W[aa]
+              B[ea]
+                W[da]
+                  B[ba] RIGHT
+            W[da]
+              B[ea]
+                W[aa]
+                  B[ba] RIGHT
+        W[ca]
+          B[ea]
+            W[da]
+              B[cb]
+                W[aa]
+                  B[bb] RIGHT
+              B[aa]
+                W[cb]
+                  B[ba] RIGHT
+            W[cb]
+              B[da]
+                W[aa]
+                  B[bb] RIGHT
+                  B[ba] RIGHT
+            W[aa]
+              B[da]
+                W[cb]
+                  B[bb] RIGHT
+                  B[ba] RIGHT
+    W[ba]
+      B[ab]
+        W[ca]
+          B[ea]
+            W[da]
+              B[cb]
+                W[aa]
+                  B[bb] RIGHT
+              B[aa]
+                W[cb]
+                  B[ab] RIGHT
+            W[cb]
+              B[da]
+                W[aa]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+            W[aa]
+              B[da]
+                W[cb]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+        W[cb]
+          B[ea]
+            W[aa]
+              B[da]
+                W[bb]
+                  B[ca] RIGHT
+                W[ca]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+                W[ab]
+                  B[ca] RIGHT
+            W[ca]
+              B[da]
+                W[aa]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+          B[da]
+            W[aa]
+              B[ea]
+                W[bb]
+                  B[ca] RIGHT
+                W[ca]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+                W[ab]
+                  B[ca] RIGHT
+            W[ca]
+              B[ea]
+                W[aa]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+        W[da]
+          B[ea]
+            W[ca]
+              B[cb]
+                W[aa]
+                  B[bb] RIGHT
+              B[aa]
+                W[cb]
+                  B[ab] RIGHT
+          B[cb]
+            W[ca]
+              B[ea]
+                W[aa]
+                  B[bb] RIGHT
+        W[ea]
+          B[cb] RIGHT
+          B[ca] RIGHT
+    W[ca]
+      B[ab]
+        W[ba]
+          B[ea]
+            W[da]
+              B[cb]
+                W[aa]
+                  B[bb] RIGHT
+              B[aa]
+                W[cb]
+                  B[ab] RIGHT
+            W[cb]
+              B[da]
+                W[aa]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+            W[aa]
+              B[da]
+                W[cb]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+        W[cb]
+          B[ea]
+            W[ba]
+              B[da]
+                W[aa]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+            W[aa]
+              B[da]
+                W[ba]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+              B[ba]
+                W[aa]
+                  B[bb]
+                    W[da]
+                      B[ba]
+                        W[ab]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[ab]
+                        W[ba]
+                          B[bb] RIGHT
+                          B[ab] RIGHT
+                    W[ba]
+                      B[da] RIGHT
+                    W[ab]
+                      B[da] RIGHT
+        W[aa]
+          B[ea]
+            W[cb]
+              B[da]
+                W[ba]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+              B[ba]
+                W[aa]
+                  B[bb]
+                    W[da]
+                      B[ba]
+                        W[ab]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[ab]
+                        W[ba]
+                          B[bb] RIGHT
+                          B[ab] RIGHT
+                    W[ba]
+                      B[da] RIGHT
+                    W[ab]
+                      B[da] RIGHT
+            W[ba]
+              B[da]
+                W[cb]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+        W[ea]
+          B[cb] RIGHT
+      B[ea]
+        W[ba]
+          B[ab]
+            W[da]
+              B[cb]
+                W[aa]
+                  B[bb] RIGHT
+              B[aa]
+                W[cb]
+                  B[ab] RIGHT
+            W[cb]
+              B[da]
+                W[aa]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+            W[aa]
+              B[da]
+                W[cb]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+        W[ab]
+          B[ba]
+            W[da]
+              B[cb]
+                W[aa]
+                  B[bb] RIGHT
+              B[aa]
+                W[cb]
+                  B[ba] RIGHT
+            W[cb]
+              B[da]
+                W[aa]
+                  B[bb] RIGHT
+                  B[ba] RIGHT
+            W[aa]
+              B[da]
+                W[cb]
+                  B[bb] RIGHT
+                  B[ba] RIGHT
+    W[ea]
+      B[ab]
+        W[cb]
+          B[ca] RIGHT
+          B[ba] RIGHT
+        W[aa]
+          B[cb] RIGHT
+          B[ca] RIGHT
+        W[ba]
+          B[cb] RIGHT
+          B[ca] RIGHT
+        W[ca]
+          B[cb] RIGHT
+      B[ca]
+        W[ab]
+          B[ba]
+            W[cb]
+              B[aa]
+                W[da]
+                  B[ba]
+                    W[bb]
+                      B[ca]
+                        W[aa]
+                          B[ba] RIGHT
+                          B[ca] RIGHT
+                      B[aa]
+                        W[ca]
+                          B[ba] RIGHT
+                          B[aa] RIGHT
+                    W[ca]
+                      B[bb]
+                        W[aa]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[aa]
+                        W[bb]
+                          B[ba] RIGHT
+                          B[aa] RIGHT
+                    W[aa]
+                      B[bb]
+                        W[ca]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[ca]
+                        W[bb]
+                          B[ba] RIGHT
+                          B[ca] RIGHT
+            W[aa]
+              B[cb] RIGHT
+            W[da]
+              B[cb] RIGHT
+              B[aa]
+                W[cb]
+                  B[ba]
+                    W[bb]
+                      B[ca]
+                        W[aa]
+                          B[ba] RIGHT
+                          B[ca] RIGHT
+                      B[aa]
+                        W[ca]
+                          B[ba] RIGHT
+                          B[aa] RIGHT
+                    W[ca]
+                      B[bb]
+                        W[aa]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[aa]
+                        W[bb]
+                          B[ba] RIGHT
+                          B[aa] RIGHT
+                    W[aa]
+                      B[bb]
+                        W[ca]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[ca]
+                        W[bb]
+                          B[ba] RIGHT
+                          B[ca] RIGHT
+        W[ba]
+          B[ab] RIGHT
+        W[cb]
+          B[ab] RIGHT
+          B[ba]
+            W[ab]
+              B[aa]
+                W[da]
+                  B[ba]
+                    W[bb]
+                      B[ca]
+                        W[aa]
+                          B[ba] RIGHT
+                          B[ca] RIGHT
+                      B[aa]
+                        W[ca]
+                          B[ba] RIGHT
+                          B[aa] RIGHT
+                    W[ca]
+                      B[bb]
+                        W[aa]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[aa]
+                        W[bb]
+                          B[ba] RIGHT
+                          B[aa] RIGHT
+                    W[aa]
+                      B[bb]
+                        W[ca]
+                          B[bb] RIGHT
+                          B[ba] RIGHT
+                      B[ca]
+                        W[bb]
+                          B[ba] RIGHT
+                          B[ca] RIGHT
+#3 W to kill tdepth=13 tnodes=491 key=ab
+   a b c d e f g
+ a . . . X X O ,
+ b X * . . X O ,
+ c X . X . O O ,
+ d X X X O O O ,
+ e O O O O , , ,
+ f , , , , , , ,
+  W[bb]
+    B[dc]
+      W[ba]
+        B[db]
+          W[ca]
+            B[bc]
+              W[cb] RIGHT
+              W[aa]
+                B[cb]
+                  W[ba]
+                    B[bb]
+                      W[ca]
+                        B[aa]
+                          W[ba] RIGHT
+                          W[ca] RIGHT
+                      W[aa]
+                        B[ca]
+                          W[ba] RIGHT
+                          W[aa] RIGHT
+                    B[ca]
+                      W[bb]
+                        B[aa]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                      W[aa]
+                        B[bb]
+                          W[ba] RIGHT
+                          W[aa] RIGHT
+                    B[aa]
+                      W[bb]
+                        B[ca]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                      W[ca]
+                        B[bb]
+                          W[ba] RIGHT
+                          W[ca] RIGHT
+            B[cb]
+              W[aa]
+                B[bc]
+                  W[ba]
+                    B[bb]
+                      W[ca]
+                        B[aa]
+                          W[ba] RIGHT
+                          W[ca] RIGHT
+                      W[aa]
+                        B[ca]
+                          W[ba] RIGHT
+                          W[aa] RIGHT
+                    B[ca]
+                      W[bb]
+                        B[aa]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                      W[aa]
+                        B[bb]
+                          W[ba] RIGHT
+                          W[aa] RIGHT
+                    B[aa]
+                      W[bb]
+                        B[ca]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                      W[ca]
+                        B[bb]
+                          W[ba] RIGHT
+                          W[ca] RIGHT
+            B[aa]
+              W[cb] RIGHT
+          W[cb]
+            B[bc]
+              W[ca] RIGHT
+            B[ca]
+              W[bc]
+                B[aa]
+                  W[bb]
+                    B[cb]
+                      W[bc]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+                      W[ba]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[bc]
+                      W[cb]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[ba]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[ba]
+                      W[cb]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[bc]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+            B[aa]
+              W[bc]
+                B[ca]
+                  W[bb]
+                    B[cb]
+                      W[bc]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+                      W[ba]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[bc]
+                      W[cb]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[ba]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[ba]
+                      W[cb]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[bc]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+              W[ca] RIGHT
+        B[cb]
+          W[ca]
+            B[db]
+              W[aa]
+                B[bc]
+                  W[ba]
+                    B[bb]
+                      W[ca]
+                        B[aa]
+                          W[ba] RIGHT
+                          W[ca] RIGHT
+                      W[aa]
+                        B[ca]
+                          W[ba] RIGHT
+                          W[aa] RIGHT
+                    B[ca]
+                      W[bb]
+                        B[aa]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                      W[aa]
+                        B[bb]
+                          W[ba] RIGHT
+                          W[aa] RIGHT
+                    B[aa]
+                      W[bb]
+                        B[ca]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                      W[ca]
+                        B[bb]
+                          W[ba] RIGHT
+                          W[ca] RIGHT
+        B[ca]
+          W[cb]
+            B[db]
+              W[bc]
+                B[aa]
+                  W[bb]
+                    B[cb]
+                      W[bc]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+                      W[ba]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[bc]
+                      W[cb]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[ba]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[ba]
+                      W[cb]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[bc]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+        B[bc]
+          W[cb]
+            B[db]
+              W[ca] RIGHT
+          W[ca]
+            B[db]
+              W[cb] RIGHT
+              W[aa]
+                B[cb]
+                  W[ba]
+                    B[bb]
+                      W[ca]
+                        B[aa]
+                          W[ba] RIGHT
+                          W[ca] RIGHT
+                      W[aa]
+                        B[ca]
+                          W[ba] RIGHT
+                          W[aa] RIGHT
+                    B[ca]
+                      W[bb]
+                        B[aa]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                      W[aa]
+                        B[bb]
+                          W[ba] RIGHT
+                          W[aa] RIGHT
+                    B[aa]
+                      W[bb]
+                        B[ca]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                      W[ca]
+                        B[bb]
+                          W[ba] RIGHT
+                          W[ca] RIGHT
+        B[aa]
+          W[cb]
+            B[db]
+              W[bc]
+                B[ca]
+                  W[bb]
+                    B[cb]
+                      W[bc]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+                      W[ba]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[bc]
+                      W[cb]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[ba]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[ba]
+                      W[cb]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[bc]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+              W[ca] RIGHT
+          W[ca]
+            B[db]
+              W[cb] RIGHT
+      W[cb]
+        B[db]
+          W[ba]
+            B[bc]
+              W[ca] RIGHT
+            B[ca]
+              W[bc]
+                B[aa]
+                  W[bb]
+                    B[cb]
+                      W[bc]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+                      W[ba]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[bc]
+                      W[cb]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[ba]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[ba]
+                      W[cb]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[bc]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+            B[aa]
+              W[bc]
+                B[ca]
+                  W[bb]
+                    B[cb]
+                      W[bc]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+                      W[ba]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[bc]
+                      W[cb]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[ba]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[ba]
+                      W[cb]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[bc]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+              W[ca] RIGHT
+        B[ba]
+          W[db] RIGHT
+        B[ca]
+          W[db] RIGHT
+          W[ba]
+            B[db]
+              W[bc]
+                B[aa]
+                  W[bb]
+                    B[cb]
+                      W[bc]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+                      W[ba]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[bc]
+                      W[cb]
+                        B[ba]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[ba]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                    B[ba]
+                      W[cb]
+                        B[bc]
+                          W[bb] RIGHT
+                          W[cb] RIGHT
+                      W[bc]
+                        B[cb]
+                          W[bb] RIGHT
+                          W[bc] RIGHT
+    B[cb]
+      W[ba]
+        B[dc]
+          W[ca]
+            B[db]
+              W[aa]
+                B[bc]
+                  W[ba]
+                    B[bb]
+                      W[ca]
+                        B[aa]
+                          W[ba] RIGHT
+                          W[ca] RIGHT
+                      W[aa]
+                        B[ca]
+                          W[ba] RIGHT
+                          W[aa] RIGHT
+                    B[ca]
+                      W[bb]
+                        B[aa]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                      W[aa]
+                        B[bb]
+                          W[ba] RIGHT
+                          W[aa] RIGHT
+                    B[aa]
+                      W[bb]
+                        B[ca]
+                          W[bb] RIGHT
+                          W[ba] RIGHT
+                      W[ca]
+                        B[bb]
+                          W[ba] RIGHT
+                          W[ca] RIGHT
+        B[ca]
+          W[dc]
+            B[db]
+              W[bc]
+                B[aa]
+                  W[bb] RIGHT
+              W[aa]
+                B[bc]
+                  W[ba] RIGHT
+            B[bc]
+              W[db]
+                B[aa]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+            B[aa]
+              W[db]
+                B[bc]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+        B[bc]
+          W[dc]
+            B[db]
+              W[aa]
+                B[ca]
+                  W[ba] RIGHT
+              W[ca]
+                B[aa]
+                  W[ba] RIGHT
+            B[ca]
+              W[db]
+                B[aa]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+            B[aa]
+              W[db]
+                B[ca]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+        B[aa]
+          W[dc]
+            B[db]
+              W[bc]
+                B[ca]
+                  W[bb] RIGHT
+              W[ca]
+                B[bc]
+                  W[ba] RIGHT
+            B[ca]
+              W[db]
+                B[bc]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+            B[bc]
+              W[db]
+                B[ca]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+    B[ba]
+      W[cb]
+        B[db]
+          W[dc] RIGHT
+        B[dc]
+          W[db] RIGHT
+        B[ca]
+          W[db]
+            B[aa]
+              W[dc] RIGHT
+          W[dc]
+            B[aa]
+              W[db] RIGHT
+              W[bc]
+                B[db]
+                  W[bb] RIGHT
+        B[bc]
+          W[dc] RIGHT
+          W[db] RIGHT
+#4 W to live tdepth=11 tnodes=26 key=bc
+   a b c d e f
+ a . * . O X ,
+ b X X O O X ,
+ c . O O X X ,
+ d . . X X , ,
+ e O . X , , ,
+ f X X X , , ,
+ g , , , , , ,
+  W[ba]
+    B[ac]
+      W[ad] RIGHT
+    B[be]
+      W[ac] RIGHT
+      W[aa]
+        B[ca]
+          W[ac]
+            B[ba]
+              W[aa]
+                B[ba]
+                  W[bb]
+                    B[ab]
+                      W[ca] RIGHT
+                B[ad]
+                  W[ba] RIGHT
+                  W[bb] RIGHT
+                B[bb]
+                  W[ba] RIGHT
+                B[bd]
+                  W[ba] RIGHT
+                  W[bb] RIGHT
+    B[ad]
+      W[ac] RIGHT
+    B[bd]
+      W[ac] RIGHT
+#5 W to kill tdepth=11 tnodes=29 key=ac
+   a b c d e f g
+ a . . . . . O ,
+ b . * O X X O ,
+ c X X X X O O ,
+ d O O O O O , ,
+ e , , , , , , ,
+  W[bb]
+    B[ab]
+      W[ba]
+        B[ea]
+          W[ca] RIGHT
+        B[da]
+          W[ea] RIGHT
+          W[ca] RIGHT
+    B[ba]
+      W[ab]
+        B[ca]
+          W[ea]
+            B[aa]
+              W[bb]
+                B[da]
+                  W[cb]
+                    B[ab]
+                      W[bb] RIGHT
+                      W[cb] RIGHT
+                  W[ab]
+                    B[cb]
+                      W[bb] RIGHT
+                      W[ab] RIGHT
+                B[cb]
+                  W[da] RIGHT
+                B[ab]
+                  W[da] RIGHT
+        B[da]
+          W[ea] RIGHT
+#6 B to kill tdepth=11 tnodes=35 key=cd
+   a b c d e f
+ a X . . O X ,
+ b . * . O X ,
+ c . . O O X ,
+ d O O O X X ,
+ e X X X X , ,
+ f , , , , , ,
+  B[bb]
+    W[ba]
+      B[ca]
+        W[cb]
+          B[ba]
+            W[ac]
+              B[ab]
+                W[bc]
+                  B[ba]
+                    W[bb]
+                      B[aa] RIGHT
+        W[bc]
+          B[cb] RIGHT
+          B[ab] RIGHT
+    W[ab]
+      B[ac]
+        W[bc]
+          B[ab]
+            W[ca]
+              B[ba]
+                W[cb]
+                  B[ab]
+                    W[bb]
+                      B[aa] RIGHT
+        W[cb]
+          B[bc] RIGHT
+          B[ba] RIGHT
+    W[cb]
+      B[ba]
+        W[bc]
+          B[ab] RIGHT
+    W[bc]
+      B[ab]
+        W[cb]
+          B[ba] RIGHT
+#7 W to kill tdepth=11 tnodes=35 key=cd
+   a b c d e f
+ a O . . X O ,
+ b . * . X O ,
+ c . . X X O ,
+ d X X X O O ,
+ e O O O O , ,
+ f , , , , , ,
+  W[bb]
+    B[ba]
+      W[ca]
+        B[cb]
+          W[ba]
+            B[ac]
+              W[ab]
+                B[bc]
+                  W[ba]
+                    B[bb]
+                      W[aa] RIGHT
+        B[bc]
+          W[cb] RIGHT
+          W[ab] RIGHT
+    B[ab]
+      W[ac]
+        B[bc]
+          W[ab]
+            B[ca]
+              W[ba]
+                B[cb]
+                  W[ab]
+                    B[bb]
+                      W[aa] RIGHT
+        B[cb]
+          W[bc] RIGHT
+          W[ba] RIGHT
+    B[cb]
+      W[ba]
+        B[bc]
+          W[ab] RIGHT
+    B[bc]
+      W[ab]
+        B[cb]
+          W[ba] RIGHT
+#8 B to kill tdepth=11 tnodes=40 key=ea
+   a b c d e f g
+ a . * . O O X ,
+ b . . O O O X ,
+ c O O . X X X ,
+ d X X X X , , ,
+ e , , , , , , ,
+  B[ba]
+    W[bb]
+      B[aa]
+        W[cc]
+          B[ca]
+            W[ab]
+              B[ba] RIGHT
+          B[ab]
+            W[ca]
+              B[aa] RIGHT
+        W[ca]
+          B[cc]
+            W[ab]
+              B[ba] RIGHT
+              B[aa] RIGHT
+        W[ab]
+          B[cc]
+            W[ca]
+              B[ba] RIGHT
+              B[aa] RIGHT
+    W[aa]
+      B[bb] RIGHT
+      B[ab]
+        W[bb]
+          B[aa]
+            W[ca]
+              B[aa]
+                W[cc]
+                  B[ba]
+                    W[ab]
+                      B[ba] RIGHT
+                      B[aa] RIGHT
+                  B[ab]
+                    W[ba]
+                      B[ab] RIGHT
+                      B[aa] RIGHT
+                W[ba]
+                  B[cc] RIGHT
+                W[ab]
+                  B[cc] RIGHT
+#9 W to kill tdepth=11 tnodes=66 key=ac
+   a b c d e f
+ a . * . X O ,
+ b . . X . O ,
+ c X X X O O ,
+ d O O O O , ,
+ e , , , , , ,
+  W[ba]
+    B[bb]
+      W[aa]
+        B[db]
+          W[ca]
+            B[ab]
+              W[ba] RIGHT
+          W[ab]
+            B[ca]
+              W[aa] RIGHT
+        B[ca]
+          W[db]
+            B[ab]
+              W[ba] RIGHT
+              W[aa] RIGHT
+        B[ab]
+          W[db]
+            B[ca]
+              W[ba] RIGHT
+              W[aa] RIGHT
+    B[aa]
+      W[bb]
+        B[ab]
+          W[db]
+            B[ca]
+              W[bb] RIGHT
+              W[ba] RIGHT
+        B[ca]
+          W[db]
+            B[ab]
+              W[bb] RIGHT
+              W[ba] RIGHT
+          W[ab]
+            B[aa]
+              W[bb]
+                B[db]
+                  W[ba]
+                    B[ab]
+                      W[bb] RIGHT
+                      W[ba] RIGHT
+                  W[ab]
+                    B[ba]
+                      W[bb] RIGHT
+                      W[ab] RIGHT
+                B[ba]
+                  W[db] RIGHT
+                B[ab]
+                  W[db] RIGHT
+      W[ab]
+        B[bb]
+          W[aa]
+            B[ca]
+              W[aa]
+                B[db]
+                  W[ba]
+                    B[ab]
+                      W[ba] RIGHT
+                      W[aa] RIGHT
+                  W[ab]
+                    B[ba]
+                      W[ab] RIGHT
+                      W[aa] RIGHT
+                B[ba]
+                  W[db] RIGHT
+                B[ab]
+                  W[db] RIGHT
+#10 B to kill tdepth=11 tnodes=66 key=bc
+   a b c d e
+ a . . O X ,
+ b * . O X ,
+ c . O O X ,
+ d O . X X ,
+ e X X X , ,
+ f , , , , ,
+  B[ab]
+    W[bb]
+      B[aa]
+        W[bd]
+          B[ba]
+            W[ac]
+              B[aa] RIGHT
+          B[ac]
+            W[ba]
+              B[ab] RIGHT
+        W[ac]
+          B[bd]
+            W[ba]
+              B[ab] RIGHT
+              B[aa] RIGHT
+        W[ba]
+          B[bd]
+            W[ac]
+              B[ab] RIGHT
+              B[aa] RIGHT
+    W[aa]
+      B[bb]
+        W[ba]
+          B[bd]
+            W[ac]
+              B[bb] RIGHT
+              B[ab] RIGHT
+        W[ac]
+          B[bd]
+            W[ba]
+              B[bb] RIGHT
+              B[ab] RIGHT
+          B[ba]
+            W[aa]
+              B[bb]
+                W[bd]
+                  B[ba]
+                    W[ab]
+                      B[bb] RIGHT
+                      B[ba] RIGHT
+                  B[ab]
+                    W[ba]
+                      B[bb] RIGHT
+                      B[ab] RIGHT
+                W[ba]
+                  B[bd] RIGHT
+                W[ab]
+                  B[bd] RIGHT
+      B[ba]
+        W[bb]
+          B[aa]
+            W[ac]
+              B[aa]
+                W[bd]
+                  B[ba]
+                    W[ab]
+                      B[ba] RIGHT
+                      B[aa] RIGHT
+                  B[ab]
+                    W[ba]
+                      B[ab] RIGHT
+                      B[aa] RIGHT
+                W[ba]
+                  B[bd] RIGHT
+                W[ab]
+                  B[bd] RIGHT
+#11 B to kill tdepth=11 tnodes=69 key=ea
+   a b c d e f g
+ a . . . . O X ,
+ b . * . . O X ,
+ c O . O O O X ,
+ d X X X X X X ,
+ e , , , , , , ,
+  B[bb]
+    W[bc]
+      B[cb]
+        W[ab]
+          B[ba]
+            W[db]
+              B[ca] RIGHT
+        W[ba]
+          B[ab]
+            W[ca]
+              B[db] RIGHT
+              B[da] RIGHT
+    W[cb]
+      B[bc]
+        W[ba]
+          B[da]
+            W[ca]
+              B[ab]
+                W[db]
+                  B[aa] RIGHT
+                  B[ac] RIGHT
+            W[ab]
+              B[ca]
+                W[db]
+                  B[ca] RIGHT
+                  B[aa]
+                    W[ab]
+                      B[ca] RIGHT
+              B[aa]
+                W[ab]
+                  B[ca]
+                    W[db]
+                      B[ca] RIGHT
+        W[da]
+          B[ba]
+            W[ab]
+              B[ca] RIGHT
+              B[aa] RIGHT
+    W[ba]
+      B[cb]
+        W[bc]
+          B[ab]
+            W[ca]
+              B[db] RIGHT
+              B[da] RIGHT
+        W[ab]
+          B[bc] RIGHT
+      B[bc]
+        W[cb]
+          B[da]
+            W[ca]
+              B[ab]
+                W[db]
+                  B[aa] RIGHT
+                  B[ac] RIGHT
+            W[ab]
+              B[ca]
+                W[db]
+                  B[ca] RIGHT
+                  B[aa]
+                    W[ab]
+                      B[ca] RIGHT
+              B[aa]
+                W[ab]
+                  B[ca]
+                    W[db]
+                      B[ca] RIGHT
+        W[da]
+          B[cb] RIGHT
+#12 W to kill tdepth=11 tnodes=69 key=db
+   a b c d e f
+ a . O X X O ,
+ b . * . X O ,
+ c . . X X O ,
+ d X X X O O ,
+ e O O O O , ,
+ f , , , , , ,
+  W[bb]
+    B[ab]
+      W[bc]
+        B[ac]
+          W[cb]
+            B[aa]
+              W[bb]
+                B[cb]
+                  W[bc]
+                    B[ba]
+                      W[bb] RIGHT
+                      W[bc] RIGHT
+                  W[ba]
+                    B[bc]
+                      W[bb] RIGHT
+                      W[ba] RIGHT
+                B[bc]
+                  W[cb]
+                    B[ba]
+                      W[bb] RIGHT
+                      W[cb] RIGHT
+                  W[ba]
+                    B[cb]
+                      W[bb] RIGHT
+                      W[ba] RIGHT
+                B[ba]
+                  W[cb]
+                    B[bc]
+                      W[bb] RIGHT
+                      W[cb] RIGHT
+                  W[bc]
+                    B[cb]
+                      W[bb] RIGHT
+                      W[bc] RIGHT
+      W[cb]
+        B[ac]
+          W[bc]
+            B[aa]
+              W[bb]
+                B[cb]
+                  W[bc]
+                    B[ba]
+                      W[bb] RIGHT
+                      W[bc] RIGHT
+                  W[ba]
+                    B[bc]
+                      W[bb] RIGHT
+                      W[ba] RIGHT
+                B[bc]
+                  W[cb]
+                    B[ba]
+                      W[bb] RIGHT
+                      W[cb] RIGHT
+                  W[ba]
+                    B[cb]
+                      W[bb] RIGHT
+                      W[ba] RIGHT
+                B[ba]
+                  W[cb]
+                    B[bc]
+                      W[bb] RIGHT
+                      W[cb] RIGHT
+                  W[bc]
+                    B[cb]
+                      W[bb] RIGHT
+                      W[bc] RIGHT
+    B[bc]
+      W[cb] RIGHT
+      W[ab] RIGHT
+#13 B to kill tdepth=11 tnodes=77 key=db
+   a b c d e f
+ a . . O O X ,
+ b . * . O X ,
+ c O X O O X ,
+ d . O O X X ,
+ e X X X X , ,
+ f , , , , , ,
+  B[bb]
+    W[ab]
+      B[ad]
+        W[ba]
+          B[aa]
+            W[ab]
+              B[ac] RIGHT
+      B[ba]
+        W[ad]
+          B[cb]
+            W[aa]
+              B[bb]
+                W[cb]
+                  B[bc]
+                    W[ba]
+                      B[bb] RIGHT
+                      B[bc] RIGHT
+                  B[ba]
+                    W[bc]
+                      B[bb] RIGHT
+                      B[ba] RIGHT
+                W[bc]
+                  B[cb]
+                    W[ba]
+                      B[bb] RIGHT
+                      B[cb] RIGHT
+                  B[ba]
+                    W[cb]
+                      B[bb] RIGHT
+                      B[ba] RIGHT
+                W[ba]
+                  B[cb]
+                    W[bc]
+                      B[bb] RIGHT
+                      B[cb] RIGHT
+                  B[bc]
+                    W[cb]
+                      B[bb] RIGHT
+                      B[bc] RIGHT
+    W[ba]
+      B[ad]
+        W[ab]
+          B[aa]
+            W[ab]
+              B[ac] RIGHT
+      B[ab]
+        W[ad]
+          B[cb]
+            W[aa]
+              B[bb]
+                W[cb]
+                  B[bc]
+                    W[ab]
+                      B[bb] RIGHT
+                      B[bc] RIGHT
+                  B[ab]
+                    W[bc]
+                      B[bb] RIGHT
+                      B[ab] RIGHT
+                W[bc]
+                  B[cb]
+                    W[ab]
+                      B[bb] RIGHT
+                      B[cb] RIGHT
+                  B[ab]
+                    W[cb]
+                      B[bb] RIGHT
+                      B[ab] RIGHT
+                W[ab]
+                  B[cb]
+                    W[bc]
+                      B[bb] RIGHT
+                      B[cb] RIGHT
+                  B[bc]
+                    W[cb]
+                      B[bb] RIGHT
+                      B[bc] RIGHT
+#14 W to kill tdepth=9 tnodes=18 key=ab
+   a b c d e f
+ a O * . O O ,
+ b X . X X O ,
+ c X . X O O ,
+ d X X . O , ,
+ e O O O O , ,
+ f , , , , , ,
+  W[ba]
+    B[ca]
+      W[bb]
+        B[bc]
+          W[ba]
+            B[cd]
+              W[bb]
+                B[aa]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+              W[aa]
+                B[bb]
+                  W[ba] RIGHT
+                  W[aa] RIGHT
+            B[bb]
+              W[cd] RIGHT
+            B[aa]
+              W[cd] RIGHT
+#15 B to live tdepth=9 tnodes=22 key=bd
+   a b c d e f g
+ a O . . . X O ,
+ b . * O X X O ,
+ c . . X O O O ,
+ d X X X O , , ,
+ e O O O O , , ,
+ f , , , , , , ,
+  B[bb]
+    W[ca]
+      B[ba]
+        W[ac]
+          B[da] RIGHT
+      B[ab]
+        W[bc]
+          B[ac]
+            W[ba]
+              B[da]
+                W[ba]
+                  B[cb] RIGHT
+                  B[aa] RIGHT
+        W[ac]
+          B[bc]
+            W[ba]
+              B[da]
+                W[ba]
+                  B[cb] RIGHT
+                  B[aa] RIGHT
+    W[da]
+      B[ba] RIGHT
+#16 W to kill tdepth=9 tnodes=23 key=ad
+   a b c d e f
+ a O . . X O ,
+ b O * . . O ,
+ c X . X X O ,
+ d X X X O O ,
+ e O O O O , ,
+ f , , , , , ,
+  W[bb]
+    B[cb]
+      W[db]
+        B[ca]
+          W[ba] RIGHT
+      W[ba]
+        B[db]
+          W[bc]
+            B[ca]
+              W[bb]
+                B[ba]
+                  W[ab] RIGHT
+                B[ab]
+                  W[ba] RIGHT
+          W[ca]
+            B[bc]
+              W[ba]
+                B[bb]
+                  W[aa] RIGHT
+        B[ca]
+          W[db] RIGHT
+        B[bc]
+          W[db] RIGHT
+#17 W to kill tdepth=9 tnodes=38 key=cb
+   a b c d e f
+ a . . X . O ,
+ b . * X X O ,
+ c X O X O O ,
+ d X X X O , ,
+ e O O O O , ,
+ f , , , , , ,
+  W[bb]
+    B[ba]
+      W[ab]
+        B[aa]
+          W[bb]
+            B[da]
+              W[bc]
+                B[ab]
+                  W[bb] RIGHT
+                  W[bc] RIGHT
+              W[ab]
+                B[bc]
+                  W[bb] RIGHT
+                  W[ab] RIGHT
+            B[bc]
+              W[da] RIGHT
+            B[ab]
+              W[da] RIGHT
+    B[ab]
+      W[ba]
+        B[aa]
+          W[bb]
+            B[da]
+              W[bc]
+                B[ba]
+                  W[bb] RIGHT
+                  W[bc] RIGHT
+              W[ba]
+                B[bc]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+            B[bc]
+              W[da] RIGHT
+            B[ba]
+              W[da] RIGHT
+    B[da]
+      W[ba] RIGHT
+      W[ab] RIGHT
+#18 B to kill tdepth=9 tnodes=38 key=ac
+   a b c d e f
+ a X . O . X ,
+ b . * . O X ,
+ c O O O O X ,
+ d X X X X X ,
+ e , , , , , ,
+  B[bb]
+    W[ba]
+      B[ab]
+        W[cb]
+          B[ab]
+            W[da]
+              B[bb]
+                W[aa]
+                  B[bb] RIGHT
+                  B[ab] RIGHT
+              B[aa]
+                W[bb]
+                  B[ab] RIGHT
+                  B[aa] RIGHT
+            W[bb]
+              B[da] RIGHT
+            W[aa]
+              B[da] RIGHT
+    W[ab]
+      B[ba]
+        W[cb]
+          B[ba]
+            W[da]
+              B[bb]
+                W[aa]
+                  B[bb] RIGHT
+                  B[ba] RIGHT
+              B[aa]
+                W[bb]
+                  B[ba] RIGHT
+                  B[aa] RIGHT
+            W[bb]
+              B[da] RIGHT
+            W[aa]
+              B[da] RIGHT
+    W[da]
+      B[ab] RIGHT
+      B[ba] RIGHT
+#19 W to kill tdepth=9 tnodes=40 key=bc
+   a b c d e f
+ a O * O X O ,
+ b X . . X O ,
+ c . X X X O ,
+ d O O O O O ,
+ e , , , , , ,
+  W[ba]
+    B[ac]
+      W[bb]
+        B[cb]
+          W[ba]
+            B[bb]
+              W[ca]
+                B[aa]
+                  W[ba] RIGHT
+                  W[ca] RIGHT
+              W[aa]
+                B[ca]
+                  W[ba] RIGHT
+                  W[aa] RIGHT
+            B[ca]
+              W[bb]
+                B[aa]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+              W[aa]
+                B[bb]
+                  W[ba] RIGHT
+                  W[aa] RIGHT
+            B[aa]
+              W[bb]
+                B[ca]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+              W[ca]
+                B[bb]
+                  W[ba] RIGHT
+                  W[ca] RIGHT
+    B[bb]
+      W[ac]
+        B[cb]
+          W[ba] RIGHT
+    B[cb]
+      W[ac]
+        B[bb]
+          W[ba] RIGHT
+#20 W to live tdepth=9 tnodes=48 key=cd
+   a b c d e f
+ a . . . O X ,
+ b . . * . X ,
+ c . X O X X ,
+ d O O O X , ,
+ e X X X X , ,
+ f , , , , , ,
+  W[cb]
+    B[ba]
+      W[bb]
+        B[ab]
+          W[db]
+            B[ac]
+              W[aa]
+                B[ab]
+                  W[ac] RIGHT
+            B[ca]
+              W[aa]
+                B[ba]
+                  W[ac] RIGHT
+        B[db]
+          W[ab] RIGHT
+    B[db]
+      W[ab]
+        B[ba]
+          W[bb] RIGHT
+        B[bb]
+          W[ba] RIGHT
+    B[bb]
+      W[ba]
+        B[ab]
+          W[db] RIGHT
+        B[db]
+          W[ab] RIGHT
+    B[ab]
+      W[db]
+        B[ba]
+          W[bb]
+            B[ac]
+              W[aa]
+                B[ab]
+                  W[ac] RIGHT
+            B[ca]
+              W[aa]
+                B[ba]
+                  W[ac] RIGHT
+        B[bb]
+          W[ba] RIGHT
+        B[ac]
+          W[ba] RIGHT
+          W[bb]
+            B[ba]
+              W[aa]
+                B[ab]
+                  W[ac] RIGHT
+#21 B to kill tdepth=9 tnodes=55 key=ea
+   a b c d e f g
+ a . O . X O X ,
+ b . . . . O X ,
+ c O * O O O X ,
+ d X X X X X X ,
+ e , , , , , , ,
+  B[bc]
+    W[cb]
+      B[bb]
+        W[ca]
+          B[ab]
+            W[db]
+              B[aa] RIGHT
+              B[ac] RIGHT
+        W[ab]
+          B[ca]
+            W[db]
+              B[ca] RIGHT
+              B[aa]
+                W[ab]
+                  B[ca] RIGHT
+          B[aa]
+            W[ab]
+              B[ca]
+                W[db]
+                  B[ca] RIGHT
+    W[ab]
+      B[cb] RIGHT
+      B[bb]
+        W[cb]
+          B[ca]
+            W[db]
+              B[ca] RIGHT
+              B[aa]
+                W[ab]
+                  B[ca] RIGHT
+          B[aa]
+            W[ab]
+              B[ca]
+                W[db]
+                  B[ca] RIGHT
+        W[ca]
+          B[cb] RIGHT
+          B[aa]
+            W[ab]
+              B[cb] RIGHT
+    W[ca]
+      B[cb] RIGHT
+      B[bb]
+        W[cb]
+          B[ab]
+            W[db]
+              B[aa] RIGHT
+              B[ac] RIGHT
+        W[ab]
+          B[cb] RIGHT
+          B[aa]
+            W[ab]
+              B[cb] RIGHT
+    W[bb]
+      B[cb] RIGHT
+#22 W to kill tdepth=9 tnodes=55 key=ab
+   a b c d e f g
+ a X O * . . O ,
+ b X X O X . O ,
+ c O X X X O O ,
+ d O O O O O , ,
+ e , , , , , , ,
+  W[ca]
+    B[da]
+      W[ca]
+        B[cb]
+          W[ea]
+            B[ba]
+              W[eb] RIGHT
+          W[eb]
+            B[ba]
+              W[ea] RIGHT
+        B[ba]
+          W[ea]
+            B[cb]
+              W[eb] RIGHT
+          W[eb]
+            B[cb]
+              W[ea] RIGHT
+    B[eb]
+      W[ea]
+        B[da]
+          W[ca] RIGHT
+      W[da]
+        B[ea]
+          W[ca]
+            B[cb]
+              W[ba]
+                B[da]
+                  W[ba] RIGHT
+                  W[ca] RIGHT
+              W[da]
+                B[ba]
+                  W[ca] RIGHT
+                  W[da] RIGHT
+            B[ba]
+              W[cb]
+                B[da]
+                  W[cb] RIGHT
+                  W[ca] RIGHT
+              W[da]
+                B[cb]
+                  W[ca] RIGHT
+                  W[da] RIGHT
+            B[da]
+              W[cb]
+                B[ba]
+                  W[cb] RIGHT
+                  W[ca] RIGHT
+              W[ba]
+                B[cb]
+                  W[ba] RIGHT
+                  W[ca] RIGHT
+    B[ea]
+      W[eb]
+        B[da]
+          W[ca] RIGHT
+#23 B to kill tdepth=9 tnodes=59 key=bc
+   a b c d e f g h
+ a . . . . . O X ,
+ b . . . * O O X ,
+ c O O O O X X X ,
+ d X X X X X , , ,
+ e , , , , , , , ,
+  B[db]
+    W[cb]
+      B[da]
+        W[ca]
+          B[ea]
+            W[eb]
+              B[fb]
+                W[bb]
+                  B[aa] RIGHT
+                W[ba]
+                  B[ab] RIGHT
+                W[ab]
+                  B[ba] RIGHT
+                W[aa]
+                  B[bb] RIGHT
+              B[fa]
+                W[bb]
+                  B[aa] RIGHT
+                W[ba]
+                  B[ab] RIGHT
+                W[ab]
+                  B[ba] RIGHT
+                W[aa]
+                  B[bb] RIGHT
+            W[ba]
+              B[ab] RIGHT
+            W[ab]
+              B[ba] RIGHT
+            W[aa]
+              B[bb] RIGHT
+            W[bb]
+              B[aa] RIGHT
+            W[fa]
+              B[eb]
+                W[bb]
+                  B[aa] RIGHT
+                W[ba]
+                  B[ab] RIGHT
+                W[ab]
+                  B[ba] RIGHT
+                W[aa]
+                  B[bb] RIGHT
+              B[fb]
+                W[bb]
+                  B[aa] RIGHT
+                W[ba]
+                  B[ab] RIGHT
+                W[ab]
+                  B[ba] RIGHT
+                W[aa]
+                  B[bb] RIGHT
+        W[ba]
+          B[ab] RIGHT
+        W[ab]
+          B[ba] RIGHT
+    W[da]
+      B[cb]
+        W[bb]
+          B[ea] RIGHT
+#24 W to kill tdepth=9 tnodes=66 key=cb
+   a b c d e
+ a . . X O ,
+ b . O X O ,
+ c X . X O ,
+ d . * X O ,
+ e X . . O ,
+ f O O O O ,
+ g , , , , ,
+  W[bd]
+    B[bc]
+      W[be]
+        B[ba]
+          W[ab]
+            B[ad]
+              W[ce]
+                B[aa]
+                  W[bb] RIGHT
+                  W[ab] RIGHT
+        B[ab]
+          W[ba]
+            B[ad]
+              W[ce]
+                B[aa]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+      W[ce]
+        B[be]
+          W[ad] RIGHT
+        B[ba]
+          W[ab]
+            B[ad]
+              W[be]
+                B[aa]
+                  W[bb] RIGHT
+                  W[ab] RIGHT
+        B[ab]
+          W[ba]
+            B[ad]
+              W[be]
+                B[aa]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+        B[ad]
+          W[be]
+            B[ba]
+              W[ab]
+                B[aa]
+                  W[bb] RIGHT
+                  W[ab] RIGHT
+            B[ab]
+              W[ba]
+                B[aa]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+            B[aa]
+              W[ba]
+                B[ab]
+                  W[bb] RIGHT
+                  W[ba] RIGHT
+              W[ab]
+                B[ba]
+                  W[bb] RIGHT
+                  W[ab] RIGHT
+    B[be]
+      W[bc]
+        B[ba]
+          W[ce] RIGHT
+          W[ab] RIGHT
+        B[ab]
+          W[ce] RIGHT
+          W[ba] RIGHT
+      W[ce]
+        B[bc]
+          W[ad] RIGHT

@@ -1,0 +1,2 @@
+(;B[fb];W[ga];B[ha](;W[fa];B[ea];W[db];B[ea]C[Seki. RIGHT])(;W[db](;B[fa]C[Seki. RIGHT])(;B[ea];W[fa];B[ea]C[Seki. RIGHT])))
+(;B[db];W[ec])(;B[ec];W[db])(;B[ha];W[fb])(;B[ga];W[fb])(;B[ea];W[fb])(;B[fa];W[fb])

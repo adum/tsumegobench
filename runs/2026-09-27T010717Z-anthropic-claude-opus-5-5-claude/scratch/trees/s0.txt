@@ -1,0 +1,3 @@
+(;B[hb](;W[gb];B[hc](;W[eb];B[da]C[Seki. RIGHT])(;W[da];B[eb]C[Seki. RIGHT]))(;W[hc];B[gb](;W[eb];B[da]C[Seki. RIGHT])(;W[da];B[eb]C[Seki. RIGHT]))(;W[eb];B[da](;W[gb];B[hc]C[Seki. RIGHT])(;W[hc];B[gb]C[Seki. RIGHT]))(;W[da];B[eb]C[Seki. RIGHT]))
+(;B[gb];W[eb];B[ea];W[da]C[Ko])(;B[hc];W[eb];B[ea];W[da]C[Ko])
+(;B[eb];W[gb])(;B[da];W[gb])(;B[ea];W[gb])(;B[fc];W[gb])

@@ -1,0 +1,5 @@
+cp B live dq
+, O O O O O O O , ,
+O X X X X X X O , ,
+O X . X . . X O , ,
+O X . X . . . O , ,

@@ -1,0 +1,1 @@
+All 10 requested files are written: `outputs/problem-01.sgf` through `outputs/problem-10.sgf`. Each one's final originality query came back `clear`, and each file's SHA-256 matches its clear result.

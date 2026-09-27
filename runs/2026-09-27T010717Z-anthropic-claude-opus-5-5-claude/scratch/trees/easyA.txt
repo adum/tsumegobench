@@ -1,0 +1,2 @@
+(;B[fb](;W[fa];B[ha]C[RIGHT])(;W[ha];B[fa]C[RIGHT])(;W[ga](;B[fa]C[RIGHT])(;B[ea]C[RIGHT])))
+(;B[fa];W[fb])(;B[ga];W[fb])(;B[ha];W[fb])(;B[ea];W[fb])
