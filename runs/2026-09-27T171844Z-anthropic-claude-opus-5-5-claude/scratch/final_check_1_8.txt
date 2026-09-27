@@ -1,0 +1,109 @@
+==== problem 01
+structural errors: [] nodes: 8 maxline: 2
+  note: [] wrong move da label=lose
+  note: [] wrong move ba label=lose
+  note: [] wrong move aa label=lose
+RESULT 1 OK
+==== problem 02
+structural errors: [] nodes: 12 maxline: 3
+  note: [] wrong move js label=lose
+  note: [] wrong move ks label=lose
+  note: [] wrong move ls label=lose
+  note: [ Bhs] threats: js->ls; ls->js
+RESULT 2 OK
+==== problem 03
+structural errors: [] nodes: 30 maxline: 5
+  note: [] wrong move si label=lose
+  note: [] wrong move sj label=lose
+  note: [] wrong move sl label=lose
+  note: [] wrong move sm label=lose
+  note: [ Wri] threats: si->sj; sj->si; sl->sm; sm->sl
+  note: [ Wri Bsi Wsj] threats: sl->sm; sm->sl
+  note: [ Wri Bsj Wsi] threats: sl->sm; sm->sl
+  note: [ Wri Bsm Wsl] threats: si->sj; sj->si
+RESULT 3 OK
+==== problem 04
+structural errors: [] nodes: 20 maxline: 5
+  note: [] wrong move ai label=ko
+  note: [] wrong move bi label=ko
+  note: [] wrong move bj label=lose
+  note: [] wrong move ak label=lose
+  note: [] wrong move al label=lose
+  note: [ Baj] threats: ai->bi; bi->ai; bj->ai
+  note: [ Baj Wai Bbi] threats: bj->ai
+  note: [ Bai Waj] wrong line ends in ko (commented): solver ko via ['bi']
+  note: [ Bbi Waj] wrong line ends in ko (commented): solver ko via ['ai']
+RESULT 4 OK
+==== problem 05
+structural errors: [] nodes: 30 maxline: 5
+  note: [] wrong move ar label=lose
+  note: [] wrong move bs label=lose
+  note: [] wrong move bq label=lose
+  note: [] wrong move dr label=lose
+  note: [ Bbr] threats: ar->bs; bq->ar,bs,dr; bs->ar
+  note: [ Bbr War Bbs] threats: bq->bs
+  note: [ Bbr Wbs Bar] threats: bq->ar
+  note: [ Bbr Wbq Bar] threats: bs->ar
+  note: [ Bbr Wbq Bbs] threats: ar->bs
+  note: [ Bbr Wbq Bdr] threats: ar->bs; bs->ar
+RESULT 5 OK
+==== problem 06
+structural errors: [] nodes: 35 maxline: 7
+  note: [] wrong move sr label=lose?
+  note: [] wrong move rs label=lose?
+  note: [] wrong move qq label=lose
+  note: [] wrong move ss label=lose?
+  note: [] wrong move qr label=lose?
+  note: [ Brr] threats: qq->qr,rs,sr; qr->qs,rs,sr; qs->qr,rs,sr; rs->sr; sr->rs
+  note: [ Brr Wsr Brs] threats: qq->qr,ss; qr->qs
+  note: [ Brr Wsr Brs Wqr Bqs] threats: qq->ss; ss->qq
+  note: [ Brr Wsr Brs Wqq Bss] threats: qr->qs; qs->qr
+  note: [ Brr Wrs Bsr] threats: qr->qq; ss->qq,qr,qs
+  note: [ Bsr Wrr Brs Wss] wrong line ends in ko (commented): solver ko via ['qr', 'qs', 'sr']
+  note: [ Brs Wrr Bsr Wss] wrong line ends in ko (commented): solver ko via ['qr', 'qs', 'sr']
+  note: [ Bss] refutation sr: failure confirmed, ko-vs-death undetermined
+  note: [ Bqr] refutation rs: failure confirmed, ko-vs-death undetermined
+RESULT 6 OK
+==== problem 07
+structural errors: [] nodes: 47 maxline: 11
+  note: [] wrong move gs label=seki
+  note: [] wrong move hs label=seki
+  note: [] wrong move ir label=seki
+  note: [] wrong move is label=ko
+  note: [] wrong move ks label=ko
+  note: [] wrong move lr label=ko
+  note: [ Wkr] threats: gs->hs; hr->5 moves; hs->ir; ir->hr,hs,ks; is->gs,hr,hs; ks->5 moves; ls->6 moves
+  note: [ Wkr Bgs Whs] threats: hr->ir; is->hr; ks->ir,is,ls; ls->ir,is,ks,lr
+  note: [ Wkr Bgs Whs Bhr Wir] threats: is->hr,ks
+  note: [ Wkr Bgs Whs Bis Whr] threats: ks->ir,ls; ls->ir,ks,lr
+  note: [ Wkr Bgs Whs Bis Whr Bks Wir] threats: lr->ls; ls->lr
+  note: [ Wkr Bgs Whs Bis Whr Bks Wir Bls Wlr] threats: js->ks; ks->js
+  note: [ Wkr Bhs Wir] threats: gs->is; is->gs; ks->gs,hr,is,ls; ls->5 moves
+  note: [ Wkr Bhs Wir Bis Wgs] threats: ks->hr,ls; ls->hr,ks,lr
+  note: [ Wkr Bhs Wir Bis Wgs Bks Whr] threats: lr->ls; ls->lr
+  note: [ Wkr Bhs Wir Bis Wgs Bks Whr Bls Wlr] threats: is->hs,jr,js,ks; ks->is,jr,js,ls
+  note: [ Wgs Bhs] wrong line ends in seki (commented)
+  note: [ Whs Bkr] wrong line ends in seki (commented)
+  note: [ Wir Bis] wrong line ends in seki (commented)
+  note: [ Wis Bir] wrong line ends in ko (commented): solver ko via ['gs']
+  note: [ Wks Bgs] wrong line ends in ko (commented): solver ko via ['hs', 'ir']
+  note: [ Wlr Bgs] wrong line ends in ko (commented): solver ko via ['hs']
+RESULT 7 OK
+==== problem 08
+structural errors: [] nodes: 25 maxline: 7
+  note: [] wrong move ah label=lose?
+  note: [] wrong move bi label=seki
+  note: [] wrong move aj label=lose?
+  note: [] wrong move bk label=seki
+  note: [] wrong move al label=lose?
+  note: [] wrong move bh label=ko
+  note: [ Wak] threats: aj->ah,bi,bk; bi->bk; bk->bi
+  note: [ Wak Bbk Wbi] threats: aj->ah,al
+  note: [ Wak Bbk Wbi Baj Wal] threats: ah->bh; bh->ah
+  note: [ Wah Bbi] wrong line ends in seki (commented)
+  note: [ Wbi Bak] wrong line ends in seki (commented)
+  note: [ Waj Bbi] wrong line ends in seki (commented)
+  note: [ Wbk Bak] wrong line ends in seki (commented)
+  note: [ Wal Bah] wrong line ends in seki (commented)
+  note: [ Wbh Bbk] wrong line ends in ko (commented): solver ko via ['aj', 'ak', 'bi', 'pass']
+RESULT 8 OK

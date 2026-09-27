@@ -1,0 +1,169 @@
+#1 seed=91 it=90 solver=B obj=live key=jb depth=5 nodes=23 branch=2 sac=0 first=0 placement=0 region=8
+    a b c d e f g h i j k l m n o
+a19 . . O O . . . . . . X O . . .
+b18 . . O X X X X X X * X O . . .
+c17 . . O O O O O O O O O O . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION da,ea,fa,ga,ha,ia,ja,jb
+SAFE ca,la,cb,lb,cc,dc,ec,fc,gc,hc,ic,jc,kc,lc
+TARGET db,eb,fb,gb,hb,ib
+TREE (;B[jb](;W[ea](;B[fa](;W[ha];B[ia]C[RIGHT])(;W[ia];B[ha]C[RIGHT]))(;B[ia](;W[fa];B[ga]C[RIGHT])(;W[ga];B[fa]C[RIGHT])))(;W[ia](;B[ea](;W[ga];B[ha]C[RIGHT])(;W[ha];B[ga]C[RIGHT]))(;B[ha](;W[ea];B[fa]C[RIGHT])(;W[fa];B[ea]C[RIGHT]))))
+#2 seed=91 it=186 solver=B obj=kill key=fb depth=5 nodes=19 branch=0 sac=0 first=0 placement=0 region=9
+    a b c d e f g h i j k l m n o
+a19 . . X O . X . . . O X . . . .
+b18 . . X O O * O . . O X . . . .
+c17 . . X X X O O O O O X . . . .
+d16 . . . . X X X X X X X . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,fb,gb,hb,ib
+SAFE ca,ka,cb,kb,cc,dc,ec,kc,ed,fd,gd,hd,id,jd,kd
+TARGET ja,gb,jb,fc,gc,hc,ic,jc
+TREE (;B[fb](;W[ga];B[ea](;W[ha];B[ib]C[RIGHT])(;W[hb];B[ia]C[RIGHT])(;W[ia];B[hb]C[RIGHT])(;W[ib];B[ha]C[RIGHT]))(;W[ha];B[ib];W[ga];B[ea]C[RIGHT])(;W[ib];B[ha];W[ga];B[ea]C[RIGHT]))
+#3 seed=91 it=227 solver=W obj=live key=ib depth=7 nodes=28 branch=1 sac=0 first=0 placement=0 region=6
+    a b c d e f g h i j k l m n o
+a19 . . X O . . . . O X . . . . .
+b18 . . X O O O O . * X . . . . .
+c17 . . X X X X X O O X . . . . .
+d16 . . . . . . X X X X . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,hb,ib
+SAFE ca,ja,cb,jb,cc,dc,ec,fc,gc,jc,gd,hd,id,jd
+TARGET da,db,eb,fb,gb
+TREE (;W[ib](;B[fa](;W[ga](;B[ha];W[hb]C[RIGHT])(;B[hb];W[ha]C[RIGHT]))(;W[ha];B[ga];W[ea];B[ga];W[fa]C[RIGHT]))(;B[ga];W[fa](;B[ha];W[hb]C[RIGHT])(;B[hb];W[ha]C[RIGHT]))(;B[ha];W[hb](;B[fa];W[ga]C[RIGHT])(;B[ga];W[fa]C[RIGHT]))(;B[hb];W[ha];B[ga];W[fa]C[RIGHT]))
+#4 seed=91 it=250 solver=B obj=live key=bb depth=7 nodes=20 branch=1 sac=0 first=0 placement=1 region=9
+    a b c d e f g h i j k l m n o
+a19 . . . X O . . . . . . . . . .
+b18 . * . X O . . . . . . . . . .
+c17 O O . X O . . . . . . . . . .
+d16 X X X X O . . . . . . . . . .
+e15 O O O O O . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,cb,ac,bc,cc
+SAFE ea,eb,ec,ed,ae,be,ce,de,ee
+TARGET da,db,dc,ad,bd,cd,dd
+TREE (;B[bb](;W[ab];B[ba](;W[cb];B[ca](;W[aa];B[cc]C[RIGHT])(;W[cc];B[aa]C[RIGHT]))(;W[cc](;B[aa](;W[ca];B[cb]C[RIGHT])(;W[cb];B[ca]C[RIGHT]))(;B[cb]C[RIGHT])))(;W[ba];B[ab];W[cb];B[cc]C[RIGHT]))
+#5 seed=91 it=411 solver=B obj=kill key=ba depth=5 nodes=15 branch=2 sac=0 first=1 placement=0 region=7
+    a b c d e f g h i j k l m n o
+a19 . * . O X . . . . . . . . . .
+b18 . X O O X . . . . . . . . . .
+c17 . . O X X . . . . . . . . . .
+d16 O O O X . . . . . . . . . . .
+e15 X X X X . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,ac,bc
+SAFE ea,eb,dc,ec,dd,ae,be,ce,de
+TARGET da,cb,db,cc,ad,bd,cd
+TREE (;B[ba](;W[ab];B[ca](;W[aa];B[ac]C[RIGHT])(;W[bc];B[ac]C[RIGHT]))(;W[bc](;B[ab]C[RIGHT])(;B[ca](;W[aa](;B[ab]C[RIGHT])(;B[ac]C[RIGHT]))(;W[ab];B[ac]C[RIGHT]))))
+#6 seed=91 it=470 solver=B obj=kill key=cb depth=5 nodes=13 branch=2 sac=0 first=0 placement=1 region=8
+    a b c d e f g h i j k l m n o
+a19 . . . O X . . . . . . . . . .
+b18 . . * O X . . . . . . . . . .
+c17 . O O X X . . . . . . . . . .
+d16 O O X X X . . . . . . . . . .
+e15 X X X . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,cb,ac,dc
+SAFE ea,eb,ec,cd,dd,ed,ae,be,ce
+TARGET bc,cc,ad,bd
+TREE (;B[cb](;W[bb];B[ca](;W[ab];B[ba]C[RIGHT])(;W[ba];B[ab]C[RIGHT]))(;W[ca](;B[ba]C[RIGHT])(;B[bb];W[ab](;B[ac]C[RIGHT])(;B[ba]C[RIGHT]))))
+#7 seed=91 it=478 solver=B obj=live key=bb depth=5 nodes=8 branch=1 sac=0 first=0 placement=1 region=9
+    a b c d e f g h i j k l m n o
+a19 . . . . X O . . . . . . . . .
+b18 O * O X X O . . . . . . . . .
+c17 . . X X O O . . . . . . . . .
+d16 X X X O O . . . . . . . . . .
+e15 O O O O . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ab,bb,cb,ac,bc
+SAFE fa,fb,ec,fc,dd,ed,ae,be,ce,de
+TARGET ea,db,eb,cc,dc,ad,bd,cd
+TREE (;B[bb](;W[ba];B[ca]C[RIGHT])(;W[ca];B[ba];W[bc](;B[ac]C[RIGHT])(;B[da]C[RIGHT])))
+#8 seed=91 it=515 solver=W obj=live key=ba depth=5 nodes=7 branch=0 sac=0 first=1 placement=1 region=7
+    a b c d e f g h i j k l m n o
+a19 . * . O X . . . . . . . . . .
+b18 . . O O X . . . . . . . . . .
+c17 X O O X X . . . . . . . . . .
+d16 O . X X . . . . . . . . . . .
+e15 X X X . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,ac,bd
+SAFE ea,eb,dc,ec,cd,dd,ae,be,ce
+TARGET da,cb,db,bc,cc
+TREE (;W[ba](;B[ab];W[bd];B[bb];W[aa]C[RIGHT])(;B[bd];W[ab]C[RIGHT]))
+#9 seed=91 it=615 solver=B obj=kill key=ea depth=7 nodes=14 branch=1 sac=1 first=1 placement=1 region=7
+    a b c d e f g h i j k l m n o
+a19 . . X O * . . . . X X . . . .
+b18 . . X O . O O O O O X . . . .
+c17 . . X O O X X X X X X . . . .
+d16 . . X X X X . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,ja,eb
+SAFE ca,ka,cb,kb,cc,fc,gc,hc,ic,jc,kc,cd,dd,ed,fd
+TARGET fb,gb,hb,ib,jb
+TREE (;B[ea];W[eb](;B[fa](;W[ga];B[ia]C[RIGHT])(;W[ia];B[ga];W[ha];B[fa]C[RIGHT]))(;B[ia](;W[fa];B[ha]C[RIGHT])(;W[ha];B[fa]C[RIGHT])))
+#10 seed=91 it=651 solver=W obj=kill key=gb depth=7 nodes=15 branch=2 sac=0 first=0 placement=1 region=9
+    a b c d e f g h i j k l m n o
+a19 . . O X . . . O . . X O . . .
+b18 . . O X X . * X X X X O . . .
+c17 . . O X X X X O O O O O . . .
+d16 . . O O O O O O . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,ja,eb,fb,gb
+SAFE ca,la,cb,lb,cc,hc,ic,jc,kc,lc,cd,dd,ed,fd,gd,hd
+TARGET da,db,eb,dc,ec,fc,gc
+TREE (;W[gb](;B[fb];W[ga](;B[fa];W[ea]C[RIGHT])(;B[ia];W[ja]C[RIGHT]))(;B[ga];W[fa];B[fb](;W[ea]C[RIGHT])(;W[ga];B[ia](;W[ea]C[RIGHT])(;W[ja]C[RIGHT]))))
+#11 seed=91 it=689 solver=W obj=kill key=bb depth=7 nodes=12 branch=1 sac=0 first=0 placement=0 region=8
+    a b c d e f g h i j k l m n o
+a19 . . . X O . . . . . . . . . .
+b18 O * . X O . . . . . . . . . .
+c17 . . X X O . . . . . . . . . .
+d16 X X X O O . . . . . . . . . .
+e15 O O O O . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,cb,ac,bc
+SAFE ea,eb,ec,dd,ed,ae,be,ce,de
+TARGET da,db,cc,dc,ad,bd,cd
+TREE (;W[bb](;B[ba];W[cb];B[ca](;W[ac](;B[aa];W[bc]C[RIGHT])(;B[bc];W[aa]C[RIGHT]))(;W[bc]C[RIGHT]))(;B[cb];W[ba]C[RIGHT]))
+#12 seed=91 it=715 solver=B obj=live key=ba depth=5 nodes=9 branch=0 sac=0 first=1 placement=1 region=10
+    a b c d e f g h i j k l m n o
+a19 . * . . X O . . . . . . . . .
+b18 O . . X X O . . . . . . . . .
+c17 . . . X O O . . . . . . . . .
+d16 X X X X O . . . . . . . . . .
+e15 O O O O O . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ab,bb,cb,ac,bc,cc
+SAFE fa,fb,ec,fc,ed,ae,be,ce,de,ee
+TARGET ea,db,eb,dc,ad,bd,cd,dd
+TREE (;B[ba](;W[bb];B[cb](;W[bc];B[ca]C[RIGHT])(;W[ca];B[bc]C[RIGHT]))(;W[cb];B[bb]C[RIGHT]))
+#13 seed=91 it=731 solver=B obj=kill key=hb depth=7 nodes=11 branch=0 sac=1 first=0 placement=0 region=7
+    a b c d e f g h i j k l m n o
+a19 . . X O . . . . . . O X . . .
+b18 . . X O O O O * O O O X . . .
+c17 . . X X X X X X X X X X . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,ja,hb
+SAFE ca,la,cb,lb,cc,dc,ec,fc,gc,hc,ic,jc,kc,lc
+TARGET da,db,eb,fb,gb
+TREE (;B[hb](;W[fa];B[ha]C[RIGHT])(;W[ha];B[fa](;W[ga];B[ia]C[RIGHT])(;W[ia];B[ga];W[ea];B[ga]C[RIGHT])))

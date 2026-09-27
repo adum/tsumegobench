@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/tsumego-bench/originality-summary.schema.json",
+  "title": "Tsumego Bench originality tool summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "queryLimit",
+    "queriesUsed",
+    "queriesRemaining",
+    "quotaExceeded",
+    "remoteCacheHits",
+    "results",
+    "updatedAt"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "queryLimit": { "type": "integer", "minimum": 1 },
+    "queriesUsed": { "type": "integer", "minimum": 0 },
+    "queriesRemaining": { "type": "integer", "minimum": 0 },
+    "quotaExceeded": { "type": "integer", "minimum": 0 },
+    "remoteCacheHits": { "type": "integer", "minimum": 0 },
+    "results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clear", "review", "duplicate", "invalid", "unavailable"],
+      "properties": {
+        "clear": { "type": "integer", "minimum": 0 },
+        "review": { "type": "integer", "minimum": 0 },
+        "duplicate": { "type": "integer", "minimum": 0 },
+        "invalid": { "type": "integer", "minimum": 0 },
+        "unavailable": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

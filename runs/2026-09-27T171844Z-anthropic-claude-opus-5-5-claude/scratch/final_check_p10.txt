@@ -1,0 +1,41 @@
+==== problem 10
+structural errors: [] nodes: 47 maxline: 11
+  note: [] wrong move gs label=seki
+  note: [] wrong move hs label=seki
+  note: [] wrong move ir label=seki
+  note: [] wrong move is label=ko
+  note: [] wrong move ks label=ko
+  note: [] wrong move lr label=ko
+  note: [] solver-to-move labels: gs:seki hr:ko hs:seki ir:seki is:ko kr:win ks:ko lr:ko ls:ko pass:ko
+  note: [ Wkr] threats: gs->hs; hr->5 moves; hs->ir; ir->hr,hs,ks; is->gs,hr,hs; ks->5 moves; ls->6 moves
+  note: [ Wkr Bgs] solver-to-move labels: hr:lose hs:win ir:ko is:lose ks:lose lr:lose ls:lose pass:lose
+  note: [ Wkr Bgs Whs] threats: hr->ir; is->hr; ks->ir,is,ls; ls->ir,is,ks,lr
+  note: [ Wkr Bgs Whs Bhr] solver-to-move labels: ir:win is:lose ks:lose lr:lose ls:lose pass:lose
+  note: [ Wkr Bgs Whs Bhr Wir] threats: is->hr,ks
+  note: [ Wkr Bgs Whs Bhr Wir Bis] solver-to-move labels: hr:win ks:win lr:ko ls:ko pass:ko
+  note: [ Wkr Bgs Whs Bis] solver-to-move labels: hr:win ir:ko ks:lose lr:lose ls:lose pass:lose
+  note: [ Wkr Bgs Whs Bis Whr] threats: ks->ir,ls; ls->ir,ks,lr
+  note: [ Wkr Bgs Whs Bis Whr Bks] solver-to-move labels: ir:win lr:lose ls:win pass:seki
+  note: [ Wkr Bgs Whs Bis Whr Bks Wir] threats: lr->ls; ls->lr
+  note: [ Wkr Bgs Whs Bis Whr Bks Wir Bls] solver-to-move labels: lr:win pass:lose
+  note: [ Wkr Bgs Whs Bis Whr Bks Wir Bls Wlr] threats: js->ks; ks->js
+  note: [ Wkr Bgs Whs Bis Whr Bks Wir Bls Wlr Bjs] solver-to-move labels: is:lose jr:lose ks:win ls:lose pass:lose
+  note: [ Wkr Bgs Whs Bis Whr Bks Wir Bls Wlr Bks] solver-to-move labels: is:lose jr:lose js:win ls:lose pass:lose
+  note: [ Wkr Bgs Whs Bis Whr Bks Wir Blr] solver-to-move labels: ls:win pass:lose
+  note: [ Wkr Bhs] solver-to-move labels: gs:seki hr:lose ir:win is:seki ks:lose lr:lose ls:lose pass:lose
+  note: [ Wkr Bhs Wir] threats: gs->is; is->gs; ks->gs,hr,is,ls; ls->5 moves
+  note: [ Wkr Bhs Wir Bgs] solver-to-move labels: hr:lose is:win ks:lose lr:lose ls:lose pass:lose
+  note: [ Wkr Bhs Wir Bis] solver-to-move labels: gs:win hr:lose ks:lose lr:lose ls:lose pass:lose
+  note: [ Wkr Bhs Wir Bis Wgs] threats: ks->hr,ls; ls->hr,ks,lr
+  note: [ Wkr Bhs Wir Bis Wgs Bks] solver-to-move labels: hr:win lr:seki ls:win pass:seki
+  note: [ Wkr Bhs Wir Bis Wgs Bks Whr] threats: lr->ls; ls->lr
+  note: [ Wkr Bhs Wir Bis Wgs Bks Whr Bls] solver-to-move labels: lr:win pass:lose
+  note: [ Wkr Bhs Wir Bis Wgs Bks Whr Bls Wlr] threats: is->hs,jr,js,ks; ks->is,jr,js,ls
+  note: [ Wkr Bhs Wir Bis Wgs Bks Whr Blr] solver-to-move labels: ls:win pass:lose
+  note: [ Wgs Bhs] wrong line ends in seki (commented)
+  note: [ Whs Bkr] wrong line ends in seki (commented)
+  note: [ Wir Bis] wrong line ends in seki (commented)
+  note: [ Wis Bir] wrong line ends in ko (commented): solver ko via ['gs']
+  note: [ Wks Bgs] wrong line ends in ko (commented): solver ko via ['hs', 'ir']
+  note: [ Wlr Bgs] wrong line ends in ko (commented): solver ko via ['hs']
+RESULT 10 OK

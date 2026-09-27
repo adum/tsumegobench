@@ -1,0 +1,8 @@
+mined_21.txt | #2 seed=21 it=21 solver=B obj=live key=h | key=hb depth=5 nodes=7 branch=0 kos=0 | (;B[hb](;W[ib];B[jb];W[ia];B[ha]C[RIGHT])(;W[jb];B[ib]C[RIGHT]))
+mined_21.txt | #4 seed=21 it=32 solver=B obj=kill key=f | key=fb depth=7 nodes=13 branch=2 kos=0 | (;B[fb](;W[fa](;B[ea]C[RIGHT])(;B[gb]C[RIGHT]))(;W[gb](;B[ea]C[RIGHT])(;B[fa];W[ga];B[ea](;W[ia];B[ka]C[RIGHT])(;W[ka];B[ia]C[RIGHT]))))
+mined_21.txt | #8 seed=21 it=66 solver=W obj=live key=f | key=fb depth=5 nodes=21 branch=0 kos=0 | (;W[fb](;B[fa];W[ga](;B[ia];W[ja]C[RIGHT])(;B[ja];W[ia]C[RIGHT]))(;B[ga];W[fa](;B[ia];W[ja]C[RIGHT])(;B[ja];W[ia]C[RIGHT]))(;B[ia];W[ja]C[RIGHT])(;B[ja];W[ia](;B[fa];W[ga]C[RIGHT])(;B[ga];W[fa]C[RIGHT
+mined_21.txt | #11 seed=21 it=107 solver=W obj=live key | key=fb depth=1 nodes=1 branch=0 kos=3 | (;W[fb]C[RIGHT])
+mined_21.txt | #16 seed=21 it=172 solver=B obj=live key | key=hb depth=9 nodes=38 branch=3 kos=2 | (;B[hb](;W[ga](;B[fa](;W[gb];B[ha](;W[ga];B[gb]C[RIGHT])(;W[gb];B[ga]C[RIGHT]))(;W[ha];B[gb]C[RIGHT]))(;B[gb](;W[dc](;B[ea];W[fa];B[ha];W[fa];B[ga]C[RIGHT])(;B[fa](;W[ea];B[eb]C[RIGHT])(;W[eb];B[ea]C[
+mined_21.txt | #17 seed=21 it=180 solver=W obj=kill key | key=ea depth=5 nodes=31 branch=2 kos=0 | (;W[ea](;B[eb](;W[fa](;B[fb];W[hb]C[RIGHT])(;B[hb];W[fb]C[RIGHT]))(;W[hb](;B[fa];W[gb]C[RIGHT])(;B[gb];W[fa]C[RIGHT])))(;B[fa](;W[eb](;B[fb];W[hb]C[RIGHT])(;B[hb];W[fb]C[RIGHT]))(;W[hb](;B[eb];W[gb]C[
+mined_21.txt | #18 seed=21 it=205 solver=W obj=live key | key=hb depth=7 nodes=12 branch=1 kos=0 | (;W[hb];B[ga](;W[ea](;B[ia];W[ja](;B[ga];W[ha]C[RIGHT])(;B[ha];W[ga]C[RIGHT]))(;B[ja];W[ia]C[RIGHT]))(;W[ia]C[RIGHT]))
+done

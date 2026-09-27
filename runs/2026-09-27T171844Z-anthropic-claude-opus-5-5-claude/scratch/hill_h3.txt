@@ -1,0 +1,13 @@
+#1 it=14 solver=W obj=kill key=bb depth=7 nodes=20 branch=1 kos=0 score=52.0
+    a b c d e f g h i j k l m n o
+a19 O . X . O O . . . . . . . . .
+b18 . * . X X O . . . . . . . . .
+c17 . . X X O O . . . . . . . . .
+d16 X X X O . . . . . . . . . . .
+e15 O O O O . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ea,ab,bb,cb,db,eb,ac,bc,cc,dc,ad,bd,cd
+SAFE fa,fb,ec,fc,dd,ae,be,ce,de
+TARGET db,eb,cc,dc,ad,bd,cd
+TREE (;W[bb](;B[ab];W[ac](;B[ba];W[ab]C[RIGHT])(;B[bc];W[ab]C[RIGHT]))(;B[ba];W[ab](;B[ac];W[da]C[RIGHT])(;B[da](;W[ac]C[RIGHT])(;W[bc](;B[ac];W[cb]C[RIGHT])(;B[cb];W[ac]C[RIGHT]))))(;B[bc];W[ab]C[RIGHT]))

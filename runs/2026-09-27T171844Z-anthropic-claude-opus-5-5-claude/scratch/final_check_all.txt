@@ -1,0 +1,108 @@
+==== problem 01
+structural errors: [] nodes: 8 maxline: 2
+  note: [] wrong move da label=lose
+  note: [] wrong move ba label=lose
+  note: [] wrong move aa label=lose
+  note: [] solver-to-move labels: aa:lose ba:lose da:lose dc:win pass:lose
+RESULT 1 OK
+==== problem 02
+structural errors: [] nodes: 12 maxline: 3
+  note: [] wrong move js label=lose
+  note: [] wrong move ks label=lose
+  note: [] wrong move ls label=lose
+  note: [] solver-to-move labels: hs:win js:lose ks:lose ls:lose ms:lose pass:lose
+  note: [ Bhs] threats: js->ls; ls->js
+  note: [ Bhs Wjs] solver-to-move labels: ks:lose ls:win ms:lose pass:lose
+  note: [ Bhs Wls] solver-to-move labels: js:win ks:lose pass:lose
+RESULT 2 OK
+==== problem 03
+structural errors: [] nodes: 30 maxline: 5
+  note: [] wrong move si label=lose
+  note: [] wrong move sj label=lose
+  note: [] wrong move sl label=lose
+  note: [] wrong move sm label=lose
+  note: [] solver-to-move labels: pass:lose ri:win sh:lose si:lose sj:lose sl:lose sm:lose
+  note: [ Wri] threats: si->sj; sj->si; sl->sm; sm->sl
+  note: [ Wri Bsi] solver-to-move labels: pass:lose sh:lose sj:win sl:lose sm:seki
+  note: [ Wri Bsi Wsj] threats: sl->sm; sm->sl
+  note: [ Wri Bsi Wsj Bsl] solver-to-move labels: pass:lose sh:lose sm:win
+  note: [ Wri Bsi Wsj Bsm] solver-to-move labels: pass:lose sh:lose sl:win
+  note: [ Wri Bsj] solver-to-move labels: pass:lose sh:lose si:win sl:lose sm:seki
+  note: [ Wri Bsj Wsi] threats: sl->sm; sm->sl
+  note: [ Wri Bsj Wsi Bsl] solver-to-move labels: pass:lose sh:lose sm:win
+  note: [ Wri Bsj Wsi Bsm] solver-to-move labels: pass:lose sh:lose sl:win
+  note: [ Wri Bsl] solver-to-move labels: pass:lose sh:lose si:lose sj:lose sm:win
+  note: [ Wri Bsm] solver-to-move labels: pass:lose sh:lose si:lose sj:lose sl:win
+  note: [ Wri Bsm Wsl] threats: si->sj; sj->si
+  note: [ Wri Bsm Wsl Bsi] solver-to-move labels: pass:lose sh:lose sj:win
+  note: [ Wri Bsm Wsl Bsj] solver-to-move labels: pass:lose sh:lose si:win
+RESULT 3 OK
+==== problem 04
+structural errors: [] nodes: 20 maxline: 5
+  note: [] wrong move ai label=ko
+  note: [] wrong move bi label=ko
+  note: [] wrong move bj label=lose
+  note: [] wrong move ak label=lose
+  note: [] wrong move al label=lose
+  note: [] solver-to-move labels: ai:ko aj:win ak:lose al:lose am:lose bi:ko bj:lose pass:lose
+  note: [ Baj] threats: ai->bi; bi->ai; bj->ai
+  note: [ Baj Wai] solver-to-move labels: ak:lose al:lose am:lose bi:win bj:lose pass:lose
+  note: [ Baj Wai Bbi] threats: bj->ai
+  note: [ Baj Wai Bbi Wbj] solver-to-move labels: ai:win ak:ko al:ko am:ko pass:lose
+  note: [ Baj Wbi] solver-to-move labels: ai:win ak:lose al:lose am:lose bj:lose pass:lose
+  note: [ Baj Wbj] solver-to-move labels: ai:win ak:ko al:ko am:ko bi:ko pass:lose
+  note: [ Bai Waj] wrong line ends in ko (commented): solver ko via ['bi']
+  note: [ Bbi Waj] wrong line ends in ko (commented): solver ko via ['ai']
+RESULT 4 OK
+==== problem 05
+structural errors: [] nodes: 30 maxline: 5
+  note: [] wrong move ar label=lose
+  note: [] wrong move bs label=lose
+  note: [] wrong move bq label=lose
+  note: [] wrong move dr label=lose
+  note: [] solver-to-move labels: ar:lose bq:lose br:win bs:lose dr:lose pass:lose
+  note: [ Bbr] threats: ar->bs; bq->ar,bs,dr; bs->ar
+  note: [ Bbr War] solver-to-move labels: bq:lose bs:win dr:lose pass:lose
+  note: [ Bbr War Bbs] threats: bq->bs
+  note: [ Bbr War Bbs Wbq] solver-to-move labels: as:lose br:lose bs:win dr:lose pass:lose
+  note: [ Bbr Wbs] solver-to-move labels: ar:win bq:lose dr:lose pass:lose
+  note: [ Bbr Wbs Bar] threats: bq->ar
+  note: [ Bbr Wbs Bar Wbq] solver-to-move labels: ar:win as:lose br:lose dr:lose pass:lose
+  note: [ Bbr Wbq] solver-to-move labels: ar:win bs:win dr:win pass:lose
+  note: [ Bbr Wbq Bar] threats: bs->ar
+  note: [ Bbr Wbq Bar Wbs] solver-to-move labels: ar:win as:lose br:lose dr:lose pass:lose
+  note: [ Bbr Wbq Bbs] threats: ar->bs
+  note: [ Bbr Wbq Bbs War] solver-to-move labels: as:lose br:lose bs:win dr:lose pass:lose
+  note: [ Bbr Wbq Bdr] threats: ar->bs; bs->ar
+  note: [ Bbr Wbq Bdr War] solver-to-move labels: bs:win pass:lose
+  note: [ Bbr Wbq Bdr Wbs] solver-to-move labels: ar:win pass:lose
+RESULT 5 OK
+==== problem 06
+structural errors: [] nodes: 35 maxline: 7
+  note: [] wrong move sr label=lose?
+  note: [] wrong move rs label=lose?
+  note: [] wrong move qq label=lose
+  note: [] wrong move ss label=lose?
+  note: [] wrong move qr label=lose?
+  note: [] solver-to-move labels: pass:lose? qq:lose qr:lose? qs:lose? rr:win rs:lose? sr:lose? ss:lose?
+  note: [ Brr] threats: qq->qr,rs,sr; qr->qs,rs,sr; qs->qr,rs,sr; rs->sr; sr->rs
+  note: [ Brr Wsr] solver-to-move labels: pass:lose? qq:seki qr:lose? qs:lose? rs:win ss:lose?
+  note: [ Brr Wsr Brs] threats: qq->qr,ss; qr->qs
+  note: [ Brr Wsr Brs Wqr] solver-to-move labels: pass:lose qq:lose qs:win ss:lose
+  note: [ Brr Wsr Brs Wqr Bqs] threats: qq->ss; ss->qq
+  note: [ Brr Wsr Brs Wqr Bqs Wss] solver-to-move labels: pass:lose qq:win
+  note: [ Brr Wsr Brs Wqr Bqs Wqq] solver-to-move labels: pass:lose ss:win
+  note: [ Brr Wsr Brs Wqq] solver-to-move labels: pass:lose qr:win qs:seki ss:win
+  note: [ Brr Wsr Brs Wqq Bss] threats: qr->qs; qs->qr
+  note: [ Brr Wsr Brs Wqq Bss Wqs] solver-to-move labels: pass:lose qr:win
+  note: [ Brr Wsr Brs Wqq Bss Wqr] solver-to-move labels: pass:lose qs:win
+  note: [ Brr Wrs] solver-to-move labels: pass:lose? qq:seki qr:lose? qs:ko sr:win ss:lose?
+  note: [ Brr Wrs Bsr] threats: qr->qq; ss->qq,qr,qs
+  note: [ Brr Wrs Bsr Wqr] solver-to-move labels: pass:lose qq:win qs:lose
+  note: [ Bsr Wrr Brs Wss] wrong line ends in ko (commented): solver ko via ['qr', 'qs', 'sr']
+  note: [ Brs Wrr Bsr Wss] wrong line ends in ko (commented): solver ko via ['qr', 'qs', 'sr']
+  note: [ Bss] refutation sr: failure confirmed, ko-vs-death undetermined
+  note: [ Bqr] refutation rs: failure confirmed, ko-vs-death undetermined
+RESULT 6 OK
+==== problem 07
+structural errors: [] nodes: 25 maxline: 7

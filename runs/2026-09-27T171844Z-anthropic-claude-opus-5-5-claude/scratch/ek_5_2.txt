@@ -1,0 +1,9 @@
+ROWS -Bo.....oB-|-Bo.....oB-|-BoooooooB-|-BBBBBBBBB-
+#1 w=5 h=2 kind=gap pt=cb B=ea W=fb key=cb depth=5 nodes=25 branch=0
+    a b c d e f g h i j k l
+a19 . X O . X . . . O X . .
+b18 . X * . . O . . O X . .
+c17 . X O O O O O O O X . .
+d16 . X X X X X X X X X . .
+e15 . . . . . . . . . . . .
+TREE (;B[cb](;W[da];B[db](;W[ga];B[hb]C[RIGHT])(;W[hb];B[ga]C[RIGHT]))(;W[db];B[da](;W[ga];B[hb]C[RIGHT])(;W[hb];B[ga]C[RIGHT]))(;W[ga];B[hb](;W[da];B[db]C[RIGHT])(;W[db];B[da]C[RIGHT]))(;W[hb];B[ga](;W[da];B[db]C[RIGHT])(;W[db];B[da]C[RIGHT])))

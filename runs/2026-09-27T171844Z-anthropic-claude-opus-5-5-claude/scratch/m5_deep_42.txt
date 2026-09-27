@@ -1,0 +1,13 @@
+#1 seed=42 it=157 solver=B obj=kill key=eb depth=7 nodes=67 branch=2 others=[] region=10
+    a b c d e f g h i j k l m n o
+a19 . . O . . O X . . . . . . . .
+b18 . . . . * O X . . . . . . . .
+c17 O O O O O X X . . . . . . . .
+d16 X X X X X X . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ea,ab,bb,cb,db,eb
+SAFE ga,gb,fc,gc,ad,bd,cd,dd,ed,fd
+TARGET ca,fa,fb,ac,bc,cc,dc,ec
+TREE (;B[eb](;W[da];B[ea](;W[ab](;B[ba](;W[bb];B[db]C[RIGHT])(;W[db];B[bb]C[RIGHT]))(;B[db](;W[ba];B[cb]C[RIGHT])(;W[cb];B[ba]C[RIGHT])))(;W[ba](;B[ab](;W[bb];B[db]C[RIGHT])(;W[db];B[bb]C[RIGHT]))(;B[db](;W[ab];B[cb]C[RIGHT])(;W[cb];B[ab]C[RIGHT])))(;W[bb];B[db](;W[aa];B[cb]C[RIGHT])(;W[cb];B[aa]C[RIGHT]))(;W[db];B[bb](;W[ab];B[ba]C[RIGHT])(;W[ba];B[ab]C[RIGHT])))(;W[db];B[ea](;W[aa];B[bb]C[RIGHT])(;W[ab])(;W[ba])(;W[bb])(;W[da];B[bb](;W[ab];B[ba]C[RIGHT])(;W[ba];B[ab]C[RIGHT])))(;W[ea];B[da](;W[ba];B[db](;W[ab];B[cb]C[RIGHT])(;W[cb];B[ab]C[RIGHT]))(;W[bb];B[db](;W[aa];B[cb]C[RIGHT])(;W[cb];B[aa]C[RIGHT]))(;W[db])(;W[ea];B[db]C[RIGHT])))

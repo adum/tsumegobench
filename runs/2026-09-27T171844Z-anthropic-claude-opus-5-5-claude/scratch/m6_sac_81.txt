@@ -1,0 +1,13 @@
+#1 seed=81 it=103 solver=B obj=kill key=bb depth=5 nodes=11 branch=2 others=[ba:ko] region=6
+    a b c d e f g h i j k l m n o
+a19 O . X O X . . . . . . . . . .
+b18 . * . O X . . . . . . . . . .
+c17 O O O O X . . . . . . . . . .
+d16 X X X X X . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,cb
+SAFE ea,eb,ec,ad,bd,cd,dd,ed
+TARGET da,db,ac,bc,cc,dc
+TREE (;B[bb](;W[ba](;B[ab]C[RIGHT])(;B[cb];W[ab];B[cb]C[RIGHT]))(;W[cb](;B[ab]C[RIGHT])(;B[ba];W[ab];B[ba]C[RIGHT])))

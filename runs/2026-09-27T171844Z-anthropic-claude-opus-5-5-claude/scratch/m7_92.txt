@@ -1,0 +1,13 @@
+#1 seed=92 it=279 solver=W obj=kill key=bc depth=9 nodes=29 branch=2 sac=0 first=0 placement=0 region=11
+    a b c d e f g h i j k l m n o
+a19 . . . . X O . . . . . . . . .
+b18 . . . . X O . . . . . . . . .
+c17 O * O X X O . . . . . . . . .
+d16 X X X X O O . . . . . . . . .
+e15 O O O O O . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ab,bb,cb,db,ac,bc,cc
+SAFE fa,fb,fc,ed,fd,ae,be,ce,de,ee
+TARGET ea,eb,dc,ec,ad,bd,cd,dd
+TREE (;W[bc];B[cb];W[da](;B[ab];W[db]C[RIGHT])(;B[ba];W[db]C[RIGHT])(;B[bb];W[db]C[RIGHT])(;B[db];W[bb](;B[aa](;W[ba];B[ca];W[da]C[RIGHT])(;W[ca]C[RIGHT]))(;B[ab](;W[ba];B[ca];W[da]C[RIGHT])(;W[ca]C[RIGHT]))(;B[ba];W[ca]C[RIGHT])(;B[ca];W[ba](;B[aa];W[da]C[RIGHT])(;B[ab];W[da]C[RIGHT]))))

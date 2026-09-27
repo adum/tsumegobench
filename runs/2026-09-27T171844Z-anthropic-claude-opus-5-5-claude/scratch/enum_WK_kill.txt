@@ -1,0 +1,9 @@
+#1 wall=WK obj=kill key=cc depth=7 nodes=19 branch=2 B=aa W=- gap=cc
+    a b c d e f g h i j k
+a19 X . . . O X . . . . .
+b18 . . . O O X . . . . .
+c17 . O * O X X . . . . .
+d16 O O X X . . . . . . .
+e15 X X . . . . . . . . .
+f14 . . . . . . . . . . .
+TREE (;B[cc](;W[ab](;B[bb](;W[ba];B[cb]C[RIGHT])(;W[cb];B[ac]C[RIGHT]))(;B[cb]C[RIGHT]))(;W[bb];B[cb]C[RIGHT])(;W[cb];B[bb](;W[ab];B[ac]C[RIGHT])(;W[ba];B[ca];W[ab](;B[ac]C[RIGHT])(;B[da]C[RIGHT]))))

@@ -1,0 +1,2 @@
+Originality broker ready with 50 queries.
+Originality broker stopped after 25/50 queries.

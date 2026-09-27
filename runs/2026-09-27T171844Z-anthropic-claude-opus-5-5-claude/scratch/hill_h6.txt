@@ -1,0 +1,13 @@
+#1 it=94 solver=W obj=live key=gb depth=5 nodes=9 branch=0 kos=2 score=44.6
+    a b c d e f g h i j k l m n o
+a19 . X O O . X . O . O X . . . .
+b18 . X O . . . * . O O X . . . .
+c17 . X O O O O X O O O X . . . .
+d16 . X X X X X X X X X X . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ca,da,ea,fa,ga,ha,ia,ja,cb,db,eb,fb,gb,hb,ib,jb,cc,dc,ec,fc,gc,hc,ic,jc
+SAFE ba,ka,bb,kb,bc,kc,bd,cd,dd,ed,fd,gd,hd,id,jd,kd
+TARGET ca,da,cb,cc,dc,ec,fc
+TREE (;W[gb](;B[eb];W[fb]C[RIGHT])(;B[fb];W[eb](;B[ea];W[ga]C[RIGHT])(;B[ga];W[ea]C[RIGHT])))

@@ -1,0 +1,1 @@
+All 10 SGF files are written to `outputs/problem-01.sgf` through `outputs/problem-10.sgf`, and each got a final originality result of **clear** on its exact final contents; after those results the files were not edited again.

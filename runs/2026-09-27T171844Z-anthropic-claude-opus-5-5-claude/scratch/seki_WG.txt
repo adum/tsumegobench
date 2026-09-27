@@ -1,0 +1,545 @@
+#1 wall=WG key=bb B=aa,ca W=db
+    a b c d e f g h i j k
+a19 X . X . O X . . . . .
+b18 . * . O O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#2 wall=WG key=ca B=aa,bb W=db
+    a b c d e f g h i j k
+a19 X . * . O X . . . . .
+b18 . X . O O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#3 wall=WG key=cb B=ba,ca W=aa
+    a b c d e f g h i j k
+a19 O X X . O X . . . . .
+b18 . . * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#4 wall=WG key=ab B=ba,ca W=bb
+    a b c d e f g h i j k
+a19 . X X . O X . . . . .
+b18 * O . . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#5 wall=WG key=cb B=ba,da W=-
+    a b c d e f g h i j k
+a19 . X . X O X . . . . .
+b18 . . * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#6 wall=WG key=cb B=ba,da W=aa
+    a b c d e f g h i j k
+a19 O X . X O X . . . . .
+b18 . . * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#7 wall=WG key=cb B=ba,da W=ab
+    a b c d e f g h i j k
+a19 . X . X O X . . . . .
+b18 O . * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#8 wall=WG key=cb B=ba,ab W=-
+    a b c d e f g h i j k
+a19 . X . . O X . . . . .
+b18 X . * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#9 wall=WG key=cb B=ba,ab W=da
+    a b c d e f g h i j k
+a19 . X . O O X . . . . .
+b18 X . * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#10 wall=WG key=ca B=ba,ab W=db
+    a b c d e f g h i j k
+a19 . X * . O X . . . . .
+b18 X . . O O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#11 wall=WG key=ab B=ba,cb W=da
+    a b c d e f g h i j k
+a19 . X . O O X . . . . .
+b18 * . X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#12 wall=WG key=da B=ba,cb W=ab
+    a b c d e f g h i j k
+a19 . X . * O X . . . . .
+b18 O . X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#13 wall=WG key=cb B=ca,ab W=aa
+    a b c d e f g h i j k
+a19 O . X . O X . . . . .
+b18 X . * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#14 wall=WG key=cb B=ca,bb W=-
+    a b c d e f g h i j k
+a19 . . X . O X . . . . .
+b18 . X * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#15 wall=WG key=cb B=ca,bb W=da
+    a b c d e f g h i j k
+a19 . . X O O X . . . . .
+b18 . X * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#16 wall=WG key=bb B=ca,cb W=da
+    a b c d e f g h i j k
+a19 . . X O O X . . . . .
+b18 . * X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#17 wall=WG key=bb B=ca,cb W=ab
+    a b c d e f g h i j k
+a19 . . X . O X . . . . .
+b18 O * X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#18 wall=WG key=ba B=da,cb W=-
+    a b c d e f g h i j k
+a19 . * . X O X . . . . .
+b18 . . X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#19 wall=WG key=ba B=da,cb W=aa
+    a b c d e f g h i j k
+a19 O * . X O X . . . . .
+b18 . . X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#20 wall=WG key=ba B=da,cb W=ab
+    a b c d e f g h i j k
+a19 . * . X O X . . . . .
+b18 O . X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#21 wall=WG key=ba B=ab,cb W=da
+    a b c d e f g h i j k
+a19 . * . O O X . . . . .
+b18 X . X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#22 wall=WG key=ca B=bb,cb W=ba
+    a b c d e f g h i j k
+a19 . O * . O X . . . . .
+b18 . X X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#23 wall=WG key=ca B=bb,cb W=da
+    a b c d e f g h i j k
+a19 . . * O O X . . . . .
+b18 . X X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#24 wall=WG key=ca B=bb,cb W=ab
+    a b c d e f g h i j k
+a19 . . * . O X . . . . .
+b18 O X X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#25 wall=WG key=bb B=aa,ba,ca W=db
+    a b c d e f g h i j k
+a19 X X X . O X . . . . .
+b18 . * . O O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#26 wall=WG key=cb B=aa,ba,da W=-
+    a b c d e f g h i j k
+a19 X X . X O X . . . . .
+b18 . . * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#27 wall=WG key=cb B=aa,ba,da W=ab
+    a b c d e f g h i j k
+a19 X X . X O X . . . . .
+b18 O . * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#28 wall=WG key=bb B=aa,ba,cb W=da
+    a b c d e f g h i j k
+a19 X X . O O X . . . . .
+b18 . * X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#29 wall=WG key=bb B=aa,ba,cb W=db
+    a b c d e f g h i j k
+a19 X X . . O X . . . . .
+b18 . * X O O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#30 wall=WG key=bb B=aa,ca,da W=db
+    a b c d e f g h i j k
+a19 X . X X O X . . . . .
+b18 . * . O O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#31 wall=WG key=bb B=aa,ca,ab W=db
+    a b c d e f g h i j k
+a19 X . X . O X . . . . .
+b18 X * . O O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#32 wall=WG key=cb B=aa,ca,bb W=-
+    a b c d e f g h i j k
+a19 X . X . O X . . . . .
+b18 . X * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#33 wall=WG key=cb B=aa,ca,bb W=da
+    a b c d e f g h i j k
+a19 X . X O O X . . . . .
+b18 . X * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#34 wall=WG key=bb B=aa,ca,cb W=-
+    a b c d e f g h i j k
+a19 X . X . O X . . . . .
+b18 . * X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#35 wall=WG key=bb B=aa,ca,cb W=da
+    a b c d e f g h i j k
+a19 X . X O O X . . . . .
+b18 . * X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#36 wall=WG key=bb B=aa,ca,cb W=ab
+    a b c d e f g h i j k
+a19 X . X . O X . . . . .
+b18 O * X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#37 wall=WG key=bb B=aa,ca,cb W=db
+    a b c d e f g h i j k
+a19 X . X . O X . . . . .
+b18 . * X O O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#38 wall=WG key=ca B=aa,da,bb W=db
+    a b c d e f g h i j k
+a19 X . * X O X . . . . .
+b18 . X . O O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#39 wall=WG key=ba B=aa,da,cb W=-
+    a b c d e f g h i j k
+a19 X * . X O X . . . . .
+b18 . . X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#40 wall=WG key=db B=aa,da,cb W=ca
+    a b c d e f g h i j k
+a19 X . O X O X . . . . .
+b18 . . X * O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#41 wall=WG key=ba B=aa,da,cb W=ab
+    a b c d e f g h i j k
+a19 X * . X O X . . . . .
+b18 O . X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#42 wall=WG key=ca B=aa,bb,cb W=ab
+    a b c d e f g h i j k
+a19 X . * . O X . . . . .
+b18 O X X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#43 wall=WG key=ca B=aa,bb,cb W=db
+    a b c d e f g h i j k
+a19 X . * . O X . . . . .
+b18 . X X O O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#44 wall=WG key=ab B=ba,ca,da W=-
+    a b c d e f g h i j k
+a19 . X X X O X . . . . .
+b18 * . . . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#45 wall=WG key=ab B=ba,ca,da W=cb
+    a b c d e f g h i j k
+a19 . X X X O X . . . . .
+b18 * . O . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#46 wall=WG key=cb B=ba,ca,ab W=da
+    a b c d e f g h i j k
+a19 . X X O O X . . . . .
+b18 X . * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#47 wall=WG key=da B=ba,ca,ab W=cb
+    a b c d e f g h i j k
+a19 . X X * O X . . . . .
+b18 X . O . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#48 wall=WG key=ab B=ba,ca,bb W=-
+    a b c d e f g h i j k
+a19 . X X . O X . . . . .
+b18 * X . . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#49 wall=WG key=ab B=ba,ca,cb W=-
+    a b c d e f g h i j k
+a19 . X X . O X . . . . .
+b18 * . X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#50 wall=WG key=ca B=ba,da,ab W=cb
+    a b c d e f g h i j k
+a19 . X * X O X . . . . .
+b18 X . O . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#51 wall=WG key=ca B=ba,da,ab W=db
+    a b c d e f g h i j k
+a19 . X * X O X . . . . .
+b18 X . . O O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#52 wall=WG key=cb B=ba,da,bb W=ab
+    a b c d e f g h i j k
+a19 . X . X O X . . . . .
+b18 O X * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#53 wall=WG key=cb B=ba,da,db W=-
+    a b c d e f g h i j k
+a19 . X . X O X . . . . .
+b18 . . * X O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#54 wall=WG key=cb B=ba,da,db W=aa
+    a b c d e f g h i j k
+a19 O X . X O X . . . . .
+b18 . . * X O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#55 wall=WG key=cb B=ba,da,db W=ab
+    a b c d e f g h i j k
+a19 . X . X O X . . . . .
+b18 O . * X O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#56 wall=WG key=cb B=ba,ab,bb W=da
+    a b c d e f g h i j k
+a19 . X . O O X . . . . .
+b18 X X * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#57 wall=WG key=ca B=ba,ab,bb W=db
+    a b c d e f g h i j k
+a19 . X * . O X . . . . .
+b18 X X . O O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#58 wall=WG key=cb B=ba,ab,db W=-
+    a b c d e f g h i j k
+a19 . X . . O X . . . . .
+b18 X . * X O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#59 wall=WG key=cb B=ba,ab,db W=da
+    a b c d e f g h i j k
+a19 . X . O O X . . . . .
+b18 X . * X O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#60 wall=WG key=cb B=ba,bb,db W=-
+    a b c d e f g h i j k
+a19 . X . . O X . . . . .
+b18 . X * X O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#61 wall=WG key=cb B=ba,bb,db W=aa
+    a b c d e f g h i j k
+a19 O X . . O X . . . . .
+b18 . X * X O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#62 wall=WG key=cb B=ba,bb,db W=da
+    a b c d e f g h i j k
+a19 . X . O O X . . . . .
+b18 . X * X O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#63 wall=WG key=cb B=ca,da,bb W=ba
+    a b c d e f g h i j k
+a19 . O X X O X . . . . .
+b18 . X * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#64 wall=WG key=cb B=ca,da,bb W=ab
+    a b c d e f g h i j k
+a19 . . X X O X . . . . .
+b18 O X * . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#65 wall=WG key=ab B=da,bb,cb W=ba
+    a b c d e f g h i j k
+a19 . O . X O X . . . . .
+b18 * X X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#66 wall=WG key=ba B=da,bb,cb W=ab
+    a b c d e f g h i j k
+a19 . * . X O X . . . . .
+b18 O X X . O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#67 wall=WG key=cb B=ab,bb,db W=aa
+    a b c d e f g h i j k
+a19 O . . . O X . . . . .
+b18 X X * X O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+#68 wall=WG key=cb B=ab,bb,db W=da
+    a b c d e f g h i j k
+a19 . . . O O X . . . . .
+b18 X X * X O X . . . . .
+c17 O O O O O X . . . . .
+d16 X X X X X X . . . . .
+e15 . . . . . . . . . . .
+f14 . . . . . . . . . . .
+done 68 configs=596 28s

@@ -1,0 +1,728 @@
+#1 seed=61 it=37 solver=B obj=kill key=ca depth=3 nodes=3 branch=0 others=[] region=4
+    a b c d e f g h i j k l m n o
+a19 X X * . O X . . . . . . . . .
+b18 O O O O O X . . . . . . . . .
+c17 X X X X X X . . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da
+SAFE fa,fb,ac,bc,cc,dc,ec,fc
+TARGET ea,ab,bb,cb,db,eb
+TREE (;B[ca];W[da];B[ba]C[RIGHT])
+#2 seed=61 it=48 solver=B obj=live key=ca depth=1 nodes=1 branch=0 others=[] region=4
+    a b c d e f g h i j k l m n o
+a19 X O * O X O . . . . . . . . .
+b18 X X X X X O . . . . . . . . .
+c17 O O O O O O . . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da
+SAFE fa,fb,ac,bc,cc,dc,ec,fc
+TARGET aa,ea,ab,bb,cb,db,eb
+TREE (;B[ca]C[RIGHT])
+#3 seed=61 it=59 solver=B obj=kill key=gb depth=1 nodes=1 branch=0 others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . . X O . . X . O X . . . . .
+b18 . . X O O O * . O X . . . . .
+c17 . . X X X X O O O X . . . . .
+d16 . . . . . X X X X X . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,gb,hb
+SAFE ca,ja,cb,jb,cc,dc,ec,fc,jc,fd,gd,hd,id,jd
+TARGET ia,ib,gc,hc,ic
+TREE (;B[gb]C[RIGHT])
+#4 seed=61 it=74 solver=W obj=kill key=hb depth=1 nodes=1 branch=0 others=[] region=9
+    a b c d e f g h i j k l m n o
+a19 . . O X . . . . . X O . . . .
+b18 . . O X . . O * X X O . . . .
+c17 . . O X X X X X O O O . . . .
+d16 . . O O O O O O O . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,eb,fb,gb,hb
+SAFE ca,ka,cb,kb,cc,ic,jc,kc,cd,dd,ed,fd,gd,hd,id
+TARGET da,db,dc,ec,fc,gc,hc
+TREE (;W[hb]C[RIGHT])
+#5 seed=61 it=76 solver=W obj=live key=ea depth=3 nodes=3 branch=0 others=[] region=7
+    a b c d e f g h i j k l m n o
+a19 . . X X * . . O X . . . . . .
+b18 . . X O . O . O X . . . . . .
+c17 . . X O O O O O X . . . . . .
+d16 . . X X X X X X X . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION da,ea,fa,ga,eb,fb,gb
+SAFE ca,ia,cb,ib,cc,ic,cd,dd,ed,fd,gd,hd,id
+TARGET ha,db,fb,hb,dc,ec,fc,gc,hc
+TREE (;W[ea];B[fa];W[ga]C[RIGHT])
+#6 seed=61 it=77 solver=B obj=live key=fb depth=3 nodes=5 branch=0 others=[ia:seki ka:seki] region=9
+    a b c d e f g h i j k l m n o
+a19 . . O X . . X . . . . X O . .
+b18 . . O X X * X X X X O X O . .
+c17 . . O O O X O O O O O O O . .
+d16 . . . . O O O . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,ja,ka,fb,kb
+SAFE ca,ma,cb,mb,cc,dc,ec,gc,hc,ic,jc,kc,lc,mc,ed,fd,gd
+TARGET ga,gb,hb,ib,jb
+TREE (;B[fb](;W[ia];B[ja]C[RIGHT])(;W[ja];B[ia]C[RIGHT]))
+#7 seed=61 it=86 solver=B obj=kill key=cb depth=1 nodes=1 branch=0 others=[] region=5
+    a b c d e f g h i j k l m n o
+a19 . O . . O X . . . . . . . . .
+b18 O O * O O X . . . . . . . . .
+c17 X X X X X X . . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,cb
+SAFE fa,fb,ac,bc,cc,dc,ec,fc
+TARGET ba,ab,bb
+TREE (;B[cb]C[RIGHT])
+#8 seed=61 it=99 solver=W obj=live key=eb depth=1 nodes=1 branch=0 others=[] region=5
+    a b c d e f g h i j k l m n o
+a19 . . X O . O . O X . . . . . .
+b18 . . X O * X O O X . . . . . .
+c17 . . X O O O X X X . . . . . .
+d16 . . X X X X X . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,eb,fb
+SAFE ca,ia,cb,ib,cc,gc,hc,ic,cd,dd,ed,fd,gd
+TARGET da,db,dc,ec,fc
+TREE (;W[eb]C[RIGHT])
+#9 seed=61 it=120 solver=B obj=kill key=ba depth=1 nodes=1 branch=0 others=[] region=4
+    a b c d e f g h i j k l m n o
+a19 . * . O X . . . . . . . . . .
+b18 O O O O X . . . . . . . . . .
+c17 O O X X X . . . . . . . . . .
+d16 X X X . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab
+SAFE ea,eb,cc,dc,ec,ad,bd,cd
+TARGET da,ab,bb,cb,db,ac,bc
+TREE (;B[ba]C[RIGHT])
+#10 seed=61 it=124 solver=W obj=live key=fa depth=1 nodes=1 branch=0 others=[] region=4
+    a b c d e f g h i j k l m n o
+a19 . . X O . * . O O X . . . . .
+b18 . . X O O O O O O X . . . . .
+c17 . . X X X X X X X X . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha
+SAFE ca,ja,cb,jb,cc,dc,ec,fc,gc,hc,ic,jc
+TARGET da,ha,ia,db,eb,fb,gb,hb,ib
+TREE (;W[fa]C[RIGHT])
+#11 seed=61 it=132 solver=B obj=kill key=bb depth=3 nodes=5 branch=0 others=[ba:ko] region=6
+    a b c d e f g h i j k l m n o
+a19 O . . O X . . . . . . . . . .
+b18 . * . O X . . . . . . . . . .
+c17 O O O O X . . . . . . . . . .
+d16 X X X X X . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,cb
+SAFE ea,eb,ec,ad,bd,cd,dd,ed
+TARGET da,db,ac,bc,cc,dc
+TREE (;B[bb](;W[ba];B[cb]C[RIGHT])(;W[cb];B[ba]C[RIGHT]))
+#12 seed=61 it=156 solver=W obj=live key=bb depth=3 nodes=5 branch=0 others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . . . X . O X . . . . . . . .
+b18 O * O O O O X . . . . . . . .
+c17 X X X X X X X . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ea,bb
+SAFE ga,gb,ac,bc,cc,dc,ec,fc,gc
+TARGET fa,cb,db,eb,fb
+TREE (;W[bb](;B[ba];W[ca]C[RIGHT])(;B[ca];W[ba]C[RIGHT]))
+#13 seed=61 it=323 solver=B obj=live key=fb depth=3 nodes=5 branch=0 others=[] region=5
+    a b c d e f g h i j k l m n o
+a19 . . O X . . . . X O . . . . .
+b18 . . O X X * X X X O . . . . .
+c17 . . O O O O O O O O . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,fb
+SAFE ca,ja,cb,jb,cc,dc,ec,fc,gc,hc,ic,jc
+TARGET ia,gb,hb,ib
+TREE (;B[fb](;W[fa];B[ga]C[RIGHT])(;W[ga];B[fa]C[RIGHT]))
+#14 seed=61 it=335 solver=B obj=kill key=fb depth=1 nodes=1 branch=0 others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . . X O . X . O X . . . . . .
+b18 . . X O . * . O X . . . . . .
+c17 . . X O O O O O X . . . . . .
+d16 . . X X X X X X X . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,eb,fb,gb
+SAFE ca,ia,cb,ib,cc,ic,cd,dd,ed,fd,gd,hd,id
+TARGET da,ha,db,hb,dc,ec,fc,gc,hc
+TREE (;B[fb]C[RIGHT])
+#15 seed=61 it=342 solver=B obj=live key=ba depth=3 nodes=5 branch=0 others=[ab:seki] region=8
+    a b c d e f g h i j k l m n o
+a19 . * . X O . . . . . . . . . .
+b18 . . X X O . . . . . . . . . .
+c17 . X X O O . . . . . . . . . .
+d16 . O O O . . . . . . . . . . .
+e15 X X O . . . . . . . . . . . .
+f14 O O O . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,ac,ad,bd
+SAFE ea,eb,dc,ec,cd,dd,ce,af,bf,cf
+TARGET da,cb,db,bc,cc
+TREE (;B[ba](;W[ab];B[ac]C[RIGHT])(;W[ac];B[ab]C[RIGHT]))
+#16 seed=61 it=351 solver=W obj=live key=ib depth=1 nodes=1 branch=0 others=[ea:seki fa:seki ha:seki] region=9
+    a b c d e f g h i j k l m n o
+a19 . . X O . . X . X . O X . . .
+b18 . . X O . O O O * . O X . . .
+c17 . . X O O X X X O O O X . . .
+d16 . . X X X X . X X X X X . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,ja,eb,ib,jb
+SAFE ca,la,cb,lb,cc,fc,gc,hc,lc,cd,dd,ed,fd,hd,id,jd,kd,ld
+TARGET ka,kb,ic,jc,kc
+TREE (;W[ib]C[RIGHT])
+#17 seed=61 it=355 solver=W obj=kill key=gb depth=3 nodes=5 branch=0 others=[] region=9
+    a b c d e f g h i j k l m n o
+a19 . . O O X . . X . X O . . . .
+b18 . . O X X X * . . X O . . . .
+c17 . . O O O O X X X X O . . . .
+d16 . . . . . O O O O O O . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION da,ea,fa,ga,ha,ia,gb,hb,ib
+SAFE ca,ka,cb,kb,cc,dc,ec,fc,kc,fd,gd,hd,id,jd,kd
+TARGET ja,jb,gc,hc,ic,jc
+TREE (;W[gb](;B[ga];W[fa]C[RIGHT])(;B[hb];W[fa]C[RIGHT]))
+#18 seed=61 it=369 solver=B obj=live key=ba depth=3 nodes=5 branch=0 others=[aa:ko ac:ko ca:ko] region=7
+    a b c d e f g h i j k l m n o
+a19 . * . X O . . . . . . . . . .
+b18 . X O X O . . . . . . . . . .
+c17 . X O O O . . . . . . . . . .
+d16 . X O . . . . . . . . . . . .
+e15 X X O . . . . . . . . . . . .
+f14 O O O . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,cb,ac,ad
+SAFE ea,eb,cc,dc,ec,cd,ce,af,bf,cf
+TARGET bb,bc,bd,ae,be
+TREE (;B[ba](;W[ab];B[ac]C[RIGHT])(;W[ac];B[ab]C[RIGHT]))
+#19 seed=61 it=393 solver=W obj=live key=db depth=3 nodes=5 branch=0 others=[] region=5
+    a b c d e f g h i j k l m n o
+a19 . . . X O X . . . . . . . . .
+b18 O O O * O X . . . . . . . . .
+c17 X X X X X X . . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,db
+SAFE fa,fb,ac,bc,cc,dc,ec,fc
+TARGET ab,bb,cb
+TREE (;W[db](;B[ba];W[ca]C[RIGHT])(;B[ca];W[ba]C[RIGHT]))
+#20 seed=61 it=476 solver=W obj=kill key=bc depth=3 nodes=5 branch=0 others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . X . X O . . . . . . . . . .
+b18 . . X X O . . . . . . . . . .
+c17 X * X O O . . . . . . . . . .
+d16 O O O O . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,bc
+SAFE ea,eb,dc,ec,ad,bd,cd,dd
+TARGET da,cb,db,cc
+TREE (;W[bc](;B[ab];W[bb]C[RIGHT])(;B[bb];W[ab]C[RIGHT]))
+#21 seed=61 it=561 solver=B obj=kill key=fb depth=1 nodes=1 branch=0 others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . X . O . O X . . . . . . . .
+b18 O O O O O * X . . . . . . . .
+c17 X X X X X X X . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ea,fb
+SAFE ga,gb,ac,bc,cc,dc,ec,fc,gc
+TARGET da,ab,bb,cb,db,eb
+TREE (;B[fb]C[RIGHT])
+#22 seed=61 it=590 solver=B obj=kill key=bb depth=1 nodes=1 branch=0 others=[ab:ko] region=9
+    a b c d e f g h i j k l m n o
+a19 O . O O X . . . . . . . . . .
+b18 . * . X X . . . . . . . . . .
+c17 . . O O X . . . . . . . . . .
+d16 O O O X X . . . . . . . . . .
+e15 X X X X . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,cb,db,ac,bc
+SAFE ea,eb,ec,dd,ed,ae,be,ce,de
+TARGET cc,dc,ad,bd,cd
+TREE (;B[bb]C[RIGHT])
+#23 seed=61 it=601 solver=W obj=kill key=gb depth=1 nodes=1 branch=0 others=[ib:ko jb:ko] region=10
+    a b c d e f g h i j k l m n o
+a19 . . O X . . . . . X . X O . .
+b18 . . O X X X * X . . X X O . .
+c17 . . O O O O X O X X O O O . .
+d16 . . . . . O O O O O O . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,ja,ka,gb,ib,jb
+SAFE ca,ma,cb,mb,cc,dc,ec,fc,hc,kc,lc,mc,fd,gd,hd,id,jd,kd
+TARGET da,db,eb,fb
+TREE (;W[gb]C[RIGHT])
+#24 seed=61 it=618 solver=W obj=kill key=eb depth=1 nodes=1 branch=0 others=[ba:ko bb:ko] region=9
+    a b c d e f g h i j k l m n o
+a19 O . . . X O . . . . . . . . .
+b18 . . . . * O . . . . . . . . .
+c17 X X X X X O . . . . . . . . .
+d16 O O O O O O . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ab,bb,cb,db,eb
+SAFE fa,fb,fc,ad,bd,cd,dd,ed,fd
+TARGET ac,bc,cc,dc,ec
+TREE (;W[eb]C[RIGHT])
+#25 seed=61 it=624 solver=B obj=kill key=ea depth=3 nodes=5 branch=0 others=[] region=7
+    a b c d e f g h i j k l m n o
+a19 . . X X * X . . . . O X . . .
+b18 . . X O O O O O O O O X . . .
+c17 . . X X X X X X X X X X . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION da,ea,fa,ga,ha,ia,ja
+SAFE ca,la,cb,lb,cc,dc,ec,fc,gc,hc,ic,jc,kc,lc
+TARGET ka,db,eb,fb,gb,hb,ib,jb,kb
+TREE (;B[ea](;W[ga];B[ia]C[RIGHT])(;W[ia];B[ga]C[RIGHT]))
+#26 seed=61 it=661 solver=W obj=live key=cb depth=3 nodes=5 branch=0 others=[] region=5
+    a b c d e f g h i j k l m n o
+a19 . . . . O X . . . . . . . . .
+b18 O O * O O X . . . . . . . . .
+c17 X X X X X X . . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,cb
+SAFE fa,fb,ac,bc,cc,dc,ec,fc
+TARGET ea,db,eb
+TREE (;W[cb](;B[ba];W[ca]C[RIGHT])(;B[ca];W[ba]C[RIGHT]))
+#27 seed=61 it=664 solver=W obj=kill key=cb depth=1 nodes=1 branch=0 others=[] region=4
+    a b c d e f g h i j k l m n o
+a19 . X O X O . . . . . . . . . .
+b18 X X * X O . . . . . . . . . .
+c17 O O O O O . . . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,cb
+SAFE ea,eb,ac,bc,cc,dc,ec
+TARGET ba,ab,bb
+TREE (;W[cb]C[RIGHT])
+#28 seed=61 it=688 solver=W obj=kill key=cb depth=1 nodes=1 branch=0 others=[] region=4
+    a b c d e f g h i j k l m n o
+a19 . X O X O . . . . . . . . . .
+b18 X X * X O . . . . . . . . . .
+c17 O O O O O . . . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,cb
+SAFE ea,eb,ac,bc,cc,dc,ec
+TARGET ba,ab,bb
+TREE (;W[cb]C[RIGHT])
+#29 seed=61 it=698 solver=B obj=live key=ab depth=1 nodes=1 branch=0 others=[] region=5
+    a b c d e f g h i j k l m n o
+a19 . X . X O . . . . . . . . . .
+b18 * O X X O . . . . . . . . . .
+c17 X X O O O . . . . . . . . . .
+d16 O O O . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb
+SAFE ea,eb,cc,dc,ec,ad,bd,cd
+TARGET da,cb,db
+TREE (;B[ab]C[RIGHT])
+#30 seed=61 it=739 solver=B obj=kill key=bb depth=1 nodes=1 branch=0 others=[ab:ko ba:ko] region=10
+    a b c d e f g h i j k l m n o
+a19 . . . . . O X . . . . . . . .
+b18 . * . O O O X . . . . . . . .
+c17 . X O O X X X . . . . . . . .
+d16 O O X X X . . . . . . . . . .
+e15 X X X . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ea,ab,bb,cb,ac,bc
+SAFE ga,gb,ec,fc,gc,cd,dd,ed,ae,be,ce
+TARGET fa,db,eb,fb,cc,dc
+TREE (;B[bb]C[RIGHT])
+#31 seed=61 it=769 solver=W obj=kill key=bc depth=3 nodes=5 branch=0 others=[ba:ko bb:ko cb:ko] region=10
+    a b c d e f g h i j k l m n o
+a19 . . . O X O . . . . . . . . .
+b18 . . . X X O . . . . . . . . .
+c17 . * X X O O . . . . . . . . .
+d16 X X O O O . . . . . . . . . .
+e15 O O O O . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ab,bb,cb,ac,bc,cd
+SAFE fa,fb,ec,fc,dd,ed,ae,be,ce,de
+TARGET ea,db,eb,cc,dc
+TREE (;W[bc](;B[bb];W[cb]C[RIGHT])(;B[ca];W[bb]C[RIGHT]))
+#32 seed=61 it=820 solver=W obj=live key=eb depth=3 nodes=5 branch=0 others=[] region=8
+    a b c d e f g h i j k l m n o
+a19 . . X O X . . . O X . . . . .
+b18 . . X O * . O O O X . . . . .
+c17 . . X X O O O X X X . . . . .
+d16 . . X X X X X X . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,eb,fb,gb,dc
+SAFE ca,ja,cb,jb,cc,hc,ic,jc,cd,dd,ed,fd,gd,hd
+TARGET ia,gb,hb,ib,ec,fc,gc
+TREE (;W[eb](;B[fa];W[ga]C[RIGHT])(;B[ga];W[fa]C[RIGHT]))
+#33 seed=61 it=821 solver=W obj=kill key=fa depth=1 nodes=1 branch=0 others=[] region=4
+    a b c d e f g h i j k l m n o
+a19 . . O X . * . X X O . . . . .
+b18 . . O X X X X X X O . . . . .
+c17 . . O O O O O O O O . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha
+SAFE ca,ja,cb,jb,cc,dc,ec,fc,gc,hc,ic,jc
+TARGET da,ha,ia,db,eb,fb,gb,hb,ib
+TREE (;W[fa]C[RIGHT])
+#34 seed=61 it=840 solver=B obj=live key=hb depth=1 nodes=1 branch=0 others=[fa:ko ha:ko] region=6
+    a b c d e f g h i j k l m n o
+a19 . . O X . . . . . X O . . . .
+b18 . . O X X X X * X X O . . . .
+c17 . . O O O O O O O O O . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,hb
+SAFE ca,ka,cb,kb,cc,dc,ec,fc,gc,hc,ic,jc,kc
+TARGET da,db,eb,fb,gb
+TREE (;B[hb]C[RIGHT])
+#35 seed=61 it=904 solver=W obj=live key=bb depth=3 nodes=5 branch=0 others=[] region=5
+    a b c d e f g h i j k l m n o
+a19 X . . . O X . . . . . . . . .
+b18 O * O O O X . . . . . . . . .
+c17 X X X X X X . . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,bb
+SAFE fa,fb,ac,bc,cc,dc,ec,fc
+TARGET ea,cb,db,eb
+TREE (;W[bb](;B[ba];W[ca]C[RIGHT])(;B[ca];W[ba]C[RIGHT]))
+#36 seed=61 it=910 solver=W obj=kill key=ab depth=1 nodes=1 branch=0 others=[] region=7
+    a b c d e f g h i j k l m n o
+a19 . X X X O . . . . . . . . . .
+b18 * . X X O . . . . . . . . . .
+c17 . X . O O . . . . . . . . . .
+d16 X X O O . . . . . . . . . . .
+e15 O O O . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,ac,cc
+SAFE ea,eb,dc,ec,cd,dd,ae,be,ce
+TARGET ba,ca,da,cb,db
+TREE (;W[ab]C[RIGHT])
+#37 seed=61 it=925 solver=W obj=live key=ha depth=3 nodes=7 branch=0 others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . . X X . . . * O X . . . . .
+b18 . . X O O O O . O X . . . . .
+c17 . . X X X X X O O X . . . . .
+d16 . . . . . . X X X X . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION da,ea,fa,ga,ha,hb
+SAFE ca,ja,cb,jb,cc,dc,ec,fc,gc,jc,gd,hd,id,jd
+TARGET ia,ib,hc,ic
+TREE (;W[ha](;B[ea];W[fa]C[RIGHT])(;B[fa];W[ea]C[RIGHT])(;B[ga];W[fa]C[RIGHT]))
+#38 seed=61 it=948 solver=W obj=live key=ba depth=1 nodes=1 branch=0 others=[aa:ko bb:ko] region=6
+    a b c d e f g h i j k l m n o
+a19 . * . O X . . . . . . . . . .
+b18 . . O O X . . . . . . . . . .
+c17 O O O X X . . . . . . . . . .
+d16 O O X X . . . . . . . . . . .
+e15 X X X . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,ac
+SAFE ea,eb,dc,ec,cd,dd,ae,be,ce
+TARGET da,cb,db,ac,bc,cc,ad,bd
+TREE (;W[ba]C[RIGHT])
+#39 seed=61 it=952 solver=B obj=kill key=bb depth=3 nodes=5 branch=0 others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . . . . . O X . . . . . . . .
+b18 O * O O O O X . . . . . . . .
+c17 X X X X X X X . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ea,bb
+SAFE ga,gb,ac,bc,cc,dc,ec,fc,gc
+TARGET fa,cb,db,eb,fb
+TREE (;B[bb](;W[ba];B[da]C[RIGHT])(;W[da];B[ba]C[RIGHT]))
+#40 seed=61 it=954 solver=B obj=kill key=fb depth=3 nodes=5 branch=0 others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . . X O O . . O X . . . . . .
+b18 . . X O . * . O X . . . . . .
+c17 . . X O O O O O X . . . . . .
+d16 . . X X X X X X X . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,eb,fb,gb
+SAFE ca,ia,cb,ib,cc,ic,cd,dd,ed,fd,gd,hd,id
+TARGET da,ea,ha,db,hb,dc,ec,fc,gc,hc
+TREE (;B[fb](;W[fa];B[gb]C[RIGHT])(;W[gb];B[fa]C[RIGHT]))
+#41 seed=61 it=972 solver=W obj=kill key=ba depth=1 nodes=1 branch=0 others=[bb:ko] region=5
+    a b c d e f g h i j k l m n o
+a19 O * . X O . . . . . . . . . .
+b18 . . X X O . . . . . . . . . .
+c17 X X X O O . . . . . . . . . .
+d16 O O O O . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb
+SAFE ea,eb,dc,ec,ad,bd,cd,dd
+TARGET da,cb,db,ac,bc,cc
+TREE (;W[ba]C[RIGHT])
+#42 seed=61 it=993 solver=B obj=kill key=ba depth=3 nodes=3 branch=0 others=[] region=4
+    a b c d e f g h i j k l m n o
+a19 . * X X O X . . . . . . . . .
+b18 O O O O O X . . . . . . . . .
+c17 X X X X X X . . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da
+SAFE fa,fb,ac,bc,cc,dc,ec,fc
+TARGET ea,ab,bb,cb,db,eb
+TREE (;B[ba];W[aa];B[ca]C[RIGHT])
+#43 seed=61 it=1003 solver=W obj=kill key=fa depth=1 nodes=1 branch=0 others=[] region=4
+    a b c d e f g h i j k l m n o
+a19 . . O X . * O . X O . . . . .
+b18 . . O X X X X X X O . . . . .
+c17 . . O O O O O O O O . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha
+SAFE ca,ja,cb,jb,cc,dc,ec,fc,gc,hc,ic,jc
+TARGET da,ia,db,eb,fb,gb,hb,ib
+TREE (;W[fa]C[RIGHT])
+#44 seed=61 it=1026 solver=B obj=kill key=ca depth=1 nodes=1 branch=0 others=[] region=4
+    a b c d e f g h i j k l m n o
+a19 O X * . O X . . . . . . . . .
+b18 O O O O O X . . . . . . . . .
+c17 X X X X X X . . . . . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da
+SAFE fa,fb,ac,bc,cc,dc,ec,fc
+TARGET aa,ea,ab,bb,cb,db,eb
+TREE (;B[ca]C[RIGHT])
+#45 seed=61 it=1064 solver=W obj=live key=ha depth=3 nodes=5 branch=0 others=[] region=7
+    a b c d e f g h i j k l m n o
+a19 . . X O . O . * . O X . . . .
+b18 . . X O O O O X . O X . . . .
+c17 . . X X X X X O O O X . . . .
+d16 . . . . . . X X X X X . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,hb,ib
+SAFE ca,ka,cb,kb,cc,dc,ec,fc,gc,kc,gd,hd,id,jd,kd
+TARGET da,fa,db,eb,fb,gb
+TREE (;W[ha](;B[ia];W[ib]C[RIGHT])(;B[ib];W[ia]C[RIGHT]))
+#46 seed=61 it=1080 solver=B obj=live key=fa depth=3 nodes=5 branch=0 others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . . O X . * O . . O O . . . .
+b18 . . O X X X X X X X O . . . .
+c17 . . O O O O O O O O O . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,ja
+SAFE ca,ka,cb,kb,cc,dc,ec,fc,gc,hc,ic,jc,kc
+TARGET da,db,eb,fb,gb,hb,ib,jb
+TREE (;B[fa](;W[ha];B[ia]C[RIGHT])(;W[ia];B[ha]C[RIGHT]))
+#47 seed=61 it=1114 solver=W obj=kill key=bb depth=1 nodes=1 branch=0 others=[ab:ko ba:ko] region=6
+    a b c d e f g h i j k l m n o
+a19 . . . X O . . . . . . . . . .
+b18 . * X X O . . . . . . . . . .
+c17 . X O O O . . . . . . . . . .
+d16 X X O . . . . . . . . . . . .
+e15 O O O . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,ac
+SAFE ea,eb,cc,dc,ec,cd,ae,be,ce
+TARGET da,cb,db
+TREE (;W[bb]C[RIGHT])
+#48 seed=61 it=1170 solver=W obj=kill key=gb depth=1 nodes=1 branch=0 others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . . O X . O . . X O . . . . .
+b18 . . O X X X * . X O . . . . .
+c17 . . O O O O X X X O . . . . .
+d16 . . . . . O O O O O . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,gb,hb
+SAFE ca,ja,cb,jb,cc,dc,ec,fc,jc,fd,gd,hd,id,jd
+TARGET ia,ib,gc,hc,ic
+TREE (;W[gb]C[RIGHT])
+#49 seed=61 it=1238 solver=B obj=kill key=ea depth=3 nodes=5 branch=0 others=[] region=4
+    a b c d e f g h i j k l m n o
+a19 . . X O * . X O X . . . . . .
+b18 . . X O . O O O X . . . . . .
+c17 . . X O O X X X X . . . . . .
+d16 . . X X X X . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,eb
+SAFE ca,ia,cb,ib,cc,fc,gc,hc,ic,cd,dd,ed,fd
+TARGET da,db,dc,ec
+TREE (;B[ea](;W[eb];B[fa]C[RIGHT])(;W[fa];B[eb]C[RIGHT]))
+#50 seed=61 it=1242 solver=B obj=live key=ba depth=1 nodes=1 branch=0 others=[aa:ko bb:ko] region=6
+    a b c d e f g h i j k l m n o
+a19 . * . X O . . . . . . . . . .
+b18 . . X X O . . . . . . . . . .
+c17 X X X X O . . . . . . . . . .
+d16 O O O O O . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,cb
+SAFE ea,eb,ec,ad,bd,cd,dd,ed
+TARGET da,cb,db,ac,bc,cc,dc
+TREE (;B[ba]C[RIGHT])
+#51 seed=61 it=1243 solver=B obj=live key=aa depth=3 nodes=5 branch=0 others=[db:ko] region=7
+    a b c d e f g h i j k l m n o
+a19 * . . X O . . . . . . . . . .
+b18 . X X . O . . . . . . . . . .
+c17 X X . O O . . . . . . . . . .
+d16 O O O O . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,db,cc
+SAFE ea,eb,dc,ec,ad,bd,cd,dd
+TARGET bb,cb,ac,bc
+TREE (;B[aa](;W[ca];B[db]C[RIGHT])(;W[db];B[ca]C[RIGHT]))
+#52 seed=61 it=1269 solver=B obj=kill key=fb depth=1 nodes=1 branch=0 others=[] region=7
+    a b c d e f g h i j k l m n o
+a19 . . X O . X . . . O X . . . .
+b18 . . X O . * O O O O X . . . .
+c17 . . X O O O X X X X X . . . .
+d16 . . X X X X X . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,eb,fb
+SAFE ca,ka,cb,kb,cc,gc,hc,ic,jc,kc,cd,dd,ed,fd,gd
+TARGET da,db,dc,ec,fc
+TREE (;B[fb]C[RIGHT])
+#53 seed=61 it=1313 solver=B obj=live key=ba depth=3 nodes=5 branch=0 others=[aa:ko ac:ko ca:ko] region=7
+    a b c d e f g h i j k l m n o
+a19 . * . X O . . . . . . . . . .
+b18 . X O X O . . . . . . . . . .
+c17 . X O O O . . . . . . . . . .
+d16 . X O . . . . . . . . . . . .
+e15 X X O . . . . . . . . . . . .
+f14 O O O . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,cb,ac,ad
+SAFE ea,eb,cc,dc,ec,cd,ce,af,bf,cf
+TARGET bb,bc,bd,ae,be
+TREE (;B[ba](;W[ab];B[ac]C[RIGHT])(;W[ac];B[ab]C[RIGHT]))
+#54 seed=61 it=1319 solver=W obj=live key=ab depth=1 nodes=1 branch=0 others=[] region=7
+    a b c d e f g h i j k l m n o
+a19 . O . O X . . . . . . . . . .
+b18 * . O X X . . . . . . . . . .
+c17 . O O X X . . . . . . . . . .
+d16 O O X X . . . . . . . . . . .
+e15 X X X . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,db,ac
+SAFE ea,eb,dc,ec,cd,dd,ae,be,ce
+TARGET cb,bc,cc,ad,bd
+TREE (;W[ab]C[RIGHT])
+#55 seed=61 it=1338 solver=B obj=kill key=gb depth=1 nodes=1 branch=0 others=[] region=8
+    a b c d e f g h i j k l m n o
+a19 . . X O . . . . . O X . . . .
+b18 . . X O . X * O O O X . . . .
+c17 . . X O O O O X X X X . . . .
+d16 . . X X X X X X . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,eb,fb,gb
+SAFE ca,ka,cb,kb,cc,hc,ic,jc,kc,cd,dd,ed,fd,gd,hd
+TARGET da,db,dc,ec,fc,gc
+TREE (;B[gb]C[RIGHT])
+#56 seed=61 it=1347 solver=W obj=live key=ba depth=1 nodes=1 branch=0 others=[] region=4
+    a b c d e f g h i j k l m n o
+a19 X * . O X . . . . . . . . . .
+b18 . O O O X . . . . . . . . . .
+c17 O O X X X . . . . . . . . . .
+d16 X X X . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab
+SAFE ea,eb,cc,dc,ec,ad,bd,cd
+TARGET da,bb,cb,db,ac,bc
+TREE (;W[ba]C[RIGHT])

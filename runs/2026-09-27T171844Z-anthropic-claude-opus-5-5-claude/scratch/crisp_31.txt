@@ -1,0 +1,120 @@
+#1 seed=31 it=23 solver=W obj=kill key=hb depth=6 nodes=21 opp-first=lose others=[] region=9
+    a b c d e f g h i j k l m n o
+a19 . . O X O . O . . X O . . . .
+b18 . . O X . . . * X X O . . . .
+c17 . . O X X X X X O O O . . . .
+d16 . . O O O O O O O . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,eb,fb,gb,hb
+SAFE ca,ka,cb,kb,cc,ic,jc,kc,cd,dd,ed,fd,gd,hd,id
+TARGET da,ja,db,ib,jb,dc,ec,fc,gc,hc
+#2 seed=31 it=29 solver=W obj=kill key=kb depth=5 nodes=10 opp-first=lose others=[] region=9
+    a b c d e f g h i j k l m n o
+a19 . . O X . . X . . . . O O . .
+b18 . . O X X X X X X X * X O . .
+c17 . . O O O O O O O O X X O . .
+d16 . . . . . . . . . O O O O . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,ja,ka,la,kb
+SAFE ca,ma,cb,mb,cc,dc,ec,fc,gc,hc,ic,jc,mc,jd,kd,ld,md
+TARGET da,ga,db,eb,fb,gb,hb,ib,jb,lb,kc,lc
+#3 seed=31 it=50 solver=B obj=kill key=ib depth=9 nodes=31 opp-first=lose others=[] region=8
+    a b c d e f g h i j k l m n o
+a19 . . X O . . . . . . . O X . .
+b18 . . X O O O O O * O O O X . .
+c17 . . X X X X X X X X X X X . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,ja,ka,ib
+SAFE ca,ma,cb,mb,cc,dc,ec,fc,gc,hc,ic,jc,kc,lc,mc
+TARGET da,la,db,eb,fb,gb,hb,jb,kb,lb
+#4 seed=31 it=96 solver=W obj=kill key=fb depth=7 nodes=17 opp-first=lose others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . . O X O . . X O . . . . . .
+b18 . . O X . * . X O . . . . . .
+c17 . . O X X X X X O . . . . . .
+d16 . . O O O O O O O . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,eb,fb,gb
+SAFE ca,ia,cb,ib,cc,ic,cd,dd,ed,fd,gd,hd,id
+TARGET da,ha,db,hb,dc,ec,fc,gc,hc
+#5 seed=31 it=124 solver=B obj=kill key=ec depth=9 nodes=31 opp-first=lose others=[] region=11
+    a b c d e f g h i j k l m n o
+a19 . . X O . . X . . O X . . . .
+b18 . . X O . . . . . O X . . . .
+c17 . . X O * O O O O O X . . . .
+d16 . . X X X X X X X X X . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,eb,fb,gb,hb,ib,ec
+SAFE ca,ka,cb,kb,cc,kc,cd,dd,ed,fd,gd,hd,id,jd,kd
+TARGET da,ja,db,jb,dc,fc,gc,hc,ic,jc
+#6 seed=31 it=151 solver=W obj=kill key=ab depth=5 nodes=8 opp-first=lose others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . X . X O . . . . . . . . . .
+b18 * O . X O . . . . . . . . . .
+c17 X X X X O . . . . . . . . . .
+d16 O O O O O . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,cb
+SAFE ea,eb,ec,ad,bd,cd,dd,ed
+TARGET ba,da,db,ac,bc,cc,dc
+#7 seed=31 it=203 solver=W obj=kill key=fb depth=7 nodes=17 opp-first=lose others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . . O X . . O X O . . . . . .
+b18 . . O X . * . X O . . . . . .
+c17 . . O X X X X X O . . . . . .
+d16 . . O O O O O O O . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,eb,fb,gb
+SAFE ca,ia,cb,ib,cc,ic,cd,dd,ed,fd,gd,hd,id
+TARGET da,ha,db,hb,dc,ec,fc,gc,hc
+#8 seed=31 it=227 solver=W obj=live key=ba depth=5 nodes=32 opp-first=lose others=[bb:ko] region=7
+    a b c d e f g h i j k l m n o
+a19 . * . O X . . . . . . . . . .
+b18 . . . O X . . . . . . . . . .
+c17 O O O X X . . . . . . . . . .
+d16 X X X X X . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,ab,bb,cb,dc
+SAFE ea,eb,ec,ad,bd,cd,dd,ed
+TARGET da,db,ac,bc,cc
+#9 seed=31 it=253 solver=W obj=kill key=bb depth=7 nodes=38 opp-first=lose others=[ca:ko] region=7
+    a b c d e f g h i j k l m n o
+a19 O . . . X O . . . . . . . . .
+b18 . * X X X O . . . . . . . . .
+c17 X X . O O O . . . . . . . . .
+d16 O O O O . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ab,bb,cc
+SAFE fa,fb,dc,ec,fc,ad,bd,cd,dd
+TARGET ea,cb,db,eb,ac,bc
+#10 seed=31 it=296 solver=W obj=kill key=kb depth=7 nodes=22 opp-first=lose others=[] region=8
+    a b c d e f g h i j k l m n o
+a19 . . O X . . . . . O . X O . .
+b18 . . O X X X X X X X * X O . .
+c17 . . O O O O O O O O X X O . .
+d16 . . . . . . . . . O O O O . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,ia,ja,ka,kb
+SAFE ca,ma,cb,mb,cc,dc,ec,fc,gc,hc,ic,jc,mc,jd,kd,ld,md
+TARGET da,la,db,eb,fb,gb,hb,ib,jb,lb,kc,lc

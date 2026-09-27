@@ -1,0 +1,78 @@
+#1 it=55 solver=B obj=live key=ba depth=5 nodes=12 branch=1 kos=2 score=36.8
+    a b c d e f g h i j k l m n o
+a19 . * . O O . . . . . . . . . .
+b18 X . . X O . . . . . . . . . .
+c17 . O X X O . . . . . . . . . .
+d16 X X X O O . . . . . . . . . .
+e15 O O O O . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ab,bb,cb,db,ac,bc,cc,dc,ad,bd,cd
+SAFE ea,eb,ec,dd,ed,ae,be,ce,de
+TARGET db,cc,dc,ad,bd,cd
+TREE (;B[ba](;W[ac](;B[bb]C[RIGHT])(;B[cb];W[ca];B[bb]C[RIGHT]))(;W[cb];B[ac](;W[bb];B[ca]C[RIGHT])(;W[ca];B[bb]C[RIGHT])))
+#2 it=123 solver=B obj=live key=bb depth=5 nodes=18 branch=1 kos=0 score=33.2
+    a b c d e f g h i j k l m n o
+a19 . X . O O . . . . . . . . . .
+b18 O * . X O . . . . . . . . . .
+c17 . . X X O . . . . . . . . . .
+d16 X X X O O . . . . . . . . . .
+e15 O O O O . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ab,bb,cb,db,ac,bc,cc,dc,ad,bd,cd
+SAFE ea,eb,ec,dd,ed,ae,be,ce,de
+TARGET db,cc,dc,ad,bd,cd
+TREE (;B[bb](;W[ac];B[ca];W[bc];B[aa]C[RIGHT])(;W[ca];B[ac];W[cb];B[aa]C[RIGHT])(;W[cb](;B[aa](;W[ac];B[ca]C[RIGHT])(;W[bc];B[ac]C[RIGHT])(;W[ca];B[ac]C[RIGHT]))(;B[ca]C[RIGHT])))
+#3 it=415 solver=B obj=live key=bb depth=5 nodes=18 branch=1 kos=1 score=33.2
+    a b c d e f g h i j k l m n o
+a19 . X O O O . . . . . . . . . .
+b18 . * . X O . . . . . . . . . .
+c17 . . X X O . . . . . . . . . .
+d16 X X X O O . . . . . . . . . .
+e15 O O O O . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ab,bb,cb,db,ac,bc,cc,dc,ad,bd,cd
+SAFE ea,eb,ec,dd,ed,ae,be,ce,de
+TARGET db,cc,dc,ad,bd,cd
+TREE (;B[bb](;W[ab];B[ac];W[cb];B[aa]C[RIGHT])(;W[ac];B[ab];W[cb];B[bc]C[RIGHT])(;W[cb](;B[ab](;W[ac];B[bc]C[RIGHT])(;W[bc];B[ac]C[RIGHT]))(;B[ac];W[ab];B[aa]C[RIGHT])))
+#4 it=522 solver=B obj=live key=ab depth=5 nodes=18 branch=1 kos=2 score=33.2
+    a b c d e f g h i j k l m n o
+a19 . X O X O . . . . . . . . . .
+b18 * . . X O . . . . . . . . . .
+c17 . . X X O . . . . . . . . . .
+d16 O X X O O . . . . . . . . . .
+e15 O O O O . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ab,bb,cb,db,ac,bc,cc,dc,ad,bd,cd
+SAFE ea,eb,ec,dd,ed,ae,be,ce,de
+TARGET da,db,cc,dc,bd,cd
+TREE (;B[ab](;W[bb];B[cb](;W[ac];B[bc]C[RIGHT])(;W[bc];B[ac]C[RIGHT]))(;W[bc];B[cb](;W[ac];B[bb]C[RIGHT])(;W[bb];B[ac]C[RIGHT]))(;W[cb](;B[bb]C[RIGHT])(;B[bc];W[ac];B[bb]C[RIGHT])))
+#5 it=607 solver=B obj=live key=ab depth=5 nodes=13 branch=0 kos=0 score=42.2
+    a b c d e f g h i j k l m n o
+a19 . X . X O . . . . . . . . . .
+b18 * . . X O . . . . . . . . . .
+c17 . . X X O . . . . . . . . . .
+d16 O O X O O . . . . . . . . . .
+e15 O O O O . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ab,bb,cb,db,ac,bc,cc,dc,ad,bd,cd
+SAFE ea,eb,ec,dd,ed,ae,be,ce,de
+TARGET da,db,cc,dc,cd
+TREE (;B[ab](;W[bb];B[bc](;W[ac];B[cb]C[RIGHT])(;W[ca];B[cb]C[RIGHT]))(;W[bc];B[bb](;W[ca];B[cb]C[RIGHT])(;W[cb];B[ca]C[RIGHT])))
+#6 it=616 solver=B obj=live key=ab depth=5 nodes=13 branch=0 kos=0 score=42.2
+    a b c d e f g h i j k l m n o
+a19 . X . X O . . . . . . . . . .
+b18 * . . X O . . . . . . . . . .
+c17 . . X X O . . . . . . . . . .
+d16 X O X O O . . . . . . . . . .
+e15 O O O O . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION aa,ba,ca,da,ab,bb,cb,db,ac,bc,cc,dc,ad,bd,cd
+SAFE ea,eb,ec,dd,ed,ae,be,ce,de
+TARGET da,db,cc,dc,cd
+TREE (;B[ab](;W[bb];B[bc](;W[ac];B[cb]C[RIGHT])(;W[ca];B[cb]C[RIGHT]))(;W[bc];B[bb](;W[ca];B[cb]C[RIGHT])(;W[cb];B[ca]C[RIGHT])))

@@ -1,0 +1,27 @@
+==== problem 09
+structural errors: [] nodes: 32 maxline: 9
+  note: [] wrong move rb label=ko
+  note: [] wrong move pb label=ko
+  note: [] wrong move sb label=ko
+  note: [] wrong move sa label=lose
+  note: [] wrong move rc label=lose
+  note: [] wrong move sc label=lose
+  note: [] solver-to-move labels: pass:lose pb:ko ra:win rb:ko rc:lose sa:lose sb:ko sc:lose
+  note: [ Wra] threats: pb->rb; rb->pb; sa->pb,rb,sb; sc->pb,rb,sa
+  note: [ Wra Brb] solver-to-move labels: pass:lose pb:win rc:lose sa:lose sb:lose sc:lose
+  note: [ Wra Brb Wpb] threats: sa->sb,sc; sc->sa
+  note: [ Wra Brb Wpb Bsa] solver-to-move labels: pa:ko pass:lose rc:lose sb:win sc:win
+  note: [ Wra Brb Wpb Bsa Wsb] threats: sc->rc
+  note: [ Wra Brb Wpb Bsa Wsb Bsc] solver-to-move labels: pa:ko pass:lose rc:win sa:lose
+  note: [ Wra Brb Wpb Bsa Wsc] threats: pa->qa
+  note: [ Wra Brb Wpb Bsa Wsc Bpa] solver-to-move labels: pass:lose qa:win ra:lose rc:lose sb:ko
+  note: [ Wra Brb Wpb Bsa Wsc Bpa Wqa] threats: ra->pa
+  note: [ Wra Brb Wpb Bsa Wsc Bpa Wqa Bra] solver-to-move labels: pa:win pass:lose rc:ko sb:ko
+  note: [ Wra Brb Wpb Bsc] solver-to-move labels: pa:ko pass:lose sa:win sb:ko
+  note: [ Wra Brb Wpb Bsc Wsa] threats: sb->pa,rc
+  note: [ Wra Brb Wpb Bsc Wsa Bsb] solver-to-move labels: pa:win pass:lose rc:win
+  note: [ Wra Bpb] solver-to-move labels: pass:lose rb:win rc:lose sa:lose sb:lose sc:lose
+  note: [ Wrb Bra] wrong line ends in ko (commented): solver ko via ['sb']
+  note: [ Wpb Bra] wrong line ends in ko (commented): solver ko via ['rb', 'sb']
+  note: [ Wsb Bsc] wrong line ends in ko (commented): solver ko via ['pb', 'ra', 'rb']
+RESULT 9 OK

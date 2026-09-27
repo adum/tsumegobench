@@ -1,0 +1,52 @@
+#1 seed=41 it=60 solver=B obj=live key=eb depth=3 nodes=5 branch=0 others=[] region=5
+    a b c d e f g h i j k l m n o
+a19 . . O X . . . O X O . . . . .
+b18 . . O X * X X X X O . . . . .
+c17 . . O O O O O O O O . . . . .
+d16 . . . . . . . . . . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,eb
+SAFE ca,ja,cb,jb,cc,dc,ec,fc,gc,hc,ic,jc
+TARGET da,ia,db,fb,gb,hb,ib
+TREE (;B[eb](;W[fa];B[ga]C[RIGHT])(;W[ga];B[fa]C[RIGHT]))
+#2 seed=41 it=65 solver=W obj=live key=hb depth=3 nodes=5 branch=0 others=[] region=8
+    a b c d e f g h i j k l m n o
+a19 . . X X . . . O . X O X . . .
+b18 . . X O O O O * O O O X . . .
+c17 . . X X X X X O X X X X . . .
+d16 . . . . . . X X X . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION da,ea,fa,ga,ha,ia,ja,hb
+SAFE ca,la,cb,lb,cc,dc,ec,fc,gc,ic,jc,kc,lc,gd,hd,id
+TARGET ha,ka,db,eb,fb,gb,ib,jb,kb,hc
+TREE (;W[hb](;B[ea];W[fa]C[RIGHT])(;B[fa];W[ea]C[RIGHT]))
+#3 seed=41 it=94 solver=W obj=live key=eb depth=7 nodes=28 branch=1 others=[] region=6
+    a b c d e f g h i j k l m n o
+a19 . . X O . . . . O X . . . . .
+b18 . . X O * O O . O X . . . . .
+c17 . . X X X X X O O X . . . . .
+d16 . . . . . . X X X X . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION ea,fa,ga,ha,eb,hb
+SAFE ca,ja,cb,jb,cc,dc,ec,fc,gc,jc,gd,hd,id,jd
+TARGET da,ia,db,fb,gb,ib,hc,ic
+TREE (;W[eb](;B[fa](;W[ga](;B[ha];W[hb]C[RIGHT])(;B[hb];W[ha]C[RIGHT]))(;W[ha];B[ga];W[ea];B[ga];W[fa]C[RIGHT]))(;B[ga];W[fa](;B[ha];W[hb]C[RIGHT])(;B[hb];W[ha]C[RIGHT]))(;B[ha];W[hb](;B[fa];W[ga]C[RIGHT])(;B[ga];W[fa]C[RIGHT]))(;B[hb];W[ha];B[ga];W[fa]C[RIGHT]))
+#4 seed=41 it=167 solver=W obj=live key=ea depth=3 nodes=3 branch=0 others=[] region=7
+    a b c d e f g h i j k l m n o
+a19 . . X X * . . O X . . . . . .
+b18 . . X O . O . O X . . . . . .
+c17 . . X O O O O O X . . . . . .
+d16 . . X X X X X X X . . . . . .
+e15 . . . . . . . . . . . . . . .
+f14 . . . . . . . . . . . . . . .
+g13 . . . . . . . . . . . . . . .
+REGION da,ea,fa,ga,eb,fb,gb
+SAFE ca,ia,cb,ib,cc,ic,cd,dd,ed,fd,gd,hd,id
+TARGET ha,db,fb,hb,dc,ec,fc,gc,hc
+TREE (;W[ea];B[fa];W[ga]C[RIGHT])

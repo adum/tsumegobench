@@ -1,0 +1,72 @@
+#1 wall=WJ obj=live key=bb depth=7 nodes=10 branch=3 B=ba W=ca gap=-
+    a b c d e f g h i j k
+a19 . X O O X . . . . . .
+b18 . * . O X . . . . . .
+c17 . . O O X . . . . . .
+d16 O O O X X . . . . . .
+e15 X X X X . . . . . . .
+f14 . . . . . . . . . . .
+TREE (;W[bb];B[ab](;W[aa];B[ac](;W[ba]C[RIGHT])(;W[bc];B[ab](;W[ac]C[RIGHT])(;W[ba]C[RIGHT])))(;W[ac]C[RIGHT]))
+#2 wall=WJ obj=live key=bb depth=7 nodes=18 branch=5 B=ba W=ac gap=-
+    a b c d e f g h i j k
+a19 . X . O X . . . . . .
+b18 . * . O X . . . . . .
+c17 O . O O X . . . . . .
+d16 O O O X X . . . . . .
+e15 X X X X . . . . . . .
+f14 . . . . . . . . . . .
+TREE (;W[bb](;B[ab](;W[aa];B[ca](;W[ab]C[RIGHT])(;W[cb];B[ba](;W[ab]C[RIGHT])(;W[ca]C[RIGHT])))(;W[ca]C[RIGHT]))(;B[ca](;W[ab]C[RIGHT])(;W[cb];B[ab];W[aa];B[ba](;W[ab]C[RIGHT])(;W[ca]C[RIGHT]))))
+#3 wall=WJ obj=live key=bb depth=7 nodes=27 branch=8 B=ca W=aa gap=-
+    a b c d e f g h i j k
+a19 O . X O X . . . . . .
+b18 . * . O X . . . . . .
+c17 . . O O X . . . . . .
+d16 O O O X X . . . . . .
+e15 X X X X . . . . . . .
+f14 . . . . . . . . . . .
+TREE (;W[bb](;B[ab](;W[ac];B[ba](;W[ab]C[RIGHT])(;W[cb];B[ba](;W[ab]C[RIGHT])(;W[ca]C[RIGHT])))(;W[ba];B[bc](;W[ac]C[RIGHT])(;W[cb]C[RIGHT])))(;B[ba](;W[ab]C[RIGHT])(;W[cb](;B[ab](;W[ac];B[ba](;W[ab]C[RIGHT])(;W[ca]C[RIGHT]))(;W[ba]C[RIGHT]))(;B[ba](;W[ab]C[RIGHT])(;W[ca];B[ab];W[ac]C[RIGHT])))))
+#4 wall=WJ obj=live key=bb depth=7 nodes=9 branch=2 B=ca W=ac gap=-
+    a b c d e f g h i j k
+a19 . . X O X . . . . . .
+b18 . * . O X . . . . . .
+c17 O . O O X . . . . . .
+d16 O O O X X . . . . . .
+e15 X X X X . . . . . . .
+f14 . . . . . . . . . . .
+TREE (;W[bb];B[ba](;W[ab]C[RIGHT])(;W[cb];B[ab];W[aa];B[ba](;W[ab]C[RIGHT])(;W[ca]C[RIGHT])))
+#5 wall=WJ obj=live key=bb depth=7 nodes=18 branch=5 B=ab W=ca gap=-
+    a b c d e f g h i j k
+a19 . . O O X . . . . . .
+b18 X * . O X . . . . . .
+c17 . . O O X . . . . . .
+d16 O O O X X . . . . . .
+e15 X X X X . . . . . . .
+f14 . . . . . . . . . . .
+TREE (;W[bb](;B[ac](;W[ba]C[RIGHT])(;W[bc];B[ba];W[aa];B[ab](;W[ac]C[RIGHT])(;W[ba]C[RIGHT])))(;B[ba](;W[aa];B[ac](;W[ba]C[RIGHT])(;W[bc];B[ab](;W[ac]C[RIGHT])(;W[ba]C[RIGHT])))(;W[ac]C[RIGHT])))
+#6 wall=WJ obj=live key=bb depth=7 nodes=10 branch=3 B=ab W=ac gap=-
+    a b c d e f g h i j k
+a19 . . . O X . . . . . .
+b18 X * . O X . . . . . .
+c17 O . O O X . . . . . .
+d16 O O O X X . . . . . .
+e15 X X X X . . . . . . .
+f14 . . . . . . . . . . .
+TREE (;W[bb];B[ba](;W[aa];B[ca](;W[ab]C[RIGHT])(;W[cb];B[ba](;W[ab]C[RIGHT])(;W[ca]C[RIGHT])))(;W[ca]C[RIGHT]))
+#7 wall=WJ obj=live key=ab depth=5 nodes=9 branch=0 B=bb W=ba gap=-
+    a b c d e f g h i j k
+a19 . O . O X . . . . . .
+b18 * X . O X . . . . . .
+c17 . . O O X . . . . . .
+d16 O O O X X . . . . . .
+e15 X X X X . . . . . . .
+f14 . . . . . . . . . . .
+TREE (;W[ab](;B[ac];W[bc];B[ca];W[cb]C[RIGHT])(;B[ca];W[cb];B[ac];W[bc]C[RIGHT]))
+#8 wall=WJ obj=live key=ba depth=5 nodes=9 branch=0 B=bb W=ab gap=-
+    a b c d e f g h i j k
+a19 . * . O X . . . . . .
+b18 O X . O X . . . . . .
+c17 . . O O X . . . . . .
+d16 O O O X X . . . . . .
+e15 X X X X . . . . . . .
+f14 . . . . . . . . . . .
+TREE (;W[ba](;B[ac];W[bc];B[ca];W[cb]C[RIGHT])(;B[ca];W[cb];B[ac];W[bc]C[RIGHT]))

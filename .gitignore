@@ -44,9 +44,11 @@ __pycache__/
 
 # Model helper build products and transient process IDs
 /runs/*/scratch/*.so
+/runs/*/scratch/*.dylib
 /runs/*/scratch/*.o
 /runs/*/scratch/pids.txt
 /runs/*/scratch/tsolve
+/runs/*/scratch/t
 
 /dist/
 /.wrangler/
