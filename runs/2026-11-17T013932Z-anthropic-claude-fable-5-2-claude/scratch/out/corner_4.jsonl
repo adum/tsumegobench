@@ -1,0 +1,27 @@
+{"diag": "+++++X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca"], "passval": 0, "depth": 11, "moves": 8, "traps": 3}
+{"diag": "++++X.\n+++@X.\n@@@@X.\nXXXXX.\n......", "first": "W", "key": "ba", "kos": ["bb"], "passval": 0, "depth": 5, "moves": 7, "traps": 3}
+{"diag": "++o+@X.\n+xx@@X.\n+++@XX.\n@@@@X..\nXXXXX..\n.......", "first": "W", "key": "ba", "kos": ["aa", "ab", "ac", "bc", "cc"], "passval": 1, "depth": 5, "moves": 7, "traps": 3}
+{"diag": "++++x+X.\n+++++@X.\n+@@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "ab", "kos": ["ba", "da", "fa", "cb"], "passval": 0, "depth": 9, "moves": 11, "traps": 4}
+{"diag": "+++x+X.\n++x@@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ba", "kos": ["bb"], "passval": 0, "depth": 5, "moves": 6, "traps": 2}
+{"diag": "++x+X.\n+++@X.\n@+@@X.\n@@@XX.\nXX+X..\n.XXX..\n......", "first": "B", "key": "bb", "kos": ["ba", "da"], "passval": 0, "depth": 7, "moves": 8, "traps": 6}
+{"diag": "++x+X.\n+++@X.\n@+@@X.\n@@@XX.\nXX+X..\n.XXX..\n......", "first": "W", "key": "bb", "kos": ["ba"], "passval": 0, "depth": 3, "moves": 8, "traps": 2}
+{"diag": "++@@X.\n+++@X.\n+@@@X.\nXXXXX.\n......", "first": "B", "key": "bb", "kos": ["ba", "ab", "ac"], "passval": 0, "depth": 9, "moves": 6, "traps": 5}
+{"diag": "+x++@X.\n@x++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "cb", "kos": [], "passval": 0, "depth": 5, "moves": 5, "traps": 3}
+{"diag": "oo++oX.\n+x+++X.\n@@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "B", "key": "eb", "kos": ["ca", "ab", "cb", "ed"], "passval": 0, "depth": 11, "moves": 7, "traps": 5}
+{"diag": "++++X.\n+++@X.\n@@@@X.\n+XXXX.\nXX....\n......", "first": "W", "key": "ba", "kos": ["da", "bb"], "passval": 0, "depth": 5, "moves": 8, "traps": 4}
+{"diag": "++x+X.\noo++X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "ba", "kos": [], "passval": 0, "depth": 9, "moves": 7, "traps": 2}
+{"diag": "++x+x+X.\n++++@@X.\n@@@@@XX.\nXXXXXX..\n........", "first": "B", "key": "fa", "kos": ["da", "ab", "bb", "cb", "db"], "passval": 0, "depth": 9, "moves": 8, "traps": 4}
+{"diag": "++++@X.\n+x@@@X.\n@@@@+X.\nXXXXXX.\n.......", "first": "B", "key": "ca", "kos": [], "passval": 0, "depth": 11, "moves": 6, "traps": 2}
+{"diag": "o+++X.\n++@@X.\n+@@XX.\n+@@X..\nXXXX..\n......", "first": "W", "key": "bb", "kos": ["da", "ad"], "passval": 0, "depth": 5, "moves": 7, "traps": 6}
+{"diag": "+x+@X.\n+++@X.\n@@@@X.\nXXXXX.\n......", "first": "B", "key": "bb", "kos": ["aa", "ca", "ab", "cb"], "passval": 0, "depth": 5, "moves": 5, "traps": 4}
+{"diag": "+x+oXX.\n+++o+X.\n++@+XX.\n@@@XX..\nXXXX...\n.......", "first": "B", "key": "bb", "kos": [], "passval": 0, "depth": 11, "moves": 9, "traps": 3}
+{"diag": "+++++X.\n+++@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "W", "key": "bb", "kos": [], "passval": 0, "depth": 7, "moves": 9, "traps": 3}
+{"diag": "+++@XX.\n+xx@+X.\n+@@@XX.\n@@XXX..\nXXX....\n.......", "first": "B", "key": "ab", "kos": ["aa"], "passval": 0, "depth": 5, "moves": 6, "traps": 3}
+{"diag": "+++++@X.\n++@@@@X.\n+oXXX+X.\nXXX.XXX.\n........", "first": "B", "key": "ab", "kos": ["bb", "ac"], "passval": 0, "depth": 11, "moves": 9, "traps": 3}
+{"diag": "+x+++X.\n+++@@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ca", "da", "ea", "cb"], "passval": 0, "depth": 7, "moves": 7, "traps": 4}
+{"diag": "+++x+X.\n++++oX.\n++++oX.\n@@@@XX.\nXXXXX..\n.......", "first": "W", "key": "cb", "kos": ["bb"], "passval": 0, "depth": 11, "moves": 12, "traps": 3}
+{"diag": "++++@X.\n+x@@@X.\n@@@XXX.\nXXXX...\n.......", "first": "B", "key": "ca", "kos": [], "passval": 0, "depth": 5, "moves": 5, "traps": 3}
+{"diag": "++x+@X.\n@++@@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "ba", "kos": ["bb"], "passval": 0, "depth": 5, "moves": 5, "traps": 2}
+{"diag": "++x+@X.\n@++@@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ba", "kos": [], "passval": 0, "depth": 3, "moves": 5, "traps": 3}
+{"diag": "+++@@X.\n+++@@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ba", "ab"], "passval": 0, "depth": 9, "moves": 6, "traps": 5}
+#done 1500 in 370s

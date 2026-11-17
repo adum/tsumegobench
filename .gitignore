@@ -49,6 +49,9 @@ __pycache__/
 /runs/*/scratch/pids.txt
 /runs/*/scratch/tsolve
 /runs/*/scratch/t
+/runs/*/scratch/solver
+/runs/*/scratch/solver[0-9]
+/runs/*/scratch/solver_old
 
 /dist/
 /.wrangler/

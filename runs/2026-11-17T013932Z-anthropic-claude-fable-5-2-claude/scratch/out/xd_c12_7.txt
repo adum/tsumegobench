@@ -1,0 +1,91 @@
+cb
+  da
+    bc
+      ab
+        ac
+          ba
+            ca RIGHT
+            bb
+              ca
+          bb
+            ca RIGHT
+            aa
+              ca
+            ba
+              ca
+          ca
+            ba RIGHT
+            bb
+              ba
+            aa
+              ba
+        ba
+          ac
+        ca
+          ac
+      ac
+        ab RIGHT
+        ba
+          ab
+        bb
+          ab
+      ba
+        ca
+          ab
+            ac RIGHT
+            bb
+              ac
+          ac
+            ab RIGHT
+            bb
+              ab
+            aa
+              ab
+          bb
+            ac RIGHT
+            aa
+              ac
+            ab
+              ac
+        ab
+          ca
+        ac
+          ca
+      ca
+        ba RIGHT
+        ab
+          ba
+        ac
+          ba
+    ca
+      ab
+    bb
+      ab
+bb
+  ab
+    cb
+      da
+    da
+      cb
+ca
+  cb
+da
+  cb
+aa
+  cb
+ab
+  cb
+ac
+  cb
+ba
+  cb
+    bb
+      bc
+    bc
+      bb
+bc
+  bb
+    ca
+      cb
+    cb
+      ca

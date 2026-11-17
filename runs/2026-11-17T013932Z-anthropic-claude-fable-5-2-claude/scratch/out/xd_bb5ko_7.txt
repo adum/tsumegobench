@@ -1,0 +1,17 @@
+bb RIGHT
+ab
+  bb
+ba
+  bb
+ca
+  bb
+da
+  bb
+ea
+  bb
+aa
+  bb
+bc
+  bb
+db
+  bb

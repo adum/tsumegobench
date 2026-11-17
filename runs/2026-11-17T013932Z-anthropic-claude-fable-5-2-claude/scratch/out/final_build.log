@@ -1,0 +1,40 @@
+e46: nodes=18 maxdepth=4 issues=0 disagreements=0
+   {'nodes': 18, 'maxlen': 4, 'right': 2, 'leaves': 9, 'firsts': {'B'}} stones 27 ok []
+  -> slot 1
+   sha 7ab95bf7fe55
+e28: nodes=19 maxdepth=4 issues=0 disagreements=0
+   {'nodes': 19, 'maxlen': 4, 'right': 1, 'leaves': 6, 'firsts': {'W'}} stones 28 ok []
+  -> slot 2
+   sha 523e115546fd
+s20: nodes=31 maxdepth=4 issues=0 disagreements=0
+   {'nodes': 31, 'maxlen': 4, 'right': 2, 'leaves': 13, 'firsts': {'B'}} stones 27 ok []
+  -> slot 3
+   sha ddf66f46a1c0
+cut2: nodes=55 maxdepth=8 issues=0 disagreements=0
+   {'nodes': 55, 'maxlen': 8, 'right': 3, 'leaves': 22, 'firsts': {'B'}} stones 24 ok []
+  -> slot 4
+   sha a917f7260f31
+bb5ko: nodes=29 maxdepth=4 issues=0 disagreements=0
+   {'nodes': 29, 'maxlen': 4, 'right': 2, 'leaves': 14, 'firsts': {'B'}} stones 21 ok []
+  -> slot 5
+   sha 052e8ab1b408
+c15: nodes=70 maxdepth=8 issues=0 disagreements=0
+   {'nodes': 70, 'maxlen': 8, 'right': 7, 'leaves': 30, 'firsts': {'W'}} stones 16 ok []
+  -> slot 6
+   sha cd2471ef0edd
+peep22: nodes=75 maxdepth=8 issues=0 disagreements=0
+   {'nodes': 75, 'maxlen': 8, 'right': 7, 'leaves': 31, 'firsts': {'W'}} stones 19 ok []
+  -> slot 7
+   sha 5ad6b6479927
+s23: nodes=99 maxdepth=8 issues=0 disagreements=0
+   {'nodes': 99, 'maxlen': 8, 'right': 9, 'leaves': 42, 'firsts': {'B'}} stones 26 ok []
+  -> slot 8
+   sha f271c3ce0d85
+c12: nodes=91 maxdepth=8 issues=0 disagreements=0
+   {'nodes': 91, 'maxlen': 8, 'right': 8, 'leaves': 39, 'firsts': {'W'}} stones 16 ok []
+  -> slot 9
+   sha d746caf1e75b
+h1: nodes=107 maxdepth=12 issues=0 disagreements=0
+   {'nodes': 107, 'maxlen': 12, 'right': 9, 'leaves': 42, 'firsts': {'W'}} stones 18 ok []
+  -> slot 10
+   sha 37974723b51d

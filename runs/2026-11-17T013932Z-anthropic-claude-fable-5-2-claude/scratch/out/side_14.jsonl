@@ -1,0 +1,17 @@
+{"diag": "..X@+++@X.\n..X@++@@X.\n..X@@@@@X.\n..XXXXXXX.\n..........", "first": "B", "key": "fa", "kos": [], "passval": 0, "depth": 5, "moves": 5, "traps": 2}
+{"diag": "..X@+++oX.\n..X@++++X.\n..X@@@@@X.\n..XXXXXXX.\n..........", "first": "W", "key": "hb", "kos": ["fa"], "passval": 0, "depth": 7, "moves": 7, "traps": 2}
+{"diag": ".X+++++X.\n.X@++x@X.\n.X@+++@X.\n.X@@@@@X.\n.XXXXXXX.\n.........", "first": "W", "key": "ga", "kos": ["eb"], "passval": 0, "depth": 9, "moves": 10, "traps": 3}
+{"diag": "...X@@+x+X.\n...X@+++@X.\n...X@++@@X.\n...X@@@@XX.\n...XXXXXX..\n...........", "first": "B", "key": "ia", "kos": [], "passval": 0, "depth": 7, "moves": 7, "traps": 6}
+{"diag": "..X+++x+@X.\n..X@@++@@X.\n..XX@@@@XX.\n...XXXXXX..\n...........", "first": "W", "key": "fa", "kos": [], "passval": 0, "depth": 5, "moves": 6, "traps": 2}
+{"diag": ".X@@+x+oX.\n.X@+@@+oX.\n.X@@@@+XX.\n.XXXXXXX..\n..........", "first": "B", "key": "gb", "kos": [], "passval": 0, "depth": 7, "moves": 4, "traps": 2}
+{"diag": ".X+++x+@X.\n.X@+++@@X.\n.X@@@@@XX.\n.XXXXXXX..\n..........", "first": "W", "key": "ca", "kos": ["da", "eb"], "passval": 0, "depth": 9, "moves": 7, "traps": 2}
+{"diag": "..X+o+++X.\n..X@+++@X.\n..X@@@@@X.\n..XXXXXXX.\n..........", "first": "W", "key": "fb", "kos": [], "passval": 0, "depth": 3, "moves": 7, "traps": 4}
+{"diag": ".X@++++@X.\n.X@+x+x@X.\n.X@@@@@@X.\n.XXXXXXXX.\n..........", "first": "B", "key": "fb", "kos": [], "passval": 0, "depth": 11, "moves": 6, "traps": 1}
+{"diag": "...Xo++x@@X.\n...Xo++x+@X.\n...Xo+@+@@X.\n...XXX@@@XX.\n.....XXXXX..\n............", "first": "W", "key": "gb", "kos": ["fc"], "passval": 0, "depth": 3, "moves": 7, "traps": 3}
+{"diag": ".X@++x+x+X.\n.X@+++@@@X.\n.X@@@@@XXX.\n.XXXXXXX...\n...........", "first": "B", "key": "ia", "kos": [], "passval": 0, "depth": 7, "moves": 7, "traps": 1}
+{"diag": ".X@++++oX.\n.X@++++oX.\n.X@@+ooXX.\n.XXXXXXX..\n..........", "first": "W", "key": "gb", "kos": [], "passval": 0, "depth": 11, "moves": 9, "traps": 3}
+{"diag": ".X@xx++oX.\n.X@++@++X.\n.X@@@@@@X.\n.XXXXXXXX.\n..........", "first": "B", "key": "hb", "kos": [], "passval": 0, "depth": 9, "moves": 6, "traps": 3}
+{"diag": ".XX++x@@X.\n.X@@+x+@X.\n.X@+++@@X.\n.X@@@@@XX.\n.XXXXXXX..\n..........", "first": "B", "key": "da", "kos": [], "passval": 0, "depth": 7, "moves": 7, "traps": 5}
+{"diag": ".X@x++oX.\nXX@++++X.\nX+@@x+@X.\nXXX@@@@X.\n..XXXXXX.\n.........", "first": "B", "key": "gb", "kos": ["eb"], "passval": 0, "depth": 9, "moves": 8, "traps": 3}
+{"diag": "..X@@x+oX.\n..X@++xoX.\n..X@+@++X.\n..X@@@@@X.\n..XXXXXXX.\n..........", "first": "B", "key": "hc", "kos": [], "passval": 0, "depth": 7, "moves": 6, "traps": 5}
+#done 1500 in 314s

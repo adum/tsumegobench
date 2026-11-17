@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/Users/adammiller/code/tsumegobench/runs/2026-11-17T013932Z-anthropic-claude-fable-5-2-claude/scratch/gen.py", line 202, in <module>
+    tr = trap_metric(p)
+  File "/Users/adammiller/code/tsumegobench/runs/2026-11-17T013932Z-anthropic-claude-fable-5-2-claude/scratch/gen.py", line 159, in trap_metric
+    st, v = p.query([])
+            ~~~~~~~^^^^
+  File "/Users/adammiller/code/tsumegobench/runs/2026-11-17T013932Z-anthropic-claude-fable-5-2-claude/scratch/tsu.py", line 117, in query
+    sD, rD = self._raw('D', moves)
+             ~~~~~~~~~^^^^^^^^^^^^
+  File "/Users/adammiller/code/tsumegobench/runs/2026-11-17T013932Z-anthropic-claude-fable-5-2-claude/scratch/tsu.py", line 87, in _raw
+    self.start()
+    ~~~~~~~~~~^^
+  File "/Users/adammiller/code/tsumegobench/runs/2026-11-17T013932Z-anthropic-claude-fable-5-2-claude/scratch/tsu.py", line 62, in start
+    self.proc = subprocess.Popen([SOLVER], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+                ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.15/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.15/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 1991, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/adammiller/code/tsumegobench/runs/2026-11-17T013932Z-anthropic-claude-fable-5-2-claude/scratch/solver'

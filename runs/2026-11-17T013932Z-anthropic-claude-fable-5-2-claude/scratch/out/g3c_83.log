@@ -1,0 +1,12 @@
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/adammiller/code/tsumegobench/runs/2026-11-17T013932Z-anthropic-claude-fable-5-2-claude/scratch/gen3.py", line 102, in <module>
+    p.close()
+    ~~~~~~~^^
+  File "/Users/adammiller/code/tsumegobench/runs/2026-11-17T013932Z-anthropic-claude-fable-5-2-claude/scratch/tsu.py", line 76, in close
+    w('regatt %s\n' % ' '.join(self.regatt))
+        ^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe

@@ -1,0 +1,126 @@
+{
+  "$schema": "../../../schemas/human-reviews.schema.json",
+  "schemaVersion": 1,
+  "runId": "2026-11-17T013932Z-anthropic-claude-fable-5-2-claude",
+  "updatedAt": "2026-11-17T03:37:56.189952Z",
+  "reviews": [
+    {
+      "reviewId": "4482b5b2-4f3c-40f6-afac-c37fb4b9c619",
+      "reviewerName": "Adam",
+      "createdAt": "2026-11-17T03:17:39.148Z",
+      "updatedAt": "2026-11-17T03:37:56.189952Z",
+      "problems": [
+        {
+          "file": "problem-01.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": 4,
+          "reviewedAt": "2026-11-17T03:18:36.947Z"
+        },
+        {
+          "file": "problem-02.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-11-17T03:20:54.116Z"
+        },
+        {
+          "file": "problem-03.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "10-19 kyu",
+          "quality": 3,
+          "reviewedAt": "2026-11-17T03:22:24.682Z"
+        },
+        {
+          "file": "problem-04.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-11-17T03:24:39.083Z"
+        },
+        {
+          "file": "problem-05.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "10-19 kyu",
+          "quality": 3,
+          "reviewedAt": "2026-11-17T03:26:56.648Z"
+        },
+        {
+          "file": "problem-06.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "10-19 kyu",
+          "quality": 4,
+          "reviewedAt": "2026-11-17T03:28:46.998Z"
+        },
+        {
+          "file": "problem-07.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": 2,
+          "reviewedAt": "2026-11-17T03:30:02.416Z"
+        },
+        {
+          "file": "problem-08.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "5-9 kyu",
+          "quality": 3,
+          "reviewedAt": "2026-11-17T03:31:36.199Z"
+        },
+        {
+          "file": "problem-09.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "1-4 kyu",
+          "quality": 4,
+          "reviewedAt": "2026-11-17T03:35:01.811Z"
+        },
+        {
+          "file": "problem-10.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "10-19 kyu",
+          "quality": null,
+          "reviewedAt": "2026-11-17T03:37:56.156Z"
+        }
+      ]
+    }
+  ]
+}

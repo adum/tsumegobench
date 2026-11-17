@@ -1,0 +1,624 @@
+{"diag": "++x@XX.\n+++@+X.\n@+@@XX.\n@@@XX..\nXXXX...\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 51, "pv": ["bb", "ba", "aa", "ab", "ba", "eb", "cb", "bc", "ba", "bb", "ca", "aa", "cb"], "traps": 1}
+{"diag": "++x@@X.\n+x++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": ["ba", "ab"], "nmoves": 5, "rnodes": 3, "pv": ["cb", "ab", "ba"], "traps": 1}
+{"diag": "++x++XX.\n++++@+X.\n@@@@@XX.\nXXXXXX..\n........", "first": "B", "key": "ea", "kos": ["ba", "ab", "cb"], "nmoves": 9, "rnodes": 7, "pv": ["ea", "cb", "da", "ab", "ba"], "traps": 2}
+{"diag": "+x++@X.\n++++@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": ["ca", "bb", "ac"], "nmoves": 8, "rnodes": 29, "pv": ["cb", "ac", "ab", "bb", "ca", "da", "aa", "ba", "bb"], "traps": 3}
+{"diag": "+++++@X.\n++xx+@X.\n@@@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "bb", "kos": ["ba", "ca", "ab"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++++@X.\n++xx+@X.\n@@@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "bb", "kos": ["ba", "da", "ea", "ab", "eb"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++x+oX.\n+++xoX.\n++@@+X.\n@@@XXX.\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "ab", "cb", "ec"], "nmoves": 9, "rnodes": 5, "pv": ["bb", "ba", "ec"], "traps": 3}
+{"diag": "++++X.\n+++@X.\nx+@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": ["ba", "da", "ab"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++++@X.\nx++@@X.\n+@@@+X.\nXX+XXX.\n.XXX...\n.......", "first": "B", "key": "ac", "kos": ["ca", "bb"], "nmoves": 9, "rnodes": 5, "pv": ["ac", "bb", "ca"], "traps": 2}
+{"diag": "+++++oX.\n+++++oX.\n+@@@@XX.\nXXXXXX..\n........", "first": "B", "key": "eb", "kos": ["da", "ab", "bb", "ac"], "nmoves": 11, "rnodes": 1, "pv": ["eb"], "traps": 3}
+{"diag": "+++++XX.\n+x++@+X.\n@@+@@XX.\nX@@@XX..\nXXXXX...\n........", "first": "B", "key": "cb", "kos": [], "nmoves": 10, "rnodes": 1, "pv": ["cb"], "traps": 3}
+{"diag": "+x+@@X.\nx+++@X.\n@+@@@X.\n@@@XXX.\nXXXX...\n.......", "first": "W", "key": "cb", "kos": ["ca", "bb", "bc"], "nmoves": 5, "rnodes": 1, "pv": ["cb"], "traps": 3}
+{"diag": "+x+@X.\n+++@X.\n@@@@X.\n@@XXX.\nXXX...\n......", "first": "B", "key": "bb", "kos": ["aa", "ca", "ab", "cb"], "nmoves": 5, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+++++X.\nx++@@X.\n@+@@XX.\n@@@XX..\nXXXX...\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "+++++X.\n+x++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": ["ba", "ab"], "nmoves": 8, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "+++x@X.\n@+x+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "ba", "kos": [], "nmoves": 5, "rnodes": 7, "pv": ["ba", "db", "ca", "aa", "bb"], "traps": 3}
+{"diag": "+++x@X.\n@+x+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ba", "kos": ["db"], "nmoves": 5, "rnodes": 1, "pv": ["ba"], "traps": 3}
+{"diag": "+++++oX.\n@++x+oX.\n@@@@@XX.\nXXXXXX..\n........", "first": "B", "key": "eb", "kos": ["ba", "cb"], "nmoves": 8, "rnodes": 9, "pv": ["eb", "cb", "ba", "da", "ea"], "traps": 2}
+{"diag": "++++@X.\n++x+@X.\n+@@@@X.\nX+XXXX.\nXXX....\n.......", "first": "W", "key": "bb", "kos": ["ba", "ca", "ac"], "nmoves": 9, "rnodes": 21, "pv": ["bb", "ba", "ca", "da", "db", "ca", "ac", "bd", "aa", "ba", "ca"], "traps": 1}
+{"diag": "+++@@X.\n++x+@X.\noo+@@X.\nXXXX+X.\n...XXX.\n.......", "first": "W", "key": "cc", "kos": [], "nmoves": 8, "rnodes": 9, "pv": ["cc", "bb", "ca", "ab", "ba"], "traps": 2}
+{"diag": "+++++X.\n+++@@X.\no+x+@X.\no+@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bd", "kos": ["ba", "da", "ea", "ab", "bb", "cb"], "nmoves": 11, "rnodes": 1, "pv": ["bd"], "traps": 5}
+{"diag": "+++@X.\n+x+@X.\n@+@@X.\n@@@XX.\nXX+X..\n.XXX..\n......", "first": "W", "key": "ba", "kos": [], "nmoves": 7, "rnodes": 13, "pv": ["ba", "ab", "cb", "aa", "bc"], "traps": 0}
+{"diag": "+x++@X.\nx+@@@X.\noo++XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["ca", "cc", "dc"], "nmoves": 6, "rnodes": 3, "pv": ["bb", "ca", "cc"], "traps": 3}
+{"diag": "++++X.\n+x+@X.\n+@+@X.\n@@@@X.\nXXXXX.\n......", "first": "B", "key": "cb", "kos": ["aa", "ca", "da"], "nmoves": 8, "rnodes": 11, "pv": ["cb", "ab", "da", "ba", "ca"], "traps": 2}
+{"diag": "+++@X.\n+++@X.\n++@@X.\n+@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ab", "ad"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++@X.\n+++@X.\n++@@X.\n+@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": ["ba", "ab", "bc", "ad"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+xx++@X.\n+++++@X.\n+@@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "ac", "kos": ["ab"], "nmoves": 9, "rnodes": 21, "pv": ["ac", "ab", "bb", "da", "ea", "db", "aa", "eb", "ab", "cb", "ea"], "traps": 1}
+{"diag": "+++x@X.\n++x+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "ab"], "nmoves": 6, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++x@X.\n++x+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ba", "kos": ["bb"], "nmoves": 6, "rnodes": 9, "pv": ["ba", "bb", "ab", "ca", "db"], "traps": 2}
+{"diag": "++++++@X.\n+x+@+x@X.\n+@@@@@@X.\nXXXXXXXX.\n.........", "first": "W", "key": "ac", "kos": ["ba", "ca", "da", "ea", "fa", "ab", "cb", "eb"], "nmoves": 10, "rnodes": 1, "pv": ["ac"], "traps": 9}
+{"diag": "+++++X.\nx++@@X.\n+++@XX.\n+@@@X..\nXXXXX..\n.......", "first": "W", "key": "bc", "kos": ["ba", "ca", "ea", "bb", "cb", "ad"], "nmoves": 11, "rnodes": 1, "pv": ["bc"], "traps": 3}
+{"diag": "++++@X.\n+++@@X.\nx++@@X.\noo+@XX.\nXXXXX..\n.......", "first": "B", "key": "bc", "kos": ["ab", "bb", "cb", "cd"], "nmoves": 10, "rnodes": 45, "pv": ["bc", "bb", "ca", "ab", "cd", "ba", "cb"], "traps": 4}
+{"diag": "++++oX.\n+x+xoX.\n+++@+X.\n@@@@XX.\n+XXXX..\nXX.....\n.......", "first": "W", "key": "cb", "kos": ["ab", "ec"], "nmoves": 11, "rnodes": 3, "pv": ["cb", "ca", "da"], "traps": 2}
+{"diag": "++++X.\n+++@X.\n+x@@X.\n+@@XX.\n@@XX..\nXXX...\n......", "first": "B", "key": "bb", "kos": ["ba", "ac"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++++X.\n+++@X.\n+x@@X.\n+@@XX.\n@@XX..\nXXX...\n......", "first": "W", "key": "bb", "kos": ["ba", "ca", "da", "ab", "cb", "ac"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 7}
+{"diag": "+++@XX.\nx+x@@X.\no+++@X.\n+@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "B", "key": "bc", "kos": [], "nmoves": 9, "rnodes": 37, "pv": ["bc", "ad", "cc", "ba", "ca", "bb", "aa", "ba", "bb", "dc", "ee"], "traps": 1}
+{"diag": "+++@@X.\n+x+@+X.\n@@@@XX.\nXXXXX..\n.......", "first": "W", "key": "ba", "kos": [], "nmoves": 6, "rnodes": 11, "pv": ["ba", "ab", "cb", "eb", "aa"], "traps": 0}
+{"diag": "++++@X.\n++xx@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "ab"], "nmoves": 6, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x+x@X.\n++++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ab", "cb"], "nmoves": 6, "rnodes": 31, "pv": ["bb", "db", "ca", "ab", "cb", "aa", "ca", "ba", "cb", "bb", "da"], "traps": 2}
+{"diag": "+x+x@X.\n++++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": ["ca", "bb", "db"], "nmoves": 6, "rnodes": 7, "pv": ["cb", "ab", "ca", "bb", "aa"], "traps": 2}
+{"diag": "++++oX.\n+++xoX.\n+++@+X.\n+@@@XX.\nXXXXX..\n.......", "first": "B", "key": "cb", "kos": ["ba", "ca", "da", "bb", "bc", "ec", "ad"], "nmoves": 12, "rnodes": 1, "pv": ["cb"], "traps": 8}
+{"diag": "++++@X.\nx++x@X.\n++@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "W", "key": "ad", "kos": ["bb", "ac"], "nmoves": 9, "rnodes": 19, "pv": ["ad", "cb", "bb", "ba", "bc", "ac", "aa"], "traps": 2}
+{"diag": "++++@X.\no++x@X.\no+@@@X.\nXXXXXX.\n.......", "first": "B", "key": "cb", "kos": ["bc"], "nmoves": 7, "rnodes": 13, "pv": ["cb", "bc", "ba", "bb", "ca", "aa", "da"], "traps": 2}
+{"diag": "+++x+X.\n++++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ea", "kos": ["bb"], "nmoves": 8, "rnodes": 19, "pv": ["ea", "ba", "cb", "ab", "ca", "bb", "aa"], "traps": 2}
+{"diag": "+++++@X.\n+x++@@X.\noo+@@XX.\nXXXXXX..\n........", "first": "W", "key": "cb", "kos": ["cc"], "nmoves": 9, "rnodes": 9, "pv": ["cb", "cc", "da", "aa", "ca"], "traps": 2}
+{"diag": "+++++@X.\n+x++@@X.\n+@@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "cb", "kos": ["ba", "da", "ab", "ac"], "nmoves": 9, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "++++@X.\n+x+@@X.\n+x+@XX.\n@@@@+X.\nXXXXXX.\n.......", "first": "B", "key": "ca", "kos": ["ba", "cb", "ac"], "nmoves": 9, "rnodes": 7, "pv": ["ca", "ac", "ab", "ba", "cb"], "traps": 1}
+{"diag": "+x@@@X.\n++++@X.\n+++@@X.\n+ooXXX.\nXX+X...\n.XXX...\n.......", "first": "B", "key": "bb", "kos": ["cb", "bc"], "nmoves": 10, "rnodes": 5, "pv": ["bb", "bc", "cb"], "traps": 2}
+{"diag": "++@@X.\n+x+@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "ab", "kos": [], "nmoves": 6, "rnodes": 15, "pv": ["ab", "ac", "bc", "aa", "ba"], "traps": 0}
+{"diag": "+++x+@X.\n+x+++@X.\noo+@@@X.\nX+XXXXX.\nXXX.....\n........", "first": "W", "key": "cc", "kos": [], "nmoves": 10, "rnodes": 1, "pv": ["cc"], "traps": 3}
+{"diag": "+++x@X.\n++x+@X.\n++@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "W", "key": "bb", "kos": [], "nmoves": 9, "rnodes": 5, "pv": ["bb", "ad", "ba", "bc", "ac"], "traps": 2}
+{"diag": "+++o+X.\n++x+@X.\n@x+@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "ab", "kos": ["ea", "bb"], "nmoves": 8, "rnodes": 31, "pv": ["ab", "ba", "bb", "ca", "ea", "db", "cc", "aa", "bb", "bc", "cb", "ab", "cc"], "traps": 3}
+{"diag": "+++@X.\n++x@X.\n+x@@X.\n+o+XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 8, "rnodes": 5, "pv": ["bb", "ab", "ac"], "traps": 1}
+{"diag": "++++@X.\n+x++@X.\n+++@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "W", "key": "cb", "kos": ["ba", "ca", "ab", "ac", "bc", "ad"], "nmoves": 11, "rnodes": 21, "pv": ["cb", "bc", "ad", "ca", "ba", "aa", "ac", "cc", "db", "ab", "ba"], "traps": 2}
+{"diag": "++@@X.\n+++@X.\n++@@X.\nx+@+X.\n+oXXX.\nXXX...\n......", "first": "B", "key": "bb", "kos": ["aa", "ba", "ab", "ac", "bc", "bd", "dd", "ae"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "++@@XX.\nx++@+X.\n+++@XX.\n+@@@X..\nXXXXX..\n.......", "first": "B", "key": "ad", "kos": ["bc"], "nmoves": 9, "rnodes": 23, "pv": ["ad", "bb", "aa", "ac", "bc", "cc", "ac", "ba", "eb"], "traps": 2}
+{"diag": "+++@X.\n+xx@X.\n+@@@X.\n+@XXX.\nXXX...\n......", "first": "W", "key": "ab", "kos": [], "nmoves": 6, "rnodes": 21, "pv": ["ab", "ad", "ba", "ac", "ca", "bb", "cb"], "traps": 0}
+{"diag": "+oo+X..\n+++@X..\nx+x@XX.\n+@@@+X.\nXXXXXX.\n.......", "first": "B", "key": "ad", "kos": [], "nmoves": 8, "rnodes": 5, "pv": ["ad", "ab", "bc"], "traps": 2}
+{"diag": "+++@X.\nx++@X.\n+@@@X.\n@@XXX.\nXXX...\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 6, "rnodes": 11, "pv": ["bb", "ba", "ac", "ca", "aa", "cb", "ab"], "traps": 2}
+{"diag": "++xooX.\n++x++X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "bb", "kos": ["ba"], "nmoves": 6, "rnodes": 19, "pv": ["bb", "ba", "db", "eb", "aa", "ba", "ca"], "traps": 2}
+{"diag": "+++++@X.\n+x++@@X.\n+@@@@XX.\nXXXXXX..\n........", "first": "W", "key": "cb", "kos": ["ba", "da", "ab", "ac"], "nmoves": 9, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "++++++X.\n+x+x+@X.\n@@@@@@X.\nXX+XXXX.\n.XXX....\n........", "first": "W", "key": "cb", "kos": ["ba", "da", "fa", "ab", "eb"], "nmoves": 10, "rnodes": 1, "pv": ["cb"], "traps": 6}
+{"diag": "++++x+X.\nx++@@@X.\n@@@@XXX.\nXXXXX...\n........", "first": "B", "key": "bb", "kos": ["ca", "fa"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++@@X.\nx+++@X.\n+x+@@X.\n@@@@XX.\n+XXXX..\nXX.....\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 9, "rnodes": 5, "pv": ["cb", "ba", "ca"], "traps": 2}
+{"diag": "+++++X.\n+++x@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": ["da"], "nmoves": 9, "rnodes": 19, "pv": ["cb", "ab", "ac", "da", "ea", "ba", "ca"], "traps": 1}
+{"diag": "+++++@X.\n++++@@X.\n++@@@+X.\nXXXXXXX.\n........", "first": "B", "key": "bb", "kos": ["da"], "nmoves": 12, "rnodes": 19, "pv": ["bb", "cb", "da", "ab", "bc", "ba", "ca"], "traps": 1}
+{"diag": "++@@X.\nx++@X.\nx+@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 5, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++@@X.\nx++@X.\nx+@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 5, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "++++X.\n++++X.\n@+@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ba", "ca", "da", "cb"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 6}
+{"diag": "++++X.\n++++X.\n@+@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": ["ba", "cb"], "nmoves": 9, "rnodes": 3, "pv": ["bb", "ba", "ca"], "traps": 2}
+{"diag": "+++++oX.\nxx+++oX.\n@@@@@+X.\nXXXXXXX.\n........", "first": "B", "key": "cb", "kos": ["ea", "fc"], "nmoves": 9, "rnodes": 41, "pv": ["cb", "db", "ea", "ba", "fc", "ca", "eb", "aa", "bb"], "traps": 3}
+{"diag": "+++++X.\n+++x@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "ea", "kos": ["ba", "cb"], "nmoves": 8, "rnodes": 15, "pv": ["ea", "cb", "da", "ba", "ab", "aa", "ca", "bb", "ab"], "traps": 3}
+{"diag": "++x+X.\n+++@X.\n++@@X.\n@@@XX.\nXX+X..\n.XXX..\n......", "first": "W", "key": "bb", "kos": ["ba", "da", "ab"], "nmoves": 9, "rnodes": 9, "pv": ["bb", "da", "ba", "ab", "ac"], "traps": 2}
+{"diag": "++@@X.\n+++@X.\n+x@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 6, "rnodes": 17, "pv": ["bb", "ab", "ba", "ac", "cb", "aa", "bb"], "traps": 2}
+{"diag": "++++x+oX.\n+@+x++oX.\n@@@@@@XX.\nXXXXXXX..\n.........", "first": "B", "key": "fb", "kos": [], "nmoves": 9, "rnodes": 57, "pv": ["fb", "ca", "aa", "eb", "da", "fa", "fb", "cb", "fa", "ga", "gb"], "traps": 2}
+{"diag": "++x++oX.\n++++xoX.\n@@@@++X.\nXXX@@@X.\n..XXXXX.\n........", "first": "B", "key": "fc", "kos": ["ea", "ab", "bb", "cb", "db"], "nmoves": 10, "rnodes": 1, "pv": ["fc"], "traps": 3}
+{"diag": "++x++oX.\n++++xoX.\n@@@@++X.\nXXX@@@X.\n..XXXXX.\n........", "first": "W", "key": "fc", "kos": ["ba", "da", "cb", "ec"], "nmoves": 10, "rnodes": 1, "pv": ["fc"], "traps": 6}
+{"diag": "+++o+X.\nx+++@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ac", "kos": ["cb"], "nmoves": 8, "rnodes": 5, "pv": ["ac", "bb", "cb"], "traps": 2}
+{"diag": "++@@X.\n+++@X.\n++@@X.\noo+XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 8, "rnodes": 17, "pv": ["bb", "ab", "bc", "cd", "ba", "ac", "cb", "aa", "bb"], "traps": 2}
+{"diag": "++o+X.\n+++@X.\n++@@X.\n+@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ab", "ad"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++o+X.\n+++@X.\n++@@X.\n+@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": ["ba", "ab"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "+x+@X.\n+x+@X.\n@++@X.\n@@@@X.\nXXXXX.\n......", "first": "B", "key": "ab", "kos": [], "nmoves": 6, "rnodes": 1, "pv": ["ab"], "traps": 3}
+{"diag": "+++x+X.\n++++oX.\n@@@@+X.\nXXXXXX.\n.......", "first": "W", "key": "ea", "kos": [], "nmoves": 9, "rnodes": 75, "pv": ["ea", "ba", "cb", "ca", "ab", "ec", "db", "aa", "bb", "ba", "ca"], "traps": 0}
+{"diag": "+x+@@@X.\n++x++@X.\nooo+@@X.\nXXXXXXX.\n........", "first": "B", "key": "dc", "kos": ["ab", "db"], "nmoves": 7, "rnodes": 1, "pv": ["dc"], "traps": 6}
+{"diag": "+x+@@@X.\n++x++@X.\nooo+@@X.\nXXXXXXX.\n........", "first": "W", "key": "dc", "kos": [], "nmoves": 7, "rnodes": 5, "pv": ["dc", "ab", "db"], "traps": 2}
+{"diag": "+++++@XX.\nx++++@+X.\n+@@@@@XX.\nXXXXXXX..\n.........", "first": "B", "key": "ac", "kos": ["ba"], "nmoves": 11, "rnodes": 117, "pv": ["ac", "bb", "ca", "ba", "db", "da", "ea", "cb", "da", "aa", "gb", "eb", "da"], "traps": 0}
+{"diag": "+++o+X.\n++x+@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "bb", "kos": [], "nmoves": 8, "rnodes": 19, "pv": ["bb", "ba", "ca", "ab", "ac", "ea", "aa"], "traps": 0}
+{"diag": "++++oX.\n+x++oX.\n@@@@+X.\nXX+XXX.\n.XXX...\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 9, "rnodes": 79, "pv": ["cb", "db", "ca", "ba", "aa", "ab", "ba", "cd", "ec", "da", "ba", "bb", "ca"], "traps": 1}
+{"diag": "++++X.\n++@@X.\nox@XX.\no+@X..\nXXXX..\n......", "first": "W", "key": "bd", "kos": ["bb"], "nmoves": 7, "rnodes": 1, "pv": ["bd"], "traps": 2}
+{"diag": "++++@X.\n++x+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "ab"], "nmoves": 7, "rnodes": 11, "pv": ["bb", "ab", "ba", "db", "ca", "aa", "da"], "traps": 1}
+{"diag": "++++@XX.\n++@@@+X.\n+x+@XXX.\noo+@X...\nXXXXX...\n........", "first": "B", "key": "cd", "kos": [], "nmoves": 10, "rnodes": 25, "pv": ["cd", "bb", "ca", "ab", "ba", "ac", "cc", "aa", "fb"], "traps": 2}
+{"diag": "+++oX.\n+++oX.\n++x+X.\n@@@@X.\nXXXXX.\n......", "first": "W", "key": "dc", "kos": [], "nmoves": 9, "rnodes": 1, "pv": ["dc"], "traps": 5}
+{"diag": "++++oX.\nx+@@+X.\n+x@XXX.\n+@@X...\nXXXX...\n.......", "first": "B", "key": "ad", "kos": ["ba", "ca", "da", "bb", "eb", "ac"], "nmoves": 8, "rnodes": 9, "pv": ["ad", "bb", "ac", "ca", "aa", "ba", "eb"], "traps": 2}
+{"diag": "++++oX.\nx+@@+X.\n+x@XXX.\n+@@X...\nXXXX...\n.......", "first": "W", "key": "ad", "kos": ["ca", "bb"], "nmoves": 8, "rnodes": 15, "pv": ["ad", "eb", "da", "ba", "bb", "ac", "aa"], "traps": 2}
+{"diag": "+x++@X.\n+++@@X.\n+@@@XX.\nXX+XX..\n.XXX...\n.......", "first": "W", "key": "ca", "kos": ["bb", "ac"], "nmoves": 8, "rnodes": 17, "pv": ["ca", "bb", "ab", "ac", "cb", "aa", "ab", "bb", "ba"], "traps": 1}
+{"diag": "+++x@X.\n++++@X.\noo+@@X.\nXXXXXX.\n.......", "first": "W", "key": "cc", "kos": [], "nmoves": 8, "rnodes": 19, "pv": ["cc", "ba", "cb", "ab", "ca", "bb", "aa"], "traps": 2}
+{"diag": "++++X.\n+++@X.\n+x@@X.\n+@@XX.\no+XX..\nXXX...\n......", "first": "B", "key": "bb", "kos": ["ba", "da", "ac"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++++X.\n+++@X.\n+x@@X.\n+@@XX.\no+XX..\nXXX...\n......", "first": "W", "key": "bb", "kos": ["aa", "ba", "ca", "da", "ab", "cb", "ac"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 6}
+{"diag": "++ooX.\n++x+X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "db", "kos": ["bb"], "nmoves": 7, "rnodes": 35, "pv": ["db", "bb", "ba", "ab", "bc", "aa", "ac", "ab", "bb"], "traps": 2}
+{"diag": "+++++@X.\n+x+++@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "W", "key": "cc", "kos": ["ba", "da", "cb"], "nmoves": 10, "rnodes": 5, "pv": ["cc", "cb", "db"], "traps": 2}
+{"diag": "++x++@X.\n++x@+@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "W", "key": "cc", "kos": [], "nmoves": 8, "rnodes": 1, "pv": ["cc"], "traps": 6}
+{"diag": "++@@X.\n++@@X.\n++@XX.\n@@@X..\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ba", "ab"], "nmoves": 6, "rnodes": 7, "pv": ["bb", "ab", "ba", "bc", "ac"], "traps": 2}
+{"diag": "+++++X.\n++x@@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ba"], "nmoves": 7, "rnodes": 31, "pv": ["bb", "ba", "ab", "ca", "ea", "aa", "bb", "ab", "da", "cb", "bb"], "traps": 1}
+{"diag": "++++x+X.\n+x+++@X.\n+@+@@@X.\n+@@@XXX.\nXXXXX...\n........", "first": "W", "key": "cb", "kos": ["ba", "da", "fa", "ab", "db"], "nmoves": 12, "rnodes": 1, "pv": ["cb"], "traps": 3}
+{"diag": "++++X.\n++x@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": ["da", "ab"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++++@X.\n+xx@@X.\n++++@X.\n+@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "B", "key": "ad", "kos": ["ba", "ca", "da", "ab", "ac", "bc", "cc"], "nmoves": 11, "rnodes": 33, "pv": ["ad", "bc", "ac", "ca", "cc", "ab", "aa"], "traps": 0}
+{"diag": "++++@X.\n+xx@@X.\n++++@X.\n+@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "W", "key": "ac", "kos": ["ba", "ca", "ab", "bc", "cc", "ad"], "nmoves": 11, "rnodes": 43, "pv": ["ac", "ad", "bc", "cc", "ab", "ba", "da"], "traps": 2}
+{"diag": "++x+@X.\no+x+@X.\n+@@@@X.\nXXX+XX.\n..XXX..\n.......", "first": "W", "key": "bb", "kos": ["ba", "da", "ac", "dd"], "nmoves": 7, "rnodes": 5, "pv": ["bb", "ba", "da"], "traps": 4}
+{"diag": "++++X.\n+++@X.\n+++@X.\n+@@@X.\nXXXXX.\n......", "first": "W", "key": "bb", "kos": ["ba", "ca", "da", "ab", "cb", "ac", "bc", "ad"], "nmoves": 11, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "+++@@X.\n+xx+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ca", "kos": ["ba", "ab"], "nmoves": 5, "rnodes": 29, "pv": ["ca", "ab", "ba", "aa", "db", "ab", "bb"], "traps": 2}
+{"diag": "+++@X.\n+x@@X.\n++@@X.\n+@@+X.\nXXXXX.\n......", "first": "W", "key": "ba", "kos": ["ab", "ad"], "nmoves": 8, "rnodes": 15, "pv": ["ba", "ac", "bc", "ab", "ad", "dd", "aa"], "traps": 0}
+{"diag": "++x++X.\n+++@@X.\n++@@XX.\n@@@XX..\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "da", "ea", "ab", "cb", "ac", "bc"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 6}
+{"diag": "+++++X.\nx+x++X.\n@+@@@X.\n@@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "da", "ea", "db", "eb", "bc"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 7}
+{"diag": "+++@X.\n+x+@X.\n+@@@X.\n@@XXX.\nXXX...\n......", "first": "B", "key": "ab", "kos": ["aa", "ba", "ca"], "nmoves": 6, "rnodes": 11, "pv": ["ab", "ba", "ac", "ca", "aa", "cb", "ab"], "traps": 2}
+{"diag": "+++@@X.\n++x+@X.\noo++@X.\nXo+@@X.\nXXXXXX.\n.......", "first": "B", "key": "cd", "kos": ["ba", "ca", "ab", "bb"], "nmoves": 9, "rnodes": 1, "pv": ["cd"], "traps": 5}
+{"diag": "+++@@X.\n++++@X.\nxx@@@X.\n++@XXX.\n+@@X...\nXXXX...\n.......", "first": "B", "key": "cb", "kos": ["ba", "ca", "ab", "bb", "ae"], "nmoves": 10, "rnodes": 1, "pv": ["cb"], "traps": 5}
+{"diag": "+++x+X.\n+++x@X.\n@+++@X.\n@@@@@X.\nXXX+XX.\n..XXX..\n.......", "first": "W", "key": "bb", "kos": ["ba", "ea", "cb"], "nmoves": 11, "rnodes": 23, "pv": ["bb", "ea", "cb", "ca", "ba", "cc", "dc"], "traps": 3}
+{"diag": "+++@XX.\nx++@+X.\n++@@XX.\n@@@XX..\nXXXX...\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 8, "rnodes": 33, "pv": ["bb", "ba", "cb", "ca", "bc", "eb", "ac", "aa", "bb", "ab", "bc", "ac", "cb"], "traps": 2}
+{"diag": "+++@XX.\nx++@+X.\n++@@XX.\n@@@XX..\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "cb", "bc"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 7}
+{"diag": "++++@X.\nxo+@@X.\n++@@XX.\nXXXXX..\n.......", "first": "B", "key": "ca", "kos": ["ba", "bc"], "nmoves": 7, "rnodes": 5, "pv": ["ca", "ac", "bc"], "traps": 2}
+{"diag": "++++@X.\nxo+@@X.\n++@@XX.\nXXXXX..\n.......", "first": "W", "key": "ca", "kos": ["aa", "ac", "bc"], "nmoves": 7, "rnodes": 3, "pv": ["ca", "bc", "ba"], "traps": 2}
+{"diag": "+x@@XX.\n+++@+X.\n++@@XX.\n@@@XX..\nXXXX...\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 9, "pv": ["bb", "ab", "bc", "cb", "eb", "aa", "ac"], "traps": 2}
+{"diag": "++@XX.\n++@@X.\n+++@X.\noo+@X.\nXXXXX.\n......", "first": "B", "key": "cd", "kos": [], "nmoves": 8, "rnodes": 11, "pv": ["cd", "bc", "ab", "bb", "aa", "ac", "cc"], "traps": 1}
+{"diag": "+x+@@X..\nx+++@XX.\noo+@@+X.\nXXXXXXX.\n........", "first": "W", "key": "cb", "kos": ["bb", "cc"], "nmoves": 6, "rnodes": 7, "pv": ["cb", "cc", "bb", "ca", "aa"], "traps": 2}
+{"diag": "+++xx+XX.\n++@++@+X.\n+@@@@@XX.\n+@XXXXX..\nXXX......\n.........", "first": "B", "key": "fa", "kos": [], "nmoves": 11, "rnodes": 9, "pv": ["fa", "ab", "ba", "ad", "ca"], "traps": 2}
+{"diag": "++@X.\nx+@X.\n++@X.\n+@@X.\n+@@X.\nXXXX.\n.....", "first": "B", "key": "bb", "kos": ["ac", "bc", "ad", "ae"], "nmoves": 7, "rnodes": 5, "pv": ["bb", "ac", "ae"], "traps": 2}
+{"diag": "++++XX.\nxx+@+X.\n+@+@XX.\n+@@@X..\nXXXXX..\n.......", "first": "W", "key": "cb", "kos": [], "nmoves": 9, "rnodes": 5, "pv": ["cb", "ac", "ad"], "traps": 1}
+{"diag": "+xx@XX.\n+++@+X.\n+@@@XX.\n+@XXX..\nXXX....\n.......", "first": "W", "key": "ad", "kos": ["bb"], "nmoves": 7, "rnodes": 7, "pv": ["ad", "bb", "ab", "aa", "cb"], "traps": 2}
+{"diag": "++++@X.\n+o+@@X.\n++@@XX.\nXXX+X..\n..XXX..\n.......", "first": "B", "key": "ca", "kos": [], "nmoves": 9, "rnodes": 19, "pv": ["ca", "ba", "ab", "aa", "ac"], "traps": 0}
+{"diag": "+x++@X.\nx+++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ca", "da", "cb"], "nmoves": 6, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x++@X.\nx+++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": ["ca", "da", "bb", "db"], "nmoves": 5, "rnodes": 9, "pv": ["cb", "ca", "da", "bb", "aa"], "traps": 2}
+{"diag": "++x++X.\n++++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "ea", "kos": ["ba", "da", "ab", "bb", "cb"], "nmoves": 8, "rnodes": 11, "pv": ["ea", "cb", "da", "ba", "ab", "bb", "db", "aa", "ab"], "traps": 3}
+{"diag": "++++x@@X.\nx+++++@X.\n++@@@@@X.\nXXXXXXXX.\n.........", "first": "W", "key": "eb", "kos": ["ba", "ca", "da", "bb", "cb", "db", "ac", "bc"], "nmoves": 11, "rnodes": 1, "pv": ["eb"], "traps": 6}
+{"diag": "++++X.\n+++@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ba", "da"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++++X.\n+++@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": ["ba", "da", "ab", "cb"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x++X.\n+x+@X.\n+@+@X.\n+@@@X.\nXXXXX.\n......", "first": "W", "key": "cb", "kos": [], "nmoves": 8, "rnodes": 21, "pv": ["cb", "ca", "da", "ac", "ab", "ad", "aa", "ba", "bb"], "traps": 1}
+{"diag": "+x+@@X.\n+x++@X.\n+@+@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 8, "rnodes": 9, "pv": ["cb", "ab", "ad", "ac", "ca"], "traps": 2}
+{"diag": "++++X.\n+++@X.\n@+@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ba", "da"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++++@X.\n+++@@X.\n+x+@XX.\noo+@X..\nXXXXX..\n.......", "first": "W", "key": "cd", "kos": ["ca", "bb"], "nmoves": 10, "rnodes": 29, "pv": ["cd", "cb", "ab", "bb", "ac", "aa", "ca", "ba", "cc"], "traps": 1}
+{"diag": "+++ooX.\n+x++oX.\n@+@@+X.\n@@@XXX.\nXXXX...\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 8, "rnodes": 23, "pv": ["cb", "ab", "ec", "db", "ba", "ca", "bc", "aa", "bb"], "traps": 2}
+{"diag": "+x+++X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["ca", "da", "ea", "cb"], "nmoves": 7, "rnodes": 5, "pv": ["bb", "ca", "ea"], "traps": 2}
+{"diag": "+++x@X.\nx@++@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ca", "kos": ["aa", "db", "ac"], "nmoves": 6, "rnodes": 5, "pv": ["ca", "ac", "db"], "traps": 3}
+{"diag": "++@@@XX.\n++++@@X.\n++x++@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "B", "key": "cd", "kos": [], "nmoves": 11, "rnodes": 33, "pv": ["cd", "dc", "cb", "ba", "ab", "bb", "bc", "aa", "ac"], "traps": 2}
+{"diag": "+x++@@@X.\n++++x+@X.\nooo+@@@X.\nXXXXXXXX.\n.........", "first": "B", "key": "dc", "kos": ["cb"], "nmoves": 9, "rnodes": 1, "pv": ["dc"], "traps": 3}
+{"diag": "++++x@X.\n+++++@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "W", "key": "cc", "kos": ["da", "cb", "db"], "nmoves": 10, "rnodes": 1, "pv": ["cc"], "traps": 8}
+{"diag": "+++++X.\n++++oX.\nx+@@XX.\n@@@XX..\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "da", "ab", "cb", "db"], "nmoves": 10, "rnodes": 13, "pv": ["bb", "db", "cb", "ab", "da", "ea", "db"], "traps": 2}
+{"diag": "+++ooX.\nx+x++X.\n@@@@+X.\nXXXXXX.\n.......", "first": "W", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 9, "pv": ["bb", "db", "eb", "ca", "ba"], "traps": 1}
+{"diag": "++++@X.\n+++@@X.\nx++@XX.\n+ooXX..\nX+XX...\nXXX....\n.......", "first": "W", "key": "bb", "kos": ["ab", "cb", "bc", "ad"], "nmoves": 11, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++@X.\nx+x@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 6, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++++oX.\n++x+oX.\n++@@+X.\n+@@XXX.\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["db", "ad"], "nmoves": 11, "rnodes": 1, "pv": ["bb"], "traps": 1}
+{"diag": "+x+++X.\n++++@X.\n++@+@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["da", "ea", "ab", "cb", "db", "ac", "bc", "ad"], "nmoves": 12, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x++@X.\n+++@@X.\n++@@XX.\n+@@XX..\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ca", "ab", "ac", "bc", "ad"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++@@X.\n+xx+@X.\n+@@@@X.\n@@XXXX.\nXXX....\n.......", "first": "B", "key": "ab", "kos": ["aa", "ba", "ca"], "nmoves": 6, "rnodes": 5, "pv": ["ab", "ba", "ca"], "traps": 2}
+{"diag": "+xo++X.\n+++@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["da"], "nmoves": 7, "rnodes": 9, "pv": ["bb", "ea", "ac", "aa", "ab"], "traps": 2}
+{"diag": "+xo++X.\n+++@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "W", "key": "bb", "kos": ["ea", "ac"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++@@X..\n+++@XX.\n+x@@+X.\n++@XXX.\n+@@X...\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ab", "ac", "ad", "ae"], "nmoves": 10, "rnodes": 15, "pv": ["bb", "ae", "ba", "ac", "bd", "ad", "ab", "cb", "ec"], "traps": 2}
+{"diag": "++@@X..\n+++@XX.\n+x@@+X.\n++@XXX.\n+@@X...\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "ab", "ac", "ad", "bd", "ae"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+++++X.\n+++++X.\n@@@@@X.\nXXX+XX.\n..XXX..\n.......", "first": "W", "key": "da", "kos": ["ba", "ca", "db", "eb"], "nmoves": 11, "rnodes": 27, "pv": ["da", "eb", "db", "ba", "bb", "ca", "aa", "dd", "cb", "ba", "ca"], "traps": 1}
+{"diag": "+++@@X.\nx++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "cb"], "nmoves": 5, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x++@X.\n++x+@X.\n@@@@@X.\n+XXXXX.\nXX.....\n.......", "first": "B", "key": "bb", "kos": ["da", "ab", "ad"], "nmoves": 7, "rnodes": 3, "pv": ["bb", "db", "ca"], "traps": 1}
+{"diag": "+++++oX.\n++++xoX.\n+@@@@+X.\nXXXXXXX.\n........", "first": "B", "key": "fc", "kos": ["ba", "ca", "da", "bb", "db", "ac"], "nmoves": 11, "rnodes": 1, "pv": ["fc"], "traps": 1}
+{"diag": "+++++@@@X.\n++x++x+@X.\noo+@@@@@X.\nXXXXXXXXX.\n..........", "first": "B", "key": "cc", "kos": [], "nmoves": 11, "rnodes": 5, "pv": ["cc", "da", "eb"], "traps": 1}
+{"diag": "+++++@@@X.\n++x++x+@X.\noo+@@@@@X.\nXXXXXXXXX.\n..........", "first": "W", "key": "cc", "kos": ["ca", "da", "db", "eb"], "nmoves": 11, "rnodes": 1, "pv": ["cc"], "traps": 10}
+{"diag": "++++@X.\n++x+@X.\n+@@@@X.\nXX+XXX.\n.XXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "ca", "ac"], "nmoves": 9, "rnodes": 21, "pv": ["bb", "ba", "ca", "da", "db", "ca", "ac", "cd", "aa", "ba", "ca"], "traps": 1}
+{"diag": "+xx+oX.\n++@@+X.\n@+@XXX.\n@@@X...\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["da", "ab", "eb"], "nmoves": 6, "rnodes": 11, "pv": ["bb", "ab", "eb", "da", "aa", "bc", "ba"], "traps": 3}
+{"diag": "+++x+X.\n+++x@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ea", "kos": [], "nmoves": 7, "rnodes": 21, "pv": ["ea", "ba", "cb", "ca", "ab", "aa", "bb"], "traps": 1}
+{"diag": "+++oX.\n+++oX.\nxx@+X.\n+@@XX.\n+@XX..\nXXX...\n......", "first": "W", "key": "bb", "kos": ["ab", "cb", "ad"], "nmoves": 9, "rnodes": 5, "pv": ["bb", "ad", "ae"], "traps": 2}
+{"diag": "++++@X.\n+x++@X.\n+x@@@X.\n+@@XXX.\n+@XX...\nXXX....\n.......", "first": "W", "key": "cb", "kos": ["ba", "ab", "ac"], "nmoves": 10, "rnodes": 13, "pv": ["cb", "ad", "ae", "ba", "ab", "ca", "ac"], "traps": 1}
+{"diag": "++x@@X.\nx+++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["cb"], "nmoves": 5, "rnodes": 3, "pv": ["bb", "cb", "db"], "traps": 1}
+{"diag": "+++++@X.\nx+x++@X.\n@@@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "bb", "kos": ["ba", "ca", "da", "ea", "db", "eb"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+++++oX.\nx+x++oX.\n@+@@@XX.\n@@@XXX..\nXXXX....\n........", "first": "B", "key": "bb", "kos": ["ba", "ca", "da", "ea", "db", "eb", "bc"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+++++oX.\nx+x++oX.\n@+@@@XX.\n@@@XXX..\nXXXX....\n........", "first": "W", "key": "ba", "kos": ["ca", "da", "bb", "db"], "nmoves": 9, "rnodes": 55, "pv": ["ba", "bb", "db", "da", "ca", "aa", "ca", "ba", "eb", "bc", "ca"], "traps": 4}
+{"diag": "++x+x+X.\n++++@@X.\n+@@@@XX.\nXXXXXX..\n........", "first": "W", "key": "fa", "kos": ["da"], "nmoves": 9, "rnodes": 43, "pv": ["fa", "bb", "cb", "da", "ab", "ba", "ac", "aa", "db"], "traps": 0}
+{"diag": "++++@X.\n+++@@X.\n+x+@+X.\noo+@XX.\nXXXXX..\n.......", "first": "W", "key": "cd", "kos": ["ca", "ab", "bb"], "nmoves": 11, "rnodes": 17, "pv": ["cd", "cb", "ab", "ac", "bb", "ba", "cc"], "traps": 3}
+{"diag": "++++@X.\nxx++@X.\n+@@@@X.\n@@X+XX.\nXXXXX..\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 8, "rnodes": 11, "pv": ["cb", "ca", "db", "da", "ba", "ac", "dd"], "traps": 2}
+{"diag": "+++++X.\n+x++@X.\n@@++@X.\nX@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "cb", "kos": ["ca", "ea", "db"], "nmoves": 10, "rnodes": 33, "pv": ["cb", "ab", "ea", "db", "da", "ba", "cc", "ca", "aa", "ba", "ca", "aa", "dc"], "traps": 2}
+{"diag": "+++@@X.\nx+++@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ac", "kos": ["ba", "cb"], "nmoves": 7, "rnodes": 21, "pv": ["ac", "cb", "ba", "bb", "ca", "aa", "db", "ab", "bb"], "traps": 2}
+{"diag": "+++++X.\n++++@X.\nox+@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "W", "key": "bb", "kos": ["ba", "ca", "da", "ea", "ab", "cb", "ad"], "nmoves": 11, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+x+++oX.\n+++++oX.\n+@@@@XX.\nXXXXXX..\n........", "first": "W", "key": "eb", "kos": ["ca"], "nmoves": 10, "rnodes": 5, "pv": ["eb", "ab", "da"], "traps": 1}
+{"diag": "++++X.\nxx+@X.\n+@+@X.\n+@@@X.\n@@XXX.\nXXX...\n......", "first": "B", "key": "cb", "kos": [], "nmoves": 8, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "+x+@X..\n+++@XX.\n@+@@+X.\n@@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+x+@X..\n+++@XX.\n@+@@+X.\n@@@XXX.\nXXXX...\n.......", "first": "W", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "+++x+oX.\nx++++oX.\n@@@@@XX.\nXX+XXX..\n.XXX....\n........", "first": "W", "key": "ca", "kos": ["bb", "eb"], "nmoves": 9, "rnodes": 25, "pv": ["ca", "ba", "cb", "eb", "bb", "cd", "aa"], "traps": 0}
+{"diag": "++++++X.\n+x+++oX.\n@@@@+oX.\nXXXXXXX.\n........", "first": "W", "key": "cb", "kos": ["ba", "ea", "ab", "db", "ec"], "nmoves": 11, "rnodes": 33, "pv": ["cb", "ba", "fa", "ec", "eb", "da", "ca", "db", "ea", "da", "db", "ab", "aa"], "traps": 3}
+{"diag": "++x@X.\nx++@X.\n+++@X.\n@@@@X.\nXXXXX.\n......", "first": "B", "key": "cb", "kos": ["bb", "bc"], "nmoves": 7, "rnodes": 7, "pv": ["cb", "bb", "bc", "ba", "aa"], "traps": 2}
+{"diag": "+++++X.\n+++xoX.\n@@@@+X.\nXXX+XX.\n..XXX..\n.......", "first": "W", "key": "da", "kos": [], "nmoves": 10, "rnodes": 15, "pv": ["da", "ea", "cb", "ec", "ba", "ab", "db"], "traps": 1}
+{"diag": "++x++X.\n++x@@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "bb", "kos": ["ba"], "nmoves": 6, "rnodes": 21, "pv": ["bb", "ba", "da", "ea", "aa", "ba", "ca"], "traps": 2}
+{"diag": "+x++x+X.\n++@@@@X.\n@@@XXXX.\n+XXX....\nXX......\n........", "first": "B", "key": "fa", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["fa"], "traps": 4}
+{"diag": "+++x@X.\n+++x@X.\n++++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 10, "rnodes": 11, "pv": ["bb", "cb", "cc", "dc", "ca", "ba", "aa"], "traps": 2}
+{"diag": "+x++++oX.\n+x+++@+X.\n+@@@@@XX.\nXXXXXXX..\n.........", "first": "B", "key": "ea", "kos": ["da", "fa", "ab", "cb", "db", "eb", "gb", "ac"], "nmoves": 11, "rnodes": 1, "pv": ["ea"], "traps": 4}
+{"diag": "+++++@X.\nxx++@@X.\n+++@@XX.\n+@@@XX..\nXXXXX...\n........", "first": "B", "key": "cb", "kos": ["ca", "da", "ad"], "nmoves": 11, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "+++++@X.\nxx++@@X.\n+++@@XX.\n+@@@XX..\nXXXXX...\n........", "first": "W", "key": "cb", "kos": ["da", "ad"], "nmoves": 11, "rnodes": 1, "pv": ["cb"], "traps": 6}
+{"diag": "+++++X.\n+++x@X.\n++++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "da", "ea", "ab", "cb", "bc", "cc"], "nmoves": 12, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++++X.\n+++oX.\n++@+X.\nxx@XX.\n@@@X..\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ba", "da", "ab", "dc"], "nmoves": 10, "rnodes": 3, "pv": ["bb", "bc", "cb"], "traps": 2}
+{"diag": "+++x+X.\n++++oX.\n@@@@+X.\nX+XXXX.\nXXX....\n.......", "first": "W", "key": "ea", "kos": [], "nmoves": 10, "rnodes": 5, "pv": ["ea", "db", "ec"], "traps": 1}
+{"diag": "++@@X.\n+++@X.\n+++@X.\noo+@X.\nXXXXX.\n......", "first": "B", "key": "cd", "kos": ["bb", "bc"], "nmoves": 9, "rnodes": 11, "pv": ["cd", "cc", "bb", "ab", "bc", "ba", "ac"], "traps": 2}
+{"diag": "++++X.\n++++X.\n++x@X.\n@@@@X.\nXXXXX.\n......", "first": "W", "key": "cb", "kos": [], "nmoves": 10, "rnodes": 61, "pv": ["cb", "bb", "ba", "ca", "da", "db", "bc", "ab", "ca", "aa", "ac"], "traps": 0}
+{"diag": "++++++@X.\n++xx@@@X.\noo+@@XXX.\nXXXXXX...\n.........", "first": "W", "key": "cc", "kos": [], "nmoves": 9, "rnodes": 5, "pv": ["cc", "ab", "bb"], "traps": 2}
+{"diag": "++xooX.\n+++++X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ab", "kos": ["ba", "cb", "eb", "ac"], "nmoves": 8, "rnodes": 55, "pv": ["ab", "ba", "eb", "bb", "cb", "ac", "aa", "ba", "bb"], "traps": 0}
+{"diag": "+++++X.\n++x@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["ba"], "nmoves": 7, "rnodes": 31, "pv": ["bb", "ba", "ab", "ca", "ea", "aa", "bb", "ab", "da", "cb", "bb"], "traps": 1}
+{"diag": "++x+@X.\n++++@X.\n++@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ab", "cb", "bc", "ad"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "+++++X.\n@++ooX.\n@@++XX.\nX@@@X..\nXX+XX..\n.XXX...\n.......", "first": "B", "key": "dc", "kos": [], "nmoves": 10, "rnodes": 9, "pv": ["dc", "cb", "ba", "ca", "ea"], "traps": 2}
+{"diag": "+x++X.\n+++@X.\n+++@X.\n++@@X.\nooXXX.\nXXX...\n......", "first": "W", "key": "bc", "kos": ["bb", "bd"], "nmoves": 11, "rnodes": 13, "pv": ["bc", "cb", "da", "bd", "ad", "ab", "bb"], "traps": 1}
+{"diag": "+x+@@X.\n++++@X.\n+x+@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 8, "rnodes": 9, "pv": ["cb", "ab", "ac", "cc", "bb"], "traps": 2}
+{"diag": "+++++X.\n+++@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "W", "key": "bb", "kos": [], "nmoves": 9, "rnodes": 29, "pv": ["bb", "ca", "ba", "ab", "ac", "da", "ea"], "traps": 3}
+{"diag": "+++x++X.\n+++@++X.\n@@@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "ea", "kos": ["ba", "ca", "fb"], "nmoves": 10, "rnodes": 55, "pv": ["ea", "ca", "bb", "ab", "ba", "fb", "fa", "cb", "eb"], "traps": 0}
+{"diag": "+xx+oX.\n++@+oX.\n@@@@+X.\nXXXXXX.\n.......", "first": "W", "key": "ec", "kos": ["aa", "bb"], "nmoves": 6, "rnodes": 7, "pv": ["ec", "ab", "da", "bb", "aa"], "traps": 3}
+{"diag": "+++@X.\nx+x@X.\n+@@@X.\n@@@@X.\nXXXXX.\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 5, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++++x@X.\n+++++@X.\n++@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "bb", "kos": ["ba", "da", "ab", "cb", "ac", "bc"], "nmoves": 11, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x+++@X.\n+++x@@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "W", "key": "cb", "kos": ["cc"], "nmoves": 8, "rnodes": 9, "pv": ["cb", "da", "cc", "ab", "ca"], "traps": 2}
+{"diag": "++++X.\nx++@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ba", "ca", "da", "cb", "ac", "bc"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 6}
+{"diag": "++++X.\nx++@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 8, "rnodes": 13, "pv": ["bb", "da", "ba", "ac", "ca", "bc", "aa"], "traps": 2}
+{"diag": "++x++oX.\n++x++oX.\n@@@@++X.\nXXXXXXX.\n........", "first": "W", "key": "db", "kos": ["ba", "da", "bb", "eb", "ec"], "nmoves": 10, "rnodes": 1, "pv": ["db"], "traps": 3}
+{"diag": "+++oX.\n+x+oX.\n++@+X.\n@@@XX.\nX+XX..\nXXX...\n......", "first": "W", "key": "ab", "kos": ["cb"], "nmoves": 9, "rnodes": 33, "pv": ["ab", "cb", "dc", "aa", "ba", "ac", "bc"], "traps": 1}
+{"diag": "++++X.\n+++oX.\n@x+oX.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 0}
+{"diag": "++@@X.\nx++@X.\n++@@X.\n+@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["aa", "ba", "cb", "ac", "bc", "ad"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 6}
+{"diag": "+++++X.\n++++oX.\nx++@+X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "cb", "kos": ["ea", "bb"], "nmoves": 12, "rnodes": 59, "pv": ["cb", "db", "bb", "ab", "bc", "ca", "da", "ea", "aa", "cc", "ec", "ba", "da"], "traps": 2}
+{"diag": "++++X.\n+++@X.\nx+@@X.\n++@XX.\n@@@X..\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ba", "da", "cb", "bc"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "++xx+XX.\n++++@+X.\n@@@@@XX.\nXXXXXX..\n........", "first": "W", "key": "ea", "kos": [], "nmoves": 8, "rnodes": 23, "pv": ["ea", "cb", "bb", "ba", "db", "fb", "aa", "ba", "ca"], "traps": 0}
+{"diag": "+++x+X.\n@x+++X.\n@@+@@X.\nX@@@XX.\nXXXXX..\n.......", "first": "W", "key": "cb", "kos": ["ea", "eb"], "nmoves": 8, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "+x+x@XX.\n++++@+X.\n@@@@@XX.\nXXXXXX..\n........", "first": "W", "key": "cb", "kos": ["aa", "ca", "bb", "db"], "nmoves": 7, "rnodes": 5, "pv": ["cb", "ab", "ca"], "traps": 3}
+{"diag": "+++++@X.\n++x++@X.\n+@@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "bb", "kos": [], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++++@XX.\nx+++x@+X.\noo+@@@XX.\nXXXXXXX..\n.........", "first": "B", "key": "cc", "kos": ["ba", "bb", "cb", "db", "gb"], "nmoves": 10, "rnodes": 1, "pv": ["cc"], "traps": 4}
+{"diag": "+x+++oX.\n+++x+oX.\n+@@@@+X.\nXXXXXXX.\n........", "first": "W", "key": "cb", "kos": ["ca", "da", "ab", "bb", "eb"], "nmoves": 10, "rnodes": 9, "pv": ["cb", "ab", "da", "eb", "ac", "fc", "ea"], "traps": 2}
+{"diag": "++++X..\n+++@XX.\n++@@+X.\n@@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "da"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x++@XX.\n+++@@+X.\n@@@@+XX.\nXXXXXX..\n........", "first": "W", "key": "ca", "kos": ["aa", "bb", "cb", "fb", "ec"], "nmoves": 8, "rnodes": 1, "pv": ["ca"], "traps": 3}
+{"diag": "++@@X.\nx++@X.\n++@@X.\noo+XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["bc", "cd"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "++@@X.\nx++@X.\n++@@X.\noo+XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++++@@X.\n+xx+@@X.\n+@@@@XX.\n@@XXXX..\n+XX.....\nXX......\n........", "first": "B", "key": "ab", "kos": ["aa", "ba", "ca", "da", "ac", "ae"], "nmoves": 8, "rnodes": 11, "pv": ["ab", "ca", "db", "da", "ba", "ac", "ae"], "traps": 2}
+{"diag": "++++@X.\n+x+@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "W", "key": "ca", "kos": ["ba", "ab"], "nmoves": 6, "rnodes": 1, "pv": ["ca"], "traps": 4}
+{"diag": "+++++X.\n+++@@X.\nox@@XX.\no+@XX..\nXXXX...\n.......", "first": "W", "key": "bd", "kos": ["bb"], "nmoves": 9, "rnodes": 1, "pv": ["bd"], "traps": 4}
+{"diag": "+++@X.\n++x@X.\no+@@X.\no+@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+++++@X.\n+x+++@X.\n+@@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "ac", "kos": ["ba", "da", "ea", "ab", "cb", "db"], "nmoves": 10, "rnodes": 5, "pv": ["ac", "cb", "db"], "traps": 2}
+{"diag": "+++++@X.\n+x++x@X.\n+@@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "ac", "kos": ["ba", "ab", "cb"], "nmoves": 9, "rnodes": 5, "pv": ["ac", "cb", "db"], "traps": 2}
+{"diag": "+xx+@X.\n++@@@X.\n++@XXX.\n+@@X...\nXXXX...\n.......", "first": "W", "key": "ad", "kos": ["bb"], "nmoves": 7, "rnodes": 45, "pv": ["ad", "bb", "ab", "aa", "ac", "bc", "da", "ba", "bb"], "traps": 2}
+{"diag": "++++@X.\n++x+@X.\n+x@@@X.\n+@@XXX.\n@@XX...\nXXX....\n.......", "first": "B", "key": "bb", "kos": ["ba", "ab", "ac"], "nmoves": 9, "rnodes": 5, "pv": ["bb", "ca", "db", "ba", "da"], "traps": 3}
+{"diag": "++++@X.\n++x+@X.\n+x@@@X.\n+@@XXX.\n@@XX...\nXXX....\n.......", "first": "W", "key": "bb", "kos": ["ba", "ca", "da", "ab", "db", "ac"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++++@X.\nx+++@X.\n++x+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "cb", "kos": ["ca", "db"], "nmoves": 10, "rnodes": 53, "pv": ["cb", "bc", "bb", "ca", "db", "da", "ba", "ac", "dc"], "traps": 2}
+{"diag": "+x+++@X.\n+++++@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "B", "key": "cc", "kos": ["da", "ea", "ab", "cb", "db"], "nmoves": 10, "rnodes": 1, "pv": ["cc"], "traps": 6}
+{"diag": "+x++@X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "W", "key": "ca", "kos": ["aa", "bb", "cb"], "nmoves": 6, "rnodes": 3, "pv": ["ca", "cb", "bb"], "traps": 3}
+{"diag": "+++++@X.\n++++x@X.\n+oo+@@X.\nXXXXXXX.\n........", "first": "W", "key": "dc", "kos": ["db"], "nmoves": 11, "rnodes": 9, "pv": ["dc", "bb", "ac", "cb", "db"], "traps": 2}
+{"diag": "+++x@X.\n++x+@X.\n@@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "B", "key": "bb", "kos": ["ba", "ab"], "nmoves": 7, "rnodes": 5, "pv": ["bb", "ba", "ab", "db", "ed"], "traps": 1}
+{"diag": "+++x+X.\n++++@X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "cb", "kos": ["ba", "ea", "bb", "bc"], "nmoves": 11, "rnodes": 5, "pv": ["cb", "bb", "ea", "cc", "ac"], "traps": 1}
+{"diag": "+@@@X.\nxx+@X.\n+o+@X.\noo+@X.\nX+XXX.\nXXX...\n......", "first": "B", "key": "cd", "kos": [], "nmoves": 6, "rnodes": 1, "pv": ["cd"], "traps": 4}
+{"diag": "+@@@X.\nxx+@X.\n+o+@X.\noo+@X.\nX+XXX.\nXXX...\n......", "first": "W", "key": "cd", "kos": [], "nmoves": 6, "rnodes": 1, "pv": ["cd"], "traps": 4}
+{"diag": "++++@X.\n++++@X.\nx+@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ad"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "+++++X.\n++++@X.\n+@@@@X.\nXX+XXX.\n.XXX...\n.......", "first": "B", "key": "da", "kos": ["ba", "ca", "ea", "ab", "bb", "cb", "ac"], "nmoves": 11, "rnodes": 1, "pv": ["da"], "traps": 4}
+{"diag": "+++@X..\n+++@XX.\n++@@+X.\n+@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ab", "ad"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x+@X.\n+++@X.\no+@@X.\n+@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ab", "ad"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 6}
+{"diag": "+x+@X.\n+++@X.\no+@@X.\n+@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++x++X.\n+x++@X.\n@@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "W", "key": "cb", "kos": ["ba", "ea", "ab"], "nmoves": 8, "rnodes": 25, "pv": ["cb", "ea", "ba", "aa", "ab", "ba", "da", "ca", "ba"], "traps": 2}
+{"diag": "+++@@@X.\n+xx++@X.\n+@@@@@X.\n+@XXXXX.\nXXX.....\n........", "first": "B", "key": "ab", "kos": ["ca", "db", "ac", "ad"], "nmoves": 8, "rnodes": 1, "pv": ["ab"], "traps": 3}
+{"diag": "+++x+X.\n++@+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "ea", "kos": [], "nmoves": 7, "rnodes": 5, "pv": ["ea", "ab", "ba"], "traps": 2}
+{"diag": "+x@X.\n++@X.\n+x@X.\n++@X.\n@@@X.\nXXXX.\n.....", "first": "B", "key": "bb", "kos": ["ab", "ac", "ad", "bd"], "nmoves": 6, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "++++++XX.\nx+x@@@+X.\n+@@@XXXX.\nXXXXX....\n.........", "first": "W", "key": "bb", "kos": [], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "+x@@X.\n+++@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 6, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++@@X.\n++x+@X.\n++@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "ab", "bc", "ad"], "nmoves": 9, "rnodes": 23, "pv": ["bb", "ab", "ad", "ba", "bc", "ca", "ac", "aa", "db"], "traps": 2}
+{"diag": "++x+@X.\n+@+@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "W", "key": "ba", "kos": ["aa", "da", "cb"], "nmoves": 5, "rnodes": 1, "pv": ["ba"], "traps": 4}
+{"diag": "+++@@X.\n++xx@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 5, "rnodes": 13, "pv": ["bb", "ab", "ba", "aa", "ca"], "traps": 2}
+{"diag": "+++++X.\nx+++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "da", "ea", "cb"], "nmoves": 8, "rnodes": 9, "pv": ["bb", "cb", "da", "ca", "ea", "ba", "db"], "traps": 4}
+{"diag": "++++++X..\n+x++@@XX.\n+@@@@@+X.\nXXXXXXXX.\n.........", "first": "W", "key": "ac", "kos": ["ba", "ab", "cb"], "nmoves": 11, "rnodes": 1, "pv": ["ac"], "traps": 3}
+{"diag": "++++@X.\n+x++@X.\nx+@+@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ad", "kos": ["ba", "ab", "cb", "db", "bc"], "nmoves": 10, "rnodes": 29, "pv": ["ad", "cb", "db", "aa", "ca", "ba", "da", "bc", "ab"], "traps": 2}
+{"diag": "+++o+X.\n++++@X.\nx++@@X.\n+@@@XX.\nXX+XX..\n.XXX...\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 12, "rnodes": 13, "pv": ["cb", "ad", "bb", "ab", "bc", "ba", "ca", "cc", "aa"], "traps": 2}
+{"diag": "++x+@X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["ba", "ab", "cb"], "nmoves": 6, "rnodes": 9, "pv": ["bb", "ab", "ba", "cb", "aa", "da", "ba"], "traps": 2}
+{"diag": "++x+@X.\nx@+@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "B", "key": "ac", "kos": ["ba", "da", "cb"], "nmoves": 5, "rnodes": 1, "pv": ["ac"], "traps": 4}
+{"diag": "+x+@X.\n+++@X.\n+@@@X.\no++XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": ["ca", "ab", "bd", "cd"], "nmoves": 8, "rnodes": 5, "pv": ["bb", "bd", "ca"], "traps": 2}
+{"diag": "++++@X.\n++x+@X.\n+++@@X.\noo+@XX.\nXXXXX..\n.......", "first": "W", "key": "bb", "kos": ["ca", "ab", "bc", "cd"], "nmoves": 11, "rnodes": 13, "pv": ["bb", "ab", "bc", "cc", "cd"], "traps": 0}
+{"diag": "+++++++X.\nxx+@++@X.\n+@@@@@@X.\nXXXXXXXX.\n.........", "first": "B", "key": "ac", "kos": ["ba", "ca", "da", "ea", "fa", "ga", "cb", "fb"], "nmoves": 11, "rnodes": 13, "pv": ["ac", "ca", "ea", "eb", "fa"], "traps": 4}
+{"diag": "+++++++X.\nxx+@++@X.\n+@@@@@@X.\nXXXXXXXX.\n.........", "first": "W", "key": "ac", "kos": ["ba", "ca", "ea", "fa", "ga", "cb"], "nmoves": 11, "rnodes": 11, "pv": ["ac", "ga", "ea", "fa", "fb", "da", "ca"], "traps": 3}
+{"diag": "++x+@X.\n@x++@X.\n@@+@@X.\nX@@@XX.\nXXXXX..\n.......", "first": "W", "key": "cb", "kos": ["ba", "da", "db", "cc"], "nmoves": 6, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "++x+@X.\n+x++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "ab", "kos": ["da", "cb", "db"], "nmoves": 6, "rnodes": 1, "pv": ["ab"], "traps": 4}
+{"diag": "++x+@X.\n+x++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": ["ba", "ab"], "nmoves": 6, "rnodes": 3, "pv": ["cb", "ab", "ba"], "traps": 2}
+{"diag": "++++@X.\nox+@@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "ba", "kos": ["ca", "ac"], "nmoves": 6, "rnodes": 13, "pv": ["ba", "ac", "ca", "cb", "aa", "da", "ba"], "traps": 2}
+{"diag": "++++@X.\nx+++@X.\n+@@@@X.\nXX+XXX.\n.XXX...\n.......", "first": "W", "key": "ac", "kos": ["ca", "bb"], "nmoves": 9, "rnodes": 39, "pv": ["ac", "cb", "ba", "bb", "ca", "cd", "da", "aa", "db", "ab", "bb"], "traps": 3}
+{"diag": "++x++@XX.\n+x+@@@+X.\n+@@@XXXX.\nXXXXX....\n.........", "first": "W", "key": "ac", "kos": ["ba", "da", "ab", "cb"], "nmoves": 8, "rnodes": 9, "pv": ["ac", "da", "cb", "ab", "ba"], "traps": 4}
+{"diag": "++++@X.\n+++x@X.\noo+@@X.\nXXXXXX.\n.......", "first": "W", "key": "cc", "kos": ["cb"], "nmoves": 8, "rnodes": 1, "pv": ["cc"], "traps": 2}
+{"diag": "++@@XX.\n+++@+X.\n++@@XX.\n+@@XX..\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ab", "ad"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++x+@X.\n++++@X.\noo+@@X.\nXXX+XX.\n..XXX..\n.......", "first": "B", "key": "cc", "kos": ["ba", "ab", "bb", "cb"], "nmoves": 9, "rnodes": 5, "pv": ["cc", "cb", "bb", "ba", "db"], "traps": 2}
+{"diag": "++x+@X.\n++++@X.\noo+@@X.\nXXX+XX.\n..XXX..\n.......", "first": "W", "key": "cb", "kos": ["ba", "bb", "cc"], "nmoves": 9, "rnodes": 1, "pv": ["cb"], "traps": 3}
+{"diag": "++++@@@X.\n++x+x+@X.\noo+@@@@X.\nXXXXXXXX.\n.........", "first": "B", "key": "cc", "kos": ["ba", "da", "ab", "db"], "nmoves": 9, "rnodes": 5, "pv": ["cc", "ca", "db"], "traps": 2}
+{"diag": "++++@@@X.\n++x+x+@X.\noo+@@@@X.\nXXXXXXXX.\n.........", "first": "W", "key": "cc", "kos": ["ca", "db"], "nmoves": 9, "rnodes": 1, "pv": ["cc"], "traps": 4}
+{"diag": "+++@X.\n+++@X.\n+++@X.\noo+@X.\nXXXXX.\n......", "first": "B", "key": "cd", "kos": ["bb", "bc"], "nmoves": 10, "rnodes": 1, "pv": ["cd"], "traps": 3}
+{"diag": "++++@X.\n++x@@X.\n+++@XX.\noo+@X..\nXXXXX..\n.......", "first": "W", "key": "bb", "kos": ["ca", "bc", "cc", "cd"], "nmoves": 10, "rnodes": 5, "pv": ["bb", "cc", "cd"], "traps": 2}
+{"diag": "+++++X.\n++x@@X.\n@+@@XX.\n@@@XX..\nXXXX...\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 8, "rnodes": 31, "pv": ["bb", "ab", "ea", "ba", "da", "ca", "aa", "ba", "ca", "aa", "bc"], "traps": 2}
+{"diag": "+x++@X.\n@x++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 5, "rnodes": 7, "pv": ["cb", "db", "ca", "aa", "da"], "traps": 3}
+{"diag": "+++@X.\n+++@X.\n+x@@X.\n+@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": ["ba", "ad"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++xoX.\n+++oX.\n@+++X.\n@@@@X.\nX+XXX.\nXXX...\n......", "first": "B", "key": "dc", "kos": ["bb", "cb"], "nmoves": 9, "rnodes": 7, "pv": ["dc", "cc", "bb", "cb", "ba"], "traps": 2}
+{"diag": "+++o+X.\n+x++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 7, "rnodes": 23, "pv": ["cb", "ab", "ba", "ca", "ea", "aa", "db"], "traps": 2}
+{"diag": "+x@@X.\n+x+@X.\n++@@X.\n++@XX.\n@@@X..\nXXXX..\n......", "first": "B", "key": "bc", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["bc"], "traps": 4}
+{"diag": "+++++X.\nx+++@X.\n+x+@@X.\n@@@@+X.\nXXXXXX.\n.......", "first": "B", "key": "cb", "kos": ["ba", "ca", "da", "ea", "bb"], "nmoves": 11, "rnodes": 1, "pv": ["cb"], "traps": 9}
+{"diag": "+++++X.\nx+++@X.\n+x+@@X.\n@@@@+X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": [], "nmoves": 11, "rnodes": 1, "pv": ["cb"], "traps": 6}
+{"diag": "+++++@X.\n++x+@@X.\n+@@@@XX.\nXXXXXX..\n........", "first": "B", "key": "bb", "kos": ["da", "ab"], "nmoves": 9, "rnodes": 11, "pv": ["bb", "ac", "ab", "da", "db", "ba", "ea"], "traps": 2}
+{"diag": "+++++@X.\n++x+@@X.\n+@@@@XX.\nXXXXXX..\n........", "first": "W", "key": "bb", "kos": ["ba", "ca", "da", "ab", "db", "ac"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 6}
+{"diag": "++++oX.\n++++oX.\n+x+@XX.\n+x@@X..\n@@@XX..\nXXXX...\n.......", "first": "W", "key": "cb", "kos": [], "nmoves": 11, "rnodes": 13, "pv": ["cb", "ba", "bb", "db", "da"], "traps": 1}
+{"diag": "+x++@X.\n+++@@X.\no++@XX.\nX@@@X..\nXXX+X..\n..XXX..\n.......", "first": "B", "key": "bc", "kos": ["da", "ab", "bb", "cb", "de"], "nmoves": 9, "rnodes": 7, "pv": ["bc", "bb", "ab", "ca", "cb"], "traps": 2}
+{"diag": "+++++@X.\n+++x+@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "W", "key": "cc", "kos": ["da", "cb"], "nmoves": 10, "rnodes": 5, "pv": ["cc", "bb", "cb"], "traps": 2}
+{"diag": "+++++X.\nx++@@X.\n+@@@XX.\n@@XXX..\nXXX....\n.......", "first": "B", "key": "bb", "kos": ["ea"], "nmoves": 8, "rnodes": 19, "pv": ["bb", "ba", "ea", "da", "ac", "ca", "aa", "cb", "ab"], "traps": 1}
+{"diag": "++x+oX.\n++x+oX.\n++@@+X.\n@@@XXX.\nXX+X...\n.XXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "da", "ab", "db", "ac", "bc", "ec", "ce"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "++xx@X.\n++++@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ab", "kos": ["bb", "ac"], "nmoves": 7, "rnodes": 23, "pv": ["ab", "bb", "cb", "ba", "ac", "aa", "db", "ba", "ca"], "traps": 1}
+{"diag": "++++X.\n+++@X.\n++@@X.\n+@@XX.\nX+XX..\nXXX...\n......", "first": "W", "key": "bb", "kos": ["ba", "ab"], "nmoves": 11, "rnodes": 1, "pv": ["bb"], "traps": 0}
+{"diag": "++x++@X.\nox+++@X.\no+@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "bc", "kos": ["aa", "ea", "cb", "db"], "nmoves": 8, "rnodes": 1, "pv": ["bc"], "traps": 6}
+{"diag": "++x++@X.\nox+++@X.\no+@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "bc", "kos": ["da", "cb"], "nmoves": 8, "rnodes": 1, "pv": ["bc"], "traps": 4}
+{"diag": "+++++@X.\nxx+++@X.\n@@@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "cb", "kos": [], "nmoves": 8, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "+x+oX.\n+++oX.\n+x@+X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 7, "pv": ["bb", "cb", "ca", "dc", "aa", "ab", "ac"], "traps": 1}
+{"diag": "++++++X.\n+++x+@X.\n@@@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "fa", "kos": ["cb"], "nmoves": 10, "rnodes": 287, "pv": ["fa", "cb", "da", "ab", "ba", "ca", "ea", "aa", "eb", "bb", "ba"], "traps": 2}
+{"diag": "+x++@X.\n++x+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["aa", "da", "ab", "db"], "nmoves": 6, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x++@X.\n+x++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": ["ca"], "nmoves": 6, "rnodes": 1, "pv": ["cb"], "traps": 3}
+{"diag": "++++X.\nx+xoX.\n++@+X.\n@+@XX.\n@@@X..\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 9, "rnodes": 7, "pv": ["bb", "ca", "ba", "bc", "da"], "traps": 2}
+{"diag": "++++X..\nx++@XX.\n@@+@+X.\nX@@@XX.\nXXXXX..\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 8, "rnodes": 33, "pv": ["cb", "bb", "da", "ba", "ca", "cc", "ec", "aa", "ab"], "traps": 2}
+{"diag": "+++x+oX.\n++x@+oX.\n@@@@XXX.\nXXXXX...\n........", "first": "W", "key": "ba", "kos": ["ca", "bb", "eb"], "nmoves": 7, "rnodes": 17, "pv": ["ba", "ca", "bb", "eb", "ea", "ca", "da"], "traps": 2}
+{"diag": "+x++@X.\n++x@@X.\n@+@@XX.\n@@@XX..\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["aa", "ca", "ab", "bc"], "nmoves": 6, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "++@X..\nx+@XX.\n+@@@X.\n+x+@X.\noo++X.\nX+XXX.\nXXX...\n......", "first": "B", "key": "ce", "kos": [], "nmoves": 9, "rnodes": 1, "pv": ["ce"], "traps": 2}
+{"diag": "+++@@X.\n+x+@@X.\n@@@@@X.\nX+XXXX.\nXXX....\n.......", "first": "W", "key": "ba", "kos": [], "nmoves": 6, "rnodes": 11, "pv": ["ba", "ab", "cb", "bd", "aa"], "traps": 0}
+{"diag": "+++@@X.\n+++@+X.\noo+@@X.\nXXXXXX.\n.......", "first": "W", "key": "ba", "kos": ["bb", "cc"], "nmoves": 8, "rnodes": 13, "pv": ["ba", "cb", "cc", "ab", "bb"], "traps": 2}
+{"diag": "+x+@@X..\n++x+@XX.\n@@@@@+X.\nXXXXXXX.\n........", "first": "B", "key": "bb", "kos": ["ca", "ab"], "nmoves": 6, "rnodes": 11, "pv": ["bb", "ab", "ca", "aa", "fc"], "traps": 2}
+{"diag": "+++@X.\nx++@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 5, "pv": ["bb", "ba", "cb"], "traps": 2}
+{"diag": "+++@X.\nx++@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": ["ba", "cb"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 6}
+{"diag": "++++X.\n+x+@X.\n@++@X.\n@@@@X.\nXXXXX.\n......", "first": "W", "key": "cb", "kos": ["da", "ab"], "nmoves": 8, "rnodes": 7, "pv": ["cb", "ca", "da", "ab", "ba"], "traps": 2}
+{"diag": "+++++X.\n+++x@X.\n@@@@@X.\nX+XXXX.\nXXX....\n.......", "first": "B", "key": "ea", "kos": ["cb"], "nmoves": 9, "rnodes": 7, "pv": ["ea", "cb", "da", "ab", "ba"], "traps": 2}
+{"diag": "+++@X.\n+x+@X.\n+x+@X.\n@@@@X.\nXXXXX.\n......", "first": "B", "key": "ba", "kos": ["aa", "ca", "ab", "cb", "ac", "cc"], "nmoves": 7, "rnodes": 5, "pv": ["ba", "ab", "ac"], "traps": 3}
+{"diag": "++x+oX.\n++@+oX.\n+@@@XX.\nXXXXX..\n.......", "first": "W", "key": "ba", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["ba"], "traps": 1}
+{"diag": "+++++@X.\n++++@@X.\noo+@@XX.\nXXXXXX..\n........", "first": "B", "key": "cc", "kos": ["cb"], "nmoves": 10, "rnodes": 13, "pv": ["cc", "cb", "da", "bb", "db", "ca", "ea"], "traps": 2}
+{"diag": "+++x+@X.\n++x++@X.\n+++@@@X.\n@@@@XXX.\nXXXXX...\n........", "first": "B", "key": "bc", "kos": ["ab", "bb"], "nmoves": 11, "rnodes": 85, "pv": ["bc", "bb", "ab", "ba", "cc", "ac", "ca", "db", "aa", "ba", "bb", "ea", "eb"], "traps": 1}
+{"diag": "++++@X.\n+++@@X.\nx++@XX.\noo+@X..\nXXXXX..\n.......", "first": "B", "key": "bc", "kos": ["ab", "bb", "cb", "cd"], "nmoves": 10, "rnodes": 45, "pv": ["bc", "bb", "ca", "ab", "cd", "ba", "cb"], "traps": 4}
+{"diag": "+++@@@X.\n+x+++@X.\n+@@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "ac", "kos": ["ba", "ab", "cb", "db"], "nmoves": 8, "rnodes": 1, "pv": ["ac"], "traps": 5}
+{"diag": "++++@X.\nx++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["ca"], "nmoves": 6, "rnodes": 9, "pv": ["bb", "ca", "cb", "aa", "da"], "traps": 2}
+{"diag": "+xx+@X.\n++++@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ab", "kos": ["bb", "ac"], "nmoves": 7, "rnodes": 35, "pv": ["ab", "ac", "bb", "cb", "da", "aa", "db", "ba", "ca"], "traps": 1}
+{"diag": "++++@X.\n+x++@X.\n+@x+@X.\nX@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": ["ba", "ca", "ab", "ac"], "nmoves": 9, "rnodes": 5, "pv": ["cb", "ca", "dc", "db", "da"], "traps": 2}
+{"diag": "++++x@X.\no+x++@X.\no+@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "bc", "kos": [], "nmoves": 8, "rnodes": 1, "pv": ["bc"], "traps": 4}
+{"diag": "++++x+X.\n+++++@X.\n@@@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "fa", "kos": ["ba", "ca", "ab", "cb"], "nmoves": 10, "rnodes": 81, "pv": ["fa", "da", "cb", "db", "bb", "ab", "ba", "aa", "eb", "ca", "bb", "ba", "cb"], "traps": 0}
+{"diag": "++@@X..\n+++@XX.\n@+@@+X.\n@@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 5, "pv": ["bb", "ab", "ba"], "traps": 2}
+{"diag": "+++x@X.\n++++@X.\noo+@@X.\nX+XXXX.\nXXX....\n.......", "first": "W", "key": "cc", "kos": [], "nmoves": 9, "rnodes": 7, "pv": ["cc", "ba", "cb", "ab", "ca"], "traps": 3}
+{"diag": "+++++X.\n++x+oX.\n@++@+X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "da", "ea", "ab", "db", "bc", "cc", "ec"], "nmoves": 11, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "+++++@X.\n++++x@X.\noo+@@@X.\nX+XXXXX.\nXXX.....\n........", "first": "B", "key": "cc", "kos": [], "nmoves": 11, "rnodes": 1, "pv": ["cc"], "traps": 4}
+{"diag": "+++++X.\n+++x@X.\n@@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "B", "key": "ea", "kos": ["cb"], "nmoves": 9, "rnodes": 7, "pv": ["ea", "cb", "da", "ab", "ba"], "traps": 2}
+{"diag": "+++x+@X.\nx++@@@X.\n++@@XXX.\nooXXX...\nXXX.....\n........", "first": "W", "key": "bc", "kos": ["ca", "bb"], "nmoves": 8, "rnodes": 1, "pv": ["bc"], "traps": 4}
+{"diag": "+++@X.\n++@@X.\n++@XX.\n+@@X..\nXXXX..\n......", "first": "B", "key": "ad", "kos": ["ba", "ab", "bb", "ac"], "nmoves": 8, "rnodes": 53, "pv": ["ad", "ab", "ba", "bb", "ac", "aa", "bc", "ca", "ba"], "traps": 2}
+{"diag": "++x++X.\n++++@X.\n+@@@@X.\n@@XXXX.\nXXX....\n.......", "first": "B", "key": "ea", "kos": ["aa", "bb"], "nmoves": 9, "rnodes": 53, "pv": ["ea", "ab", "ba", "da", "db", "cb", "da", "aa", "bb"], "traps": 0}
+{"diag": "++++@X.\nx+@@@X.\n++@XXX.\n+@@X...\nXXXX...\n.......", "first": "B", "key": "ad", "kos": [], "nmoves": 8, "rnodes": 9, "pv": ["ad", "bb", "ac", "ca", "aa", "ba", "bc"], "traps": 2}
+{"diag": "++x@X.\n+++@X.\nx+@@X.\n@@@XX.\nXX+X..\n.XXX..\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 9, "pv": ["bb", "bc", "ab", "cb", "ce"], "traps": 0}
+{"diag": "++x@X.\n+++@X.\nx+@@X.\n@@@XX.\nXX+X..\n.XXX..\n......", "first": "W", "key": "bb", "kos": ["ba", "ab", "cb", "bc"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "+++@X.\n+x@@X.\n++@XX.\n@@@X..\nXXXX..\n......", "first": "B", "key": "ba", "kos": ["aa", "ab", "ac"], "nmoves": 6, "rnodes": 11, "pv": ["ba", "ab", "ca", "ac", "aa", "bc", "ba"], "traps": 2}
+{"diag": "+++xoXX.\nx+@+o+X.\n+@@@+XX.\nXXXXXX..\n........", "first": "B", "key": "ac", "kos": ["ba", "ca"], "nmoves": 8, "rnodes": 1, "pv": ["ac"], "traps": 7}
+{"diag": "+++xoXX.\nx+@+o+X.\n+@@@+XX.\nXXXXXX..\n........", "first": "W", "key": "ac", "kos": [], "nmoves": 8, "rnodes": 1, "pv": ["ac"], "traps": 3}
+{"diag": "++@@X.\n+x@+X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "ab", "kos": [], "nmoves": 6, "rnodes": 11, "pv": ["ab", "ba", "bc", "db", "aa"], "traps": 0}
+{"diag": "++++@X.\n++++@X.\nx+x@@X.\n@@@@XX.\n@@XXX..\nXXX....\n.......", "first": "B", "key": "bc", "kos": ["cb"], "nmoves": 9, "rnodes": 19, "pv": ["bc", "cb", "da", "db", "bb", "ca", "ba", "aa", "da"], "traps": 2}
+{"diag": "++x+@X.\n++x@@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ba", "ab"], "nmoves": 5, "rnodes": 7, "pv": ["bb", "ab", "ba", "aa", "da"], "traps": 3}
+{"diag": "++x++@XX.\n+++x+@+X.\n+@+@@@XX.\nX@@@XXX..\nXXXXX....\n.........", "first": "W", "key": "bb", "kos": ["aa", "ba", "da", "ea", "ab", "cb", "eb", "ac"], "nmoves": 11, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x@@@X.\n++++@X.\n++@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ab", "ad"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++++X.\nox+@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "B", "key": "ba", "kos": ["ca", "ac"], "nmoves": 7, "rnodes": 1, "pv": ["ba"], "traps": 5}
+{"diag": "+++++X.\nox+@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "W", "key": "ba", "kos": [], "nmoves": 7, "rnodes": 5, "pv": ["ba", "ac", "cb"], "traps": 1}
+{"diag": "++++@X.\nx+++@X.\nx+@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "W", "key": "ad", "kos": ["ca", "bb"], "nmoves": 9, "rnodes": 1, "pv": ["ad"], "traps": 3}
+{"diag": "++o+X.\n+++@X.\nxx+@X.\n@@@@X.\nXXXXX.\n......", "first": "W", "key": "bb", "kos": ["ba", "da", "ab"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 1}
+{"diag": "+xooX.\n++++X.\n++@@X.\n+@@@X.\n@@XXX.\nXXX...\n......", "first": "B", "key": "bb", "kos": ["cb", "db", "ac"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++x+@X..\n++++@XX.\n++@@@+X.\nooXXXXX.\nXXX.....\n........", "first": "B", "key": "bc", "kos": ["bb", "cb"], "nmoves": 10, "rnodes": 1, "pv": ["bc"], "traps": 3}
+{"diag": "++x++X.\n++++@X.\n+@@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "B", "key": "ea", "kos": ["aa", "ba", "da", "ab", "bb", "cb", "ac", "ad"], "nmoves": 10, "rnodes": 3, "pv": ["ea", "cb", "da"], "traps": 6}
+{"diag": "+++++X.\n++++@X.\n++@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "da", "ea", "ab", "cb", "ac", "ad"], "nmoves": 12, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++++X..\n+x+@XX.\no++@+X.\n+@@@XX.\nXXXXX..\n.......", "first": "W", "key": "cb", "kos": ["ab"], "nmoves": 10, "rnodes": 49, "pv": ["cb", "bc", "ad", "ab", "ba", "ca", "da"], "traps": 0}
+{"diag": "++++@X.\n++x@@X.\n+@@@+X.\nXXXXXX.\n.......", "first": "B", "key": "ca", "kos": ["ba", "ab", "bb", "ac"], "nmoves": 8, "rnodes": 53, "pv": ["ca", "bb", "ac", "ab", "ba", "aa", "ec", "da", "ca", "ba", "cb"], "traps": 3}
+{"diag": "++@@X.\nx++@X.\no+@@X.\n+@@XX.\nX+XX..\nXXX...\n......", "first": "B", "key": "bb", "kos": ["ad"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "++@@X.\nx++@X.\no+@@X.\n+@@XX.\nX+XX..\nXXX...\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++@@X.\n++++@X.\n+xx@@X.\n@@@@XX.\nXXX+X..\n..XXX..\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 9, "rnodes": 113, "pv": ["cb", "ab", "ac", "ca", "ba", "bb", "aa", "ab", "bb", "db", "de"], "traps": 0}
+{"diag": "+++++X.\n++@@@X.\nx+@XXX.\n+@@X...\nXXXX...\n.......", "first": "W", "key": "ba", "kos": ["ab", "ad"], "nmoves": 9, "rnodes": 35, "pv": ["ba", "bb", "bc", "ab", "ad", "da", "aa", "ab", "ea"], "traps": 3}
+{"diag": "+++ooX.\nx++++X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "eb", "kos": ["ba", "ca", "bb", "cb"], "nmoves": 7, "rnodes": 43, "pv": ["eb", "cb", "ba", "bb", "aa", "ca", "aa", "ab", "db", "ba", "aa"], "traps": 2}
+{"diag": "+++ooX.\nx++++X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "eb", "kos": ["aa", "ba", "bb", "cb"], "nmoves": 7, "rnodes": 21, "pv": ["eb", "cb", "ba", "bb", "ca", "aa", "db", "ab", "bb"], "traps": 3}
+{"diag": "++++oX.\nx@x+oX.\n+@@@+X.\nXXXXXX.\n.......", "first": "W", "key": "ca", "kos": ["aa", "db", "ac", "ec"], "nmoves": 7, "rnodes": 7, "pv": ["ca", "db", "ac", "ec", "da"], "traps": 2}
+{"diag": "+x+++@@X.\n++++x+@X.\nooo+@@@X.\nXXXXXXXX.\n.........", "first": "B", "key": "dc", "kos": ["da", "ea", "ab", "cb", "db"], "nmoves": 10, "rnodes": 1, "pv": ["dc"], "traps": 8}
+{"diag": "+x+++@@X.\n++++x+@X.\nooo+@@@X.\nXXXXXXXX.\n.........", "first": "W", "key": "dc", "kos": [], "nmoves": 10, "rnodes": 1, "pv": ["dc"], "traps": 3}
+{"diag": "+++++X..\n+x+x@XX.\no++@@+X.\no+@@XXX.\nXXXXX...\n........", "first": "W", "key": "cb", "kos": [], "nmoves": 11, "rnodes": 55, "pv": ["cb", "bd", "bc", "ab", "cc", "da", "ea", "ca", "ba"], "traps": 0}
+{"diag": "+x++oXX.\n++x+o+X.\n@@@@+XX.\nXXXXXX..\n........", "first": "W", "key": "bb", "kos": ["ca", "db"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "+++@X.\nx++@X.\n+@+@X.\nX@@@X.\nXXXXX.\n......", "first": "W", "key": "ac", "kos": ["ba", "cb"], "nmoves": 7, "rnodes": 21, "pv": ["ac", "cb", "ba", "bb", "ca", "aa", "cc", "ab", "bb"], "traps": 2}
+{"diag": "+++@X.\nx@@@X.\n++@XX.\n+@@X..\nXXXX..\n......", "first": "B", "key": "ac", "kos": ["ad"], "nmoves": 6, "rnodes": 13, "pv": ["ac", "ad", "ba", "bc", "ca"], "traps": 2}
+{"diag": "++++@X.\n+x++@X.\nx+@@@X.\n@@@XXX.\nXXXX...\n.......", "first": "W", "key": "cb", "kos": ["ba", "ca", "da", "ab", "bc"], "nmoves": 8, "rnodes": 21, "pv": ["cb", "ca", "aa", "ab", "da", "bc", "ba"], "traps": 2}
+{"diag": "+++x++X.\n+++++oX.\n@@@@+oX.\nXXXXXXX.\n........", "first": "W", "key": "eb", "kos": ["ea", "fa", "db"], "nmoves": 11, "rnodes": 363, "pv": ["eb", "ba", "cb", "ca", "ab", "ec", "db", "fa", "ea", "aa", "bb", "ba", "ca"], "traps": 2}
+{"diag": "+++@@X.\n++++@X.\noxx@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "B", "key": "cb", "kos": ["ab", "bb", "ad"], "nmoves": 8, "rnodes": 11, "pv": ["cb", "ad", "ab", "ba", "ca"], "traps": 1}
+{"diag": "+++x+oX.\n@++@xoX.\n@@@@++X.\nXXXXXXX.\n........", "first": "B", "key": "ba", "kos": [], "nmoves": 8, "rnodes": 35, "pv": ["ba", "ca", "cb", "bb", "ca", "ec", "fc", "ea", "eb"], "traps": 1}
+{"diag": "+x+@X.\nx++@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 5, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "+++++X..\n++++@XX.\n+@@@@+X.\nXXXXXXX.\n........", "first": "B", "key": "da", "kos": ["ba", "ca", "ea", "ab", "bb", "cb", "ac"], "nmoves": 11, "rnodes": 1, "pv": ["da"], "traps": 4}
+{"diag": "+++x++@X.\n++++x@@X.\noo+@@@XX.\nXXXXXXX..\n.........", "first": "B", "key": "cc", "kos": ["cb", "db"], "nmoves": 10, "rnodes": 9, "pv": ["cc", "db", "ea", "cb", "bb", "ba", "ab"], "traps": 2}
+{"diag": "+++@X.\n++x@X.\n++@@X.\noo+XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 8, "rnodes": 15, "pv": ["bb", "bc", "ab", "ba", "ca", "ac", "cd"], "traps": 2}
+{"diag": "+++++X.\nox+x@X.\no+@@@X.\n+@@XXX.\nXX+X...\n.XXX...\n.......", "first": "B", "key": "cb", "kos": ["ba", "ea"], "nmoves": 9, "rnodes": 7, "pv": ["cb", "ba", "ea", "bc", "da"], "traps": 2}
+{"diag": "+++x+XX.\n+x@+@+X.\n@@@@@XX.\nXXXXXX..\n........", "first": "B", "key": "ea", "kos": [], "nmoves": 7, "rnodes": 5, "pv": ["ea", "ab", "ba"], "traps": 2}
+{"diag": "+x++oX.\n++++oX.\n@@+@XX.\nX@@@X..\nX+XXX..\nXXX....\n.......", "first": "B", "key": "db", "kos": ["da", "cb"], "nmoves": 9, "rnodes": 57, "pv": ["db", "cb", "ca", "bb", "aa", "da", "db", "ab", "da", "ea", "eb"], "traps": 2}
+{"diag": "+x++oX.\n++++oX.\n@@+@XX.\nX@@@X..\nX+XXX..\nXXX....\n.......", "first": "W", "key": "cb", "kos": ["aa", "ca", "bb", "db"], "nmoves": 9, "rnodes": 3, "pv": ["cb", "ca", "db"], "traps": 2}
+{"diag": "+x+oX.\n+++oX.\n@@++X.\nX@@@X.\nXXXXX.\n......", "first": "W", "key": "dc", "kos": ["bb"], "nmoves": 7, "rnodes": 33, "pv": ["dc", "cb", "ab", "bb", "ca", "aa", "cc", "ba", "bb"], "traps": 2}
+{"diag": "++x++X.\n++++oX.\n@@@@+X.\nXXXXXX.\n.......", "first": "W", "key": "ba", "kos": ["da", "ea", "cb"], "nmoves": 9, "rnodes": 1, "pv": ["ba"], "traps": 1}
+{"diag": "++o+XX.\n+++@+X.\n+x@@XX.\n@@@XX..\nXXXX...\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 8, "rnodes": 5, "pv": ["bb", "ab", "ba"], "traps": 2}
+{"diag": "+++++oX.\n+x+x@+X.\n@@@@@XX.\nXXXXXX..\n........", "first": "B", "key": "cb", "kos": [], "nmoves": 8, "rnodes": 27, "pv": ["cb", "ab", "da", "ba", "fb", "ca", "aa", "ba", "ea"], "traps": 2}
+{"diag": "+++x@X..\no+x+@XX.\no+@@@+X.\no+@XXXX.\nXXXX....\n........", "first": "B", "key": "bd", "kos": ["ba"], "nmoves": 8, "rnodes": 39, "pv": ["bd", "bc", "ba", "db", "ca", "fc", "bb", "aa", "ca", "ba", "cb", "bb", "da"], "traps": 1}
+{"diag": "+x++@X.\n+x+@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "ca", "kos": ["da", "cb"], "nmoves": 5, "rnodes": 1, "pv": ["ca"], "traps": 4}
+{"diag": "+++x+X.\n++++oX.\n@@++oX.\nX@@@+X.\nXXXXXX.\n.......", "first": "B", "key": "db", "kos": ["ba", "ca", "cb", "dc"], "nmoves": 11, "rnodes": 25, "pv": ["db", "dc", "cb", "ea", "bb", "ab", "ba", "aa", "ed"], "traps": 4}
+{"diag": "++ooX.\nx+++X.\n@+@@X.\n@@@@X.\nX+XXX.\nXXX...\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "++ooX.\nx+++X.\n@+@@X.\n@@@@X.\nX+XXX.\nXXX...\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "+++@@X.\n++x+@X.\noo+@@X.\nXXXXXX.\n.......", "first": "W", "key": "cc", "kos": [], "nmoves": 7, "rnodes": 95, "pv": ["cc", "ab", "ba", "bb", "ca", "aa", "db", "ab", "bb"], "traps": 0}
+{"diag": "+oox+X.\n++x+@X.\n++@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ea", "db"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 6}
+{"diag": "++++@X.\n+++x@X.\nx+++@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "bb", "kos": ["ab", "cb", "bc"], "nmoves": 11, "rnodes": 73, "pv": ["bb", "bc", "cb", "ad", "da", "ba", "ab", "cc", "dc", "ca", "aa", "ca", "ba"], "traps": 2}
+{"diag": "++x@@X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["aa", "ba", "ab"], "nmoves": 5, "rnodes": 7, "pv": ["bb", "ab", "ba", "aa", "cb"], "traps": 3}
+{"diag": "++x@@X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "W", "key": "ba", "kos": ["bb"], "nmoves": 5, "rnodes": 7, "pv": ["ba", "bb", "cb", "aa", "ab"], "traps": 2}
+{"diag": "+++x++X.\n++x+@@X.\no+@@@XX.\n+@@XXX..\nXXXX....\n........", "first": "B", "key": "bb", "kos": ["ba", "ea", "fa", "ab", "ad"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 7}
+{"diag": "+++x++X.\n++x+@@X.\no+@@@XX.\n+@@XXX..\nXXXX....\n........", "first": "W", "key": "bb", "kos": ["ba", "fa", "ab", "db", "ad"], "nmoves": 10, "rnodes": 9, "pv": ["bb", "ba", "ab", "ea", "fa"], "traps": 1}
+{"diag": "+++++@X.\n+x+x@@X.\n+@++@+X.\nX@@@@XX.\nXXXXXX..\n........", "first": "B", "key": "cb", "kos": ["aa", "ba", "ca", "da", "ea", "ab", "ac", "cc", "fc"], "nmoves": 11, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "+++@XX.\n+xx@+X.\n+@@@XX.\n+@XXX..\nXXX....\n.......", "first": "W", "key": "ab", "kos": [], "nmoves": 7, "rnodes": 9, "pv": ["ab", "ad", "ba", "ac", "ca", "bb", "cb"], "traps": 1}
+{"diag": "++@@@X.\n+x++@X.\nx+@@@X.\n@@@XXX.\nXXXX...\n.......", "first": "B", "key": "ba", "kos": ["cb", "bc"], "nmoves": 6, "rnodes": 15, "pv": ["ba", "ab", "bc", "cb", "db"], "traps": 1}
+{"diag": "+x++@X.\n++++@X.\n+++@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bc", "kos": ["bb", "cb", "ad"], "nmoves": 11, "rnodes": 33, "pv": ["bc", "cb", "bb", "ad", "da", "ca", "cc", "db", "ac", "aa", "da"], "traps": 1}
+{"diag": "+++++X.\nx+++@X.\n+x@@@X.\n@@@X+X.\nXXXXXX.\n.......", "first": "B", "key": "cb", "kos": ["ca", "da", "ea"], "nmoves": 10, "rnodes": 7, "pv": ["cb", "bb", "ba", "ac", "bb"], "traps": 2}
+{"diag": "+++x+XX.\n++++@+X.\n@@@@@XX.\nXXXXXX..\n........", "first": "W", "key": "ea", "kos": ["ca", "bb"], "nmoves": 9, "rnodes": 7, "pv": ["ea", "ba", "cb", "ab", "ca"], "traps": 2}
+{"diag": "++x@X.\n+++@X.\n++@@X.\n+@@@X.\nXXXXX.\n......", "first": "W", "key": "bb", "kos": ["ba", "ab", "ad"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++x+@X.\n++++@X.\noo+@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": ["ba", "cc"], "nmoves": 8, "rnodes": 35, "pv": ["cb", "ba", "cc", "ab", "da", "bb", "aa"], "traps": 2}
+{"diag": "+++++X.\n+xx+@X.\n++@+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "db", "kos": ["ea", "ab"], "nmoves": 10, "rnodes": 5, "pv": ["db", "da", "ea"], "traps": 2}
+{"diag": "+x+@@X.\n++@@@X.\n++@XXX.\n@@@X...\nXXXX...\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 6, "rnodes": 11, "pv": ["bb", "ab", "ca", "ac", "aa", "bc", "ba"], "traps": 2}
+{"diag": "++x+@X.\nx++@@X.\n@@@@+X.\n+XXXXX.\nXX.....\n.......", "first": "W", "key": "ba", "kos": ["aa", "da", "bb", "cb"], "nmoves": 7, "rnodes": 1, "pv": ["ba"], "traps": 3}
+{"diag": "+++x+X.\nx+++@X.\n+++@@X.\n@@@@+X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": ["ea", "bb", "ac"], "nmoves": 11, "rnodes": 1, "pv": ["cb"], "traps": 6}
+{"diag": "+x@@X.\n+++@X.\n+++@X.\n+@@@X.\nXXXXX.\n......", "first": "B", "key": "bb", "kos": ["ab", "ac", "bc", "ad"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++++@X.\n++@@@X.\n+x+@XX.\n+oo+X..\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["ad"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++x++X.\n+++ooX.\n++@+XX.\n@@@XX..\nXXXX...\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++x++X.\n+++ooX.\n++@+XX.\n@@@XX..\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "da", "ea", "ab", "cb", "bc", "dc"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 8}
+{"diag": "+++++@X.\nx++++@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "B", "key": "cb", "kos": ["ba", "ca", "da", "ea", "bb", "db", "eb", "cc"], "nmoves": 10, "rnodes": 5, "pv": ["cb", "bb", "cc"], "traps": 2}
+{"diag": "++++++X.\nox@++@X.\no+@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "bc", "kos": ["ba", "ca", "da", "ea", "fa", "db", "eb"], "nmoves": 9, "rnodes": 1, "pv": ["bc"], "traps": 7}
+{"diag": "+x+++@X.\n++++@@X.\noo+@@XX.\nXXXXXX..\n........", "first": "B", "key": "cc", "kos": ["da", "ab", "cb"], "nmoves": 9, "rnodes": 9, "pv": ["cc", "cb", "da", "bb", "db"], "traps": 2}
+{"diag": "+++@X.\nx+@@X.\n+@@@X.\n@@XXX.\nXXX...\n......", "first": "W", "key": "ba", "kos": ["aa", "bb"], "nmoves": 5, "rnodes": 1, "pv": ["ba"], "traps": 2}
+{"diag": "+++x+X.\n++@@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "ea", "kos": [], "nmoves": 6, "rnodes": 13, "pv": ["ea", "ba", "ab", "aa", "ca", "bb", "ab"], "traps": 2}
+{"diag": "+x+ooX.\n+++x+X.\n@+++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "eb", "kos": ["bb", "cb"], "nmoves": 9, "rnodes": 5, "pv": ["eb", "ab", "cb"], "traps": 2}
+{"diag": "+++++X.\n+x+@@X.\n+@@@XX.\n@@XXX..\nXXX....\n.......", "first": "B", "key": "ab", "kos": ["aa", "ba", "ca", "da", "ea"], "nmoves": 8, "rnodes": 19, "pv": ["ab", "ba", "ea", "da", "ac", "ca", "aa", "cb", "ab"], "traps": 1}
+{"diag": "+x++X..\n++x@XX.\no+@@+X.\no+@XXX.\n+@@X...\nXXXX...\n.......", "first": "W", "key": "da", "kos": ["bb", "bc"], "nmoves": 9, "rnodes": 9, "pv": ["da", "bc", "ab", "ae", "bb"], "traps": 3}
+{"diag": "++o+X.\n+++@X.\n+x@@X.\n+@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x++@X.\n@++@@X.\n@@@@XX.\nXXX+X..\n..XXX..\n.......", "first": "B", "key": "ca", "kos": ["cb"], "nmoves": 6, "rnodes": 1, "pv": ["ca"], "traps": 3}
+{"diag": "+x++@X.\n@++@@X.\n@@@@XX.\nXXX+X..\n..XXX..\n.......", "first": "W", "key": "ca", "kos": [], "nmoves": 6, "rnodes": 3, "pv": ["ca", "cb", "bb"], "traps": 2}
+{"diag": "+x+++X.\n+++@@X.\n++@@@X.\noo+X+X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["da", "ea", "ab", "bc"], "nmoves": 11, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "+++++@X.\n+++++@X.\n++@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "bb", "kos": ["ba", "ca", "ab", "cb", "db", "bc"], "nmoves": 12, "rnodes": 89, "pv": ["bb", "cb", "ba", "bc", "ac", "ab", "aa", "ca", "ab", "da", "eb", "db", "ea"], "traps": 2}
+{"diag": "++x+@X.\n+++@@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ba", "ab", "cb"], "nmoves": 6, "rnodes": 9, "pv": ["bb", "ab", "ba", "cb", "aa", "da", "ba"], "traps": 2}
+{"diag": "+++++X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca"], "nmoves": 8, "rnodes": 25, "pv": ["bb", "ab", "ba", "ea", "ca", "cb", "aa", "da", "ba"], "traps": 1}
+{"diag": "++x+oX.\nx+@+oX.\n+@@XXX.\n@@XX...\nXXX....\n.......", "first": "W", "key": "db", "kos": ["ba"], "nmoves": 6, "rnodes": 11, "pv": ["db", "ba", "bb", "ac", "aa"], "traps": 2}
+{"diag": "+x++@X.\n++++@X.\n++@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ab", "cb", "ac", "bc", "ad"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+x+ooX.\n+++++X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "eb", "kos": ["bb"], "nmoves": 7, "rnodes": 33, "pv": ["eb", "cb", "ab", "bb", "ca", "aa", "db", "ba", "bb"], "traps": 3}
+{"diag": "+x+@+X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["aa", "ca", "ea", "ab"], "nmoves": 6, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "+++xx+X.\n+@@@@@X.\n@@@XXXX.\nXXXX....\n........", "first": "B", "key": "fa", "kos": [], "nmoves": 5, "rnodes": 13, "pv": ["fa", "aa", "ca", "ab", "ba"], "traps": 2}
+{"diag": "++++@X.\n++++@X.\noo+@@X.\nX+XXXX.\nXXX....\n.......", "first": "B", "key": "cc", "kos": ["ba", "bb", "cb"], "nmoves": 10, "rnodes": 1, "pv": ["cc"], "traps": 3}
+{"diag": "++++@X.\n+x+x@X.\n@@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 7, "rnodes": 17, "pv": ["cb", "ba", "ab", "ca", "ed", "aa", "da"], "traps": 2}
+{"diag": "+x+@@X.\n++++@X.\n+ox+@X.\n+o+@@X.\nXXXXXX.\n.......", "first": "W", "key": "cd", "kos": [], "nmoves": 10, "rnodes": 1, "pv": ["cd"], "traps": 5}
+{"diag": "+x+++@X.\n+x++@@X.\n+++@@XX.\n@@@@XX..\nXXXXX...\n........", "first": "B", "key": "da", "kos": [], "nmoves": 10, "rnodes": 77, "pv": ["da", "bc", "cb", "ab", "db", "cc", "ea", "aa", "ac"], "traps": 1}
+{"diag": "+x+++@X.\nx+++@@X.\no+@@@XX.\no+@XXX..\nXXXX....\n........", "first": "B", "key": "cb", "kos": ["ca", "da", "bd"], "nmoves": 9, "rnodes": 47, "pv": ["cb", "bc", "bb", "da", "db", "ca", "ea", "da", "bd", "ca", "ea"], "traps": 0}
+{"diag": "++x++X.\n++@++X.\n+x@@@X.\n@@@XXX.\nXXXX...\n.......", "first": "B", "key": "da", "kos": ["ba", "bb", "eb"], "nmoves": 9, "rnodes": 89, "pv": ["da", "ba", "ab", "ac", "bb", "eb", "ea", "aa", "bb", "ab", "db", "bc", "bb"], "traps": 1}
+{"diag": "++x++X.\n+@+@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "W", "key": "ba", "kos": ["ac"], "nmoves": 7, "rnodes": 25, "pv": ["ba", "ab", "ac", "da", "ea"], "traps": 0}
+{"diag": "++x+oX.\n+x++oX.\n+@@@+X.\n@@XXXX.\nXXX....\n.......", "first": "B", "key": "ab", "kos": ["aa", "ba", "da", "cb", "db", "ac", "ec"], "nmoves": 8, "rnodes": 9, "pv": ["ab", "cb", "ba", "da", "ec", "ac", "db"], "traps": 2}
+{"diag": "+x@@@X.\n++x+@X.\n++@@@X.\n@@@XXX.\nXXXX...\n.......", "first": "B", "key": "ab", "kos": [], "nmoves": 6, "rnodes": 7, "pv": ["ab", "ac", "bb"], "traps": 1}
+{"diag": "++++@X.\nx+++@X.\n+@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "W", "key": "ac", "kos": ["ca", "bb"], "nmoves": 9, "rnodes": 39, "pv": ["ac", "cb", "ba", "bb", "ca", "db", "da", "ed", "aa", "bb", "cb"], "traps": 3}
+{"diag": "++++XX.\n++xo+X.\n++++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "bb", "kos": ["ba", "da", "ab", "bc", "cc"], "nmoves": 11, "rnodes": 9, "pv": ["bb", "ba", "da", "ab", "bc"], "traps": 2}
+{"diag": "+++@@X.\n++++@X.\nx+++@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "cb", "kos": ["ab", "bb", "ad"], "nmoves": 11, "rnodes": 37, "pv": ["cb", "bb", "bc", "cc", "ba", "ca", "ab", "db", "bb", "ad", "dc"], "traps": 4}
+{"diag": "+++++X.\n++x@@X.\n++@@XX.\noo+XX..\nXXXX...\n.......", "first": "B", "key": "bb", "kos": [], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++++@X.\n+++@@X.\n+x+@XX.\n+@@@X..\nXXXXX..\n.......", "first": "W", "key": "ad", "kos": ["ca", "ab", "bb", "cb", "ac"], "nmoves": 10, "rnodes": 29, "pv": ["ad", "cb", "ab", "bb", "ac", "aa", "ca", "ba", "cc"], "traps": 3}
+{"diag": "+++@X.\nx+@@X.\n+@@+X.\n+@XXX.\nXXX...\n......", "first": "W", "key": "ba", "kos": ["bb", "ad"], "nmoves": 7, "rnodes": 5, "pv": ["ba", "ac", "ad"], "traps": 2}
+{"diag": "++++X.\nx++oX.\n+++oX.\n@+@XX.\n@@@X..\nXXXX..\n......", "first": "W", "key": "bc", "kos": ["bb", "cc"], "nmoves": 10, "rnodes": 7, "pv": ["bc", "bb", "da", "cb", "cc"], "traps": 2}
+{"diag": "+x++@X.\nx++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "W", "key": "ca", "kos": ["bb"], "nmoves": 4, "rnodes": 3, "pv": ["ca", "cb", "bb"], "traps": 1}
+{"diag": "+++++oX.\n+x++xoX.\n@@@@@+X.\nXXXXXXX.\n........", "first": "B", "key": "fc", "kos": ["ca", "cb", "db"], "nmoves": 9, "rnodes": 1, "pv": ["fc"], "traps": 3}
+{"diag": "++++oX.\nx+x@+X.\n++@@XX.\n+@@XX..\n@@XX...\nXXX....\n.......", "first": "W", "key": "bb", "kos": ["aa", "ba", "ca", "da", "eb", "ac", "bc", "ad"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++@X.\n+++@X.\nx+@@X.\noo+XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["bc"], "nmoves": 8, "rnodes": 13, "pv": ["bb", "bc", "ab", "ba", "cd", "ca", "aa", "cb", "ab"], "traps": 2}
+{"diag": "+++++oX.\n++x++oX.\n@@@@@XX.\nXX+XXX..\n.XXX....\n........", "first": "B", "key": "eb", "kos": ["ba", "ca", "da", "bb", "db"], "nmoves": 10, "rnodes": 51, "pv": ["eb", "db", "da", "ba", "ca", "ea", "eb", "bb", "ea", "fa", "fb"], "traps": 2}
+{"diag": "+x++@X.\n+++@@X.\n+o+@XX.\n+oX+X..\nXXXXX..\n.......", "first": "W", "key": "bb", "kos": ["ca", "cb", "cc"], "nmoves": 10, "rnodes": 41, "pv": ["bb", "ca", "ad", "cc", "cb", "ab", "dd", "ac", "aa"], "traps": 0}
+{"diag": "++++@X.\n+++@@X.\n+x@@XX.\noo+XX..\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "ab", "cd"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+++ooX.\n+++x+X.\n+@@+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "eb", "kos": [], "nmoves": 9, "rnodes": 27, "pv": ["eb", "cb", "ba", "ca", "ab", "bb", "aa", "ac", "aa", "ab", "dc", "ba", "aa"], "traps": 2}
+{"diag": "+++++X.\n+++@@X.\n@@@@XX.\n@@@XX..\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca"], "nmoves": 8, "rnodes": 25, "pv": ["bb", "ab", "ba", "ea", "ca", "cb", "aa", "da", "ba"], "traps": 1}
+{"diag": "+++++X.\n++++@X.\nx++@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "W", "key": "cb", "kos": ["bb", "bc"], "nmoves": 12, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "++++@X.\nxx++@X.\n@+@@@X.\n@@@XXX.\nXXXX...\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "++++@X.\n+++@@X.\nx+@@XX.\n+@@XX..\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "ca", "ab", "ad"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++x+X.\nx@@@X.\n++@XX.\n+@@X..\nX+XX..\nXXX...\n......", "first": "B", "key": "ac", "kos": ["ba", "da", "ad"], "nmoves": 7, "rnodes": 5, "pv": ["ac", "ad", "da"], "traps": 2}
+{"diag": "++x+X.\nx@@@X.\n++@XX.\n+@@X..\nX+XX..\nXXX...\n......", "first": "W", "key": "ac", "kos": ["da", "ad"], "nmoves": 7, "rnodes": 11, "pv": ["ac", "ad", "aa", "ba", "da"], "traps": 2}
+{"diag": "++x++X.\n+++@@X.\n+x@@XX.\n@+@XX..\n@@@X...\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ab", "cb"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++x++X.\n+++@@X.\n+x@@XX.\n@+@XX..\n@@@X...\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "da", "ab", "cb", "ac"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "++x++X.\n+++x@X.\n+@@@@X.\n+@XXXX.\nXXX....\n.......", "first": "B", "key": "ea", "kos": ["aa", "ba", "ab", "bb", "cb", "ac", "ad"], "nmoves": 9, "rnodes": 3, "pv": ["ea", "cb", "da"], "traps": 5}
+{"diag": "+++x@@X.\nx++++@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "W", "key": "cb", "kos": ["ba", "ca", "bb", "db", "cc"], "nmoves": 8, "rnodes": 9, "pv": ["cb", "db", "cc", "ba", "ca"], "traps": 2}
+{"diag": "++++++X.\nx+x@@@X.\n@@@@XXX.\nXXXXX...\n........", "first": "B", "key": "bb", "kos": ["ba"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "+++++X.\n+x++@X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "cb", "kos": ["aa", "ba", "ca", "da", "ea", "db", "bc", "cc"], "nmoves": 11, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "+++++X.\n+x++@X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "W", "key": "cb", "kos": ["ba", "ca", "da", "ea", "ab", "db"], "nmoves": 11, "rnodes": 21, "pv": ["cb", "ca", "ea", "bc", "ba", "aa", "ac", "cc", "db", "ab", "ba"], "traps": 2}
+{"diag": "+++@@X.\n++x+@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "ac", "kos": ["ba", "ca", "ab", "bb"], "nmoves": 7, "rnodes": 95, "pv": ["ac", "ab", "ba", "bb", "ca", "aa", "db", "ab", "bb"], "traps": 2}
+{"diag": "++++++X.\nx+@x+@X.\n+@@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "ac", "kos": ["da", "fa", "eb"], "nmoves": 9, "rnodes": 1, "pv": ["ac"], "traps": 4}
+{"diag": "+++@@X.\n++++@X.\nxx++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 9, "rnodes": 7, "pv": ["cb", "ca", "ba", "bb", "ab"], "traps": 0}
+{"diag": "+++@@X..\n+x++@XX.\n+++@@+X.\n+@@@XXX.\nXXXXX...\n........", "first": "B", "key": "cb", "kos": ["ca", "bc", "ad"], "nmoves": 11, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "+++@@X.\n++x@@X.\n+++@XX.\n+oo+X..\nXXXXX..\n.......", "first": "W", "key": "bb", "kos": ["bc"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 1}
+{"diag": "++++++@X.\n+++x+@@X.\n++@@@@XX.\nXXXXXXX..\n.........", "first": "B", "key": "cb", "kos": ["ea", "ab", "bb", "bc"], "nmoves": 12, "rnodes": 5, "pv": ["cb", "bb", "bc"], "traps": 3}
+{"diag": "+x+ooX.\n+++x+X.\n+++@@X.\n@@@@XX.\nXX+XX..\n.XXX...\n.......", "first": "W", "key": "eb", "kos": ["bb", "cb", "bc"], "nmoves": 10, "rnodes": 1, "pv": ["eb"], "traps": 4}
+{"diag": "+++++oX.\n+x+x+oX.\n+@@@@+X.\n@@XXXXX.\nXXX.....\n........", "first": "B", "key": "cb", "kos": [], "nmoves": 10, "rnodes": 1, "pv": ["cb"], "traps": 3}
+{"diag": "+++++oX.\n+x+x+oX.\n+@@@@+X.\n@@XXXXX.\nXXX.....\n........", "first": "W", "key": "cb", "kos": ["ba", "da", "ab", "eb"], "nmoves": 10, "rnodes": 1, "pv": ["cb"], "traps": 8}
+{"diag": "++++++X.\n+++@@@X.\n+@@@XXX.\nXXXXX...\n........", "first": "B", "key": "bb", "kos": ["ca", "ab"], "nmoves": 10, "rnodes": 31, "pv": ["bb", "ab", "ba", "ac", "fa", "ea", "ca", "cb", "aa", "da", "ba"], "traps": 2}
+{"diag": "+++x+@X.\n++++@@X.\n+++@@XX.\nX@@@XX..\nXXXXX...\n........", "first": "W", "key": "bc", "kos": ["bb", "cb", "ac"], "nmoves": 11, "rnodes": 9, "pv": ["bc", "cb", "bb", "ab", "ba"], "traps": 2}
+{"diag": "+++++X.\n+x++@X.\no+@@@X.\n+@@+XX.\nXXXXX..\n.......", "first": "W", "key": "cb", "kos": ["ba", "ea", "ab"], "nmoves": 11, "rnodes": 1, "pv": ["cb"], "traps": 1}
+{"diag": "++++@X.\n+x++@X.\n+x@@@X.\n++@XXX.\n@@@X...\nXXXX...\n.......", "first": "W", "key": "cb", "kos": ["ba", "ca", "ab", "ac"], "nmoves": 10, "rnodes": 1, "pv": ["cb"], "traps": 6}
+{"diag": "++x+@X.\nx+++@X.\n++@@@X.\noo+XXX.\nXXXX...\n.......", "first": "B", "key": "bc", "kos": ["cb"], "nmoves": 9, "rnodes": 29, "pv": ["bc", "cb", "cd", "ba", "da", "bb", "ac", "ad", "bd"], "traps": 3}
+{"diag": "++++++X.\nx++@@@X.\n++x@XXX.\n+@@@X...\nXXXXX...\n........", "first": "B", "key": "bc", "kos": [], "nmoves": 11, "rnodes": 11, "pv": ["bc", "ad", "cb", "ca", "ba", "ac", "da"], "traps": 2}
+{"diag": "++++@X..\n+x++@XX.\nx@++@+X.\n+@@@@XX.\nXXXXXX..\n........", "first": "W", "key": "cb", "kos": ["aa", "ba", "ca", "ab", "db", "cc", "ad"], "nmoves": 11, "rnodes": 1, "pv": ["cb"], "traps": 5}
+{"diag": "+++++X.\n+x++@X.\no+@@@X.\no+@XXX.\nXXXX...\n.......", "first": "W", "key": "cb", "kos": ["ba", "ab"], "nmoves": 10, "rnodes": 5, "pv": ["cb", "bc", "bd"], "traps": 0}
+{"diag": "++++++X.\n+xx+ooX.\n@@@@++X.\nXXXXXXX.\n........", "first": "W", "key": "db", "kos": [], "nmoves": 10, "rnodes": 39, "pv": ["db", "fa", "ba", "ab", "ea", "ca", "da", "ec", "aa", "bb", "cb"], "traps": 1}
+{"diag": "++++++X.\n++++@@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "B", "key": "cc", "kos": ["ba", "da", "ea", "fa", "bb", "cb"], "nmoves": 11, "rnodes": 1, "pv": ["cc"], "traps": 4}
+{"diag": "++++++@X.\n++x+@+@X.\noo+@@@@X.\nXXXXXXXX.\n.........", "first": "B", "key": "cc", "kos": [], "nmoves": 11, "rnodes": 5, "pv": ["cc", "da", "fa"], "traps": 1}
+{"diag": "++++++@X.\n++x+@+@X.\noo+@@@@X.\nXXXXXXXX.\n.........", "first": "W", "key": "cc", "kos": ["ba", "ca", "da", "fa", "bb", "db"], "nmoves": 11, "rnodes": 1, "pv": ["cc"], "traps": 9}
+{"diag": "++xo+X.\nx+++@X.\n++@+@X.\n+@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "B", "key": "db", "kos": ["ba", "ea", "bb", "ad"], "nmoves": 11, "rnodes": 123, "pv": ["db", "bb", "ac", "ea", "ad", "cb", "ba", "aa", "ba", "ca", "aa", "bc", "ee"], "traps": 1}
+{"diag": "++xo+X.\nx+++@X.\n++@+@X.\n+@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "W", "key": "ba", "kos": ["ea", "bb", "cb", "db", "ac", "bc", "ad"], "nmoves": 11, "rnodes": 3, "pv": ["ba", "db", "cb"], "traps": 6}
+{"diag": "++++++X.\nx++@@@X.\n@@@@XXX.\nXXXXX...\n........", "first": "B", "key": "bb", "kos": [], "nmoves": 8, "rnodes": 39, "pv": ["bb", "aa", "fa", "ca", "ea", "ba", "da"], "traps": 1}
+{"diag": "+++@X..\n++x@XX.\n++@@+X.\n+@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ab", "ad"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++oXXX.\n+x+@@X.\n@x++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": [], "nmoves": 6, "rnodes": 1, "pv": ["cb"], "traps": 3}
+{"diag": "+x++@X.\nx+++@X.\n@@@@@X.\nX+XXXX.\nXXX....\n.......", "first": "W", "key": "cb", "kos": ["ca", "da", "bb", "db"], "nmoves": 6, "rnodes": 5, "pv": ["cb", "ca", "da"], "traps": 2}
+{"diag": "++++@X.\n++++@X.\n+x+@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "W", "key": "ad", "kos": ["ca", "ab", "bb", "cb", "ac"], "nmoves": 11, "rnodes": 57, "pv": ["ad", "bb", "cb", "ca", "ba", "aa", "ac", "cc", "db", "ab", "ba"], "traps": 3}
+{"diag": "++++@+@X.\nx++x@@@X.\n+oo+@XXX.\nXXXXXX...\n.........", "first": "W", "key": "dc", "kos": [], "nmoves": 9, "rnodes": 5, "pv": ["dc", "bb", "cb"], "traps": 2}
+{"diag": "++@++X.\n+x@+@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "ac", "kos": [], "nmoves": 7, "rnodes": 9, "pv": ["ac", "ab", "aa", "ba", "ab", "da", "ea"], "traps": 3}
+{"diag": "++++@@X.\n+++x+@X.\n++@@@@X.\nooXXXXX.\nXXX.....\n........", "first": "B", "key": "bc", "kos": ["bb"], "nmoves": 10, "rnodes": 7, "pv": ["bc", "cb", "ab", "ba", "da"], "traps": 1}
+{"diag": "+++x+X.\n+@+@@X.\n+@@@XX.\nXXXXX..\n.......", "first": "B", "key": "ca", "kos": ["ba"], "nmoves": 7, "rnodes": 15, "pv": ["ca", "ea", "ac", "ab", "ba", "aa", "cb"], "traps": 2}
+{"diag": "++x+oX.\n++x+oX.\n+@@@XX.\n+@XXX..\n@@+X...\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["db"], "nmoves": 9, "rnodes": 47, "pv": ["bb", "ab", "ac", "db", "aa", "ad", "ab", "ce", "da"], "traps": 1}
+{"diag": "++x@@X.\n++x+@X.\no+@@@X.\noo+XXX.\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "ab", "cd"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "+x++x@X.\n+++@+@X.\n++@@@@X.\n++@XXXX.\nXXXX....\n........", "first": "B", "key": "bb", "kos": ["ab", "ac", "bc"], "nmoves": 11, "rnodes": 5, "pv": ["bb", "ac", "bc"], "traps": 3}
+{"diag": "++@@X.\n+++@X.\n+x@@X.\n@@@XX.\n+XXX..\nXX....\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 11, "pv": ["bb", "ab", "ba", "cb", "ae", "aa", "ac"], "traps": 2}
+{"diag": "+++++oXX.\n++x++o+X.\n+@@@@+XX.\nXXXXXXX..\n.........", "first": "B", "key": "bb", "kos": [], "nmoves": 12, "rnodes": 13, "pv": ["bb", "db", "ac", "ca", "ea", "ab", "aa"], "traps": 2}
+{"diag": "++++x+X.\n+++++@X.\n@@@@@@X.\nXXX+XXX.\n..XXX...\n........", "first": "B", "key": "fa", "kos": [], "nmoves": 11, "rnodes": 55, "pv": ["fa", "da", "cb", "ba", "db", "eb", "ca", "bb", "da", "aa", "dd"], "traps": 0}
+{"diag": "++x++X.\n++++oX.\n++@@XX.\n@@@XX..\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "da", "ab", "db"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++++++X.\n++++x@X.\n+@@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "fa", "kos": ["ba", "ca", "da", "bb", "db", "ac"], "nmoves": 11, "rnodes": 27, "pv": ["fa", "db", "ea", "bb", "ca", "da", "ac", "ab", "ba", "aa", "cb"], "traps": 1}
+{"diag": "+++@X.\nx++@X.\nx+@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 6, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++x++X.\n+@++@X.\n@@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "B", "key": "ea", "kos": ["ba", "da", "ab"], "nmoves": 8, "rnodes": 9, "pv": ["ea", "da", "db", "cb", "da"], "traps": 1}
+{"diag": "++x++X.\n+@++@X.\n@@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "W", "key": "ea", "kos": ["da", "cb", "db"], "nmoves": 8, "rnodes": 1, "pv": ["ea"], "traps": 4}
+{"diag": "++++@X.\nxx++@X.\n@@@@@X.\nXXXX+X.\n...XXX.\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["cb"], "traps": 4}
+{"diag": "+++++X.\n+++++X.\n++@@@X.\n@@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "da", "ab", "ac"], "nmoves": 12, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x+@X.\nx++@X.\n@+@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["cb"], "nmoves": 5, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+x+@X.\nx++@X.\n@+@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 4, "rnodes": 1, "pv": ["bb"], "traps": 1}
+{"diag": "+x+++X.\n++++@X.\n++@@@X.\n@@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["da", "ea", "ab", "cb", "bc"], "nmoves": 10, "rnodes": 5, "pv": ["bb", "cb", "da"], "traps": 2}
+{"diag": "+++++X.\n++xx@X.\n@+@@@X.\n@@@XXX.\nXX+X...\n.XXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "ea", "ab"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+++++X.\n++xx@X.\n@+@@@X.\n@@@XXX.\nXX+X...\n.XXX...\n.......", "first": "W", "key": "bb", "kos": ["ea", "ab"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "+++++X.\n+++x+X.\n+x+@@X.\n@@+@XX.\nX@@@X..\nXXXXX..\n.......", "first": "W", "key": "bb", "kos": ["cb", "cc"], "nmoves": 12, "rnodes": 39, "pv": ["bb", "cc", "cb", "ab", "eb", "da", "ea", "ac", "ca"], "traps": 2}
+{"diag": "+++x@X.\n++++@X.\n+x@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["cb"], "nmoves": 9, "rnodes": 13, "pv": ["bb", "ab", "ad", "cb", "ba", "aa", "ac"], "traps": 2}
+{"diag": "+++oX.\n+x+oX.\n++@+X.\n@@@+X.\nXXXXX.\n......", "first": "W", "key": "ab", "kos": ["cb"], "nmoves": 9, "rnodes": 33, "pv": ["ab", "cb", "dc", "aa", "ba", "ac", "bc"], "traps": 1}
+{"diag": "+++oX.\n+++oX.\nx+++X.\n+@@@X.\n+@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": ["ba", "cb", "bc", "dc"], "nmoves": 11, "rnodes": 5, "pv": ["bb", "ad", "ae"], "traps": 2}
+{"diag": "++@@X.\n+++@X.\n++x@X.\n++@@X.\nXX+XX.\n.XXX..\n......", "first": "W", "key": "bc", "kos": ["bd"], "nmoves": 10, "rnodes": 3, "pv": ["bc", "ac", "ab"], "traps": 2}
+{"diag": "+++++X.\nx+x+@X.\n++@@@X.\n@@@XXX.\nXX+X...\n.XXX...\n.......", "first": "W", "key": "bb", "kos": [], "nmoves": 10, "rnodes": 23, "pv": ["bb", "ba", "bc", "ea", "da", "ca", "db", "ac", "aa"], "traps": 1}
+{"diag": "+++x@X.\n+x++@X.\n@@+@@X.\nX@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": ["ba", "ca", "ab", "db"], "nmoves": 7, "rnodes": 1, "pv": ["cb"], "traps": 5}
+{"diag": "+++x+X.\n+++x@X.\n@@@@@X.\nXX+XXX.\n.XXX...\n.......", "first": "W", "key": "ea", "kos": [], "nmoves": 8, "rnodes": 1, "pv": ["ea"], "traps": 3}
+{"diag": "+++++X.\n+++x@X.\n@@@+@X.\nXX@@@X.\n.XXXXX.\n.......", "first": "B", "key": "ea", "kos": ["ab", "bb", "cb"], "nmoves": 9, "rnodes": 1, "pv": ["ea"], "traps": 3}
+{"diag": "+++++X.\n+++x@X.\n@@@+@X.\nXX@@@X.\n.XXXXX.\n.......", "first": "W", "key": "ea", "kos": ["ba", "ca", "da", "bb", "cb"], "nmoves": 9, "rnodes": 1, "pv": ["ea"], "traps": 6}
+{"diag": "++++@X.\n+++@@X.\n++@@XX.\n++@+X..\nXXXXX..\n.......", "first": "W", "key": "bb", "kos": ["ba", "ca", "ab", "cb", "bc", "ad", "bd"], "nmoves": 12, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+++oX.\nx++oX.\n@+@+X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 7, "pv": ["bb", "ba", "cb", "bc", "dc"], "traps": 2}
+{"diag": "+++o+X.\n++x+@X.\n++@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "ea", "ab", "bc", "ad"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 7}
+{"diag": "+++o+X.\n++x+@X.\n++@@@X.\n+@@XXX.\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "ab", "bc", "ad"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++++X.\n+++x@X.\n@@+@@X.\nX@@@XX.\nXX+XX..\n.XXX...\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 10, "rnodes": 69, "pv": ["cb", "ea", "bb", "ab", "ba", "da", "ca", "aa", "ce", "cc", "cb", "bb", "ca"], "traps": 2}
+{"diag": "+++++X.\n++@@@X.\n++@XXX.\nooXX...\nXXX....\n.......", "first": "B", "key": "bc", "kos": ["ab", "bb"], "nmoves": 9, "rnodes": 1, "pv": ["bc"], "traps": 3}
+{"diag": "+++++@X.\n++x+@@X.\n+@@@@XX.\nXXX+XX..\n..XXX...\n........", "first": "B", "key": "bb", "kos": ["da", "ab"], "nmoves": 10, "rnodes": 5, "pv": ["bb", "ab", "ac"], "traps": 2}
+{"diag": "+++++@X.\n+x+x@@X.\noo+@@+X.\nXXXXXXX.\n........", "first": "W", "key": "cb", "kos": ["cc"], "nmoves": 9, "rnodes": 9, "pv": ["cb", "cc", "da", "aa", "ca"], "traps": 2}
+{"diag": "+xx++X.\n++++@X.\n@@+@@X.\nX@@@+X.\nXXXXXX.\n.......", "first": "B", "key": "ea", "kos": ["ab", "bb", "cb", "db"], "nmoves": 9, "rnodes": 5, "pv": ["ea", "cb", "da", "bb", "aa"], "traps": 2}
+{"diag": "+xx++X.\n++++@X.\n@@+@@X.\nX@@@+X.\nXXXXXX.\n.......", "first": "W", "key": "ea", "kos": ["da", "bb", "cb", "db"], "nmoves": 9, "rnodes": 5, "pv": ["ea", "ab", "cb"], "traps": 2}
+{"diag": "+++++oX.\n+x+++oX.\n+@@@@+X.\nXXXXXXX.\n........", "first": "W", "key": "ac", "kos": ["ba", "da", "ea", "ab", "cb", "db"], "nmoves": 11, "rnodes": 5, "pv": ["ac", "cb", "db"], "traps": 2}
+{"diag": "+++++oX.\nx++@+oX.\n@@@@XXX.\nXXXXX...\n........", "first": "B", "key": "bb", "kos": ["da", "eb"], "nmoves": 8, "rnodes": 13, "pv": ["bb", "ba", "eb", "ca", "ea"], "traps": 1}
+{"diag": "+x+++X.\n++@++X.\n++@@@X.\n@@@XXX.\nX+XX...\nXXX....\n.......", "first": "B", "key": "da", "kos": ["ca", "bb"], "nmoves": 11, "rnodes": 159, "pv": ["da", "ca", "bb", "ab", "bc", "ea", "eb", "db", "ea", "ac", "be", "aa", "bb"], "traps": 0}
+{"diag": "++++++X.\n+x++@@X.\noo+@@+X.\nXXXXXXX.\n........", "first": "W", "key": "cc", "kos": ["ba", "cb"], "nmoves": 11, "rnodes": 1, "pv": ["cc"], "traps": 3}
+{"diag": "++++@X.\n++++@X.\n++x+@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bc", "kos": ["ca", "bb", "cb", "db"], "nmoves": 12, "rnodes": 1, "pv": ["bc"], "traps": 3}
+{"diag": "+x++oX.\n+++@+X.\n++@@@X.\n@@@XXX.\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["aa", "ca", "ab", "cb", "eb", "ac", "bc"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "+x++x++X.\n@+++++@X.\n@@@@@@@X.\nXXXXXXXX.\n.........", "first": "B", "key": "ga", "kos": [], "nmoves": 10, "rnodes": 21, "pv": ["ga", "fa", "fb", "eb", "fa", "da", "cb", "bb", "ca", "aa", "db"], "traps": 1}
+{"diag": "++++@@X.\n+x+++@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "B", "key": "cc", "kos": ["cb", "db"], "nmoves": 9, "rnodes": 5, "pv": ["cc", "ca", "db"], "traps": 2}
+{"diag": "++++@@X.\n+x+++@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "W", "key": "cc", "kos": ["ba", "ca", "cb", "db"], "nmoves": 9, "rnodes": 1, "pv": ["cc"], "traps": 5}
+{"diag": "+++@@X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["ba", "ab"], "nmoves": 6, "rnodes": 7, "pv": ["bb", "ba", "ab", "cb", "ca"], "traps": 2}
+{"diag": "++++++@X.\n+xo+@+@X.\n+ooX@@@X.\nXXXXXXXX.\n.........", "first": "B", "key": "db", "kos": ["ca", "fa", "ac"], "nmoves": 10, "rnodes": 5, "pv": ["db", "da", "fa"], "traps": 3}
+{"diag": "+x@@X.\n+++@X.\n++@@X.\n++@XX.\nXX+X..\n.XXX..\n......", "first": "B", "key": "bb", "kos": ["ab", "ac", "bc", "ad"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 8}
+{"diag": "+x@@X.\n+++@X.\n++@@X.\n++@XX.\nXX+X..\n.XXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "+++++X.\n+++@@X.\n+@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "bb", "kos": [], "nmoves": 9, "rnodes": 29, "pv": ["bb", "ca", "ba", "ab", "ac", "da", "ea"], "traps": 3}
+{"diag": "+x+@X.\n+++@X.\n++@@X.\noo+XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ab", "bc", "cd"], "nmoves": 8, "rnodes": 5, "pv": ["bb", "ab", "bc"], "traps": 2}
+{"diag": "+x+@X.\n+++@X.\n++@@X.\noo+XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": ["ab", "bc"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "++++oX.\n++x@+X.\n+@@@XX.\nXXXXX..\n.......", "first": "B", "key": "ca", "kos": ["ba", "ab", "bb", "ac"], "nmoves": 8, "rnodes": 43, "pv": ["ca", "bb", "ac", "ab", "ba", "aa", "eb", "da", "ca", "ba", "cb"], "traps": 3}
+{"diag": "++++X.\n+++@X.\n++@@X.\n+@@XX.\n+@XX..\nX+X...\nXXX...\n......", "first": "B", "key": "bb", "kos": ["ba", "da"], "nmoves": 12, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "+x++@X.\nx++@@X.\n@@@@XX.\n+@XXX..\nXXX....\n.......", "first": "W", "key": "ca", "kos": ["bb", "cb", "ad"], "nmoves": 5, "rnodes": 3, "pv": ["ca", "cb", "bb"], "traps": 2}
+{"diag": "+++++@X.\n+xx+@@X.\n@@@@@XX.\nXXXXXX..\n........", "first": "B", "key": "ab", "kos": ["ca", "da", "db"], "nmoves": 7, "rnodes": 7, "pv": ["ab", "da", "db", "ba", "ea"], "traps": 3}
+{"diag": "++x++oX.\n+++@+oX.\n@@@@XXX.\nXXXXX...\n........", "first": "B", "key": "eb", "kos": ["da", "bb"], "nmoves": 8, "rnodes": 53, "pv": ["eb", "ba", "da", "cb", "ab", "ea", "da", "ea", "fa", "ca", "ea"], "traps": 1}
+{"diag": "++++X.\n++++X.\n+++@X.\n@@@@X.\nXXXXX.\n......", "first": "W", "key": "cb", "kos": ["bb", "db"], "nmoves": 11, "rnodes": 21, "pv": ["cb", "bb", "ba", "ca", "da", "ac", "bc", "db", "ab"], "traps": 1}
+{"diag": "++x+X.\n++@@X.\no+@XX.\n+@@X..\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ba", "da"], "nmoves": 7, "rnodes": 3, "pv": ["bb", "ab", "ba"], "traps": 2}
+{"diag": "+++++X.\n++++oX.\nx++@XX.\n@@@@X..\nXXXXX..\n.......", "first": "B", "key": "cb", "kos": ["ba", "da", "ea", "bb", "db", "bc"], "nmoves": 11, "rnodes": 1, "pv": ["cb"], "traps": 6}
+{"diag": "+++++@X.\n++x++@X.\noo+@@@X.\nXXXXXXX.\n........", "first": "W", "key": "cc", "kos": [], "nmoves": 10, "rnodes": 5, "pv": ["cc", "bb", "db"], "traps": 1}
+{"diag": "++@X.\n++@X.\nxx@X.\n@+@X.\n@@@X.\nXXXX.\n.....", "first": "B", "key": "bb", "kos": ["ba", "ab"], "nmoves": 5, "rnodes": 7, "pv": ["bb", "ba", "ab", "aa", "bd"], "traps": 3}
+{"diag": "++@X.\n++@X.\nxx@X.\n@+@X.\n@@@X.\nXXXX.\n.....", "first": "W", "key": "bb", "kos": ["ba", "ab"], "nmoves": 5, "rnodes": 15, "pv": ["bb", "ab", "ba", "aa", "bd", "ab", "ac"], "traps": 2}
+{"diag": "+++@X.\n+xx@X.\n@@+@X.\nX@@@X.\nXXXXX.\n......", "first": "W", "key": "ca", "kos": ["ba", "ab"], "nmoves": 5, "rnodes": 29, "pv": ["ca", "ab", "ba", "aa", "cc", "ab", "bb"], "traps": 2}
+{"diag": "++x+@X.\n++++@X.\n++@@@X.\nooXXXX.\nXXX....\n.......", "first": "B", "key": "bc", "kos": ["bb", "cb", "ac"], "nmoves": 9, "rnodes": 1, "pv": ["bc"], "traps": 3}
+{"diag": "++++@X.\nxx++@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "cb", "kos": [], "nmoves": 6, "rnodes": 3, "pv": ["cb", "ca", "ba"], "traps": 2}
+{"diag": "++x@@X.\n++x+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ba", "ab"], "nmoves": 5, "rnodes": 7, "pv": ["bb", "ab", "ba", "aa", "db"], "traps": 3}
+{"diag": "++x@@X.\n++x+@X.\n@@@@@X.\nXXXXXX.\n.......", "first": "W", "key": "bb", "kos": ["ba", "ab"], "nmoves": 5, "rnodes": 15, "pv": ["bb", "ba", "ab", "aa", "db", "ba", "ca"], "traps": 2}
+{"diag": "++ooo+X.\nx+x++@X.\n+@@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "bb", "kos": ["db", "ac"], "nmoves": 7, "rnodes": 17, "pv": ["bb", "ac", "db", "ba", "fa", "aa", "eb"], "traps": 2}
+{"diag": "++++x+X..\n+++++@XX.\n@@@@@@+X.\nXXXXXXXX.\n.........", "first": "B", "key": "fa", "kos": [], "nmoves": 11, "rnodes": 55, "pv": ["fa", "da", "cb", "ba", "db", "eb", "ca", "bb", "da", "aa", "gc"], "traps": 0}
+{"diag": "+x+++oX.\n++@@+oX.\n+@@XXXX.\nXXXX....\n........", "first": "W", "key": "eb", "kos": ["ca"], "nmoves": 8, "rnodes": 29, "pv": ["eb", "ac", "ab", "bb", "ca", "da", "aa", "ba", "bb"], "traps": 2}
+{"diag": "++++oX.\n++x+oX.\n@@@@+X.\nXXXXXX.\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "ab", "db", "ec"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "++++@X.\n+x+@@X.\n+x+@XX.\n@@@@X..\nXX+XX..\n.XXX...\n.......", "first": "B", "key": "ca", "kos": ["ba", "cb", "ac"], "nmoves": 9, "rnodes": 13, "pv": ["ca", "ac", "ab", "cb", "ba", "cc", "ce"], "traps": 1}
+{"diag": "+++++X.\nx++@@X.\n+@@@XX.\n+@XXX..\n+@X....\nXXX....\n.......", "first": "B", "key": "bb", "kos": ["ea"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 2}
+{"diag": "+x+++X.\nx+++@X.\n+@+@@X.\nX@@@XX.\nXXXXX..\n.......", "first": "W", "key": "cb", "kos": [], "nmoves": 8, "rnodes": 13, "pv": ["cb", "ca", "ea", "ac", "da"], "traps": 2}
+{"diag": "+++@@XX.\nx+++@+X.\n+++@@XX.\n++@@XX..\nXXXXX...\n........", "first": "W", "key": "bc", "kos": ["cb", "ac"], "nmoves": 12, "rnodes": 53, "pv": ["bc", "cb", "ac", "bb", "ba", "bd", "cc", "ca", "db", "ad", "aa", "bb", "cb"], "traps": 2}
+{"diag": "+++++X.\n+++x@X.\n@@@@@X.\n+XXXXX.\nXX.....\n.......", "first": "B", "key": "ea", "kos": ["cb"], "nmoves": 9, "rnodes": 7, "pv": ["ea", "cb", "da", "ab", "ba"], "traps": 2}
+{"diag": "++++X.\n++x@X.\n@+@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ba", "da"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "++++X.\n++x@X.\n@+@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+++++@X.\n+x+++@X.\n+@@@@@X.\n++XXXXX.\nXXX.....\n........", "first": "B", "key": "ac", "kos": ["cb", "db"], "nmoves": 12, "rnodes": 217, "pv": ["ac", "ad", "bd", "ba", "ab", "cb", "da", "db", "ea", "ca", "ad", "aa", "eb"], "traps": 0}
+{"diag": "+++++X.\n+x++oX.\n@@@+oX.\nXX@@+X.\n.XXXXX.\n.......", "first": "B", "key": "cb", "kos": ["ea", "db"], "nmoves": 10, "rnodes": 17, "pv": ["cb", "db", "ab", "ba", "ed", "ca", "dc"], "traps": 2}
+{"diag": "++++@X.\n+x@@@X.\n@@@+XX.\nX+XXX..\nXXX....\n.......", "first": "B", "key": "ca", "kos": [], "nmoves": 7, "rnodes": 33, "pv": ["ca", "ba", "aa", "ab", "ba", "bd", "dc", "da", "ba"], "traps": 1}
+{"diag": "++x++X.\n++@@@X.\n+@@XXX.\n+@@X...\nXXXX...\n.......", "first": "B", "key": "ba", "kos": ["bb"], "nmoves": 8, "rnodes": 1, "pv": ["ba"], "traps": 4}
+{"diag": "+x++@X.\n+x@@@X.\n+@@XXX.\no+XX...\nXXX....\n.......", "first": "B", "key": "ab", "kos": ["ca", "bd"], "nmoves": 6, "rnodes": 5, "pv": ["ab", "ca", "bd", "ac", "da"], "traps": 3}
+{"diag": "+++++X.\nx++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "bb", "kos": ["ca", "da", "ea"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+++++X.\nx++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "W", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 7, "pv": ["bb", "ca", "ba", "da", "ea"], "traps": 2}
+{"diag": "+++@@X.\n+x++@X.\noo+@@X.\nXXXXXX.\n.......", "first": "W", "key": "cc", "kos": ["ba", "cb"], "nmoves": 7, "rnodes": 35, "pv": ["cc", "cb", "ca", "ab", "ba", "aa", "db", "ab", "bb"], "traps": 1}
+{"diag": "+++++X.\n++++@X.\n+@+@@X.\nX@@@XX.\nXXXXX..\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 11, "rnodes": 69, "pv": ["cb", "bb", "ea", "ca", "db", "aa", "ac", "ab", "da", "ba", "cc"], "traps": 2}
+{"diag": "+x++@X.\nx+++@X.\n@+@@@X.\n@@@XXX.\nXXXX...\n.......", "first": "W", "key": "cb", "kos": ["ca", "da", "bb", "db"], "nmoves": 6, "rnodes": 1, "pv": ["cb"], "traps": 3}
+{"diag": "++++@X.\nx++x@X.\n+@@@@X.\nXX+XXX.\n.XXX...\n.......", "first": "W", "key": "ac", "kos": [], "nmoves": 8, "rnodes": 5, "pv": ["ac", "bb", "cb"], "traps": 1}
+{"diag": "++++@X.\n+x@@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "ca", "kos": [], "nmoves": 5, "rnodes": 15, "pv": ["ca", "aa", "ba", "ab", "da"], "traps": 1}
+{"diag": "+x+@X.\n+++@X.\nx+@@X.\n@@@XX.\nXX+X..\n.XXX..\n......", "first": "B", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 5, "pv": ["bb", "ab", "bc"], "traps": 2}
+{"diag": "+x+@X.\n+++@X.\nx+@@X.\n@@@XX.\nXX+X..\n.XXX..\n......", "first": "W", "key": "bb", "kos": ["ab", "bc"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 6}
+{"diag": "++x++@X.\n++x++@X.\n+@@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "bb", "kos": ["ab", "ac"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "++++X..\n++x@XX.\n++@@+X.\n++@XXX.\n+@@X...\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "da", "ab", "ac", "bc", "ad", "ae"], "nmoves": 12, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "++++++X.\n+x+xooX.\n@@@@+XX.\nXXXXXX..\n........", "first": "W", "key": "cb", "kos": [], "nmoves": 9, "rnodes": 1, "pv": ["cb"], "traps": 3}
+{"diag": "+++++@XX.\n+x++x@+X.\n+@@@@@XX.\nXXXXXXX..\n.........", "first": "W", "key": "ac", "kos": ["ba", "da", "ea", "ab", "cb", "db"], "nmoves": 10, "rnodes": 1, "pv": ["ac"], "traps": 5}
+{"diag": "++xx@X.\n+++@@X.\n++@@XX.\n+o+XX..\nXXXX...\n.......", "first": "W", "key": "ba", "kos": ["ab", "bb", "cb", "ac", "bc", "ad"], "nmoves": 9, "rnodes": 25, "pv": ["ba", "bb", "cb", "ca", "da", "ac", "bc", "ab", "ad", "cd", "aa"], "traps": 5}
+{"diag": "+x+++X.\n++++@X.\n+++@@X.\n@@@@XX.\nXXXXX..\n.......", "first": "B", "key": "cb", "kos": ["da", "ea", "bb", "bc"], "nmoves": 11, "rnodes": 1, "pv": ["cb"], "traps": 3}
+{"diag": "++x+@X.\n+x++@X.\n@@+@@X.\nX@@@XX.\nXXXXX..\n.......", "first": "W", "key": "cb", "kos": ["ba", "ab", "db"], "nmoves": 7, "rnodes": 3, "pv": ["cb", "db", "da"], "traps": 2}
+{"diag": "++x++X.\n+x+@@X.\n@++@+X.\n@@@@XX.\nXXXXX..\n.......", "first": "W", "key": "cb", "kos": ["ba", "da", "ea", "ab"], "nmoves": 9, "rnodes": 5, "pv": ["cb", "da", "ea"], "traps": 2}
+{"diag": "+++@X.\n+xx@X.\n@+@@X.\n@+@XX.\n@@@X..\nXXXX..\n......", "first": "B", "key": "ab", "kos": ["ca"], "nmoves": 6, "rnodes": 15, "pv": ["ab", "ba", "ca", "bc", "bd"], "traps": 1}
+{"diag": "+++@@X.\nxx++@X.\n@@@@@X.\nX+XXXX.\nXXX....\n.......", "first": "B", "key": "cb", "kos": [], "nmoves": 6, "rnodes": 9, "pv": ["cb", "ba", "ca", "db", "bd"], "traps": 2}
+{"diag": "+++++X.\nx++ooX.\n++@XXX.\n@@@X...\nXXXX...\n.......", "first": "B", "key": "bb", "kos": ["ba", "ca", "da", "ea"], "nmoves": 9, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+++++X.\nx++ooX.\n++@XXX.\n@@@X...\nXXXX...\n.......", "first": "W", "key": "bb", "kos": ["ba", "cb"], "nmoves": 9, "rnodes": 9, "pv": ["bb", "da", "ca", "ea", "ac", "ba", "aa"], "traps": 3}
+{"diag": "+x+++@@X.\n++++++@X.\noo+@@@@X.\nXXXXXXXX.\n.........", "first": "B", "key": "cc", "kos": [], "nmoves": 11, "rnodes": 23, "pv": ["cc", "cb", "bb", "eb", "da", "db", "ca", "aa", "ab"], "traps": 0}
+{"diag": "+xo++X.\n+++@+X.\n@@@@XX.\nXXX+X..\n..XXX..\n.......", "first": "W", "key": "bb", "kos": ["aa", "ea", "ab", "eb", "dd"], "nmoves": 8, "rnodes": 1, "pv": ["bb"], "traps": 5}
+{"diag": "+++++X.\nx++++X.\n@@@+@X.\nXX@@@X.\n.XXXXX.\n.......", "first": "W", "key": "db", "kos": ["ca", "da", "ea", "bb", "cb", "eb"], "nmoves": 10, "rnodes": 1, "pv": ["db"], "traps": 6}
+{"diag": "++o+X.\nx++@X.\n++@@X.\n++@XX.\n+@@X..\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ba", "da", "ac", "bc", "ad", "ae"], "nmoves": 10, "rnodes": 1, "pv": ["bb"], "traps": 4}
+{"diag": "+++++@X.\nx++++@X.\n+@@@@@X.\nXXXXXXX.\n........", "first": "B", "key": "ac", "kos": ["ba", "ca", "da", "bb", "db"], "nmoves": 10, "rnodes": 111, "pv": ["ac", "bb", "ca", "ba", "db", "cb", "da", "ea", "aa", "eb", "da", "ca", "db"], "traps": 2}
+{"diag": "++o+X.\nx++@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "B", "key": "bb", "kos": ["ba", "da"], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 6}
+{"diag": "++o+X.\nx++@X.\n++@@X.\n@@@XX.\nXXXX..\n......", "first": "W", "key": "bb", "kos": [], "nmoves": 7, "rnodes": 1, "pv": ["bb"], "traps": 3}
+{"diag": "+x++X..\n+++@XX.\n++@@+X.\n+@@XXX.\n+@XX...\nXXX....\n.......", "first": "B", "key": "bb", "kos": ["aa", "ca", "da", "ab", "cb", "ac", "bc", "ec", "ad", "ae"], "nmoves": 11, "rnodes": 1, "pv": ["bb"], "traps": 9}
+{"diag": "++x@X.\n+++@X.\n+x+@X.\n@@@@X.\nXXXXX.\n......", "first": "B", "key": "cb", "kos": ["ab", "bb", "ac"], "nmoves": 7, "rnodes": 9, "pv": ["cb", "ab", "ac", "ba", "cc"], "traps": 5}
+{"diag": "++x++oX.\n+x++@+X.\n@@@@@@X.\nXXXXXXX.\n........", "first": "W", "key": "cb", "kos": ["ba", "da", "ea", "ab", "db", "fb"], "nmoves": 8, "rnodes": 1, "pv": ["cb"], "traps": 5}
+{"diag": "+++++oX.\n+++++oX.\n+@@@@XX.\nX+XXXX..\nXXX.....\n........", "first": "B", "key": "eb", "kos": ["da", "ab", "bb", "ac"], "nmoves": 12, "rnodes": 27, "pv": ["eb", "db", "ea", "bb", "ca", "da", "ac", "ab", "ba", "fa", "fb"], "traps": 1}
+{"diag": "++++@X.\n+++x@X.\n+++@@X.\noo+@XX.\nXXXXX..\n.......", "first": "B", "key": "cd", "kos": ["bb", "bc", "cc"], "nmoves": 11, "rnodes": 93, "pv": ["cd", "cb", "bb", "ba", "da", "ca", "ab", "cc", "bc", "da", "ac", "ad", "bd"], "traps": 2}

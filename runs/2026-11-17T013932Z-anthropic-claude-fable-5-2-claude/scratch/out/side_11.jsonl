@@ -1,0 +1,39 @@
+{"diag": "...XX@+++@X.\n...X+@x+@@X.\n...XX@@@@@X.\n....X@@@XXX.\n....XXXXX...\n............", "first": "B", "key": "ha", "kos": [], "passval": 0, "depth": 11, "moves": 5, "traps": 2}
+{"diag": ".X@x+++X..\n.X@+++@XX.\n.X@@+@@+X.\n.XX@@@XXX.\n..XXXXX...\n..........", "first": "B", "key": "eb", "kos": ["ea", "ga"], "passval": 0, "depth": 11, "moves": 8, "traps": 4}
+{"diag": ".X@++++oX.\n.X@++++oX.\n.X@@@@@XX.\n.XXXXXXX..\n..........", "first": "B", "key": "gb", "kos": [], "passval": 0, "depth": 11, "moves": 8, "traps": 4}
+{"diag": ".X@++x+@X.\n.X@@++@@X.\n.XX@@@@XX.\n..XXXXXX..\n..........", "first": "B", "key": "ea", "kos": ["eb"], "passval": 0, "depth": 5, "moves": 5, "traps": 2}
+{"diag": ".X@++x+@X.\n.X@@++@@X.\n.XX@@@@XX.\n..XXXXXX..\n..........", "first": "W", "key": "ea", "kos": [], "passval": 0, "depth": 3, "moves": 5, "traps": 3}
+{"diag": ".X+++x+@X.\n.X@x++@@X.\n.X@@@+@XX.\n.X+@@@@X..\n.XXXXXXX..\n..........", "first": "B", "key": "ca", "kos": [], "passval": 0, "depth": 11, "moves": 8, "traps": 3}
+{"diag": ".X@++x+oXX.\n.X@@x++o+X.\n.XX@@@@XXX.\n..XXXXXX...\n...........", "first": "B", "key": "ea", "kos": ["da", "fb", "gb", "ib"], "passval": 0, "depth": 11, "moves": 6, "traps": 4}
+{"diag": ".X@++x+oXX.\n.X@@x++o+X.\n.XX@@@@XXX.\n..XXXXXX...\n...........", "first": "W", "key": "fb", "kos": ["ea", "ga"], "passval": 0, "depth": 7, "moves": 6, "traps": 2}
+{"diag": ".XX@+x@@@X.\n.X+@+++@@X.\n.XX@@@@@@X.\n..XXXXXXXX.\n...........", "first": "B", "key": "fb", "kos": [], "passval": 0, "depth": 5, "moves": 5, "traps": 4}
+{"diag": "..Xo+++x@X.\n..Xo+++x@X.\n..XX@@@+@X.\n...XXX@@@X.\n.....XXXXX.\n...........", "first": "B", "key": "eb", "kos": [], "passval": 0, "depth": 11, "moves": 7, "traps": 5}
+{"diag": "...X+++++@X.\n...X@x+x@@X.\n...X@@++@@X.\n...XX@@@@XX.\n....XXXX+X..\n.......XXX..\n............", "first": "W", "key": "gb", "kos": ["ea", "fa", "ga", "ha", "gc", "ie"], "passval": 1, "depth": 5, "moves": 9, "traps": 6}
+{"diag": ".X+++++X.\n.X@+++@X.\n.X@@@@@X.\n.XXXXXXX.\n.........", "first": "W", "key": "eb", "kos": [], "passval": 0, "depth": 9, "moves": 8, "traps": 0}
+{"diag": ".Xo+++++@X.\n.X+x+@@@@X.\n.X@@@@XXXX.\n.XXXXXX....\n...........", "first": "B", "key": "cb", "kos": [], "passval": 0, "depth": 9, "moves": 7, "traps": 2}
+{"diag": ".X@+++@X.\n.X@+xx@X.\n.X@@@@@X.\n.X+XXXXX.\n.XXX.....\n.........", "first": "W", "key": "ea", "kos": [], "passval": 0, "depth": 3, "moves": 5, "traps": 2}
+{"diag": "...Xo++@@X.\n...Xo+++@X.\n...Xo+@@@X.\n...XXXXXXX.\n...........", "first": "B", "key": "gb", "kos": ["fb", "fc"], "passval": 0, "depth": 9, "moves": 6, "traps": 5}
+{"diag": ".Xo+++@+@X.\n.Xoxx+@@@X.\n.X+@@@@+XX.\n.XXXXX+XX..\n.....XXX...\n...........", "first": "B", "key": "cc", "kos": [], "passval": 0, "depth": 9, "moves": 7, "traps": 2}
+{"diag": "...X@+x++X.\n...X@x+@@X.\n..XX@+@@XX.\n..X+@@@XX..\n..XXXXXX...\n...........", "first": "W", "key": "ia", "kos": [], "passval": 0, "depth": 3, "moves": 6, "traps": 2}
+{"diag": "..X@+++@X.\n..X@@xx@X.\n..XX@++@X.\n...X@@@@X.\n...XXXXXX.\n..........", "first": "W", "key": "ga", "kos": ["fa", "fc"], "passval": 1, "depth": 7, "moves": 5, "traps": 3}
+{"diag": ".X@+x+o+X.\n.X@@++x@X.\n.XX@+++@X.\n..X@@@@@X.\n..XXX+XXX.\n....XXX...\n..........", "first": "B", "key": "ha", "kos": [], "passval": 0, "depth": 11, "moves": 9, "traps": 2}
+{"diag": ".X@++++++X.\n.X@+++x+@X.\n.X@@@@@@@X.\n.XXXXXXXXX.\n...........", "first": "B", "key": "ia", "kos": [], "passval": 0, "depth": 11, "moves": 10, "traps": 1}
+{"diag": ".X++@++o+X.\n.X@@@xx+@X.\n.XXX@@@@@X.\n...XXXXXXX.\n...........", "first": "B", "key": "ca", "kos": [], "passval": 0, "depth": 9, "moves": 6, "traps": 5}
+{"diag": ".X+o++@X.\n.X@+++@X.\n.X@@@@@X.\n.XXXXXXX.\n.........", "first": "B", "key": "eb", "kos": [], "passval": 0, "depth": 9, "moves": 6, "traps": 2}
+{"diag": ".X+o++++@X.\n.Xox++++@X.\n.Xo+@@@@@X.\n.XXXXXXXXX.\n...........", "first": "B", "key": "eb", "kos": ["ca", "ea", "dc"], "passval": 0, "depth": 11, "moves": 10, "traps": 3}
+{"diag": "..Xo++@XX.\n..X+++@@X.\n..Xoox+@X.\n..Xo+@@@X.\n..XXXXXXX.\n..........", "first": "W", "key": "db", "kos": ["eb", "fb"], "passval": 0, "depth": 9, "moves": 7, "traps": 3}
+{"diag": ".X++x++++X.\n.X@+x++@@X.\n.X@@@@@@XX.\n.XXX+XXXX..\n...XXX.....\n...........", "first": "W", "key": "ca", "kos": [], "passval": 0, "depth": 5, "moves": 10, "traps": 6}
+{"diag": ".X@+++oX.\n.X@+++oX.\n.X@++x+X.\n.X@@@@@X.\n.XXXXXXX.\n.........", "first": "B", "key": "gc", "kos": [], "passval": 0, "depth": 11, "moves": 9, "traps": 5}
+{"diag": ".X@@++x++X.\nXX@+++++@X.\nX+@@@@@@@X.\nXXXXXXXXXX.\n...........", "first": "B", "key": "ia", "kos": [], "passval": 0, "depth": 11, "moves": 10, "traps": 0}
+{"diag": "....Xo+++@X.\n....X++++@X.\n....X@@@@@X.\n....XXXXXXX.\n............", "first": "W", "key": "fb", "kos": ["ha"], "passval": 0, "depth": 7, "moves": 7, "traps": 2}
+{"diag": ".Xo+++++@X.\n.Xo+x+++@X.\n.X+o+@@@@X.\n.XXXXXXXXX.\n...........", "first": "W", "key": "ec", "kos": ["ga", "fb"], "passval": 0, "depth": 5, "moves": 11, "traps": 0}
+{"diag": ".X+o+++X.\n.X@+++@X.\n.X@++@@X.\n.X@@@@XX.\n.XXXXXX..\n.........", "first": "B", "key": "eb", "kos": [], "passval": 0, "depth": 11, "moves": 9, "traps": 5}
+{"diag": ".X@+++++X.\n.X@+x+@@X.\n.X@@@@@XX.\n.XXXXXXX..\n..........", "first": "W", "key": "ha", "kos": ["ea"], "passval": 0, "depth": 9, "moves": 7, "traps": 4}
+{"diag": ".X@+++++X.\n.X@+x@@@X.\n.X@@@@XXX.\n.XXXX+X...\n....XXX...\n..........", "first": "B", "key": "fa", "kos": [], "passval": 0, "depth": 11, "moves": 7, "traps": 5}
+{"diag": ".Xoox+o+@X.\n.Xo++@+x@X.\n.Xo+@@@@@X.\n.XXXXXXXXX.\n...........", "first": "B", "key": "dc", "kos": [], "passval": 0, "depth": 11, "moves": 6, "traps": 2}
+{"diag": ".X+o++@@XX.\n.X@+x++@+X.\n.X@@@@@@XX.\n.XXXXXXXX..\n...........", "first": "B", "key": "fb", "kos": [], "passval": 0, "depth": 7, "moves": 7, "traps": 4}
+{"diag": "...X@+++XX.\n...X@+x@@X.\n...X@@++@X.\n...XX@@@@X.\n....XXXXXX.\n...........", "first": "B", "key": "ha", "kos": [], "passval": 0, "depth": 7, "moves": 6, "traps": 2}
+{"diag": ".X@++x++oX.\n.X@++x+++X.\n.X@@@@@@@X.\n.XXXXXXXXX.\n...........", "first": "B", "key": "ib", "kos": ["eb"], "passval": 0, "depth": 11, "moves": 9, "traps": 2}
+{"diag": ".X@+++x@@X.\n.X@+x++@@X.\n.X@@@@@@@X.\n.XXXXXXXXX.\n...........", "first": "B", "key": "fb", "kos": [], "passval": 0, "depth": 11, "moves": 6, "traps": 1}
+{"diag": ".XXo++++@X.\n.X+o+x+@@X.\n.XXo+@@@@X.\n..XXXXXXXX.\n...........", "first": "W", "key": "ec", "kos": ["fa"], "passval": 0, "depth": 7, "moves": 8, "traps": 4}
+#done 1500 in 230s

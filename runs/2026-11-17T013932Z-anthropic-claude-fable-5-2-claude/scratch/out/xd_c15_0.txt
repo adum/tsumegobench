@@ -1,0 +1,47 @@
+bb
+  ab
+    ad RIGHT
+    ac
+      ad
+    bc
+      ad
+  ad
+    ab
+      ac
+        ca
+          bc
+            aa RIGHT
+            cb
+              aa
+        aa
+          ca
+        bc
+          ca
+      ca
+        ac
+          cb
+            aa RIGHT
+            bc
+              aa
+        aa
+          ac
+        cb
+          ac
+    ac
+      ab
+    ca
+      ab
+aa
+  bb
+ab
+  bb
+ac
+  bb
+ad
+  bb
+bc
+  bb
+ca
+  bb
+cb
+  ab

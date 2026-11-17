@@ -212,6 +212,19 @@
       "runCount": 3,
       "bestRunId": "2026-09-27T010717Z-anthropic-claude-opus-5-5-claude",
       "bestRunCreatedAt": "2026-09-27T01:07:17.337939Z"
+    },
+    {
+      "id": "claude-fable-5.2",
+      "displayName": "Claude Fable 5.2",
+      "family": "Anthropic",
+      "releaseDate": "2026-11-09",
+      "icon": "/provider-icons/anthropic.svg",
+      "score": 6,
+      "passedProblems": 6,
+      "problemCount": 10,
+      "runCount": 1,
+      "bestRunId": "2026-11-17T013932Z-anthropic-claude-fable-5-2-claude",
+      "bestRunCreatedAt": "2026-11-17T01:39:32.307315Z"
     }
   ],
   "unmatchedModels": []

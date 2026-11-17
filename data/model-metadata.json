@@ -7,6 +7,17 @@
   },
   "models": [
     {
+      "id": "claude-fable-5.2",
+      "displayName": "Claude Fable 5.2",
+      "family": "Anthropic",
+      "releaseDate": "2026-11-09",
+      "icon": "/provider-icons/anthropic.svg",
+      "aliases": [
+        { "provider": "anthropic", "name": "claude-fable-5-2" },
+        { "provider": "anthropic", "name": "fable-5-2" }
+      ]
+    },
+    {
       "id": "claude-opus-5.5",
       "displayName": "Claude Opus 5.5",
       "family": "Anthropic",
