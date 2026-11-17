@@ -64,6 +64,14 @@
   ],
   "localAdditions": [
     {
+      "family": "ChatGPT / Codex",
+      "name": "GPT-6.2 Astra",
+      "releaseDate": "2026-11-17",
+      "origin": "America",
+      "openWeights": false,
+      "source": "https://openai.com/index/introducing-gpt-6-2-astra-sol/"
+    },
+    {
       "family": "Claude",
       "name": "Claude Fable 5.2",
       "releaseDate": "2026-11-09",

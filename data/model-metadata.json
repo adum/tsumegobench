@@ -7,6 +7,16 @@
   },
   "models": [
     {
+      "id": "gpt-6.2-astra",
+      "displayName": "GPT-6.2 Astra",
+      "family": "OpenAI",
+      "releaseDate": "2026-11-17",
+      "icon": "/provider-icons/openai.svg",
+      "aliases": [
+        { "provider": "openai", "name": "gpt-6.2-astra" }
+      ]
+    },
+    {
       "id": "claude-fable-5.2",
       "displayName": "Claude Fable 5.2",
       "family": "Anthropic",
