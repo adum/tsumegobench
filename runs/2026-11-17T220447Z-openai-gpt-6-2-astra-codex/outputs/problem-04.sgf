@@ -1,0 +1,16 @@
+(;FF[4]GM[1]CA[UTF-8]SZ[19]AB[ap][aq][bq][bs][cq][cs][dq][eq][er]AW[ao][bo][br][co][cp][dp][ep][es][fp][fq][fr][fs]
+(;W[ar]
+(;B[cr]
+(;W[ds]C[RIGHT])
+(;W[dr];B[ds]))
+(;B[ds]
+(;W[cr]C[RIGHT])
+(;W[dr];B[cr])
+(;W[as];B[cr])))
+(;W[cr];B[ar]
+(;W[dr];B[ds])
+(;W[ds];B[dr]))
+(;W[ds];B[ar];W[cr];B[dr])
+(;W[dr];B[cr];W[ar];B[ds])
+(;W[as];B[ar])
+(;W[bp];B[ar]))

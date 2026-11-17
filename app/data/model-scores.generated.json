@@ -232,12 +232,12 @@
       "family": "OpenAI",
       "releaseDate": "2026-11-17",
       "icon": "/provider-icons/openai.svg",
-      "score": 3,
-      "passedProblems": 3,
+      "score": 5,
+      "passedProblems": 5,
       "problemCount": 10,
-      "runCount": 1,
-      "bestRunId": "2026-11-17T205022Z-openai-gpt-6-2-astra-codex",
-      "bestRunCreatedAt": "2026-11-17T20:50:22.947896Z"
+      "runCount": 2,
+      "bestRunId": "2026-11-17T220447Z-openai-gpt-6-2-astra-codex",
+      "bestRunCreatedAt": "2026-11-17T22:04:47.540126Z"
     }
   ],
   "unmatchedModels": []

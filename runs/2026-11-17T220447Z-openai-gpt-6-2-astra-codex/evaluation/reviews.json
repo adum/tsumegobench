@@ -1,0 +1,126 @@
+{
+  "$schema": "../../../schemas/human-reviews.schema.json",
+  "schemaVersion": 1,
+  "runId": "2026-11-17T220447Z-openai-gpt-6-2-astra-codex",
+  "updatedAt": "2026-11-17T23:51:19.375251Z",
+  "reviews": [
+    {
+      "reviewId": "8a08abaa-365d-41c0-a966-7037c2cdfe9f",
+      "reviewerName": "Adam",
+      "createdAt": "2026-11-17T23:14:18.052Z",
+      "updatedAt": "2026-11-17T23:51:19.375251Z",
+      "problems": [
+        {
+          "file": "problem-01.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": null,
+          "reviewedAt": "2026-11-17T23:14:20.550Z"
+        },
+        {
+          "file": "problem-02.sgf",
+          "status": "completed",
+          "valid": false,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-11-17T23:14:46.203Z"
+        },
+        {
+          "file": "problem-03.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": false,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-11-17T23:41:38.288Z"
+        },
+        {
+          "file": "problem-04.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "10-19 kyu",
+          "quality": 4,
+          "reviewedAt": "2026-11-17T23:42:24.505Z"
+        },
+        {
+          "file": "problem-05.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": 3,
+          "reviewedAt": "2026-11-17T23:43:05.570Z"
+        },
+        {
+          "file": "problem-06.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": null,
+          "reviewedAt": "2026-11-17T23:44:21.166Z"
+        },
+        {
+          "file": "problem-07.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": null,
+          "reviewedAt": "2026-11-17T23:44:47.301Z"
+        },
+        {
+          "file": "problem-08.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-11-17T23:45:57.290Z"
+        },
+        {
+          "file": "problem-09.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "5-9 kyu",
+          "quality": 3,
+          "reviewedAt": "2026-11-17T23:47:08.268Z"
+        },
+        {
+          "file": "problem-10.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "1-4 kyu",
+          "quality": 3,
+          "reviewedAt": "2026-11-17T23:51:19.352Z"
+        }
+      ]
+    }
+  ]
+}

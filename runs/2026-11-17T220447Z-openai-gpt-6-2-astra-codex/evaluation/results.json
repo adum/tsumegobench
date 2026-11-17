@@ -1,0 +1,897 @@
+{
+  "schemaVersion": 1,
+  "runId": "2026-11-17T220447Z-openai-gpt-6-2-astra-codex",
+  "generatedAt": "2026-11-17T22:59:03.276Z",
+  "status": "needs_human_review",
+  "automatedSummary": {
+    "expectedProblems": 10,
+    "filesFound": 10,
+    "structuralPassed": 10,
+    "originalityPassed": 10,
+    "automatedGatePassed": 10,
+    "failedProblems": 0,
+    "incompleteProblems": 0,
+    "humanReviewPending": 10,
+    "failedRunChecks": 0
+  },
+  "automatedRunChecks": [
+    {
+      "id": "expected-files",
+      "status": "pass",
+      "message": "All 10 expected SGF files are present."
+    },
+    {
+      "id": "unexpected-files",
+      "status": "pass",
+      "message": "The output directory contains only the 10 expected files."
+    },
+    {
+      "id": "input-integrity",
+      "status": "pass",
+      "message": "The model-visible input snapshot is unchanged."
+    },
+    {
+      "id": "player-color-range",
+      "status": "pass",
+      "message": "The set includes 5 Black-to-play and 5 White-to-play problems."
+    },
+    {
+      "id": "difficulty-range",
+      "status": "needs_human_review",
+      "message": "The 10 per-file difficulty targets span the benchmark range; a human reviewer must verify the actual difficulty."
+    },
+    {
+      "id": "originality-tool-final-coverage",
+      "status": "pass",
+      "message": "All 10 exact final output hashes received a clear originality result."
+    }
+  ],
+  "configuration": {
+    "remoteDuplicateChecks": true,
+    "duplicateFailThreshold": 90,
+    "manualReviewThreshold": 80
+  },
+  "humanReview": {
+    "updatedAt": null,
+    "reviewer": null,
+    "reviewerRank": null,
+    "pending": 10,
+    "accepted": 0,
+    "rejected": 0
+  },
+  "humanReviews": {
+    "reviewCount": 1,
+    "completedProblemReviews": 10,
+    "reviewers": [
+      {
+        "reviewId": "8a08abaa-365d-41c0-a966-7037c2cdfe9f",
+        "reviewerName": "Adam",
+        "updatedAt": "2026-11-17T23:51:19.375251Z",
+        "completed": 10,
+        "total": 10
+      }
+    ]
+  },
+  "problems": [
+    {
+      "file": "problem-01.sgf",
+      "targetDifficulty": "20–30 kyu",
+      "sha256": "af2156eb9fae48f80306aab50287dd471302665f0fe7a34824aa3a69a7c04023",
+      "playerColor": "white",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 8,
+          "moveCount": 7,
+          "maxDepth": 2,
+          "variationPoints": 1,
+          "rightCount": 1,
+          "setupStoneCount": 29
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 53750,
+          "sourceUrl": "https://www.goproblems.com/problems/53750",
+          "percentage": 52.94
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 38,
+          "topMatchId": 42652,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 20–30 kyu"
+      ],
+      "human": {
+        "file": "problem-01.sgf",
+        "status": "pending",
+        "targetDifficulty": "20–30 kyu",
+        "estimatedDifficulty": null,
+        "structuralGate": null,
+        "localDuplicateGate": null,
+        "remoteDuplicateGate": null,
+        "scores": {
+          "correctness": null,
+          "treeCompleteness": null,
+          "canonicalStyle": null,
+          "pedagogicalFit": null,
+          "originality": null,
+          "total": null
+        },
+        "notes": ""
+      },
+      "reviews": [
+        {
+          "reviewId": "8a08abaa-365d-41c0-a966-7037c2cdfe9f",
+          "reviewerName": "Adam",
+          "file": "problem-01.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": null,
+          "reviewedAt": "2026-11-17T23:14:20.550Z"
+        }
+      ]
+    },
+    {
+      "file": "problem-02.sgf",
+      "targetDifficulty": "20–30 kyu",
+      "sha256": "81d854f6e4cb258d6bd8831e468944b44b23ea4a601583e33d01b6cf357c4733",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 10,
+          "moveCount": 9,
+          "maxDepth": 3,
+          "variationPoints": 2,
+          "rightCount": 2,
+          "setupStoneCount": 19
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 36582,
+          "sourceUrl": "https://www.goproblems.com/problems/36582",
+          "percentage": 33.33
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 72,
+          "topMatchId": 51832,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 20–30 kyu"
+      ],
+      "human": {
+        "file": "problem-02.sgf",
+        "status": "pending",
+        "targetDifficulty": "20–30 kyu",
+        "estimatedDifficulty": null,
+        "structuralGate": null,
+        "localDuplicateGate": null,
+        "remoteDuplicateGate": null,
+        "scores": {
+          "correctness": null,
+          "treeCompleteness": null,
+          "canonicalStyle": null,
+          "pedagogicalFit": null,
+          "originality": null,
+          "total": null
+        },
+        "notes": ""
+      },
+      "reviews": [
+        {
+          "reviewId": "8a08abaa-365d-41c0-a966-7037c2cdfe9f",
+          "reviewerName": "Adam",
+          "file": "problem-02.sgf",
+          "status": "completed",
+          "valid": false,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-11-17T23:14:46.203Z"
+        }
+      ]
+    },
+    {
+      "file": "problem-03.sgf",
+      "targetDifficulty": "10–19 kyu",
+      "sha256": "04fa71b1877b30c191209a8a741e3760652b3a52c8ac4a97cdb909883e8cb0ad",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 30,
+          "moveCount": 29,
+          "maxDepth": 5,
+          "variationPoints": 7,
+          "rightCount": 7,
+          "setupStoneCount": 33
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 5922,
+          "sourceUrl": "https://www.goproblems.com/problems/5922",
+          "percentage": 21.57
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 51,
+          "topMatchId": 34801,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 10–19 kyu"
+      ],
+      "human": {
+        "file": "problem-03.sgf",
+        "status": "pending",
+        "targetDifficulty": "10–19 kyu",
+        "estimatedDifficulty": null,
+        "structuralGate": null,
+        "localDuplicateGate": null,
+        "remoteDuplicateGate": null,
+        "scores": {
+          "correctness": null,
+          "treeCompleteness": null,
+          "canonicalStyle": null,
+          "pedagogicalFit": null,
+          "originality": null,
+          "total": null
+        },
+        "notes": ""
+      },
+      "reviews": [
+        {
+          "reviewId": "8a08abaa-365d-41c0-a966-7037c2cdfe9f",
+          "reviewerName": "Adam",
+          "file": "problem-03.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": false,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-11-17T23:41:38.288Z"
+        }
+      ]
+    },
+    {
+      "file": "problem-04.sgf",
+      "targetDifficulty": "10–19 kyu",
+      "sha256": "e090167ac7139b14040a6086b450a36ba18e4aaf5a4722de39ebac334b4ee338",
+      "playerColor": "white",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 30,
+          "moveCount": 29,
+          "maxDepth": 4,
+          "variationPoints": 5,
+          "rightCount": 2,
+          "setupStoneCount": 21
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 36582,
+          "sourceUrl": "https://www.goproblems.com/problems/36582",
+          "percentage": 31.43
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 73,
+          "topMatchId": 36986,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 10–19 kyu"
+      ],
+      "human": {
+        "file": "problem-04.sgf",
+        "status": "pending",
+        "targetDifficulty": "10–19 kyu",
+        "estimatedDifficulty": null,
+        "structuralGate": null,
+        "localDuplicateGate": null,
+        "remoteDuplicateGate": null,
+        "scores": {
+          "correctness": null,
+          "treeCompleteness": null,
+          "canonicalStyle": null,
+          "pedagogicalFit": null,
+          "originality": null,
+          "total": null
+        },
+        "notes": ""
+      },
+      "reviews": [
+        {
+          "reviewId": "8a08abaa-365d-41c0-a966-7037c2cdfe9f",
+          "reviewerName": "Adam",
+          "file": "problem-04.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "10-19 kyu",
+          "quality": 4,
+          "reviewedAt": "2026-11-17T23:42:24.505Z"
+        }
+      ]
+    },
+    {
+      "file": "problem-05.sgf",
+      "targetDifficulty": "5–9 kyu",
+      "sha256": "e27e57ba615c96e88962d397b1472391fbb68ed496ce84e67ffac06d8e68d30f",
+      "playerColor": "white",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 29,
+          "moveCount": 28,
+          "maxDepth": 7,
+          "variationPoints": 7,
+          "rightCount": 4,
+          "setupStoneCount": 40
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 10330,
+          "sourceUrl": "https://www.goproblems.com/problems/10330",
+          "percentage": 26.15
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 65,
+          "topMatchId": 59947,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 5–9 kyu"
+      ],
+      "human": {
+        "file": "problem-05.sgf",
+        "status": "pending",
+        "targetDifficulty": "5–9 kyu",
+        "estimatedDifficulty": null,
+        "structuralGate": null,
+        "localDuplicateGate": null,
+        "remoteDuplicateGate": null,
+        "scores": {
+          "correctness": null,
+          "treeCompleteness": null,
+          "canonicalStyle": null,
+          "pedagogicalFit": null,
+          "originality": null,
+          "total": null
+        },
+        "notes": ""
+      },
+      "reviews": [
+        {
+          "reviewId": "8a08abaa-365d-41c0-a966-7037c2cdfe9f",
+          "reviewerName": "Adam",
+          "file": "problem-05.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": 3,
+          "reviewedAt": "2026-11-17T23:43:05.570Z"
+        }
+      ]
+    },
+    {
+      "file": "problem-06.sgf",
+      "targetDifficulty": "5–9 kyu",
+      "sha256": "08b3752e16d1dcc76422a276055cced1983aca62d67b9508d608b2c842b13386",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [
+          {
+            "severity": "warning",
+            "code": "right-ending-color",
+            "message": "A correct line should normally end with the protagonist's move.",
+            "nodeId": "n2"
+          }
+        ],
+        "stats": {
+          "nodeCount": 21,
+          "moveCount": 20,
+          "maxDepth": 3,
+          "variationPoints": 2,
+          "rightCount": 5,
+          "setupStoneCount": 23
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 5973,
+          "sourceUrl": "https://www.goproblems.com/problems/5973",
+          "percentage": 22.22
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 65,
+          "topMatchId": 41490,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 5–9 kyu"
+      ],
+      "human": {
+        "file": "problem-06.sgf",
+        "status": "pending",
+        "targetDifficulty": "5–9 kyu",
+        "estimatedDifficulty": null,
+        "structuralGate": null,
+        "localDuplicateGate": null,
+        "remoteDuplicateGate": null,
+        "scores": {
+          "correctness": null,
+          "treeCompleteness": null,
+          "canonicalStyle": null,
+          "pedagogicalFit": null,
+          "originality": null,
+          "total": null
+        },
+        "notes": ""
+      },
+      "reviews": [
+        {
+          "reviewId": "8a08abaa-365d-41c0-a966-7037c2cdfe9f",
+          "reviewerName": "Adam",
+          "file": "problem-06.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": null,
+          "reviewedAt": "2026-11-17T23:44:21.166Z"
+        }
+      ]
+    },
+    {
+      "file": "problem-07.sgf",
+      "targetDifficulty": "1–4 kyu",
+      "sha256": "059616164773d3c7199a3b46fa7afebefa17fce09fadfee37329c814db54ec9d",
+      "playerColor": "white",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 59,
+          "moveCount": 58,
+          "maxDepth": 7,
+          "variationPoints": 14,
+          "rightCount": 17,
+          "setupStoneCount": 26
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 20284,
+          "sourceUrl": "https://www.goproblems.com/problems/20284",
+          "percentage": 22.64
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 65,
+          "topMatchId": 21162,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 1–4 kyu"
+      ],
+      "human": {
+        "file": "problem-07.sgf",
+        "status": "pending",
+        "targetDifficulty": "1–4 kyu",
+        "estimatedDifficulty": null,
+        "structuralGate": null,
+        "localDuplicateGate": null,
+        "remoteDuplicateGate": null,
+        "scores": {
+          "correctness": null,
+          "treeCompleteness": null,
+          "canonicalStyle": null,
+          "pedagogicalFit": null,
+          "originality": null,
+          "total": null
+        },
+        "notes": ""
+      },
+      "reviews": [
+        {
+          "reviewId": "8a08abaa-365d-41c0-a966-7037c2cdfe9f",
+          "reviewerName": "Adam",
+          "file": "problem-07.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "20-30 kyu",
+          "quality": null,
+          "reviewedAt": "2026-11-17T23:44:47.301Z"
+        }
+      ]
+    },
+    {
+      "file": "problem-08.sgf",
+      "targetDifficulty": "1–4 kyu",
+      "sha256": "c189591c7e6dc43ad59bb99e3efa522c81ce903d20bbd8874b5c6f01fb8a9bfd",
+      "playerColor": "white",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 73,
+          "moveCount": 72,
+          "maxDepth": 7,
+          "variationPoints": 16,
+          "rightCount": 19,
+          "setupStoneCount": 32
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 28281,
+          "sourceUrl": "https://www.goproblems.com/problems/28281",
+          "percentage": 30.43
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 50,
+          "topMatchId": 46310,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for 1–4 kyu"
+      ],
+      "human": {
+        "file": "problem-08.sgf",
+        "status": "pending",
+        "targetDifficulty": "1–4 kyu",
+        "estimatedDifficulty": null,
+        "structuralGate": null,
+        "localDuplicateGate": null,
+        "remoteDuplicateGate": null,
+        "scores": {
+          "correctness": null,
+          "treeCompleteness": null,
+          "canonicalStyle": null,
+          "pedagogicalFit": null,
+          "originality": null,
+          "total": null
+        },
+        "notes": ""
+      },
+      "reviews": [
+        {
+          "reviewId": "8a08abaa-365d-41c0-a966-7037c2cdfe9f",
+          "reviewerName": "Adam",
+          "file": "problem-08.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": false,
+          "estimatedDifficulty": null,
+          "quality": null,
+          "reviewedAt": "2026-11-17T23:45:57.290Z"
+        }
+      ]
+    },
+    {
+      "file": "problem-09.sgf",
+      "targetDifficulty": "about 1 dan",
+      "sha256": "501ef89400f02a408a9ceb032967366a3251286aba488eaf46b321353a623b08",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [
+          {
+            "severity": "warning",
+            "code": "right-ending-color",
+            "message": "A correct line should normally end with the protagonist's move.",
+            "nodeId": "n4"
+          },
+          {
+            "severity": "warning",
+            "code": "right-ending-color",
+            "message": "A correct line should normally end with the protagonist's move.",
+            "nodeId": "n11"
+          }
+        ],
+        "stats": {
+          "nodeCount": 78,
+          "moveCount": 77,
+          "maxDepth": 6,
+          "variationPoints": 14,
+          "rightCount": 15,
+          "setupStoneCount": 26
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 5973,
+          "sourceUrl": "https://www.goproblems.com/problems/5973",
+          "percentage": 25.53
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 76,
+          "topMatchId": 59662,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for about 1 dan"
+      ],
+      "human": {
+        "file": "problem-09.sgf",
+        "status": "pending",
+        "targetDifficulty": "about 1 dan",
+        "estimatedDifficulty": null,
+        "structuralGate": null,
+        "localDuplicateGate": null,
+        "remoteDuplicateGate": null,
+        "scores": {
+          "correctness": null,
+          "treeCompleteness": null,
+          "canonicalStyle": null,
+          "pedagogicalFit": null,
+          "originality": null,
+          "total": null
+        },
+        "notes": ""
+      },
+      "reviews": [
+        {
+          "reviewId": "8a08abaa-365d-41c0-a966-7037c2cdfe9f",
+          "reviewerName": "Adam",
+          "file": "problem-09.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "5-9 kyu",
+          "quality": 3,
+          "reviewedAt": "2026-11-17T23:47:08.268Z"
+        }
+      ]
+    },
+    {
+      "file": "problem-10.sgf",
+      "targetDifficulty": "about 1 dan",
+      "sha256": "64b2eb6eb7416d9bb35a3b4cf8b2e6264f88a8b2b9628b222d08602df36563a6",
+      "playerColor": "black",
+      "status": "needs_human_review",
+      "automatedGate": "pass",
+      "validation": {
+        "status": "pass",
+        "valid": true,
+        "issues": [],
+        "stats": {
+          "nodeCount": 118,
+          "moveCount": 117,
+          "maxDepth": 9,
+          "variationPoints": 26,
+          "rightCount": 32,
+          "setupStoneCount": 40
+        }
+      },
+      "originality": {
+        "status": "pass",
+        "builtInSetupMatch": null,
+        "exactLocalMatch": null,
+        "closestLocalShape": {
+          "id": 8142,
+          "sourceUrl": "https://www.goproblems.com/problems/8142",
+          "percentage": 22.54
+        },
+        "remote": {
+          "status": "pass",
+          "radiusTwoMatches": [],
+          "topPercentage": 69,
+          "topMatchId": 61997,
+          "error": null
+        },
+        "peerExactMatches": [],
+        "peerShapeMatches": []
+      },
+      "humanReviewRequired": [
+        "life-and-death correctness under best resistance",
+        "complete solution and refutation coverage",
+        "natural branch endpoints",
+        "canonical construction and teaching value",
+        "difficulty fit for about 1 dan"
+      ],
+      "human": {
+        "file": "problem-10.sgf",
+        "status": "pending",
+        "targetDifficulty": "about 1 dan",
+        "estimatedDifficulty": null,
+        "structuralGate": null,
+        "localDuplicateGate": null,
+        "remoteDuplicateGate": null,
+        "scores": {
+          "correctness": null,
+          "treeCompleteness": null,
+          "canonicalStyle": null,
+          "pedagogicalFit": null,
+          "originality": null,
+          "total": null
+        },
+        "notes": ""
+      },
+      "reviews": [
+        {
+          "reviewId": "8a08abaa-365d-41c0-a966-7037c2cdfe9f",
+          "reviewerName": "Adam",
+          "file": "problem-10.sgf",
+          "status": "completed",
+          "valid": true,
+          "realistic": true,
+          "duplicate": false,
+          "wellPathed": true,
+          "estimatedDifficulty": "1-4 kyu",
+          "quality": 3,
+          "reviewedAt": "2026-11-17T23:51:19.352Z"
+        }
+      ]
+    }
+  ]
+}
