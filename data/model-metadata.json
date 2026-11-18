@@ -7,6 +7,19 @@
   },
   "models": [
     {
+      "id": "gemini-4-carbon",
+      "displayName": "Gemini 4 Carbon",
+      "family": "Google",
+      "releaseDate": "2026-11-10",
+      "icon": "/provider-icons/google.png",
+      "aliases": [
+        { "provider": "google", "name": "gemini-4-carbon-high" },
+        { "provider": "google", "name": "gemini-4-carbon-medium" },
+        { "provider": "google", "name": "gemini-4-carbon-low" },
+        { "provider": "google", "name": "gemini-4-carbon" }
+      ]
+    },
+    {
       "id": "gpt-6.2-astra",
       "displayName": "GPT-6.2 Astra",
       "family": "OpenAI",

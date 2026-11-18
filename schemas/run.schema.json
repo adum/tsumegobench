@@ -85,7 +85,7 @@
       ],
       "properties": {
         "name": {
-          "enum": ["codex-cli", "claude-cli", "grok-cli", "opencode-cli"]
+          "enum": ["codex-cli", "claude-cli", "grok-cli", "opencode-cli", "agy-cli"]
         },
         "version": { "type": ["string", "null"] },
         "mode": { "const": "non-interactive" },
@@ -261,6 +261,7 @@
         "stderr": { "type": "string" },
         "harnessInput": { "type": "string" },
         "harnessSettings": { "type": "string" },
+        "harnessHooks": { "type": "string" },
         "attempts": { "type": "string" },
         "originalityToolGuide": { "type": "string" },
         "originalityToolSummary": { "type": "string" },

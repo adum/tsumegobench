@@ -64,6 +64,14 @@
   ],
   "localAdditions": [
     {
+      "family": "Gemini",
+      "name": "Gemini 4 Carbon",
+      "releaseDate": "2026-11-10",
+      "origin": "America",
+      "openWeights": false,
+      "source": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-4-carbon-developers/"
+    },
+    {
       "family": "ChatGPT / Codex",
       "name": "GPT-6.2 Astra",
       "releaseDate": "2026-11-17",

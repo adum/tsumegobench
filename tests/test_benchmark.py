@@ -1,6 +1,7 @@
 import json
 import io
 import os
+import runpy
 import subprocess
 import sys
 import tempfile
@@ -2800,6 +2801,104 @@ time.sleep(60)
         self.assertEqual(len(store["reviews"]), 2)
         self.assertEqual(results["humanReviews"]["reviewCount"], 2)
         self.assertEqual(len(results["problems"][0]["reviews"]), 2)
+
+
+class AntigravityHarnessTests(unittest.TestCase):
+    def args(self):
+        return benchmark.build_parser().parse_args([
+            "run", "--harness", "agy", "--model", "gemini-4-carbon-high", "--effort", "high",
+        ])
+
+    def test_manifest_and_command_capture_restricted_execution_policy(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = benchmark.prepare_manifest(self.args(), "agy-test", root)
+            command = benchmark.build_harness_command(self.args(), root, "/opt/agy")
+            settings = json.loads(command[command.index("--settings") + 1])
+            self.assertEqual(manifest["model"]["provider"], "google")
+            self.assertEqual(manifest["harness"]["name"], "agy-cli")
+            self.assertTrue(manifest["condition"]["codeExecutionEnabled"])
+            self.assertEqual(settings["toolPermission"], "proceed-in-sandbox")
+            self.assertEqual(settings["agentMode"], "accept-edits")
+            self.assertFalse(settings["allowNonWorkspaceAccess"])
+            self.assertIn("--sandbox", command)
+            self.assertNotIn("--dangerously-skip-permissions", command)
+            self.assertIn("read_url(*)", settings["permissions"]["deny"])
+            self.assertIn(f"write_file({root.resolve()}/inputs)", settings["permissions"]["deny"])
+            self.assertEqual((root / ".agents/hooks.json").read_bytes(), (root / "inputs/agy-hooks.json").read_bytes())
+            for artifact in manifest["benchmark"]["inputFiles"]:
+                self.assertEqual(benchmark.sha256_file(root / artifact["path"]), artifact["sha256"])
+            schema = benchmark.read_json(benchmark.PROJECT_ROOT / "schemas/run.schema.json")
+            self.assertLessEqual(set(manifest["artifacts"]), set(schema["properties"]["artifacts"]["properties"]))
+
+    def test_parser_uses_terminal_usage_without_double_counting_steps(self):
+        events = [
+            {"event": "init", "conversation_id": "session-1"},
+            {"event": "step_update", "step_update": {"usage": {"input_tokens": 100}}},
+            {"event": "result", "result": {"status": "SUCCESS", "response": "done", "usage": {"input_tokens": 100, "thinking_tokens": 50}}},
+        ]
+        parsed = benchmark.parse_agy_events("\n".join(json.dumps(e) for e in events))
+        self.assertEqual(parsed["threadId"], "session-1")
+        self.assertEqual(parsed["usage"], {"input_tokens": 100, "thinking_tokens": 50})
+        self.assertEqual(parsed["finalMessage"], "done")
+        self.assertIsNone(parsed["failureMessage"])
+        failure = benchmark.parse_agy_events(json.dumps({"event": "result", "result": {"status": "ERROR", "error": "quota exceeded"}}))
+        self.assertEqual(failure["failureMessage"], "quota exceeded")
+        self.assertIsNotNone(benchmark.parse_agy_events(json.dumps(events[0]))["failureMessage"])
+
+    def test_tool_hook_blocks_external_paths_symlinks_and_unapproved_tools(self):
+        policy = runpy.run_path(str(benchmark.PROJECT_ROOT / "scripts/agy-tool-policy.py"))["decision"]
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "run"
+            root.mkdir()
+            (root / "link").symlink_to(root.parent, target_is_directory=True)
+            def check(name, args):
+                return policy({"toolCall": {"name": name, "args": args}}, root)["decision"]
+            for name in ("search_web", "read_url_content", "call_mcp_tool", "invoke_subagent", "ask_permission", "schedule"):
+                self.assertEqual(check(name, {}), "deny")
+            for path in ("../secret", "link/secret"):
+                self.assertEqual(check("read_file", {"Path": path}), "deny")
+            self.assertEqual(check("read_file", {"Path": "inputs/task.md"}), "allow")
+            self.assertEqual(check("write_to_file", {"TargetFile": "inputs/task.md"}), "deny")
+            self.assertEqual(check("write_to_file", {"TargetFile": ".agents/hooks.json"}), "deny")
+            self.assertEqual(check("write_to_file", {"TargetFile": "outputs/problem-01.sgf"}), "allow")
+            self.assertEqual(check("write_file", {"Path": "outputs/problem-01.sgf"}), "allow")
+            self.assertEqual(check("write_file", {"Path": "inputs/task.md"}), "deny")
+            self.assertEqual(check("write_file", {"Path": "link/secret"}), "deny")
+            self.assertEqual(check("run_command", {"Cwd": ".."}), "deny")
+            self.assertEqual(check("run_command", {"Unsandboxed": True}), "deny")
+            result = policy({"toolCall": {"name": "run_command", "args": {"CommandLine": "python3 script.py"}}}, root)
+            self.assertEqual(result, {"decision": "allow", "overwrite": {"Cwd": str(root.resolve())}})
+
+    def test_validation_rejects_unknown_models_and_mismatched_effort(self):
+        catalog = subprocess.CompletedProcess([], 0, "gemini-4-carbon-high\tGemini 4 Carbon (High)\n", "")
+        with mock.patch.object(benchmark.subprocess, "run", return_value=catalog), mock.patch.object(benchmark.sys, "platform", "darwin"):
+            self.assertIsNone(benchmark.agy_validation_error("agy", "1.5.11", "gemini-4-carbon-high", "high"))
+            self.assertIn("does not list", benchmark.agy_validation_error("agy", "1.5.11", "gemini-typo-high", "high"))
+            self.assertIn("--effort", benchmark.agy_validation_error("agy", "1.5.11", "gemini-4-carbon-high", "low"))
+
+    def test_subprocess_sends_prompt_and_preserves_streamed_logs(self):
+        script = (
+            "import json,sys; m=json.loads(sys.stdin.readline()); "
+            "print(json.dumps({'event':'result','result':{'status':'SUCCESS','response':m['message']['content'],"
+            "'conversation_id':'fake-session','usage':{'input_tokens':4}}}))"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            result = benchmark.run_harness_once(self.args(), [sys.executable, "-c", script], root, "test prompt", "agy test", 5, 1)
+            self.assertEqual(result["exitCode"], 0)
+            self.assertEqual(benchmark.parse_agy_events(result["stdout"])["finalMessage"], "test prompt")
+            self.assertEqual((root / "logs/attempts/attempt-01/agy-events.jsonl").read_text(), result["stdout"])
+            self.assertEqual(json.loads((root / "logs/attempts/attempt-01/agy-input.jsonl").read_text())["message"]["content"], "test prompt")
+
+    def test_timeout_preserves_partial_files_and_stops_process(self):
+        script = "from pathlib import Path; import time; Path('partial.sgf').write_text('partial'); time.sleep(20)"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            result = benchmark.run_harness_once(self.args(), [sys.executable, "-c", script], root, "", "agy test", 0.3, 1)
+            self.assertEqual(result["exitCode"], 124)
+            self.assertTrue(result["timedOut"])
+            self.assertEqual((root / "partial.sgf").read_text(), "partial")
 
 
 if __name__ == "__main__":

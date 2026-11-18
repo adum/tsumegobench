@@ -182,6 +182,7 @@ function providerLabel(provider: string) {
   if (provider === "xai") return "xAI";
   if (provider === "zai") return "Z.ai";
   if (provider === "opencode") return "OpenCode";
+  if (provider === "google") return "Google";
   return provider;
 }
 
@@ -191,6 +192,7 @@ const providerIconSources: Record<string, string> = {
   xai: "/provider-icons/xai.svg",
   zai: "/provider-icons/zai.png",
   opencode: "/provider-icons/opencode.svg",
+  google: "/provider-icons/google.png",
 };
 
 function providerInitials(provider: string) {
@@ -199,6 +201,7 @@ function providerInitials(provider: string) {
   if (provider === "xai") return "xAI";
   if (provider === "zai") return "Z";
   if (provider === "opencode") return "OC";
+  if (provider === "google") return "G";
   return provider.replace(/[^a-z0-9]/gi, "").slice(0, 2).toUpperCase() || "?";
 }
 
@@ -244,6 +247,7 @@ function harnessLabel(harness: string) {
   if (harness === "claude-cli") return "Claude CLI";
   if (harness === "grok-cli") return "Grok CLI";
   if (harness === "opencode-cli") return "OpenCode CLI";
+  if (harness === "agy-cli") return "Antigravity CLI";
   return harness;
 }
 

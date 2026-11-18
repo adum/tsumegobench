@@ -12,6 +12,7 @@ import math
 import os
 import queue
 import re
+import shlex
 import secrets
 import shutil
 import signal
@@ -55,6 +56,7 @@ REVIEW_PROBE_REQUEST_TIMEOUT_SECONDS = 10
 # --restricted arrived in 2.1.248; workspace read isolation in 2.1.257.
 MINIMUM_CLAUDE_VERSION = (2, 1, 257)
 MINIMUM_OPENCODE_VERSION = (1, 1, 1)
+MINIMUM_AGY_VERSION = (1, 5, 11)
 GENERATION_DIFFICULTY_BANDS = (
     "20-30 kyu",
     "10-19 kyu",
@@ -1265,6 +1267,10 @@ def opencode_model_validation_error(executable: str, model: str) -> str | None:
 def harness_provider(harness: str, model: str) -> str:
     if harness == "opencode":
         return opencode_model_parts(model)[0]
+    if harness == "agy":
+        if not model.startswith("gemini-"):
+            raise ValueError("The agy harness currently supports Gemini model slugs from `agy models`.")
+        return "google"
     return {
         "codex": "openai",
         "claude": "anthropic",
@@ -1278,6 +1284,7 @@ def harness_manifest_name(harness: str) -> str:
         "claude": "claude-cli",
         "grok": "grok-cli",
         "opencode": "opencode-cli",
+        "agy": "agy-cli",
     }[harness]
 
 
@@ -1287,6 +1294,7 @@ def harness_label(harness: str) -> str:
         "claude": "Claude CLI",
         "grok": "Grok CLI",
         "opencode": "OpenCode CLI",
+        "agy": "Antigravity CLI",
     }[harness]
 
 
@@ -1387,6 +1395,32 @@ def claude_sandbox_settings(run_dir: Path) -> dict[str, Any]:
     }
 
 
+def agy_settings(run_dir: Path) -> dict[str, Any]:
+    """Session-only permissions; no automatic approval outside the OS sandbox."""
+    protected = (
+        "inputs", "logs", "evaluation", "run.json", ".agents",
+        "originality/results", "originality/summary.json",
+        "originality/ready.json", "originality/stop",
+    )
+    return {
+        "agentMode": "accept-edits",
+        "enableTerminalSandbox": True,
+        "toolPermission": "proceed-in-sandbox",
+        "allowNonWorkspaceAccess": False,
+        "artifactReviewPolicy": "always-proceed",
+        "permissions": {
+            "allow": [],
+            "ask": [],
+            "deny": ["read_url(*)", "execute_url(*)", "mcp(*)"] + [
+                f"write_file({run_dir.resolve() / name})" for name in protected
+            ],
+        },
+        "sandboxProxy": {},
+        "statusLine": {"enabled": False},
+        "title": {"enabled": False},
+    }
+
+
 def copy_inputs(
     run_dir: Path,
     problem_count: int,
@@ -1447,7 +1481,7 @@ This is a controlled benchmark run. Work only inside the current run directory.
 Do not ask the operator questions and do not wait for repair feedback.
 """
     (inputs / "task.md").write_text(task, encoding="utf-8")
-    if harness == "claude":
+    if harness in {"claude", "agy"}:
         (run_dir / "scratch").mkdir(exist_ok=True)
         with (inputs / "task.md").open("a", encoding="utf-8") as handle:
             handle.write(
@@ -1458,7 +1492,22 @@ Do not ask the operator questions and do not wait for repair feedback.
                 "runtimes and libraries, with no network access. Inputs and "
                 "runner-owned records are read-only.\n"
             )
-        write_json(inputs / "claude-settings.json", claude_sandbox_settings(run_dir))
+        if harness == "claude":
+            write_json(inputs / "claude-settings.json", claude_sandbox_settings(run_dir))
+        else:
+            write_json(inputs / "agy-settings.json", agy_settings(run_dir))
+            shutil.copyfile(PROJECT_ROOT / "scripts" / "agy-tool-policy.py", inputs / "agy-tool-policy.py")
+            hooks_dir = run_dir / ".agents"
+            hooks_dir.mkdir(exist_ok=True)
+            write_json(hooks_dir / "hooks.json", {
+                "tsumegobench": {"PreToolUse": [{"matcher": "*", "hooks": [{
+                    "type": "command",
+                    "command": shlex.join([sys.executable, str((inputs / "agy-tool-policy.py").resolve())]),
+                    "timeout": 10,
+                }]}]},
+            })
+            # Record the enforced hook alongside the other reproducibility inputs.
+            shutil.copyfile(hooks_dir / "hooks.json", inputs / "agy-hooks.json")
     if harness == "opencode":
         config_dir = inputs / "opencode-config"
         config_dir.mkdir()
@@ -1532,6 +1581,28 @@ def opencode_version_error(version: str) -> str | None:
             f"OpenCode CLI {required} or newer is required for the benchmark's "
             f"isolated permission mode; found {'.'.join(str(part) for part in installed)}."
         )
+    return None
+
+
+def agy_validation_error(executable: str, version: str, model: str, effort: str | None) -> str | None:
+    match = re.search(r"(?:^|\D)(\d+)\.(\d+)\.(\d+)(?:\D|$)", version)
+    if not match or tuple(map(int, match.groups())) < MINIMUM_AGY_VERSION:
+        return "Antigravity CLI 1.5.11 or newer is required; run `agy update`."
+    if sys.platform not in {"darwin", "linux"} or executable.lower().endswith(".exe"):
+        return "The agy benchmark requires native macOS or Linux terminal isolation."
+    suffix = model.rsplit("-", 1)[-1]
+    if effort and suffix in {"low", "medium", "high", "xhigh", "max"} and suffix != effort:
+        return f"Model slug {model!r} specifies {suffix} effort, but --effort is {effort!r}."
+    try:
+        result = subprocess.run([executable, "models"], check=False, capture_output=True,
+                                text=True, timeout=60, env={**os.environ, "AGY_CLI_DISABLE_AUTO_UPDATE": "true"})
+    except (OSError, subprocess.TimeoutExpired) as error:
+        return f"Could not check Antigravity models: {error}"
+    if result.returncode:
+        return "Could not list Antigravity models. Run `agy` to authenticate, then `agy models`."
+    available = {line.split()[0] for line in result.stdout.splitlines() if line.strip()}
+    if model not in available:
+        return f"Antigravity does not list model {model!r}; copy an exact slug from `agy models`."
     return None
 
 
@@ -1749,6 +1820,43 @@ def parse_grok_events(stdout: str) -> dict[str, Any]:
         "finalMessage": final_message,
         "resultSubtype": result_subtype,
     }
+
+
+def parse_agy_events(stdout: str) -> dict[str, Any]:
+    session_id = None
+    usage: dict[str, Any] = {}
+    event_count = parse_errors = 0
+    failure_message = final_message = None
+    result_count = 0
+    for line in stdout.splitlines():
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            parse_errors += 1
+            continue
+        if not isinstance(event, dict):
+            parse_errors += 1
+            continue
+        event_count += 1
+        session_id = event.get("conversation_id") or session_id
+        if event.get("event") == "result" and isinstance(event.get("result"), dict):
+            result = event["result"]
+            result_count += 1
+            session_id = result.get("conversation_id") or session_id
+            final_message = result.get("response") or final_message
+            if isinstance(result.get("usage"), dict):
+                # Result usage already includes all step_update usage.
+                merge_numeric_usage(usage, result["usage"])
+            failure_message = None if result.get("status") == "SUCCESS" else (
+                event_message(result.get("error")) or f"Antigravity ended with status {result.get('status', 'unknown')}."
+            )
+    if not result_count and not failure_message:
+        failure_message = "Antigravity exited without a terminal result."
+    return {"threadId": session_id, "usage": usage or None, "eventCount": event_count,
+            "unparsedLineCount": parse_errors, "failureMessage": failure_message,
+            "finalMessage": final_message}
 
 
 def parse_opencode_events(stdout: str) -> dict[str, Any]:
@@ -2312,6 +2420,60 @@ def run_claude_streaming_session(
     }
 
 
+def run_agy_once(
+    args: argparse.Namespace, command: list[str], run_dir: Path, task: str,
+    label: str, timeout_seconds: float, attempt_number: int,
+) -> dict[str, Any]:
+    started = time.monotonic()
+    reporter = start_progress_reporter(run_dir, label, attempt_number, args.max_attempts, args.count)
+    log_dir = run_dir / "logs" / "attempts" / f"attempt-{attempt_number:02d}"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    stdout_path, stderr_path = log_dir / "agy-events.jsonl", log_dir / "agy-stderr.txt"
+    payload = json.dumps({"event": "user", "message": {"content": task}}) + "\n"
+    (log_dir / "agy-input.jsonl").write_text(payload, encoding="utf-8")
+    process = None
+    exit_code = 127
+    timed_out = False
+    interrupted = False
+    failure = None
+    try:
+        # Stream directly to disk so logs survive interruption and large tool output
+        # does not accumulate in an unread pipe while the model is running.
+        with stdout_path.open("w", encoding="utf-8") as out, stderr_path.open("w", encoding="utf-8") as err:
+            process = subprocess.Popen(command, cwd=run_dir, stdin=subprocess.PIPE,
+                                       stdout=out, stderr=err, text=True, encoding="utf-8",
+                                       env=harness_environment(args, run_dir), start_new_session=True)
+            try:
+                process.communicate(payload, timeout=timeout_seconds)
+                exit_code = process.returncode
+            except subprocess.TimeoutExpired:
+                timed_out = True
+                failure = f"{label} timed out after {format_timeout(max(1, math.ceil(timeout_seconds)))}."
+                exit_code = 124
+            except KeyboardInterrupt:
+                interrupted = True
+                failure = "Antigravity interrupted by operator; partial SGFs preserved."
+                exit_code = 130
+    except OSError as error:
+        failure = f"Could not launch {label}: {error}"
+    finally:
+        if process is not None:
+            terminate_process_tree(process, run_dir)
+        stop_progress_reporter(reporter)
+    stdout = stdout_path.read_text(encoding="utf-8") if stdout_path.exists() else ""
+    stderr = stderr_path.read_text(encoding="utf-8") if stderr_path.exists() else ""
+    parsed = parse_agy_events(stdout)
+    if exit_code == 0 and parsed["failureMessage"]:
+        exit_code = 1
+    if failure:
+        stderr += f"\n{failure}\n"
+    return {"stdout": stdout, "stderr": stderr, "exitCode": exit_code,
+            "timedOut": timed_out, "timeoutMessage": failure if timed_out else None,
+            "failureMessage": failure or parsed["failureMessage"], "input": payload,
+            "interrupted": interrupted,
+            "durationSeconds": round(time.monotonic() - started, 3)}
+
+
 def run_harness_once(
     args: argparse.Namespace,
     command: list[str],
@@ -2321,6 +2483,8 @@ def run_harness_once(
     timeout_seconds: float,
     attempt_number: int,
 ) -> dict[str, Any]:
+    if args.harness == "agy":
+        return run_agy_once(args, command, run_dir, task, label, timeout_seconds, attempt_number)
     if args.harness == "claude":
         return run_claude_streaming_session(
             args,
@@ -2754,6 +2918,11 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
                 "sessionLimitPauseSeconds": 0,
             }
         )
+    if args.harness == "agy":
+        manifest["condition"]["codeExecutionEnabled"] = True
+        manifest["artifacts"]["harnessSettings"] = "inputs/agy-settings.json"
+        manifest["artifacts"]["harnessInput"] = "logs/agy-input.jsonl"
+        manifest["artifacts"]["harnessHooks"] = "inputs/agy-hooks.json"
     if args.harness in {"claude", "grok", "opencode"}:
         max_rounds = {
             "claude": DEFAULT_CLAUDE_MAX_ROUNDS,
@@ -2794,6 +2963,8 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
 
 
 def harness_executable(args: argparse.Namespace) -> str:
+    if args.harness == "agy":
+        return args.agy or os.environ.get("AGY_CLI") or command_name("agy")
     if args.harness == "claude":
         return args.claude or os.environ.get("CLAUDE_CLI") or command_name("claude")
     if args.harness == "grok":
@@ -2804,6 +2975,8 @@ def harness_executable(args: argparse.Namespace) -> str:
 
 
 def harness_environment(args: argparse.Namespace, run_dir: Path) -> dict[str, str] | None:
+    if args.harness == "agy":
+        return {**os.environ, "AGY_CLI_DISABLE_AUTO_UPDATE": "true"}
     if args.harness == "claude":
         environment = os.environ.copy()
         environment["CLAUDE_CODE_MAX_OUTPUT_TOKENS"] = str(CLAUDE_OUTPUT_TOKEN_MAX)
@@ -2837,6 +3010,15 @@ def build_harness_command(
     grok_prompt_file: Path | None = None,
     grok_continue: bool = False,
 ) -> list[str]:
+    if args.harness == "agy":
+        command = [
+            executable, "--input-format", "stream-json", "--output-format", "stream-json",
+            "--model", args.model, "--mode", "accept-edits", "--sandbox",
+            "--disable-slash-commands", "--settings", json.dumps(agy_settings(run_dir)),
+        ]
+        if args.reasoning_effort:
+            command.extend(["--effort", args.reasoning_effort])
+        return command
     if args.harness == "claude":
         allowed_tools = "Read,Write,Edit,Glob,Grep,Bash"
         command = [
@@ -2980,6 +3162,7 @@ def _run_command(args: argparse.Namespace) -> int:
             "claude": "--claude or CLAUDE_CLI",
             "grok": "--grok or GROK_CLI",
             "opencode": "--opencode or OPENCODE_CLI",
+            "agy": "--agy or AGY_CLI",
         }[args.harness]
         print(
             f"error: could not run {label}. Install or upgrade it and authenticate it, or set {override}.",
@@ -2995,6 +3178,12 @@ def _run_command(args: argparse.Namespace) -> int:
                 "Use a supported Claude CLI and try again. No run was saved, and evaluation was not started.",
                 file=sys.stderr,
             )
+            return 2
+    if args.harness == "agy":
+        error = agy_validation_error(executable, version, args.model, args.reasoning_effort)
+        if error:
+            print(f"error: {error}", file=sys.stderr)
+            print("No model was invoked, and no run was saved.", file=sys.stderr)
             return 2
     if args.harness == "opencode":
         version_error = opencode_version_error(version)
@@ -3035,6 +3224,12 @@ def _run_command(args: argparse.Namespace) -> int:
     print(f"Running {args.model} with {label}…")
     print(f"Reasoning effort: {args.reasoning_effort or 'CLI/model default'}")
     print(f"Execution timeout: {format_timeout(args.timeout)}")
+    if args.harness == "agy":
+        print(
+            "Antigravity code execution: sandboxed commands in the run workspace; "
+            "protected inputs/records, no general web, MCP, or delegation tools; "
+            "commands requiring approval outside the sandbox are denied in headless mode."
+        )
     if args.harness == "claude":
         print(
             "Claude code execution: required OS sandbox; run-directory writes and "
@@ -3146,6 +3341,7 @@ def _run_command(args: argparse.Namespace) -> int:
         "claude": parse_claude_events,
         "grok": parse_grok_events,
         "opencode": parse_opencode_events,
+        "agy": parse_agy_events,
     }
 
     stop_model_phase = False
@@ -3338,10 +3534,10 @@ def _run_command(args: argparse.Namespace) -> int:
             )
             attempt_input: str | None = None
             attempt_input_path: str | None = None
-            if args.harness == "claude":
+            if args.harness in {"claude", "agy"}:
                 raw_input = result.get("input")
                 attempt_input = raw_input if isinstance(raw_input, str) else ""
-                input_path = attempt_dir / "claude-input.jsonl"
+                input_path = attempt_dir / f"{args.harness}-input.jsonl"
                 input_path.write_text(attempt_input, encoding="utf-8")
                 attempt_input_path = input_path.relative_to(run_dir).as_posix()
             elif args.harness == "grok":
@@ -4041,11 +4237,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     run = subparsers.add_parser(
         "run",
-        help="Run a model through Codex CLI, Claude CLI, Grok CLI, or OpenCode CLI.",
+        help="Run a model through Codex, Claude, Grok, OpenCode, or Antigravity CLI.",
     )
     run.add_argument(
         "--harness",
-        choices=("codex", "claude", "grok", "opencode"),
+        choices=("codex", "claude", "grok", "opencode", "agy"),
         default="codex",
         help="CLI harness to invoke (default: codex).",
     )
@@ -4083,6 +4279,10 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--opencode",
         help="OpenCode CLI executable path. Defaults to OPENCODE_CLI or opencode on PATH.",
+    )
+    run.add_argument(
+        "--agy",
+        help="Antigravity CLI executable path. Defaults to AGY_CLI or agy on PATH.",
     )
     run.add_argument(
         "--timeout",

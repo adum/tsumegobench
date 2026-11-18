@@ -19,7 +19,7 @@ https://tsumego-bench.adum.chatgpt.site/
 - `docs/evaluation-rubric.md` — the human review scorecard.
 - `scripts/` — corpus synchronization, validation, and duplicate checks.
 - `data/model-metadata.json` — normalized model names, family icons, and public release dates used by the home-page score chart.
-- `benchmark.py` — creates a reproducible run, invokes a model through Codex CLI, Claude CLI, Grok CLI, or OpenCode CLI, evaluates its files, and rebuilds the web index.
+- `benchmark.py` — creates a reproducible run, invokes a model through Codex CLI, Claude CLI, Grok CLI, OpenCode CLI, or Antigravity CLI, evaluates its files, and rebuilds the web index.
 - `runs/` — checked-in model runs with input snapshots, generated SGFs, logs, and structured evaluation records.
 - The web reviewer — browse each problem, replay any variation, and inspect the graphical solution tree.
 
@@ -56,9 +56,31 @@ Or run a provider/model combination available to an authenticated OpenCode CLI:
 python benchmark.py run --harness opencode --model <provider>/<model-id>
 ```
 
+For Gemini 4 Carbon through an authenticated Antigravity CLI (`agy`):
+
+```bash
+python3 benchmark.py run --harness agy --model gemini-4-carbon-high --effort high
+```
+
+Use `agy models` to list the exact model slugs available to your account. Antigravity encodes effort
+in its Gemini slugs; keep `--effort` consistent with that suffix. The runner requires Antigravity
+1.5.11 or newer on native macOS/Linux and checks model access before creating a run.
+
+Antigravity runs one headless turn with sandboxed command execution and file access scoped to the
+run workspace. Its OS sandbox also permits temporary files and common runtime caches. Session-only
+settings protect inputs, logs, evaluations, and originality results; a protected tool hook blocks
+web, MCP, delegation, permission escalation, and file-tool access outside the run directory.
+It uses `accept-edits` with `proceed-in-sandbox`, so commands outside the sandbox cannot be
+automatically approved. If the sandbox is unavailable, commands require approval and are denied
+in headless mode. The runner saves the policy, hook, input messages, streaming events, usage, and
+conversation ID. Ctrl+C and timeouts stop run workers and preserve partial SGFs for review.
+Antigravity still discovers personal customizations; use a clean CLI profile for controlled runs.
+See its [headless-mode documentation](https://antigravity.google/docs/cli/headless/) and
+[terminal-sandbox documentation](https://antigravity.google/docs/sandbox?tab=cli).
+
 Install and authenticate the selected CLI before running the benchmark. The runner finds `codex`
-`claude`, `grok`, or `opencode` on `PATH`; use `--codex` / `CODEX_CLI`, `--claude` /
-`CLAUDE_CLI`, `--grok` / `GROK_CLI`, or `--opencode` / `OPENCODE_CLI` to provide an explicit
+`claude`, `grok`, `opencode`, or `agy` on `PATH`; use `--codex` / `CODEX_CLI`, `--claude` /
+`CLAUDE_CLI`, `--grok` / `GROK_CLI`, `--opencode` / `OPENCODE_CLI`, or `--agy` / `AGY_CLI` to provide an explicit
 executable. Prefer a full, versioned model ID over a moving alias when reproducibility matters.
 OpenCode model names must use its exact `provider/model` form. Claude Code 2.1.257 or newer and
 OpenCode 1.1.1 or newer are required for the isolated modes used by the benchmark. The runner checks
@@ -192,7 +214,7 @@ Models without release metadata are listed by the script and omitted from the ch
 
 ## Benchmark in one pass
 
-1. Invoke `python benchmark.py run --model <openai-model-id>` for Codex, add `--harness claude` for Claude CLI, add `--harness grok` for Grok CLI, or use `--harness opencode --model <provider>/<model-id>` for OpenCode CLI.
+1. Invoke `python benchmark.py run --model <openai-model-id>` for Codex, add `--harness claude` for Claude CLI, add `--harness grok` for Grok CLI, use `--harness opencode --model <provider>/<model-id>` for OpenCode CLI, or `--harness agy --model <slug-from-agy-models>` for Antigravity CLI.
 2. The runner snapshots the controlled inputs and asks the selected model to write ten SGFs directly into the run directory.
 3. It preserves the selected CLI's event log and runs structural and duplicate checks automatically.
 4. Run `python3 benchmark.py review`; it defaults to the newest run with saved output, even if generation was interrupted.
