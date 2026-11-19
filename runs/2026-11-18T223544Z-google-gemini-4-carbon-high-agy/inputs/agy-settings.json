@@ -1,0 +1,32 @@
+{
+  "agentMode": "accept-edits",
+  "enableTerminalSandbox": true,
+  "toolPermission": "proceed-in-sandbox",
+  "allowNonWorkspaceAccess": false,
+  "artifactReviewPolicy": "always-proceed",
+  "permissions": {
+    "allow": [],
+    "ask": [],
+    "deny": [
+      "read_url(*)",
+      "execute_url(*)",
+      "mcp(*)",
+      "write_file(/Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/inputs)",
+      "write_file(/Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/logs)",
+      "write_file(/Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/evaluation)",
+      "write_file(/Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/run.json)",
+      "write_file(/Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/.agents)",
+      "write_file(/Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/originality/results)",
+      "write_file(/Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/originality/summary.json)",
+      "write_file(/Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/originality/ready.json)",
+      "write_file(/Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/originality/stop)"
+    ]
+  },
+  "sandboxProxy": {},
+  "statusLine": {
+    "enabled": false
+  },
+  "title": {
+    "enabled": false
+  }
+}

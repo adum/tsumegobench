@@ -57,6 +57,9 @@ REVIEW_PROBE_REQUEST_TIMEOUT_SECONDS = 10
 MINIMUM_CLAUDE_VERSION = (2, 1, 257)
 MINIMUM_OPENCODE_VERSION = (1, 1, 1)
 MINIMUM_AGY_VERSION = (1, 5, 11)
+AGY_COMPLETION_IDLE_SECONDS = 5 * 60
+AGY_HELPER_EXIT_GRACE_SECONDS = 10
+AGY_COMPLETION_POLL_SECONDS = 1
 GENERATION_DIFFICULTY_BANDS = (
     "20-30 kyu",
     "10-19 kyu",
@@ -1822,7 +1825,7 @@ def parse_grok_events(stdout: str) -> dict[str, Any]:
     }
 
 
-def parse_agy_events(stdout: str) -> dict[str, Any]:
+def parse_agy_events(stdout: str, *, outputs_complete: bool = False) -> dict[str, Any]:
     session_id = None
     usage: dict[str, Any] = {}
     event_count = parse_errors = 0
@@ -1852,7 +1855,7 @@ def parse_agy_events(stdout: str) -> dict[str, Any]:
             failure_message = None if result.get("status") == "SUCCESS" else (
                 event_message(result.get("error")) or f"Antigravity ended with status {result.get('status', 'unknown')}."
             )
-    if not result_count and not failure_message:
+    if not result_count and not failure_message and not outputs_complete:
         failure_message = "Antigravity exited without a terminal result."
     return {"threadId": session_id, "usage": usage or None, "eventCount": event_count,
             "unparsedLineCount": parse_errors, "failureMessage": failure_message,
@@ -2066,14 +2069,8 @@ def orphaned_run_workers(run_dir: Path) -> set[int]:
         return set()
 
 
-def terminate_process_tree(process: subprocess.Popen[Any], run_dir: Path | None = None) -> None:
-    """Stop a child launched in its own session, including detached shell helpers."""
-    if os.name == "nt":
-        if process.poll() is None:
-            subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"],
-                           capture_output=True, check=False)
-        return
-    descendants = {process.pid} if process.poll() is None else set()
+def process_descendants(pid: int) -> set[int]:
+    descendants = {pid}
     try:
         listing = subprocess.check_output(["ps", "-axo", "pid=,ppid="], text=True, timeout=5)
         parents = {int(pid): int(parent) for pid, parent in
@@ -2085,6 +2082,17 @@ def terminate_process_tree(process: subprocess.Popen[Any], run_dir: Path | None 
             descendants = expanded
     except (OSError, ValueError, subprocess.TimeoutExpired):
         pass
+    return descendants - {pid}
+
+
+def terminate_process_tree(process: subprocess.Popen[Any], run_dir: Path | None = None) -> None:
+    """Stop a child launched in its own session, including detached shell helpers."""
+    if os.name == "nt":
+        if process.poll() is None:
+            subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                           capture_output=True, check=False)
+        return
+    descendants = ({process.pid} | process_descendants(process.pid)) if process.poll() is None else set()
     if run_dir is not None:
         descendants |= orphaned_run_workers(run_dir)
     # Bash jobs may start their own process groups, so signal descendants as well
@@ -2420,6 +2428,49 @@ def run_claude_streaming_session(
     }
 
 
+def agy_completion_snapshot(
+    run_dir: Path, count: int, originality_enabled: bool, stdout_path: Path,
+) -> tuple[Any, ...] | None:
+    """Return activity state only once all current outputs have finished their checks."""
+    try:
+        candidates = {}
+        paths = [stdout_path]
+        for name in expected_output_names(count):
+            path = run_dir / "outputs" / name
+            content = path.read_bytes()
+            if not content.strip():
+                return None
+            candidates[f"outputs/{name}"] = hashlib.sha256(content).hexdigest()
+            paths.append(path)
+        if originality_enabled:
+            result_paths = sorted((run_dir / "originality/results").glob("*.json"))
+            requests = sorted((run_dir / "originality/requests").glob("*.json"))
+            results = {path.name: read_json(path) for path in result_paths}
+            if any(path.name not in results for path in requests):
+                return None
+            if any((run_dir / "originality/results" / path.name).stat().st_mtime_ns < path.stat().st_mtime_ns
+                   for path in requests):
+                return None
+            checked = {
+                (result.get("path"), result.get("candidateSha256"))
+                for result in results.values()
+                if isinstance(result, dict) and result.get("status") == "clear"
+            }
+            if not all(candidate in checked for candidate in candidates.items()):
+                return None
+            paths.extend(requests)
+            paths.extend(result_paths)
+        # Log activity, rewrites (even of identical files), and new queries all
+        # restart the grace period. Existence alone does not mean a draft is final.
+        return tuple(sorted(candidates.items())), tuple(
+            (str(path), stat.st_size, stat.st_mtime_ns)
+            for path in paths for stat in [path.stat()]
+        )
+    except (OSError, ValueError, TypeError):
+        # The model or broker may be halfway through writing a file.
+        return None
+
+
 def run_agy_once(
     args: argparse.Namespace, command: list[str], run_dir: Path, task: str,
     label: str, timeout_seconds: float, attempt_number: int,
@@ -2436,6 +2487,9 @@ def run_agy_once(
     timed_out = False
     interrupted = False
     failure = None
+    stop_reason = "launch_failed"
+    completion_snapshot = None
+    complete_since = None
     try:
         # Stream directly to disk so logs survive interruption and large tool output
         # does not accumulate in an unread pipe while the model is running.
@@ -2444,14 +2498,58 @@ def run_agy_once(
                                        stdout=out, stderr=err, text=True, encoding="utf-8",
                                        env=harness_environment(args, run_dir), start_new_session=True)
             try:
-                process.communicate(payload, timeout=timeout_seconds)
-                exit_code = process.returncode
+                first_communication = True
+                while True:
+                    remaining = timeout_seconds - (time.monotonic() - started)
+                    if remaining <= 0:
+                        raise subprocess.TimeoutExpired(command, timeout_seconds)
+                    try:
+                        process.communicate(payload if first_communication else None,
+                                            timeout=min(AGY_COMPLETION_POLL_SECONDS, remaining))
+                        exit_code = process.returncode
+                        stop_reason = "process_exit"
+                        break
+                    except subprocess.TimeoutExpired:
+                        first_communication = False
+                    if time.monotonic() - started >= timeout_seconds:
+                        raise subprocess.TimeoutExpired(command, timeout_seconds)
+                    snapshot = agy_completion_snapshot(run_dir, args.count, not args.local_only, stdout_path)
+                    now = time.monotonic()
+                    if snapshot is None or snapshot != completion_snapshot:
+                        complete_since = now if snapshot is not None else None
+                        completion_snapshot = snapshot
+                    if complete_since is None or now - complete_since < AGY_COMPLETION_IDLE_SECONDS:
+                        continue
+                    stop_reason = "outputs_complete"
+                    print(
+                        f"Antigravity: all {args.count} SGFs are ready and no output, query, or event "
+                        f"activity for {format_elapsed(AGY_COMPLETION_IDLE_SECONDS)}; stopping leftover helpers.",
+                        flush=True,
+                    )
+                    # AGY can buffer its terminal result behind unfinished shell
+                    # jobs. Let it flush that result and usage before stopping it.
+                    for pid in process_descendants(process.pid):
+                        try:
+                            os.kill(pid, signal.SIGTERM)
+                        except ProcessLookupError:
+                            pass
+                    try:
+                        process.wait(timeout=max(0, min(
+                            AGY_HELPER_EXIT_GRACE_SECONDS,
+                            timeout_seconds - (time.monotonic() - started),
+                        )))
+                        exit_code = process.returncode
+                    except subprocess.TimeoutExpired:
+                        exit_code = 0  # Runner completion boundary, not a CLI success event.
+                    break
             except subprocess.TimeoutExpired:
                 timed_out = True
+                stop_reason = "timeout"
                 failure = f"{label} timed out after {format_timeout(max(1, math.ceil(timeout_seconds)))}."
                 exit_code = 124
             except KeyboardInterrupt:
                 interrupted = True
+                stop_reason = "interrupted"
                 failure = "Antigravity interrupted by operator; partial SGFs preserved."
                 exit_code = 130
     except OSError as error:
@@ -2462,7 +2560,7 @@ def run_agy_once(
         stop_progress_reporter(reporter)
     stdout = stdout_path.read_text(encoding="utf-8") if stdout_path.exists() else ""
     stderr = stderr_path.read_text(encoding="utf-8") if stderr_path.exists() else ""
-    parsed = parse_agy_events(stdout)
+    parsed = parse_agy_events(stdout, outputs_complete=stop_reason == "outputs_complete")
     if exit_code == 0 and parsed["failureMessage"]:
         exit_code = 1
     if failure:
@@ -2470,7 +2568,8 @@ def run_agy_once(
     return {"stdout": stdout, "stderr": stderr, "exitCode": exit_code,
             "timedOut": timed_out, "timeoutMessage": failure if timed_out else None,
             "failureMessage": failure or parsed["failureMessage"], "input": payload,
-            "interrupted": interrupted,
+            "interrupted": interrupted, "stopReason": stop_reason,
+            "processExitCode": process.returncode if process is not None else exit_code,
             "durationSeconds": round(time.monotonic() - started, 3)}
 
 
@@ -2923,6 +3022,12 @@ def prepare_manifest(args: argparse.Namespace, run_id: str, run_dir: Path) -> di
         manifest["artifacts"]["harnessSettings"] = "inputs/agy-settings.json"
         manifest["artifacts"]["harnessInput"] = "logs/agy-input.jsonl"
         manifest["artifacts"]["harnessHooks"] = "inputs/agy-hooks.json"
+        manifest["harness"]["completionPolicy"] = {
+            "idleSeconds": AGY_COMPLETION_IDLE_SECONDS,
+            "requireNonemptyExpectedOutputs": True,
+            "requireMatchingClearOriginality": tool_enabled,
+            "helperExitGraceSeconds": AGY_HELPER_EXIT_GRACE_SECONDS,
+        }
     if args.harness in {"claude", "grok", "opencode"}:
         max_rounds = {
             "claude": DEFAULT_CLAUDE_MAX_ROUNDS,
@@ -3230,6 +3335,11 @@ def _run_command(args: argparse.Namespace) -> int:
             "protected inputs/records, no general web, MCP, or delegation tools; "
             "commands requiring approval outside the sandbox are denied in headless mode."
         )
+        print(
+            f"Antigravity completion: stop leftover helpers after all {args.count} SGFs "
+            + ("have matching clear originality checks and " if not args.local_only else "are nonempty and ")
+            + f"{format_elapsed(AGY_COMPLETION_IDLE_SECONDS)} without output, query, or event activity."
+        )
     if args.harness == "claude":
         print(
             "Claude code execution: required OS sandbox; run-directory writes and "
@@ -3482,7 +3592,10 @@ def _run_command(args: argparse.Namespace) -> int:
             exit_code = result["exitCode"]
             timed_out = result["timedOut"]
             timeout_message = result["timeoutMessage"]
-            attempt_events = event_parsers[args.harness](stdout)
+            attempt_events = (
+                parse_agy_events(stdout, outputs_complete=result.get("stopReason") == "outputs_complete")
+                if args.harness == "agy" else event_parsers[args.harness](stdout)
+            )
             result_failure = result.get("failureMessage")
             if isinstance(result_failure, str) and result_failure.strip():
                 attempt_events["failureMessage"] = result_failure.strip()
@@ -3556,6 +3669,13 @@ def _run_command(args: argparse.Namespace) -> int:
                 "stdout": attempt_stdout,
                 "stderr": attempt_stderr,
             }
+            if args.harness == "agy":
+                attempt_record.update({
+                    "input": attempt_input_path,
+                    "processExitCode": result.get("processExitCode", exit_code),
+                    "stopReason": result["stopReason"],
+                })
+                manifest["harness"]["stopReason"] = result["stopReason"]
             if args.harness == "claude":
                 attempt_rounds = result.get("rounds")
                 if not isinstance(attempt_rounds, list):
@@ -3812,7 +3932,10 @@ def _run_command(args: argparse.Namespace) -> int:
 
     stdout = concatenate_harness_output(accepted_stdout_chunks)
     stderr = concatenate_harness_output(accepted_stderr_chunks)
-    events = event_parsers[args.harness](stdout)
+    events = (
+        parse_agy_events(stdout, outputs_complete=manifest["harness"].get("stopReason") == "outputs_complete")
+        if args.harness == "agy" else event_parsers[args.harness](stdout)
+    )
     parsed_final_message = events.pop("finalMessage", None)
     events.pop("resultSubtype", None)
     final_message = last_final_message or parsed_final_message

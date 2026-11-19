@@ -2,6 +2,7 @@ import json
 import io
 import os
 import runpy
+import signal
 import subprocess
 import sys
 import tempfile
@@ -2899,6 +2900,160 @@ class AntigravityHarnessTests(unittest.TestCase):
             self.assertEqual(result["exitCode"], 124)
             self.assertTrue(result["timedOut"])
             self.assertEqual((root / "partial.sgf").read_text(), "partial")
+
+    def test_completion_requires_current_nonempty_outputs_and_finished_checks(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "outputs").mkdir()
+            (root / "originality/requests").mkdir(parents=True)
+            (root / "originality/results").mkdir()
+            log = root / "events.jsonl"
+            log.touch()
+            output = root / "outputs/problem-01.sgf"
+            snapshot = lambda remote=True: benchmark.agy_completion_snapshot(root, 1, remote, log)
+            self.assertIsNone(snapshot(False))
+            output.write_text("  ")
+            self.assertIsNone(snapshot(False))
+            output.write_text("(;SZ[19])")
+            self.assertIsNotNone(snapshot(False))
+            self.assertIsNone(snapshot())
+            result = root / "originality/results/final.json"
+            response = {"path": "outputs/problem-01.sgf", "status": "clear", "candidateSha256": benchmark.sha256_file(output)}
+            benchmark.write_json(result, response)
+            ready = snapshot()
+            self.assertIsNotNone(ready)
+            log.write_text('{"event":"step_update"}\n')
+            self.assertNotEqual(ready, snapshot())
+            output.write_text("(;SZ[9])")
+            self.assertIsNone(snapshot())  # The previous clear check is for different content.
+            response["candidateSha256"] = benchmark.sha256_file(output)
+            response["status"] = "duplicate"
+            benchmark.write_json(result, response)
+            self.assertIsNone(snapshot())
+            response["status"] = "clear"
+            benchmark.write_json(result, response)
+            request = root / "originality/requests/pending.json"
+            benchmark.write_json(request, {"path": response["path"]})
+            self.assertIsNone(snapshot())
+            pending_result = root / "originality/results/pending.json"
+            benchmark.write_json(pending_result, response)
+            self.assertIsNotNone(snapshot())
+            # Reusing a request filename must wait for a fresh result too.
+            stamp = pending_result.stat().st_mtime_ns + 1_000_000
+            os.utime(request, ns=(stamp, stamp))
+            self.assertIsNone(snapshot())
+            result.write_text('{"unfinished":')
+            self.assertIsNone(snapshot())
+
+    def fast_completion(self):
+        from contextlib import ExitStack
+        stack = ExitStack()
+        for name, value in (("AGY_COMPLETION_IDLE_SECONDS", 0.15),
+                            ("AGY_COMPLETION_POLL_SECONDS", 0.03),
+                            ("AGY_HELPER_EXIT_GRACE_SECONDS", 0.5)):
+            stack.enter_context(mock.patch.object(benchmark, name, value))
+        return stack
+
+    def output_script(self):
+        return (
+            "from pathlib import Path\nimport json,subprocess,sys,time\n"
+            "Path('outputs').mkdir(exist_ok=True)\n"
+            "for i in range(1,11): Path(f'outputs/problem-{i:02}.sgf').write_text('(;SZ[19])')\n"
+        )
+
+    def test_completion_releases_stuck_helper_and_keeps_terminal_usage(self):
+        script = self.output_script() + (
+            "child=subprocess.Popen([sys.executable,'-c','import time; time.sleep(20)'],start_new_session=True)\n"
+            "Path('child.pid').write_text(str(child.pid))\n"
+            "child.wait()\n"
+            "print(json.dumps({'event':'result','result':{'status':'SUCCESS','response':'done','usage':{'input_tokens':42}}}))\n"
+        )
+        args = self.args()
+        args.local_only = True
+        with tempfile.TemporaryDirectory() as tmp, self.fast_completion():
+            root = Path(tmp)
+            result = benchmark.run_harness_once(args, [sys.executable, "-c", script], root, "task", "agy test", 5, 1)
+            self.assertEqual(result["exitCode"], 0)
+            self.assertEqual(result["processExitCode"], 0)
+            self.assertEqual(result["stopReason"], "outputs_complete")
+            self.assertFalse(result["timedOut"])
+            self.assertIsNone(result["failureMessage"])
+            self.assertEqual(benchmark.parse_agy_events(result["stdout"])["usage"], {"input_tokens": 42})
+            with self.assertRaises(ProcessLookupError):
+                os.kill(int((root / "child.pid").read_text()), 0)
+
+    def test_completion_forces_cli_exit_without_inventing_terminal_event(self):
+        args = self.args()
+        args.local_only = True
+        script = self.output_script() + "time.sleep(20)\n"
+        with tempfile.TemporaryDirectory() as tmp, self.fast_completion():
+            root = Path(tmp)
+            result = benchmark.run_harness_once(args, [sys.executable, "-c", script], root, "task", "agy test", 5, 1)
+            self.assertEqual(result["exitCode"], 0)
+            self.assertEqual(result["processExitCode"], -signal.SIGTERM)
+            self.assertEqual(result["stopReason"], "outputs_complete")
+            self.assertIsNone(result["failureMessage"])
+            self.assertEqual(result["stdout"], "")
+            self.assertIsNone(benchmark.parse_agy_events(result["stdout"], outputs_complete=True)["usage"])
+            self.assertEqual(benchmark.expected_sgf_count(root, 10), 10)
+
+    def test_active_file_or_event_updates_prevent_completion_stop(self):
+        args = self.args()
+        args.local_only = True
+        for activity in ("Path('outputs/problem-01.sgf').write_text(f'(;SZ[19]C[{i}])')",
+                         "print(json.dumps({'event':'step_update','index':i}),flush=True)"):
+            with self.subTest(activity=activity), tempfile.TemporaryDirectory() as tmp, self.fast_completion():
+                script = self.output_script() + (
+                    f"for i in range(12):\n {activity}\n time.sleep(0.05)\n"
+                    "print(json.dumps({'event':'result','result':{'status':'SUCCESS'}}))\n"
+                )
+                result = benchmark.run_harness_once(args, [sys.executable, "-c", script], Path(tmp), "task", "agy test", 5, 1)
+                self.assertEqual(result["stopReason"], "process_exit")
+                self.assertEqual(result["exitCode"], 0)
+
+    def test_completion_does_not_mask_terminal_error(self):
+        parsed = benchmark.parse_agy_events(
+            json.dumps({"event": "result", "result": {"status": "ERROR", "error": "provider failed"}}),
+            outputs_complete=True,
+        )
+        self.assertEqual(parsed["failureMessage"], "provider failed")
+
+    def test_full_run_records_completion_boundary_and_evaluates_outputs(self):
+        args = self.args()
+        args.local_only = True
+        args.run_id = "agy-stalled"
+        args.agy = sys.executable
+        script = self.output_script() + "time.sleep(20)\n"
+        success = subprocess.CompletedProcess([], 0, stdout="", stderr="")
+
+        def evaluate(root, _local_only):
+            self.assertEqual(benchmark.expected_sgf_count(root, 10), 10)
+            benchmark.write_json(root / "evaluation/automated.json", {"summary": {"expectedProblems": 10}})
+            return success
+
+        with (
+            tempfile.TemporaryDirectory() as tmp,
+            self.fast_completion(),
+            mock.patch.object(benchmark, "RUNS_ROOT", Path(tmp)),
+            mock.patch.object(benchmark, "cli_version", return_value="1.5.11"),
+            mock.patch.object(benchmark, "agy_validation_error", return_value=None),
+            mock.patch.object(benchmark, "build_harness_command", return_value=[sys.executable, "-c", script]),
+            mock.patch.object(benchmark, "run_evaluator", side_effect=evaluate) as evaluator,
+            mock.patch.object(benchmark, "build_run_index", return_value=success),
+            redirect_stdout(io.StringIO()),
+        ):
+            self.assertEqual(benchmark.run_command(args), 0)
+            evaluator.assert_called_once()
+            manifest = benchmark.read_json(Path(tmp) / "agy-stalled/run.json")
+            self.assertEqual(manifest["status"], "completed")
+            harness = manifest["harness"]
+            self.assertEqual(harness["stopReason"], "outputs_complete")
+            self.assertIsNone(harness["failureMessage"])
+            self.assertIsNone(harness["usage"])
+            self.assertEqual(len(harness["attempts"]), 1)
+            self.assertEqual(harness["attempts"][0]["outcome"], "success")
+            self.assertEqual(harness["attempts"][0]["stopReason"], "outputs_complete")
+            self.assertEqual(harness["attempts"][0]["processExitCode"], -signal.SIGTERM)
 
 
 if __name__ == "__main__":

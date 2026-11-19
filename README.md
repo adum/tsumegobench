@@ -74,6 +74,13 @@ It uses `accept-edits` with `proceed-in-sandbox`, so commands outside the sandbo
 automatically approved. If the sandbox is unavailable, commands require approval and are denied
 in headless mode. The runner saves the policy, hook, input messages, streaming events, usage, and
 conversation ID. Ctrl+C and timeouts stop run workers and preserve partial SGFs for review.
+If every expected SGF is nonempty and has a matching clear originality result, five minutes
+without output, query, or streaming-event activity triggers completion. With `--local-only`,
+originality results are not required. The runner stops leftover command helpers, gives the CLI
+10 seconds to flush its final result, then stops the remaining process tree and evaluates the
+files. The manifest records this completion policy, the stop reason, and the actual process
+exit code; a missing terminal event does not invent usage or a model response. Incomplete runs
+still retain the overall execution timeout.
 Antigravity still discovers personal customizations; use a clean CLI profile for controlled runs.
 See its [headless-mode documentation](https://antigravity.google/docs/cli/headless/) and
 [terminal-sandbox documentation](https://antigravity.google/docs/sandbox?tab=cli).

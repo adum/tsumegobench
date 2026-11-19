@@ -227,6 +227,19 @@
       "bestRunCreatedAt": "2026-11-17T01:39:32.307315Z"
     },
     {
+      "id": "gemini-4-carbon",
+      "displayName": "Gemini 4 Carbon",
+      "family": "Google",
+      "releaseDate": "2026-11-10",
+      "icon": "/provider-icons/google.png",
+      "score": 3,
+      "passedProblems": 3,
+      "problemCount": 10,
+      "runCount": 1,
+      "bestRunId": "2026-11-18T223544Z-google-gemini-4-carbon-high-agy",
+      "bestRunCreatedAt": "2026-11-18T22:35:44.062457Z"
+    },
+    {
       "id": "gpt-6.2-astra",
       "displayName": "GPT-6.2 Astra",
       "family": "OpenAI",

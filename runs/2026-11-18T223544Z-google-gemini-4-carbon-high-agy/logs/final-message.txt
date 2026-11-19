@@ -1,0 +1,12 @@
+The requested candidate SGF files have been written and verified:
+
+- [problem-01.sgf](file:///Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/outputs/problem-01.sgf)
+- [problem-02.sgf](file:///Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/outputs/problem-02.sgf)
+- [problem-03.sgf](file:///Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/outputs/problem-03.sgf)
+- [problem-04.sgf](file:///Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/outputs/problem-04.sgf)
+- [problem-05.sgf](file:///Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/outputs/problem-05.sgf)
+- [problem-06.sgf](file:///Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/outputs/problem-06.sgf)
+- [problem-07.sgf](file:///Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/outputs/problem-07.sgf)
+- [problem-08.sgf](file:///Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/outputs/problem-08.sgf)
+- [problem-09.sgf](file:///Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/outputs/problem-09.sgf)
+- [problem-10.sgf](file:///Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/outputs/problem-10.sgf)

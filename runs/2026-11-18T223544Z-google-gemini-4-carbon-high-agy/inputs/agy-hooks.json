@@ -1,0 +1,16 @@
+{
+  "tsumegobench": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/opt/homebrew/opt/python@3.13/bin/python3.13 /Users/adammiller/code/tsumegobench/runs/2026-11-18T223544Z-google-gemini-4-carbon-high-agy/inputs/agy-tool-policy.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

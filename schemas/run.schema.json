@@ -97,6 +97,18 @@
         "eventCount": { "type": "integer", "minimum": 0 },
         "unparsedLineCount": { "type": "integer", "minimum": 0 },
         "failureMessage": { "type": ["string", "null"] },
+        "stopReason": { "$ref": "#/$defs/agyStopReason" },
+        "completionPolicy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["idleSeconds", "requireNonemptyExpectedOutputs", "requireMatchingClearOriginality", "helperExitGraceSeconds"],
+          "properties": {
+            "idleSeconds": { "type": "number", "minimum": 0 },
+            "requireNonemptyExpectedOutputs": { "type": "boolean" },
+            "requireMatchingClearOriginality": { "type": "boolean" },
+            "helperExitGraceSeconds": { "type": "number", "minimum": 0 }
+          }
+        },
         "roundPolicy": {
           "type": "object",
           "additionalProperties": false,
@@ -165,6 +177,7 @@
               "attemptInRound": { "type": "integer", "minimum": 1 },
               "input": { "type": "string" },
               "processExitCode": { "type": "integer" },
+              "stopReason": { "$ref": "#/$defs/agyStopReason" },
               "outputLimitBoundary": { "type": "boolean" },
               "roundStopReason": {
                 "enum": [
@@ -282,6 +295,9 @@
     }
   },
   "$defs": {
+    "agyStopReason": {
+      "enum": ["process_exit", "outputs_complete", "timeout", "interrupted", "launch_failed"]
+    },
     "continuationRound": {
       "type": "object",
       "additionalProperties": false,
